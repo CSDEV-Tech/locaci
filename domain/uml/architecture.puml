@@ -1,0 +1,68 @@
+@startuml "locaci architecture"
+
+left to right direction
+
+:User: as user
+
+package "services externes" {
+    database "Base de données" {
+        [PostgreSQL] as db
+    }
+
+    [Service d'authentification] as auth0
+    [Service d'envoi SMS] as twilio
+    [Service d'alerte d'erreurs] as sentry
+    [Collection d'analytics] as plausible
+    [Service de signature PDF] as pdfsign
+}
+package "Serveur OVH" as server {
+    node loadbalancer as lb {
+        [frontend] as front
+        [api] as api
+    }
+
+    [Message Queue] as redis
+    [Indexeur de Recherche] as indexer
+    [Gestionnaire de notifications] as notificator
+    [Systeme de Recherche] as typesense
+    [Serveur web] as nginx
+
+
+
+    note bottom of lb
+        - Le frontend est fait avec
+            NextJS
+        - L'API est faite avec
+            NestJs
+        - Le load balancer lance 
+            **3 noeuds de services**
+    end note
+
+    front <-right-> api : Appels HTTP
+    api <-right-> db
+    api <-up-> auth0 : Authentification des utilisateurs
+    
+    api --right--> redis : "Envoi tâches"
+    api -right-> typesense : "Recherche"
+    api -up-> pdfsign : "Signature Contrat de bail & Etat des lieux"
+
+    redis -right-> indexer  : Exécute l'indexation
+    redis -right-> notificator  : Envoie les notifications
+    
+    notificator -up-> twilio : Envoi de SMS
+    indexer --> typesense : Indexe les documents
+
+    api -left-> sentry : Envoie les erreurs API
+    front --> plausible : Envoie les données utilisateurs
+    front --> sentry : Envoie les erreurs frontend
+}
+
+
+
+
+' Relations
+nginx <-up-> user
+nginx <-down-> front
+
+
+@enduml

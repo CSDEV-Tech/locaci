@@ -1,0 +1,38 @@
+@startuml "Workflow"
+
+
+title Tunnel Logement
+
+start
+    :Recherche de logement;
+    note left
+        Plusieurs Criteres:
+            - Localisation
+            - Prix
+            - Nombre de pieces 
+            - etc...
+    end note
+
+    :Choix du logement;
+
+    :Etat des lieux;
+
+    if (logement accepté par le client ?) then (Oui)
+         :Signature du contrat de location;
+
+        note right
+            Par le proprietaire,
+            Puis par le locataire
+        end note
+
+        repeat :Alertes pré-échéance;
+            :Alertes échéance;
+            if(Paiement non effectué ?) then (Oui)
+                :Alertes dépassement échéance;
+            endif;
+        repeat while  (Contrat terminé ?) is (Non)
+            stop
+    else (Non)
+        stop
+@enduml
+
