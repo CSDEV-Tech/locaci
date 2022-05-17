@@ -18,7 +18,7 @@
     "declaration": true,
     "paths": {
       "@locaci/domain": ["domain/src"],
-      "@locaci/api": ["api/src"]
+      "@locaci/web": ["web/src"]
     }
   }
 }
