@@ -1,4 +1,3 @@
 workspaces:
   - domain
-  - api
-  - front
+  - web
