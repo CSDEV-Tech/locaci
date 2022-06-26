@@ -11,50 +11,42 @@ package "services externes" {
 
     [Service d'authentification] as auth0
     [Service d'envoi SMS] as twilio
-    [Service d'alerte d'erreurs] as sentry
-    [Collection d'analytics] as plausible
+    [Service d'alerte d'erreurs] as alerting
     [Service de signature PDF] as pdfsign
 }
 package "Serveur OVH" as server {
     node loadbalancer as lb {
-        [frontend] as front
-        [api] as api
+        [web] as web
     }
 
-    [Message Queue] as redis
-    [Indexeur de Recherche] as indexer
-    [Gestionnaire de notifications] as notificator
-    [Systeme de Recherche] as typesense
+    node "Services internes" as internal  {
+        [Message Queue] as redis
+        [Systeme de Recherche] as typesense
+        [Collection d'analytics] as analytics
+    }
+
+    node "Services parralelles" as threads {
+        [Indexeur de Recherche] as indexer
+        [Gestionnaire de notifications] as notificator
+    }
+
     [Serveur web] as nginx
 
 
-
-    note bottom of lb
-        - Le frontend est fait avec
-            NextJS
-        - L'API est faite avec
-            NestJs
-        - Le load balancer lance 
-            **3 noeuds de services**
-    end note
-
-    front <-right-> api : Appels HTTP
-    api <-right-> db
-    api <-up-> auth0 : Authentification des utilisateurs
+    web <-down-> db
+    web <-down-> auth0 : Authentification des utilisateurs
+    web -down-> pdfsign : "Signature Contrat de bail & Etat des lieux"
+    web -down-> alerting : Envoie les erreurs
     
-    api --right--> redis : "Envoi tâches"
-    api -right-> typesense : "Recherche"
-    api -up-> pdfsign : "Signature Contrat de bail & Etat des lieux"
-
-    redis -right-> indexer  : Exécute l'indexation
-    redis -right-> notificator  : Envoie les notifications
+    web -down-> redis : "Envoi tâches"
+    web -down-> typesense : "Recherche"
+    web --> analytics : Envoie les données utilisateurs
     
-    notificator -up-> twilio : Envoi de SMS
-    indexer --> typesense : Indexe les documents
-
-    api -left-> sentry : Envoie les erreurs API
-    front --> plausible : Envoie les données utilisateurs
-    front --> sentry : Envoie les erreurs frontend
+    redis -up-> indexer  : Exécute l'indexation
+    redis -up-> notificator  : Envoie les notifications
+    indexer -up-> typesense : Indexe les documents
+    
+    notificator -down-> twilio : Envoi de SMS
 }
 
 
@@ -62,7 +54,7 @@ package "Serveur OVH" as server {
 
 ' Relations
 nginx <-up-> user
-nginx <-down-> front
+nginx <-down-> web
 
 
 @enduml
