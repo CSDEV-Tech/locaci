@@ -1,4 +1,6 @@
 {
   "extends": ["next/core-web-vitals"],
-  "import/no-anonymous-default-export": "off"
+ "rules": {
+   "import/no-anonymous-default-export": "off"
+ }
 }
