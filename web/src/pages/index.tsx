@@ -1,9 +1,10 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import { trpc } from '../utils/trpc';
+import type { NextPage } from "next";
+import Head from "next/head";
+import { trpc } from "../utils/trpc";
+import { Button } from "@locaci/ui";
 
 const Home: NextPage = () => {
-  const { data } = trpc.useQuery(['example.hello', { text: 'from tRPC' }]);
+  const { data } = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
 
   return (
     <>
@@ -20,6 +21,11 @@ const Home: NextPage = () => {
         <div className="w-fit">
           <h3 className="mt-4 text-3xl">This Stack uses:-</h3>
           <ul className="self-start text-xl underline list-disc">
+            <li>
+              <Button onClick={() => alert(`click`)}>
+                Hello
+              </Button>
+            </li>
             <li>
               <a href="https://nextjs.org" target="_blank" rel="noreferrer">
                 Next.js

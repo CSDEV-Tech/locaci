@@ -1,0 +1,25 @@
+@startuml "Classes Diagram"
+
+left to right direction
+
+class User {
+    name: string
+    phoneNumber: string
+}
+
+class Landlord {
+}
+
+' Demandeur de logement
+class HousingApplicant {
+}
+
+class Property {
+}
+
+
+User <|- Landlord 
+User <|- HousingApplicant
+
+
+@enduml

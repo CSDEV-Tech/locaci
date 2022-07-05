@@ -27,7 +27,7 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
-export default withTRPC<AppRouter>({
+const app: any = withTRPC<AppRouter>({
   config({ ctx }) {
     /**
      * If you want to use SSR, you need to use the server's full URL
@@ -49,3 +49,5 @@ export default withTRPC<AppRouter>({
    */
   ssr: false,
 })(MyApp);
+
+export default app;
