@@ -8,7 +8,7 @@ export type ButtonProps = {
 export function Button({ children, onClick }: ButtonProps) {
   return (
     <button
-      className={`bg-orange-500 text-white px-4 py-2 rounded-md`}
+      className={`bg-lc-primary-100 text-white px-4 py-2 rounded-md`}
       onClick={onClick}
     >
       {children}
