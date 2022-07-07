@@ -20,5 +20,5 @@ Stack :
     - externes
         - sentry -> Alertes erreurs
         - eversign -> signature documents
-        - plausible (self-hosted) -> stocker analytics users
+        - matomo (self-hosted) -> stocker analytics users
         - twilio -> send SMS
