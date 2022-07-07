@@ -1,0 +1,24 @@
+
+Stack :
+    - Frontend
+        - NextJS/React
+            - headlessui -> composants modal, etc
+            - tailwindcss -> css
+            - react-aria/calendar + /daterangepicker -> composants pour les dates
+            - mapbox -> manipulation des maps
+    - Backend
+        - NextJS
+            - tRPC -> logique
+            - NextAuth -> authentification -> (outlook, facebook, google)
+        - Quirrel -> queue jobbing (+ redis)
+
+    - Database
+        - PostgresSQL -> geo (recherche dans une zone, un carré, un polygone, etc...)
+    - Recherche
+        - typesense -> client (algolia, elasticsearch)
+
+    - externes
+        - sentry -> Alertes erreurs
+        - eversign -> signature documents
+        - plausible (self-hosted) -> stocker analytics users
+        - twilio -> send SMS

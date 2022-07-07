@@ -10,7 +10,6 @@
 
   * /signin
   * /signup
-  * /password-reset
 
   * /search
   + /property/:id (manual)

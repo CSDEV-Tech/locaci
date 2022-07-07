@@ -9,7 +9,6 @@ package "services externes" {
         [PostgreSQL] as db
     }
 
-    [Service d'authentification] as auth0
     [Service d'envoi SMS] as twilio
     [Service d'alerte d'erreurs] as alerting
     [Service de signature PDF] as pdfsign
@@ -34,7 +33,6 @@ package "Serveur OVH" as server {
 
 
     web <-down-> db
-    web <-down-> auth0 : Authentification des utilisateurs
     web -down-> pdfsign : "Signature Contrat de bail & Etat des lieux"
     web -down-> alerting : Envoie les erreurs
     
