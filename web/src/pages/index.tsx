@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { trpc } from "../utils/trpc";
+import { trpc } from "../lib/trpc";
 import { Button } from "@locaci/ui";
 
 const Home: NextPage = () => {
