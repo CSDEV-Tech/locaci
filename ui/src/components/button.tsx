@@ -8,12 +8,13 @@ export interface ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   disabled?: boolean;
   children?: React.ReactNode;
-  variant?: "primary" | "secondary" | "hollow" | "outline";
+  variant?: "primary" | "secondary" | "hollow" | "outline" | "dark";
   type?: "button" | "submit" | "reset";
   ariaLabel?: string;
   square?: boolean;
   className?: string;
   loading?: boolean;
+  block?: boolean;
 }
 
 export function Button({
@@ -25,9 +26,10 @@ export function Button({
   className,
   title,
   type,
-  loading,
-  disabled,
-  square,
+  loading = false,
+  disabled = false,
+  square = false,
+  block = false,
   variant = `hollow`,
 }: ButtonProps) {
   return (
@@ -38,18 +40,21 @@ export function Button({
       type={type}
       className={clsx(
         className,
-        `px-4 py-2 rounded-md flex gap-2 items-center`,
+        `px-4 py-2 rounded-md gap-2 items-center`,
         `font-bold focus:ring`,
         {
-          "!px-2": !!square,
+          flex: block,
+          "inline-flex": !block,
+          "!px-2": square,
           "bg-primary hover:bg-primary-75 active:bg-primary-75 ring-primary/50 text-white":
             variant === `primary`,
           "bg-secondary hover:bg-secondary-75 active:bg-secondary-75 ring-secondary/50 text-white":
             variant === "secondary",
           "bg-lightgray text-dark ring-gray/50": variant === "hollow",
           "bg-gray !text-white cursor-not-allowed hover:bg-gray active:bg-gray":
-            !!loading || !!disabled,
+            loading || disabled,
           "bg-white text-dark ring-gray/50": variant === `outline`,
+          "bg-dark text-white ring-dark/50": variant === `dark`,
         }
       )}
       onClick={onClick}
