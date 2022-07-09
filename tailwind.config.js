@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      boxShadow: {
+        card: "0px 20px 24px rgba(153, 155, 168, 0.15);",
+      },
       colors: {
         primary: {
           DEFAULT: `#f76b0b`,
@@ -21,7 +24,7 @@ module.exports = {
           DEFAULT: `#908E8E`,
         },
         lightgray: {
-          DEFAULT: `#EFEFEF`
+          DEFAULT: `#EFEFEF`,
         },
         accent: {
           primary: {
