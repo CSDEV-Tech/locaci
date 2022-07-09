@@ -8,7 +8,7 @@ export interface ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   disabled?: boolean;
   children?: React.ReactNode;
-  variant?: "primary" | "secondary" | "hollow";
+  variant?: "primary" | "secondary" | "hollow" | "outline";
   type?: "button" | "submit" | "reset";
   ariaLabel?: string;
   square?: boolean;
@@ -49,6 +49,7 @@ export function Button({
           "bg-lightgray text-dark ring-gray/50": variant === "hollow",
           "bg-gray !text-white cursor-not-allowed hover:bg-gray active:bg-gray":
             !!loading || !!disabled,
+          "bg-white text-dark ring-gray/50": variant === `outline`,
         }
       )}
       onClick={onClick}
