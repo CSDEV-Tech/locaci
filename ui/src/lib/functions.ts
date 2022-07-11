@@ -39,3 +39,16 @@ export function clsx(
   }
   return classes.join(" ");
 }
+
+/*
+ * Convertit un montant en centimes en un montant en euros et le formatter correctement
+ * @param amount montant en centimes
+ */
+export function formatNumberToFCFA(amount: number): string {
+  return amount.toLocaleString("fr-FR", {
+    style: "currency",
+    currency: "XOF",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+}
