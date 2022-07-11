@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof Card> = (args) => <Card {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   children: `Card`,
-  className: `font-bold`,
+  className: `font-bold p-8`,
 };
 
 export const Link = Template.bind({});
@@ -21,5 +21,5 @@ Link.args = {
   href: `#`,
   children: `LinkCard`,
   animated: true,
-  className: `font-bold`,
+  className: `font-bold p-8`,
 };

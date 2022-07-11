@@ -34,7 +34,7 @@ export function Card({
       href={restProps.href}
       className={clsx(
         `bg-white rounded-md border border-lightgray`,
-        `inline-flex p-8`,
+        `inline-flex`,
         className,
         {
           "transition duration-300 ease-in-out hover:scale-105 active:scale-105":
