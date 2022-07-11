@@ -1,9 +1,9 @@
 import * as React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Toggle } from "../components/toggle";
+import { Toggle } from "../../components/atoms/toggle";
 
 export default {
-  title: "Composants/Forms/Toggle",
+  title: "Composants/Atoms/Toggle",
   component: Toggle,
   argTypes: {
     variant: {

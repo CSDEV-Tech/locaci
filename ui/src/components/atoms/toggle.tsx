@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Switch } from "@headlessui/react";
-import { clsx } from "../lib/functions";
+import { clsx } from "../../lib/functions";
 
 export type ToggleProps = {
   value?: boolean;

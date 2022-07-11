@@ -1,9 +1,9 @@
 import * as React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Tag } from "../components/tag";
+import { Tag } from "../../components/atoms/tag";
 
 export default {
-  title: "Composants/Tag",
+  title: "Composants/Atoms/Tag",
   component: Tag,
   argTypes: {
     variant: {

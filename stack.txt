@@ -13,7 +13,7 @@ Stack :
         - Quirrel -> queue jobbing (+ redis)
 
     - Database
-        - PostgresSQL -> geo (recherche dans une zone, un carré, un polygone, etc...)
+        - Prisma + PostgresSQL -> geo (recherche dans une zone, un carré, un polygone, etc...)
     - Recherche
         - typesense -> client (algolia, elasticsearch)
 

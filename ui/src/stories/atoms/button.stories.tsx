@@ -1,12 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { Button, ButtonProps } from "../components/button";
+import { Button, ButtonProps } from "../../components/atoms/button";
 import { DotsThree, Smiley } from "phosphor-react";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "Composants/Button",
+  title: "Composants/Atoms/Button",
   component: Button,
   argTypes: {
     variant: {
