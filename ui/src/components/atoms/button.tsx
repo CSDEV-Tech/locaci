@@ -53,7 +53,7 @@ export function Button({
           "bg-lightgray text-dark ring-gray/50": variant === "hollow",
           "bg-gray !text-white cursor-not-allowed hover:bg-gray active:bg-gray":
             loading || disabled,
-          "bg-white text-dark ring-gray/50": variant === `outline`,
+          "bg-transparent text-dark ring-gray/50": variant === `outline`,
           "bg-dark text-white ring-dark/50": variant === `dark`,
         }
       )}
