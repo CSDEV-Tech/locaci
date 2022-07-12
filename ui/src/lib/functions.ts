@@ -52,3 +52,36 @@ export function formatNumberToFCFA(amount: number): string {
     maximumFractionDigits: 2,
   });
 }
+
+/**
+ * Generate an array of numbers from start to the end
+ *
+ * @example
+ *      range(1, 5);
+ *      // => [1, 2, 3, 4]
+ * @param start
+ * @param end
+ * @returns
+ */
+export function range(start: number, end: number): number[] {
+  return Array.from({ length: end - start }, (_, i) => i + start);
+}
+
+/**
+ *
+ * @param currentPage
+ * @param nbPages
+ */
+export function getPageRange(currentPage: number, nbPages: number) {
+  const start = Math.max(1, currentPage - 2);
+  const end = start + 5;
+
+  let pages: number[];
+  if (end <= nbPages) {
+    pages = range(start, end);
+  } else {
+    pages = range(nbPages - 4, nbPages + 1);
+  }
+
+  return pages;
+}

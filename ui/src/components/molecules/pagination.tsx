@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button } from "../atoms/button";
 import { ArrowLeft, ArrowRight } from "phosphor-react";
+import { getPageRange } from "../../lib/functions";
 
 export type PaginationProps = {
   currentPage: number;
@@ -16,26 +17,7 @@ export function Pagination({
   const hasPreviousPage = currentPage > 1;
   const hasNextPage = currentPage < totalPages;
 
-  // FIXME: Always show 5 pages
-  // Always show 4 pages/buttons
-  // Ex:
-  //    if `currentPage` === 5, we show `4, 5, 6, 7`, with `5` as "active".
-  const pages: number[] = [];
-  if (currentPage >= 3) {
-    pages.push(currentPage - 2);
-    pages.push(currentPage - 1);
-  } else if (currentPage === 2) {
-    pages.push(1);
-  }
-  pages.push(currentPage);
-
-  for (
-    let i = 1;
-    i < 5 && currentPage + i <= totalPages && pages.length < 5;
-    i++
-  ) {
-    pages.push(currentPage + i);
-  }
+  const pages = getPageRange(currentPage, totalPages);
 
   return (
     <div className={`flex items-center gap-4`}>
