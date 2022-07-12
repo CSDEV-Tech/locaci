@@ -80,7 +80,7 @@ export function getPageRange(currentPage: number, nbPages: number) {
   if (end <= nbPages) {
     pages = range(start, end);
   } else {
-    pages = range(nbPages - 4, nbPages + 1);
+    pages = range(Math.max(1, nbPages - 4), nbPages + 1);
   }
 
   return pages;
