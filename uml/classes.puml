@@ -1,25 +1,157 @@
 @startuml "Classes Diagram"
 
-left to right direction
+package Enums {
+    Enum Civility {
+        MR
+        MME
+    }
+
+    Enum MaritalStatus {
+        ' Célibataire
+        SINGLE
+        ' Marié
+        MARRIED
+        ' Veuf/Veuve
+        WIDOW
+    }
+
+    Enum Role {
+        HOUSING_APPLICANT
+        PROPERTY_OWNER
+    }
+
+
+    Enum RentType {
+        LOCATION
+        COLOCATION
+        SHORT_TERM
+    }
+
+    Enum RoomType {
+        ' chambre
+        BEDROOM
+        ' douche
+        BATHROOM
+        ' salon
+        LIVING_ROOM
+    }
+
+    Enum ValidationState {
+        VALID
+        INVALID
+        IN_REVIEW
+    }
+
+    Enum RentalAgreementStatus {
+        DRAFT
+        VALIDATED_BY_OWNER
+        VALIDATED_BY_USER
+        NEEDS_REVIEW
+    }
+
+    Enum InventoryDocumentStatus {
+        VALIDATED_BY_OWNER
+        VALIDATED_BY_USER
+    }
+
+    Enum RentalStatus {
+        RESERVED
+        ACTIVE
+        CLOSED
+    }
+}
 
 class User {
     name: string
+    address: string | null
     phoneNumber: string
+    email: string
+    civicTitle: Civility | null
+    birthDate: Date | null
+    birthPlace: string | null
+    martialStatus: MaritalStatus | null
+    role: Role
 }
 
-class Landlord {
-}
-
-' Demandeur de logement
-class HousingApplicant {
-}
 
 class Property {
+    rentType: RentType
+    noOfRooms: int
+    area: int
+    adresse: string
+    zone:
+    position:
 }
 
 
-User <|- Landlord 
-User <|- HousingApplicant
+class Document {
+    path: string
+}
 
+class PaymentProof {
+    uploadedAt: Date
+    validationState: ValidationState | IN_REVIEW
+}
+
+class RentReceipt {
+    sentAt: Date
+}
+
+' Contrat de location
+class RentalAgreement {
+    createdAt: Date
+    status: RentalAgreementStatus | DRAFT
+}
+' Etat des lieux
+class InventoryDocument {
+    createdAt: Date
+    status: InventoryDocumentStatus | VALIDATED_BY_OWNER
+}
+
+' Pièce
+class Room {
+    type: RoomType
+}
+
+' Accessoires
+class Amenity {
+    name: string
+}
+
+class Listing {
+    ' prix de location
+    housingFee: int
+    noOfFreeRooms: int
+}
+
+
+
+' Classe pour indiquer la location d'un client
+' pendant une période de temps
+class Rental {
+    startDate: Date|null
+    endDate: Date|null
+    status: RentalListingStatus
+}
+
+Document <|- PaymentProof
+Document <|- RentalAgreement
+Document <|- InventoryDocument
+Document <|- RentReceipt
+
+User "1" o-- "*" Property : Is owner
+Property "1" *-- "1" Room
+
+Property "1" *-- "*" Listing
+
+Property "1" *-- "*" Amenity
+
+Listing "1" -- "0..1" Rental
+User "1" o-- "0..1" Rental : Rent a Room
+
+Rental "1" -- "1" InventoryDocument
+Rental "1" -- "0..1" RentalAgreement
+Rental "1" -- "0..*" PaymentProof
+Rental "1" -- "0..*" RentReceipt
 
 @enduml
