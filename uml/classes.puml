@@ -18,6 +18,7 @@ package Enums {
     Enum Role {
         HOUSING_APPLICANT
         PROPERTY_OWNER
+        ADMIN
     }
 
 
@@ -28,12 +29,43 @@ package Enums {
     }
 
     Enum RoomType {
+        ' Pièces entrant dans le calcul
         ' chambre
         BEDROOM
-        ' douche
-        BATHROOM
         ' salon
         LIVING_ROOM
+        ' cuisine
+        KITCHEN
+
+        ' Pièces supplémentaires
+        ' douche
+        BATHROOM
+        ' buanderie
+        LAUDRY
+        ' grenier
+        ATTIC
+        ' sous-sol
+        BASEMENT
+        ' salle à manger
+        DINING_ROOM
+        ' garage
+        GARAGE
+        ' balcon
+        BALCONY
+        ' veranda
+        VERANDA
+        ' terasse
+        TERRACE
+    }
+
+    Enum AmenityType {
+        WIFI
+        ' Canal+
+        CABLE
+        HOT_WATER
+        TWIN_BED
+        RADIATOR
+        OTHER
     }
 
     Enum ValidationState {
@@ -59,10 +91,17 @@ package Enums {
         ACTIVE
         CLOSED
     }
+
+}
+
+class Image {
+    path: string
 }
 
 class User {
-    name: string
+    firstName: string
+    lastName: string
+    username: string
     address: string | null
     phoneNumber: string
     email: string
@@ -70,6 +109,7 @@ class User {
     birthDate: Date | null
     birthPlace: string | null
     martialStatus: MaritalStatus | null
+    imageURL: string | null
     role: Role
 }
 
@@ -77,10 +117,13 @@ class User {
 class Property {
     rentType: RentType
     noOfRooms: int
-    area: int
-    adresse: string
-    zone:
-    position:
+    surfaceArea: int
+    commune: string
+    ' Quartier
+    district: string
+    city: string
+    address: string | null
+    zone: Position[]
 }
 
 
@@ -116,14 +159,21 @@ class Room {
 ' Accessoires
 class Amenity {
     name: string
+    type: AmenityType
 }
 
+' Les listings seront les objets
+' qui vont être recherchés par les users
 class Listing {
     ' prix de location
     housingFee: int
+    ' Périodicité si forfait
+    housingPeriod: int | null
+    cautionMonthsPaymentAdvance: int | null
+    agencyMonthsPaymentAdvance: int | null
     noOfFreeRooms: int
+    open: boolean
 }
-
 
 
 ' Classe pour indiquer la location d'un client
@@ -132,6 +182,12 @@ class Rental {
     startDate: Date|null
     endDate: Date|null
     status: RentalListingStatus
+    finalPrice: int
+}
+
+class Payment {
+    amount: int
+    issuedAt: Date
 }
 
 Document <|- PaymentProof
@@ -146,12 +202,27 @@ Property "1" *-- "*" Listing
 
 Property "1" *-- "*" Amenity
 
-Listing "1" -- "0..1" Rental
+Listing "1" -- "0..*" Rental
+
+note left
+The number of active
+rentals cannot exceed
+the number of
+free rooms.
+endnote
+
 User "1" o-- "0..1" Rental : Rent a Room
+
+User "1" -- "*" Payment
+Rental "1" -left- "*" Payment
 
 Rental "1" -- "1" InventoryDocument
 Rental "1" -- "0..1" RentalAgreement
 Rental "1" -- "0..*" PaymentProof
 Rental "1" -- "0..*" RentReceipt
 
+
+Property "1" *---left--- "1..*" Image
+
+User "1" --- "0..1" Image : "Signature"
 @enduml
