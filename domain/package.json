@@ -1,0 +1,35 @@
+{
+    "name": "@locaci/domain",
+    "version": "1.0.0",
+    "description": "Domain Logic for locaci",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist/**/*"
+    ],
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "gen": "node ./scripts/generate.js",
+        "build": "tsup ./src/** --treeshake && tsc --emitDeclarationOnly",
+        "dev": "nodemon",
+        "test": "FORCE_COLOR=true vitest run",
+        "test:watch": "FORCE_COLOR=true vitest",
+        "test:ui": "vitest --ui"
+    },
+    "devDependencies": {
+        "@types/uuid": "^8.3.4",
+        "@vitest/ui": "^0.18.0",
+        "generate-template-files": "^3.2.0",
+        "nodemon": "^2.0.15",
+        "prettier": "^2.6.2",
+        "tsup": "^6.1.3",
+        "typescript": "^4.6.3",
+        "vitest": "^0.18.0"
+    },
+    "dependencies": {
+        "uuid": "^8.3.2",
+        "zod": "^3.14.4"
+    }
+}
