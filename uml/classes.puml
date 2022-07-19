@@ -123,7 +123,8 @@ class Property {
     district: string
     city: string
     address: string | null
-    zone: Position[]
+    longitude: float 
+    latitude: float
 }
 
 
@@ -167,7 +168,9 @@ class Amenity {
 class Listing {
     ' prix de location
     housingFee: int
-    ' Périodicité si forfait
+    title: string
+    description: text
+    ' Périodicité si forfait    
     housingPeriod: int | null
     cautionMonthsPaymentAdvance: int | null
     agencyMonthsPaymentAdvance: int | null

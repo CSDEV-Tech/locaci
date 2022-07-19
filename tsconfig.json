@@ -16,8 +16,16 @@
         /* Skip type checking of declaration files. */
         "forceConsistentCasingInFileNames": true,
         "declaration": true,
+        "plugins": [
+            {
+                "transform": "ts-auto-mock/transformer",
+                "cacheBetweenTests": false,
+                "features": ["random"]
+            }
+        ],
         "paths": {
             "@locaci/ui": ["ui/src"],
+            "@locaci/domain": ["domain/src"],
             "@locaci/web": ["web/src"]
         }
     }

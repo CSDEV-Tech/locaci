@@ -1,3 +1,3 @@
-export interface __entt__ {
-  // TODO: fields
-}
+export type __entt__ = {
+    // TODO: Entity Fields
+};

@@ -1,9 +1,20 @@
+import { RentTypes } from './../../src/entities/Property/Property';
+import { UserRepositoryBuilder } from './../builder/UserRepositoryBuilder';
+import { PropertyRepositoryBuilder } from './../builder/PropertyRepositoryBuilder';
+import { generateUser } from './../factories/UserFactory';
 import {
     CreatePropertyRequest,
     CreatePropertyUseCase,
     CreatePropertyPresenter,
-    CreatePropertyResponse
+    CreatePropertyResponse,
+    CreatePropertyRequestSchema,
+    generateMock,
+    Role,
+    randomItemInArray,
+    RoomType
 } from '../../src';
+import faker from '@faker-js/faker';
+
 import { expect, describe, it } from 'vitest';
 
 const presenter = new (class implements CreatePropertyPresenter {
@@ -14,46 +25,75 @@ const presenter = new (class implements CreatePropertyPresenter {
     }
 })();
 
-const request: CreatePropertyRequest = {};
+const request = generateMock(CreatePropertyRequestSchema, {
+    rentType: randomItemInArray(RentTypes)
+});
 
 describe('CreateProperty Use case', () => {
     it('is successful', async () => {
+        const propertyRepository = new PropertyRepositoryBuilder().build();
+        const userRepository = new UserRepositoryBuilder()
+            .withGetUserById(async () => {
+                return generateUser({
+                    role: Role.PROPERTY_OWNER
+                });
+            })
+            .build();
+
         // Given
-        const useCase = new CreatePropertyUseCase();
+        const useCase = new CreatePropertyUseCase(
+            propertyRepository,
+            userRepository
+        );
 
         // When
-        await useCase.execute(request, presenter);
+        await useCase.execute(
+            {
+                ...request
+            },
+            presenter
+        );
+
+        console.log(request);
 
         // Then
         expect(presenter.response).not.toBe(null);
+        expect(presenter.response.errors).toBeFalsy();
+        expect(presenter.response.property).not.toBe(null);
+        expect(presenter.response.property?.owner).not.toBeFalsy();
     });
 
-    it.todo('Negative Use Case');
+    it('should create a bedroom for the property by default', async () => {
+        const propertyRepository = new PropertyRepositoryBuilder().build();
+        const userRepository = new UserRepositoryBuilder()
+            .withGetUserById(async () => {
+                return generateUser({
+                    role: Role.PROPERTY_OWNER
+                });
+            })
+            .build();
 
-    describe('Invalid Requests', () => {
-        const dataset: { label: string; request: CreatePropertyRequest }[] = [
-            // TODO: Specify requests
+        // Given
+        const useCase = new CreatePropertyUseCase(
+            propertyRepository,
+            userRepository
+        );
+
+        // When
+        await useCase.execute(
             {
-                label: 'Example label',
-                request: {
-                    ...request
-                }
-            }
-        ];
+                ...request
+            },
+            presenter
+        );
 
-        it.each(dataset)(
-            'shows errors with invalid request : "$label"',
-            async ({ request }) => {
-                // // Given
-                // const useCase = new CreatePropertyUseCase();
-                //
-                // // When
-                // await useCase.execute(request, presenter);
-                //
-                // // Then
-                // expect(presenter.response!.errors).not.toBe(null);
-                expect(true).toBe(true);
-            }
+        // Then
+        expect(presenter.response).not.toBe(null);
+        expect(presenter.response.errors).toBeFalsy();
+        expect(presenter.response.property).not.toBe(null);
+        expect(presenter.response.property?.rooms).toHaveLength(1);
+        expect(presenter.response.property?.rooms[0]?.type).toBe(
+            RoomType.BEDROOM
         );
     });
 });
