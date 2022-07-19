@@ -1,8 +1,10 @@
 import {
-    __UC__Request,
+    __UC__RequestSchema,
     __UC__UseCase,
     __UC__Presenter,
-    __UC__Response
+    __UC__Response,
+    generateMock,
+    __UC__Request
 } from '../../src';
 
 import { expect, describe, it } from 'vitest';
@@ -15,7 +17,9 @@ const presenter = new (class implements __UC__Presenter {
     }
 })();
 
-const request: __UC__Request = {};
+const request = generateMock(__UC__RequestSchema, {
+    // TODO: overrides
+});
 
 describe('__UC__ Use case', () => {
     it('is successful', async () => {
