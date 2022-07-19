@@ -13,7 +13,6 @@ import {
     randomItemInArray,
     RoomType
 } from '../../src';
-import faker from '@faker-js/faker';
 
 import { expect, describe, it } from 'vitest';
 
@@ -61,6 +60,32 @@ describe('CreateProperty Use case', () => {
         expect(presenter.response.property?.owner).not.toBeFalsy();
     });
 
+    it('should show error if owner does not exist', async () => {
+        const propertyRepository = new PropertyRepositoryBuilder().build();
+        const userRepository = new UserRepositoryBuilder()
+            .withGetUserById(() => Promise.resolve(null))
+            .build();
+
+        // Given
+        const useCase = new CreatePropertyUseCase(
+            propertyRepository,
+            userRepository
+        );
+
+        // When
+        await useCase.execute(
+            {
+                ...request
+            },
+            presenter
+        );
+
+        // Then
+        expect(presenter.response).not.toBe(null);
+        expect(presenter.response.errors).not.toBeFalsy();
+        expect(presenter.response.property).toBe(null);
+    });
+
     it('should create a bedroom for the property by default', async () => {
         const propertyRepository = new PropertyRepositoryBuilder().build();
         const userRepository = new UserRepositoryBuilder()
@@ -93,6 +118,37 @@ describe('CreateProperty Use case', () => {
         expect(presenter.response.property?.rooms[0]?.type).toBe(
             RoomType.BEDROOM
         );
+    });
+
+    it('should set the number of rooms to 1 by default', async () => {
+        const propertyRepository = new PropertyRepositoryBuilder().build();
+        const userRepository = new UserRepositoryBuilder()
+            .withGetUserById(async () => {
+                return generateUser({
+                    role: Role.PROPERTY_OWNER
+                });
+            })
+            .build();
+
+        // Given
+        const useCase = new CreatePropertyUseCase(
+            propertyRepository,
+            userRepository
+        );
+
+        // When
+        await useCase.execute(
+            {
+                ...request
+            },
+            presenter
+        );
+
+        // Then
+        expect(presenter.response).not.toBe(null);
+        expect(presenter.response.errors).toBeFalsy();
+        expect(presenter.response.property).not.toBe(null);
+        expect(presenter.response.property?.noOfRooms).toBe(1);
     });
 
     describe('Invalid Requests', () => {
@@ -165,6 +221,7 @@ describe('CreateProperty Use case', () => {
 
                 // Then
                 expect(presenter.response.errors).not.toBe(null);
+                expect(presenter.response.property).toBe(null);
                 console.log(presenter.response.errors);
             }
         );

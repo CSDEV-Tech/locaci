@@ -25,33 +25,42 @@ export class CreatePropertyUseCase {
         let res = this.validate(request);
 
         let propertyCreated: Property | null = null;
+        let errors = res.errors;
+
         if (!res.errors) {
             const owner = await this.userRepository.getUserById(
                 res.parsedRequest.ownerId
             );
 
-            propertyCreated = {
-                ...res.parsedRequest,
-                position: {
-                    longitude: res.parsedRequest.longitude,
-                    latitude: res.parsedRequest.latitude,
-                    radius: res.parsedRequest.radius
-                },
-                images: [],
-                id: new Uuid().toString(),
-                owner: owner!,
-                rooms: [
-                    {
-                        id: new Uuid().toString(),
-                        type: RoomType.BEDROOM
-                    }
-                ]
-            };
-            await this.propertyRepository.save(propertyCreated);
+            if (owner) {
+                propertyCreated = {
+                    ...res.parsedRequest,
+                    id: new Uuid().toString(),
+                    position: {
+                        longitude: res.parsedRequest.longitude,
+                        latitude: res.parsedRequest.latitude,
+                        radius: res.parsedRequest.radius
+                    },
+                    images: [],
+                    noOfRooms: 1,
+                    owner,
+                    rooms: [
+                        {
+                            id: new Uuid().toString(),
+                            type: RoomType.BEDROOM
+                        }
+                    ]
+                };
+                await this.propertyRepository.save(propertyCreated);
+            } else {
+                errors = {
+                    ownerId: ['This user does not exists.']
+                };
+            }
         }
 
         presenter.present({
-            errors: res.errors,
+            errors: errors,
             property: propertyCreated
         });
     }
