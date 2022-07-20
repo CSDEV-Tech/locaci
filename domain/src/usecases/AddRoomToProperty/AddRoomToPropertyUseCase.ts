@@ -6,7 +6,7 @@ import { AddRoomToPropertyPresenter } from './AddRoomToPropertyPresenter';
 import { ValidateResult } from './../../lib/types';
 import { PropertyRepository } from './../../entities/Property';
 import { Uuid } from '../../Dto';
-import { RoomType } from '../../entities/Room';
+import { Room, RoomType } from '../../entities/Room';
 
 export class AddRoomToPropertyUseCase {
     schema = AddRoomToPropertyRequestSchema;
@@ -21,6 +21,7 @@ export class AddRoomToPropertyUseCase {
         let res = this.validate(request);
 
         let errors = res.errors;
+        let roomAdded: Room | null = null;
 
         if (!res.errors) {
             const property = await this.propertyRepository.getPropertyById(
@@ -28,10 +29,12 @@ export class AddRoomToPropertyUseCase {
             );
 
             if (property) {
-                property.rooms.push({
+                roomAdded = {
                     id: new Uuid().toString(),
                     type: res.parsedRequest.roomType
-                });
+                };
+
+                property.rooms.push(roomAdded);
 
                 if (
                     [
@@ -54,7 +57,8 @@ export class AddRoomToPropertyUseCase {
         }
 
         presenter.present({
-            errors
+            errors,
+            room: roomAdded
         });
     }
 

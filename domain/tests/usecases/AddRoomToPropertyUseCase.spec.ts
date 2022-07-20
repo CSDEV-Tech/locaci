@@ -45,6 +45,7 @@ describe('AddRoomToProperty Use case', () => {
 
         // Then
         expect(presenter.response).not.toBe(null);
+        expect(presenter.response.room).not.toBe(null);
         expect(presenter.response?.errors).toBeFalsy();
         expect(property).not.toBeNull();
         expect(property!.rooms).toHaveLength(2);
@@ -142,6 +143,7 @@ describe('AddRoomToProperty Use case', () => {
         // Then
         expect(presenter.response).not.toBe(null);
         expect(presenter.response?.errors).not.toBeFalsy();
+        expect(presenter.response.room).toBe(null);
         expect(presenter.response?.errors?.propertyId).toHaveLength(1);
         expect(property).toBeNull();
     });
