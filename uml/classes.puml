@@ -32,7 +32,7 @@ package Enums {
         ' Pièces entrant dans le calcul
         ' chambre
         BEDROOM
-        ' salon
+        ' salon/salle de vie
         LIVING_ROOM
         ' cuisine
         KITCHEN
