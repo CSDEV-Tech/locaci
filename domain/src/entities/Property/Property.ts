@@ -15,6 +15,7 @@ export type Property = {
     address?: string;
     owner: User;
     rooms: Room[];
+    noOfRooms: number;
 };
 
 export type Position = {

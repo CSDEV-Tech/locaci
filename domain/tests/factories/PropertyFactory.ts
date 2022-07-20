@@ -6,6 +6,7 @@ import faker from '@faker-js/faker';
 export function generateProperty(defaultValue?: Partial<Property>): Property {
     return {
         id: faker.datatype.uuid(),
+        noOfRooms: 1,
         rooms: [
             {
                 id: faker.datatype.uuid(),
@@ -28,7 +29,7 @@ export function generateProperty(defaultValue?: Partial<Property>): Property {
                 max: 10
             })
         ).map(() => ({
-            path: faker.internet.url()
+            path: faker.image.imageUrl()
         })),
         surfaceArea: faker.datatype.number({
             min: 6,

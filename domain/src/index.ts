@@ -1,5 +1,6 @@
 // usecases
 export * from './usecases/CreateProperty';
+export * from './usecases/AddRoomToProperty';
 
 // entities
 export * from './entities/Property';
