@@ -10,7 +10,9 @@ export class __UC__UseCase {
         presenter: __UC__Presenter
     ): Promise<void> {
         // TODO : UseCase Logic
-        let { errors, parsedRequest } = this.validate(request);
+        let res = this.validate(request);
+
+        let errors = res.errors;
 
         presenter.present({
             errors

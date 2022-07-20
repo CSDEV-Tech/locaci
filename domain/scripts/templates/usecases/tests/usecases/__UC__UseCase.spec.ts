@@ -10,7 +10,7 @@ import {
 import { expect, describe, it } from 'vitest';
 
 const presenter = new (class implements __UC__Presenter {
-    response?: __UC__Response | null;
+    response: __UC__Response;
 
     present(response: __UC__Response): void {
         this.response = response;
@@ -56,7 +56,7 @@ describe('__UC__ Use case', () => {
                 // await useCase.execute(request, presenter);
                 //
                 // // Then
-                // expect(presenter.response!.errors).not.toBe(null);
+                // expect(presenter.response.errors).not.toBe(null);
                 expect(true).toBe(false);
             }
         );
