@@ -1,4 +1,3 @@
-import { RentTypes } from './../../src/entities/Property/Property';
 import { UserRepositoryBuilder } from './../builder/UserRepositoryBuilder';
 import { PropertyRepositoryBuilder } from './../builder/PropertyRepositoryBuilder';
 import { generateUser } from './../factories/UserFactory';
@@ -11,7 +10,8 @@ import {
     generateMock,
     Role,
     randomItemInArray,
-    RoomType
+    RoomType,
+    RentTypes
 } from '../../src';
 
 import { expect, describe, it } from 'vitest';
@@ -29,7 +29,7 @@ const request = generateMock(CreatePropertyRequestSchema, {
 });
 
 describe('CreateProperty Use case', () => {
-    it('is successful', async () => {
+    it('persists the property', async () => {
         const propertyRepository = new PropertyRepositoryBuilder().build();
         const userRepository = new UserRepositoryBuilder()
             .withGetUserById(async () => {
@@ -64,6 +64,7 @@ describe('CreateProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder().build();
         const userRepository = new UserRepositoryBuilder()
             .withGetUserById(() => Promise.resolve(null))
+
             .build();
 
         // Given
