@@ -41,7 +41,6 @@ export class CreatePropertyUseCase {
                         latitude: res.parsedRequest.latitude,
                         radius: res.parsedRequest.radius
                     },
-                    images: [],
                     noOfRooms: 1,
                     owner,
                     rooms: [
@@ -49,7 +48,9 @@ export class CreatePropertyUseCase {
                             id: new Uuid().toString(),
                             type: RoomType.BEDROOM
                         }
-                    ]
+                    ],
+                    images: [],
+                    amenities: []
                 };
                 await this.propertyRepository.save(propertyCreated);
             } else {

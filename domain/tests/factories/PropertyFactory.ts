@@ -13,6 +13,7 @@ export function generateProperty(defaultValue?: Partial<Property>): Property {
                 type: RoomType.BEDROOM
             }
         ],
+        amenities: [],
         position: {
             longitude: Number(faker.address.longitude()),
             latitude: Number(faker.address.latitude()),

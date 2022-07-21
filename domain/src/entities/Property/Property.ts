@@ -1,12 +1,12 @@
 import { Room } from './../Room/Room';
 import { Image } from '../../Dto';
 import { User } from '../User';
+import { Amenity } from '../Amenity';
 
 export type Property = {
     id: string;
     position: Position;
     rentType: RentType;
-    images: Image[];
     // en mètres carrés
     surfaceArea: number;
     commune: string;
@@ -14,8 +14,10 @@ export type Property = {
     city: string;
     address?: string;
     owner: User;
-    rooms: Room[];
     noOfRooms: number;
+    images: Image[];
+    rooms: Room[];
+    amenities: Amenity[];
 };
 
 export type Position = {
