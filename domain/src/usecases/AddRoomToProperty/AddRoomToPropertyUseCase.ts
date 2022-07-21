@@ -6,18 +6,20 @@ import { AddRoomToPropertyPresenter } from './AddRoomToPropertyPresenter';
 import { ValidateResult } from './../../lib/types';
 import { PropertyRepository } from './../../entities/Property';
 import { Uuid } from '../../Dto';
-import { Room, RoomType } from '../../entities/Room';
+import { Room, RoomRepository, RoomType } from '../../entities/Room';
 
 export class AddRoomToPropertyUseCase {
     schema = AddRoomToPropertyRequestSchema;
 
-    constructor(private propertyRepository: PropertyRepository) {}
+    constructor(
+        private propertyRepository: PropertyRepository,
+        private roomRepository: RoomRepository
+    ) {}
 
     async execute(
         request: AddRoomToPropertyRequest,
         presenter: AddRoomToPropertyPresenter
     ): Promise<void> {
-        // TODO : UseCase Logic
         let res = this.validate(request);
 
         let errors = res.errors;
@@ -47,6 +49,7 @@ export class AddRoomToPropertyUseCase {
                 }
 
                 await this.propertyRepository.save(property);
+                await this.roomRepository.save(roomAdded);
             } else {
                 errors = {
                     propertyId: [

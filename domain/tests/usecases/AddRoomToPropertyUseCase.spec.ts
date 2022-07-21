@@ -1,3 +1,4 @@
+import { RoomRepositoryBuilder } from './../builder/RoomRepositoryBuilder';
 import { RoomType } from './../../src/entities/Room/Room';
 import { expect, describe, it } from 'vitest';
 import {
@@ -9,6 +10,7 @@ import {
     AddRoomToPropertyRequest,
     randomItemInArray,
     RoomTypes,
+    Room,
     Property
 } from '../../src';
 import { PropertyRepositoryBuilder } from '../builder/PropertyRepositoryBuilder';
@@ -30,6 +32,7 @@ describe('AddRoomToProperty Use case', () => {
     it('it should add the room to the property', async () => {
         // Given
         let property: Property | null = null;
+        let newRoom: Room | null = null;
 
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () => generateProperty())
@@ -37,14 +40,23 @@ describe('AddRoomToProperty Use case', () => {
                 property = p;
             })
             .build();
+        const roomRepository = new RoomRepositoryBuilder()
+            .withSave(async r => {
+                newRoom = r;
+            })
+            .build();
 
-        const useCase = new AddRoomToPropertyUseCase(propertyRepository);
+        const useCase = new AddRoomToPropertyUseCase(
+            propertyRepository,
+            roomRepository
+        );
 
         // When
         await useCase.execute(request, presenter);
 
         // Then
         expect(presenter.response).not.toBe(null);
+        expect(newRoom).not.toBe(null);
         expect(presenter.response.room).not.toBe(null);
         expect(presenter.response?.errors).toBeFalsy();
         expect(property).not.toBeNull();
@@ -55,6 +67,7 @@ describe('AddRoomToProperty Use case', () => {
         // Given
         let property: Property | null = null;
 
+        const roomRepository = new RoomRepositoryBuilder().build();
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () => generateProperty())
             .withSave(async p => {
@@ -62,7 +75,10 @@ describe('AddRoomToProperty Use case', () => {
             })
             .build();
 
-        const useCase = new AddRoomToPropertyUseCase(propertyRepository);
+        const useCase = new AddRoomToPropertyUseCase(
+            propertyRepository,
+            roomRepository
+        );
 
         // When
         await useCase.execute(
@@ -90,6 +106,7 @@ describe('AddRoomToProperty Use case', () => {
         // Given
         let property: Property | null = null;
 
+        const roomRepository = new RoomRepositoryBuilder().build();
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () => generateProperty())
             .withSave(async p => {
@@ -97,7 +114,10 @@ describe('AddRoomToProperty Use case', () => {
             })
             .build();
 
-        const useCase = new AddRoomToPropertyUseCase(propertyRepository);
+        const useCase = new AddRoomToPropertyUseCase(
+            propertyRepository,
+            roomRepository
+        );
 
         // When
         await useCase.execute(
@@ -129,11 +149,15 @@ describe('AddRoomToProperty Use case', () => {
         // Given
         let property: Property | null = null;
 
+        const roomRepository = new RoomRepositoryBuilder().build();
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () => null)
             .build();
 
-        const useCase = new AddRoomToPropertyUseCase(propertyRepository);
+        const useCase = new AddRoomToPropertyUseCase(
+            propertyRepository,
+            roomRepository
+        );
 
         // When
         await useCase.execute(request, presenter);
@@ -164,12 +188,14 @@ describe('AddRoomToProperty Use case', () => {
             'shows errors with invalid request : "$label"',
             async ({ request }) => {
                 // Given
+                const roomRepository = new RoomRepositoryBuilder().build();
                 const propertyRepository = new PropertyRepositoryBuilder()
                     .withGetPropertyById(async () => null)
                     .build();
 
                 const useCase = new AddRoomToPropertyUseCase(
-                    propertyRepository
+                    propertyRepository,
+                    roomRepository
                 );
 
                 // When

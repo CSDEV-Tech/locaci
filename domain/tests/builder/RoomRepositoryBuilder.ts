@@ -1,26 +1,16 @@
 import { Room, RoomRepository } from '../../src';
 
 export class RoomRepositoryBuilder {
-    private getAll: () => Promise<Room[]> = () => Promise.resolve([]);
-    private getRoomById: (id: string) => Promise<Room | null> = () =>
-        Promise.resolve(null);
+    private save: (property: Room) => Promise<void> = () => Promise.resolve();
 
-    withGetAll(getAll: () => Promise<Room[]>) {
-        this.getAll = getAll;
-        return this;
-    }
-
-    withGetRoomById(
-        getRoomById: (id: string) => Promise<Room | null>
-    ) {
-        this.getRoomById = getRoomById;
+    withSave(save: (property: Room) => Promise<void>) {
+        this.save = save;
         return this;
     }
 
     build(): RoomRepository {
         return {
-            getAll: this.getAll,
-            getRoomById: this.getRoomById
+            save: this.save
         };
     }
 }
