@@ -21,7 +21,6 @@ export class CreatePropertyUseCase {
         request: CreatePropertyRequest,
         presenter: CreatePropertyPresenter
     ): Promise<void> {
-        // TODO : UseCase Logic
         let res = this.validate(request);
 
         let propertyCreated: Property | null = null;
