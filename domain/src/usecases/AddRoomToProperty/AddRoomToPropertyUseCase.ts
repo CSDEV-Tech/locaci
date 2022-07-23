@@ -32,7 +32,7 @@ export class AddRoomToPropertyUseCase {
 
             if (property) {
                 roomAdded = {
-                    id: new Uuid().toString(),
+                    id: new Uuid(),
                     type: res.parsedRequest.roomType
                 };
 

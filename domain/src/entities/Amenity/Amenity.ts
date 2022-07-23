@@ -1,5 +1,7 @@
+import { Uuid } from '../../Dto';
+
 export type Amenity = {
-    id: string;
+    id: Uuid;
     name?: string;
     type: AmenityType;
 };

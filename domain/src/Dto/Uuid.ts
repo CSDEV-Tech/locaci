@@ -18,4 +18,8 @@ export class Uuid {
     short() {
         return short().fromUUID(this.#value);
     }
+
+    static fromShort(shortUUID: string) {
+        return new Uuid(short().toUUID(shortUUID));
+    }
 }

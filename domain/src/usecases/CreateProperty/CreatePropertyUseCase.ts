@@ -34,7 +34,7 @@ export class CreatePropertyUseCase {
             if (owner) {
                 propertyCreated = {
                     ...res.parsedRequest,
-                    id: new Uuid().toString(),
+                    id: new Uuid(),
                     position: {
                         longitude: res.parsedRequest.longitude,
                         latitude: res.parsedRequest.latitude,
@@ -44,7 +44,7 @@ export class CreatePropertyUseCase {
                     owner,
                     rooms: [
                         {
-                            id: new Uuid().toString(),
+                            id: new Uuid(),
                             type: RoomType.BEDROOM
                         }
                     ],

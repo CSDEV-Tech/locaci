@@ -1,10 +1,10 @@
 import { Room } from './../Room/Room';
-import { Image } from '../../Dto';
+import { Image, Uuid } from '../../Dto';
 import { User } from '../User';
 import { Amenity } from '../Amenity';
 
 export type Property = {
-    id: string;
+    id: Uuid;
     position: Position;
     rentType: RentType;
     // en mètres carrés

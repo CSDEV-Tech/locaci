@@ -1,5 +1,7 @@
+import { Uuid } from '../../Dto';
+
 export type Room = {
-    id: string;
+    id: Uuid;
     type: RoomType;
 };
 

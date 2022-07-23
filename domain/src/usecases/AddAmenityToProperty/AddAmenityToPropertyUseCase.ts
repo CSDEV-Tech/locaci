@@ -41,7 +41,7 @@ export class AddAmenityToPropertyUseCase {
                     )
                 ) {
                     newAmenity = {
-                        id: new Uuid().toString(),
+                        id: new Uuid(),
                         type: res.parsedRequest.type
                     };
 
