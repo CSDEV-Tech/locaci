@@ -1,0 +1,142 @@
+import {
+    AddListingForPropertyRequest,
+    AddListingForPropertyRequestSchema
+} from './AddListingForPropertyRequest';
+import { AddListingForPropertyPresenter } from './AddListingForPropertyPresenter';
+import { ValidateResult } from './../../lib/types';
+import { PropertyRepository, RentType } from '../../entities/Property';
+import { Listing, ListingRepository } from '../../entities/Listing';
+import { Uuid } from '../../Dto';
+import { RoomType } from '../../entities/Room';
+
+export class AddListingForPropertyUseCase {
+    schema = AddListingForPropertyRequestSchema;
+
+    constructor(
+        private propertyRepository: PropertyRepository,
+        private listingRepository: ListingRepository
+    ) {}
+
+    async execute(
+        request: AddListingForPropertyRequest,
+        presenter: AddListingForPropertyPresenter
+    ): Promise<void> {
+        let res = this.validate(request);
+
+        let errors = res.errors;
+        let listing: Listing | null = null;
+        if (!res.errors) {
+            const activeListings =
+                await this.listingRepository.getActiveListingsForProperty(
+                    res.parsedRequest.propertyId
+                );
+
+            if (activeListings.length > 0) {
+                errors = {
+                    global: [
+                        'You cannot have two active listings at the same time.'
+                    ]
+                };
+            } else {
+                const property = await this.propertyRepository.getPropertyById(
+                    res.parsedRequest.propertyId
+                );
+
+                if (!property) {
+                    errors = {
+                        propertyId: [
+                            `The property with id '${res.parsedRequest.propertyId}' does not exist.`
+                        ]
+                    };
+                } else {
+                    const totalBedRooms = property!.rooms.filter(
+                        r => r.type === RoomType.BEDROOM
+                    ).length;
+
+                    if (
+                        property!.rentType === RentType.COLOCATION &&
+                        res.parsedRequest.noOfFreeBedRooms !== undefined &&
+                        res.parsedRequest.noOfFreeBedRooms > totalBedRooms
+                    ) {
+                        errors = {
+                            noOfFreeBedRooms: [
+                                'The number of free bedrooms cannot exceed the total of bedrooms in property'
+                            ]
+                        };
+                    }
+
+                    if (!errors) {
+                        // set tne number of free bedrooms only for COLOCATION
+                        //  because for the others they rent all the available rooms
+                        const noOfFreeBedRooms =
+                            property!.rentType !== RentType.COLOCATION
+                                ? undefined
+                                : res.parsedRequest.noOfFreeBedRooms;
+
+                        // set the default housing period to 1 or 30 based on the rent type
+                        //  1 - for short term because the billing is daily
+                        //  30 - for other because the billing is monthly
+                        const housingPeriod =
+                            res.parsedRequest.housingPeriod ??
+                            property!.rentType === RentType.SHORT_TERM
+                                ? 1
+                                : 30;
+
+                        // Set the agency month advance only on LOCATION,
+                        //  because it is the only rent type in which it is applicable
+                        const agencyMonthsPaymentAdvance =
+                            property!.rentType === RentType.LOCATION
+                                ? res.parsedRequest
+                                      .agencyMonthsPaymentAdvance ?? 0
+                                : undefined;
+
+                        // Do not set the caution advance for short term because it is not applicable
+                        const cautionMonthsPaymentAdvance =
+                            property!.rentType === RentType.SHORT_TERM
+                                ? undefined
+                                : res.parsedRequest.cautionMonthsPaymentAdvance;
+
+                        listing = {
+                            property: property!,
+                            id: new Uuid(),
+                            active: true,
+                            description: res.parsedRequest.description,
+                            housingFee: res.parsedRequest.housingFee,
+                            housingPeriod,
+                            agencyMonthsPaymentAdvance,
+                            noOfFreeBedRooms,
+                            availableFrom: res.parsedRequest.availableFrom,
+                            cautionMonthsPaymentAdvance:
+                                property!.rentType === RentType.LOCATION
+                                    ? cautionMonthsPaymentAdvance ?? 0
+                                    : cautionMonthsPaymentAdvance
+                        };
+
+                        await this.listingRepository.save(listing);
+                    }
+                }
+            }
+        }
+
+        presenter.present({
+            errors,
+            newListing: listing
+        });
+    }
+
+    validate(
+        request: AddListingForPropertyRequest
+    ): ValidateResult<AddListingForPropertyRequest> {
+        const parsedResult = this.schema.safeParse(request);
+
+        if (!parsedResult.success) {
+            return {
+                errors: parsedResult.error.flatten().fieldErrors
+            };
+        } else {
+            return {
+                parsedRequest: parsedResult.data
+            };
+        }
+    }
+}
