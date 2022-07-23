@@ -1,12 +1,14 @@
 import { __entt__, __entt__Repository } from '../../src';
 
 export class __entt__RepositoryBuilder {
-    private getAll: () => Promise<__entt__[]> = () => Promise.resolve([]);
+    private save: (entity: __entt__) => Promise<__entt__> = (
+        entity: __entt__
+    ) => Promise.resolve(entity);
     private get__entt__ById: (id: string) => Promise<__entt__ | null> = () =>
         Promise.resolve(null);
 
-    withGetAll(getAll: () => Promise<__entt__[]>) {
-        this.getAll = getAll;
+    withSave(save: (entity: __entt__) => Promise<__entt__>) {
+        this.save = save;
         return this;
     }
 
@@ -19,7 +21,7 @@ export class __entt__RepositoryBuilder {
 
     build(): __entt__Repository {
         return {
-            getAll: this.getAll,
+            save: this.save,
             get__entt__ById: this.get__entt__ById
         };
     }
