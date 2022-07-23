@@ -1,15 +1,15 @@
-import { Property, range, Role, RoomType } from '../../src';
+import { Property, range, Role, RoomType, Uuid } from '../../src';
 import { randomItemInArray, RentTypes } from '../../src';
 import { generateUser } from './UserFactory';
 import faker from '@faker-js/faker';
 
 export function generateProperty(defaultValue?: Partial<Property>): Property {
     return {
-        id: faker.datatype.uuid(),
+        id: new Uuid(),
         noOfRooms: 1,
         rooms: [
             {
-                id: faker.datatype.uuid(),
+                id: new Uuid(),
                 type: RoomType.BEDROOM
             }
         ],
