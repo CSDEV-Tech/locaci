@@ -3,8 +3,7 @@ import {
     __UC__UseCase,
     __UC__Presenter,
     __UC__Response,
-    generateMock,
-    __UC__Request
+    generateMock
 } from '../../src';
 
 import { expect, describe, it } from 'vitest';
