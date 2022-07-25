@@ -31,25 +31,33 @@ export class AddRoomToPropertyUseCase {
             );
 
             if (property) {
-                roomAdded = {
-                    id: new Uuid(),
-                    type: res.parsedRequest.roomType
-                };
+                if (property.owner.id === res.parsedRequest.userId) {
+                    roomAdded = {
+                        id: new Uuid(),
+                        type: res.parsedRequest.roomType
+                    };
 
-                property.rooms.push(roomAdded);
+                    property.rooms.push(roomAdded);
 
-                if (
-                    [
-                        RoomType.BEDROOM,
-                        RoomType.LIVING_ROOM,
-                        RoomType.KITCHEN
-                    ].includes(res.parsedRequest.roomType)
-                ) {
-                    property.noOfRooms++;
+                    if (
+                        [
+                            RoomType.BEDROOM,
+                            RoomType.LIVING_ROOM,
+                            RoomType.KITCHEN
+                        ].includes(res.parsedRequest.roomType)
+                    ) {
+                        property.noOfRooms++;
+                    }
+
+                    await this.propertyRepository.save(property);
+                    await this.roomRepository.save(roomAdded);
+                } else {
+                    errors = {
+                        userId: [
+                            `This user is not the owner of the property and thus cannot add a room to the property`
+                        ]
+                    };
                 }
-
-                await this.propertyRepository.save(property);
-                await this.roomRepository.save(roomAdded);
             } else {
                 errors = {
                     propertyId: [

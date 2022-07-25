@@ -4,6 +4,5 @@ import { Amenity } from './../../entities/Amenity';
 
 export type AddAmenityToPropertyResponse = {
     errors?: FieldErrors<AddAmenityToPropertyRequest>;
-    // TODO: Response args
     amenity: Amenity | null;
 };

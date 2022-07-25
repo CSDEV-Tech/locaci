@@ -9,7 +9,6 @@ import {
     AddListingForPropertyPresenter,
     AddListingForPropertyResponse,
     generateMock,
-    AddListingForPropertyRequest,
     Listing,
     RentType,
     randomItemInArray,
@@ -18,6 +17,7 @@ import {
 } from '../../src';
 
 import { expect, describe, it } from 'vitest';
+import { generateUser } from '../factories/UserFactory';
 
 const presenter = new (class implements AddListingForPropertyPresenter {
     response: AddListingForPropertyResponse;
@@ -42,7 +42,10 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.LOCATION
+                    rentType: RentType.LOCATION,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -76,7 +79,10 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.COLOCATION
+                    rentType: RentType.COLOCATION,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -118,7 +124,10 @@ describe('AddListingForProperty Use case', () => {
                     rentType: randomItemInArray([
                         RentType.LOCATION,
                         RentType.SHORT_TERM
-                    ])
+                    ]),
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -157,6 +166,9 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
+                    owner: generateUser({
+                        id: request.userId
+                    }),
                     rentType: RentType.COLOCATION,
                     rooms: [
                         {
@@ -210,6 +222,9 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
+                    owner: generateUser({
+                        id: request.userId
+                    }),
                     rentType: randomItemInArray([
                         RentType.LOCATION,
                         RentType.COLOCATION
@@ -252,7 +267,10 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.SHORT_TERM
+                    rentType: RentType.SHORT_TERM,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -291,7 +309,10 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.COLOCATION
+                    rentType: RentType.COLOCATION,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -330,7 +351,10 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.SHORT_TERM
+                    rentType: RentType.SHORT_TERM,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -371,7 +395,10 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.LOCATION
+                    rentType: RentType.LOCATION,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -412,7 +439,10 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.LOCATION
+                    rentType: RentType.LOCATION,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .build();
@@ -470,77 +500,43 @@ describe('AddListingForProperty Use case', () => {
         expect(presenter.response.newListing).toBeNull();
     });
 
-    describe('Invalid Requests', () => {
-        const dataset: {
-            label: string;
-            request: AddListingForPropertyRequest;
-        }[] = [
-            {
-                label: 'Invalid Date',
-                request: {
-                    ...request,
-                    availableFrom: new Date(0)
-                }
-            },
-            {
-                label: 'Invalid housing fee',
-                request: {
-                    ...request,
-                    housingFee: 0
-                }
-            },
-            {
-                label: 'Invalid housing period',
-                request: {
-                    ...request,
-                    housingPeriod: 0
-                }
-            },
-            {
-                label: 'Invalid number of free bedrooms',
-                request: {
-                    ...request,
-                    noOfFreeBedRooms: 0
-                }
-            },
-            {
-                label: 'Invalid caution advance',
-                request: {
-                    ...request,
-                    cautionMonthsPaymentAdvance: -1
-                }
-            },
-            {
-                label: 'Invalid agency advance',
-                request: {
-                    ...request,
-                    agencyMonthsPaymentAdvance: -1
-                }
-            }
-        ];
+    it('Should show error if the user is not the owner of the property', async () => {
+        let listing: Listing | null = null;
 
-        it.each(dataset)(
-            'shows errors with invalid request : "$label"',
-            async ({ request }) => {
-                // Given
-                const propertyRepository = new PropertyRepositoryBuilder()
-                    .withGetPropertyById(async () => generateProperty())
-                    .build();
-                const listingRepository =
-                    new ListingRepositoryBuilder().build();
+        // Given
+        const propertyRepository = new PropertyRepositoryBuilder()
+            .withGetPropertyById(async () =>
+                generateProperty({
+                    rentType: RentType.LOCATION
+                })
+            )
+            .build();
+        const listingRepository = new ListingRepositoryBuilder()
+            .withSave(async newListing => {
+                listing = newListing;
+            })
+            .build();
 
-                const useCase = new AddListingForPropertyUseCase(
-                    propertyRepository,
-                    listingRepository
-                );
-
-                // When
-                await useCase.execute(request, presenter);
-
-                // Then
-                expect(presenter.response.errors).not.toBeFalsy();
-                console.log(presenter.response.errors);
-            }
+        const useCase = new AddListingForPropertyUseCase(
+            propertyRepository,
+            listingRepository
         );
+
+        // When
+        await useCase.execute(
+            {
+                ...request,
+                userId: new Uuid().toString()
+            },
+            presenter
+        );
+
+        console.dir(listing, { depth: null });
+
+        // Then
+        expect(presenter.response).not.toBe(null);
+        expect(presenter.response.errors).not.toBeFalsy();
+        expect(presenter.response.errors?.userId).toHaveLength(1);
+        expect(presenter.response.newListing).toBeNull();
     });
 });

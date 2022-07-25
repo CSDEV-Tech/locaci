@@ -13,7 +13,8 @@ export const AddListingForPropertyRequestSchema = z.object({
     housingPeriod: z.number().min(1).optional(),
     noOfFreeBedRooms: z.number().min(1).optional(),
     cautionMonthsPaymentAdvance: z.number().min(0).optional(),
-    agencyMonthsPaymentAdvance: z.number().min(0).optional()
+    agencyMonthsPaymentAdvance: z.number().min(0).optional(),
+    userId: z.string().uuid()
 });
 
 export type AddListingForPropertyRequest = z.infer<

@@ -4,7 +4,11 @@ import {
 } from './AddAmenityToPropertyRequest';
 import { AddAmenityToPropertyPresenter } from './AddAmenityToPropertyPresenter';
 import { ValidateResult } from './../../lib/types';
-import { PropertyRepository, RentType } from './../../entities/Property';
+import {
+    PropertyRepository,
+    RentType,
+    Property
+} from './../../entities/Property';
 import {
     Amenity,
     AmenityRepository,
@@ -34,12 +38,16 @@ export class AddAmenityToPropertyUseCase {
                 res.parsedRequest.propertyId
             );
 
-            if (property) {
-                if (
-                    ![RentType.COLOCATION, RentType.LOCATION].includes(
-                        property!.rentType
-                    )
-                ) {
+            if (!property) {
+                errors = {
+                    propertyId: [
+                        `The property with id '${res.parsedRequest.propertyId}' does not exist.`
+                    ]
+                };
+            } else {
+                errors = this.checkIfCanAddAmenity(res.parsedRequest, property);
+
+                if (!errors) {
                     newAmenity = {
                         id: new Uuid(),
                         type: res.parsedRequest.type
@@ -49,23 +57,11 @@ export class AddAmenityToPropertyUseCase {
                         newAmenity.name = res.parsedRequest.name;
                     }
 
-                    property!.amenities.push(newAmenity);
+                    property.amenities.push(newAmenity);
 
-                    await this.propertyRepository.save(property!);
+                    await this.propertyRepository.save(property);
                     await this.amenityRepository.save(newAmenity);
-                } else {
-                    errors = {
-                        propertyId: [
-                            'Only properties with rentType of SHORT_TERM can have amenities'
-                        ]
-                    };
                 }
-            } else {
-                errors = {
-                    propertyId: [
-                        `The property with id '${res.parsedRequest.propertyId}' does not exist.`
-                    ]
-                };
             }
         }
 
@@ -73,6 +69,24 @@ export class AddAmenityToPropertyUseCase {
             errors,
             amenity: newAmenity
         });
+    }
+
+    checkIfCanAddAmenity(req: AddAmenityToPropertyRequest, property: Property) {
+        if (property.owner.id !== req.userId) {
+            return {
+                userId: [
+                    `This user is not the owner of the property and thus cannot add a room to the property.`
+                ]
+            };
+        }
+
+        if (property.rentType !== RentType.SHORT_TERM) {
+            return {
+                propertyId: [
+                    'Only properties with rentType of SHORT_TERM can have amenities.'
+                ]
+            };
+        }
     }
 
     validate(

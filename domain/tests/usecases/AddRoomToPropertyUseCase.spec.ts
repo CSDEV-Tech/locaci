@@ -11,10 +11,12 @@ import {
     randomItemInArray,
     RoomTypes,
     Room,
-    Property
+    Property,
+    Uuid
 } from '../../src';
 import { PropertyRepositoryBuilder } from '../builder/PropertyRepositoryBuilder';
 import { generateProperty } from '../factories/PropertyFactory';
+import { generateUser } from '../factories/UserFactory';
 
 const presenter = new (class implements AddRoomToPropertyPresenter {
     response: AddRoomToPropertyResponse;
@@ -35,7 +37,13 @@ describe('AddRoomToProperty Use case', () => {
         let newRoom: Room | null = null;
 
         const propertyRepository = new PropertyRepositoryBuilder()
-            .withGetPropertyById(async () => generateProperty())
+            .withGetPropertyById(async () =>
+                generateProperty({
+                    owner: generateUser({
+                        id: request.userId
+                    })
+                })
+            )
             .withSave(async p => {
                 property = p;
             })
@@ -69,7 +77,13 @@ describe('AddRoomToProperty Use case', () => {
 
         const roomRepository = new RoomRepositoryBuilder().build();
         const propertyRepository = new PropertyRepositoryBuilder()
-            .withGetPropertyById(async () => generateProperty())
+            .withGetPropertyById(async () =>
+                generateProperty({
+                    owner: generateUser({
+                        id: request.userId
+                    })
+                })
+            )
             .withSave(async p => {
                 property = p;
             })
@@ -108,7 +122,13 @@ describe('AddRoomToProperty Use case', () => {
 
         const roomRepository = new RoomRepositoryBuilder().build();
         const propertyRepository = new PropertyRepositoryBuilder()
-            .withGetPropertyById(async () => generateProperty())
+            .withGetPropertyById(async () =>
+                generateProperty({
+                    owner: generateUser({
+                        id: request.userId
+                    })
+                })
+            )
             .withSave(async p => {
                 property = p;
             })
@@ -172,39 +192,42 @@ describe('AddRoomToProperty Use case', () => {
         expect(property).toBeNull();
     });
 
-    describe('Invalid Requests', () => {
-        const dataset: { label: string; request: AddRoomToPropertyRequest }[] =
-            [
-                {
-                    label: 'Invalid propertyId',
-                    request: {
-                        ...request,
-                        propertyId: 'invalid uuid'
-                    }
-                }
-            ];
+    it('Should show error if the user is not the owner of the property', async () => {
+        // Given
+        let property: Property | null = null;
+        let newRoom: Room | null = null;
 
-        it.each(dataset)(
-            'shows errors with invalid request : "$label"',
-            async ({ request }) => {
-                // Given
-                const roomRepository = new RoomRepositoryBuilder().build();
-                const propertyRepository = new PropertyRepositoryBuilder()
-                    .withGetPropertyById(async () => null)
-                    .build();
+        const propertyRepository = new PropertyRepositoryBuilder()
+            .withGetPropertyById(async () => generateProperty())
+            .withSave(async p => {
+                property = p;
+            })
+            .build();
+        const roomRepository = new RoomRepositoryBuilder()
+            .withSave(async r => {
+                newRoom = r;
+            })
+            .build();
 
-                const useCase = new AddRoomToPropertyUseCase(
-                    propertyRepository,
-                    roomRepository
-                );
-
-                // When
-                await useCase.execute(request, presenter);
-
-                // Then
-                expect(presenter.response.errors).not.toBe(null);
-                console.log(presenter.response.errors);
-            }
+        const useCase = new AddRoomToPropertyUseCase(
+            propertyRepository,
+            roomRepository
         );
+
+        // When
+        await useCase.execute(
+            {
+                ...request,
+                userId: new Uuid().toString()
+            },
+            presenter
+        );
+
+        // Then
+        expect(presenter.response).not.toBe(null);
+        expect(presenter.response?.errors).not.toBeFalsy();
+        expect(presenter.response?.errors?.userId).toHaveLength(1);
+        expect(property).toBeNull();
+        expect(newRoom).toBeNull();
     });
 });

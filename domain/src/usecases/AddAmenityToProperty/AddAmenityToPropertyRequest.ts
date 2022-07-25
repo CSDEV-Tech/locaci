@@ -4,7 +4,8 @@ import { AmenityType } from '../../entities/Amenity';
 const WithCustomNameSchema = z.object({
     name: z.string().min(1),
     type: z.literal(AmenityType.OTHER),
-    propertyId: z.string().uuid()
+    propertyId: z.string().uuid(),
+    userId: z.string().uuid()
 });
 
 const WithPredefinedNameSchema = z.object({
@@ -15,7 +16,8 @@ const WithPredefinedNameSchema = z.object({
         AmenityType.TWIN_BED,
         AmenityType.RADIATOR
     ]),
-    propertyId: z.string().uuid()
+    propertyId: z.string().uuid(),
+    userId: z.string().uuid()
 });
 
 export const AddAmenityToPropertyRequestSchema = z.union([

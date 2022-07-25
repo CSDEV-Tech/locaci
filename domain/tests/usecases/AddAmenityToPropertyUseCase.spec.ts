@@ -6,15 +6,16 @@ import {
     AddAmenityToPropertyPresenter,
     AddAmenityToPropertyResponse,
     generateMock,
-    AddAmenityToPropertyRequest,
     Property,
     RentType,
     Amenity,
-    randomItemInArray
+    randomItemInArray,
+    Uuid
 } from '../../src';
 
 import { PropertyRepositoryBuilder } from '../builder/PropertyRepositoryBuilder';
 import { generateProperty } from '../factories/PropertyFactory';
+import { generateUser } from '../factories/UserFactory';
 
 const presenter = new (class implements AddAmenityToPropertyPresenter {
     response: AddAmenityToPropertyResponse;
@@ -35,7 +36,10 @@ describe('AddAmenityToProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.SHORT_TERM
+                    rentType: RentType.SHORT_TERM,
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .withSave(async p => {
@@ -74,7 +78,10 @@ describe('AddAmenityToProperty Use case', () => {
                     rentType: randomItemInArray([
                         RentType.COLOCATION,
                         RentType.LOCATION
-                    ])
+                    ]),
+                    owner: generateUser({
+                        id: request.userId
+                    })
                 })
             )
             .withSave(async p => {
@@ -131,41 +138,48 @@ describe('AddAmenityToProperty Use case', () => {
         expect(newAmenity).toBe(null);
     });
 
-    describe('Invalid Requests', () => {
-        const dataset: {
-            label: string;
-            request: AddAmenityToPropertyRequest;
-        }[] = [
-            {
-                label: 'Invalid property UUID',
-                request: {
-                    ...request,
-                    propertyId: 'invalid'
-                }
-            }
-        ];
+    it('Should show error if the user is not the owner of the property', async () => {
+        // Given
+        let property: Property | null = null;
+        let newAmenity: Amenity | null = null;
 
-        it.each(dataset)(
-            'shows errors with invalid request : "$label"',
-            async ({ request }) => {
-                const propertyRepository =
-                    new PropertyRepositoryBuilder().build();
+        const propertyRepository = new PropertyRepositoryBuilder()
+            .withGetPropertyById(async () =>
+                generateProperty({
+                    rentType: RentType.SHORT_TERM
+                })
+            )
+            .withSave(async p => {
+                property = p;
+            })
+            .build();
+        const amenityRepository = new AmenityRepositoryBuilder()
+            .withSave(async a => {
+                newAmenity = a;
+            })
+            .build();
 
-                const amenityRepository =
-                    new AmenityRepositoryBuilder().build();
-
-                const useCase = new AddAmenityToPropertyUseCase(
-                    propertyRepository,
-                    amenityRepository
-                );
-
-                // When
-                await useCase.execute(request, presenter);
-
-                // Then
-                expect(presenter.response).not.toBe(null);
-                expect(presenter.response.errors).not.toBeFalsy();
-            }
+        const useCase = new AddAmenityToPropertyUseCase(
+            propertyRepository,
+            amenityRepository
         );
+
+        // When
+        await useCase.execute(
+            {
+                ...request,
+                userId: new Uuid().toString()
+            },
+            presenter
+        );
+
+        console.log(presenter.response.errors);
+
+        // Then
+        expect(presenter.response).not.toBe(null);
+        expect(presenter.response.errors).not.toBeFalsy();
+        expect(presenter.response.errors?.userId).toHaveLength(1);
+        expect(property).toBeNull();
+        expect(newAmenity).toBeNull();
     });
 });
