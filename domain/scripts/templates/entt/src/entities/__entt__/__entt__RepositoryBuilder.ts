@@ -1,4 +1,4 @@
-import { __entt__, __entt__Repository } from '../../src';
+import { __entt__, __entt__Repository } from '.';
 
 export class __entt__RepositoryBuilder {
     private save: (entity: __entt__) => Promise<__entt__> = (
