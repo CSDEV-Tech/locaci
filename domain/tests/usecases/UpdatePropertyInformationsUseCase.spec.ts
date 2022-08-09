@@ -1,84 +1,77 @@
 import {
-    AddImageToPropertyRequestSchema,
-    AddImageToPropertyUseCase,
-    AddImageToPropertyPresenter,
-    AddImageToPropertyResponse,
+    UpdatePropertyInformationsRequestSchema,
+    UpdatePropertyInformationsUseCase,
+    UpdatePropertyInformationsPresenter,
+    UpdatePropertyInformationsResponse,
     generateMock,
-    Property,
+    ListingRepositoryBuilder,
     PropertyRepositoryBuilder,
-    ImageRepositoryBuilder,
-    Image,
-    Uuid
+    RentType,
+    Uuid,
+    Property
 } from '../../src';
 
 import { expect, describe, it } from 'vitest';
 import { generateProperty } from '../factories/PropertyFactory';
 import { generateUser } from '../factories/UserFactory';
 
-const presenter = new (class implements AddImageToPropertyPresenter {
-    response: AddImageToPropertyResponse;
+const presenter = new (class implements UpdatePropertyInformationsPresenter {
+    response: UpdatePropertyInformationsResponse;
 
-    present(response: AddImageToPropertyResponse): void {
+    present(response: UpdatePropertyInformationsResponse): void {
         this.response = response;
     }
 })();
 
-const request = generateMock(AddImageToPropertyRequestSchema);
+const request = generateMock(UpdatePropertyInformationsRequestSchema);
 
-describe('AddImageToProperty Use case', () => {
-    it('adds the new image to the property', async () => {
+describe('UpdatePropertyInformations Use case', () => {
+    it('update the property successfully', async () => {
+        let expectedProperty: Property | null = null;
+
         // Given
-        let property: Property | null = null;
-        let newImage: Image | null = null;
-
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
+                    id: new Uuid(request.propertyId),
+                    rentType: RentType.LOCATION,
                     owner: generateUser({
                         id: request.userId
-                    }),
-                    images: []
+                    })
                 })
             )
             .withSave(async p => {
-                property = p;
+                expectedProperty = p;
             })
             .build();
 
-        const imageRepository = new ImageRepositoryBuilder()
-            .withSave(async image => {
-                newImage = image;
-            })
-            .build();
-
-        const useCase = new AddImageToPropertyUseCase(
-            propertyRepository,
-            imageRepository
+        const useCase = new UpdatePropertyInformationsUseCase(
+            propertyRepository
         );
 
         // When
         await useCase.execute(request, presenter);
-        console.log(request);
 
         // Then
         expect(presenter.response).not.toBe(null);
-        expect(property).not.toBe(null);
-        expect(newImage).not.toBe(null);
-        expect(property!.images).toHaveLength(1);
+        expect(presenter.response?.errors).toBeFalsy();
+        expect(expectedProperty).toMatchObject(request);
     });
 
     it('Should show error if property does not exists', async () => {
         // Given
-        let property: Property | null = null;
+        let expectedProperty: Property | null = null;
 
-        const roomRepository = new ImageRepositoryBuilder().build();
+        // Given
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () => null)
+            .withSave(async p => {
+                expectedProperty = p;
+            })
             .build();
 
-        const useCase = new AddImageToPropertyUseCase(
-            propertyRepository,
-            roomRepository
+        const useCase = new UpdatePropertyInformationsUseCase(
+            propertyRepository
         );
 
         // When
@@ -90,29 +83,31 @@ describe('AddImageToProperty Use case', () => {
         expect(presenter.response).not.toBe(null);
         expect(presenter.response?.errors).not.toBeFalsy();
         expect(presenter.response?.errors?.propertyId).toHaveLength(1);
-        expect(property).toBeNull();
+        expect(expectedProperty).toBeNull();
     });
 
     it('Should show error if the user is not the owner of the property', async () => {
         // Given
-        let property: Property | null = null;
-        let newImage: Image | null = null;
+        let expectedProperty: Property | null = null;
 
+        // Given
         const propertyRepository = new PropertyRepositoryBuilder()
-            .withGetPropertyById(async () => generateProperty())
+            .withGetPropertyById(async () =>
+                generateProperty({
+                    id: new Uuid(request.propertyId),
+                    rentType: RentType.LOCATION,
+                    owner: generateUser({
+                        id: request.userId
+                    })
+                })
+            )
             .withSave(async p => {
-                property = p;
-            })
-            .build();
-        const imageRepository = new ImageRepositoryBuilder()
-            .withSave(async image => {
-                newImage = image;
+                expectedProperty = p;
             })
             .build();
 
-        const useCase = new AddImageToPropertyUseCase(
-            propertyRepository,
-            imageRepository
+        const useCase = new UpdatePropertyInformationsUseCase(
+            propertyRepository
         );
 
         // When
@@ -128,7 +123,6 @@ describe('AddImageToProperty Use case', () => {
         expect(presenter.response).not.toBe(null);
         expect(presenter.response?.errors).not.toBeFalsy();
         expect(presenter.response?.errors?.userId).toHaveLength(1);
-        expect(property).toBeNull();
-        expect(newImage).toBeNull();
+        expect(expectedProperty).toBeNull();
     });
 });

@@ -63,7 +63,6 @@ describe('CreateProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder().build();
         const userRepository = new UserRepositoryBuilder()
             .withGetUserById(() => Promise.resolve(null))
-
             .build();
 
         // Given

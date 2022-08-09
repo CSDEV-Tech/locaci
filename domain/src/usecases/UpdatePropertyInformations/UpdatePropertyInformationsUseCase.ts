@@ -1,43 +1,43 @@
 import {
-    AddImageToPropertyRequest,
-    AddImageToPropertyRequestSchema
-} from './AddImageToPropertyRequest';
-import { AddImageToPropertyPresenter } from './AddImageToPropertyPresenter';
+    UpdatePropertyInformationsRequest,
+    UpdatePropertyInformationsRequestSchema
+} from './UpdatePropertyInformationsRequest';
+import { UpdatePropertyInformationsPresenter } from './UpdatePropertyInformationsPresenter';
 import { ValidateResult } from './../../lib/types';
-import { PropertyRepository } from '../../entities/Property';
-import { Image, ImageRepository } from '../../entities/Image';
-import { Uuid } from '../../Dto';
+import { Property, PropertyRepository } from '../../entities/Property';
+import { ListingRepository } from '../../entities/Listing';
 
-export class AddImageToPropertyUseCase {
-    schema = AddImageToPropertyRequestSchema;
+export class UpdatePropertyInformationsUseCase {
+    schema = UpdatePropertyInformationsRequestSchema;
 
-    constructor(
-        private propertyRepository: PropertyRepository,
-        private imageRepository: ImageRepository
-    ) {}
+    constructor(private propertyRepository: PropertyRepository) {}
 
     async execute(
-        request: AddImageToPropertyRequest,
-        presenter: AddImageToPropertyPresenter
+        request: UpdatePropertyInformationsRequest,
+        presenter: UpdatePropertyInformationsPresenter
     ): Promise<void> {
         let res = this.validate(request);
 
         let errors = res.errors;
+
         if (!res.errors) {
-            const property = await this.propertyRepository.getPropertyById(
+            let property = await this.propertyRepository.getPropertyById(
                 res.parsedRequest.propertyId
             );
 
             if (property) {
                 if (property.owner.id === res.parsedRequest.userId) {
-                    const image: Image = {
-                        id: new Uuid(),
-                        path: res.parsedRequest.path
+                    property = {
+                        ...property,
+                        ...res.parsedRequest,
+                        position: {
+                            longitude: res.parsedRequest.longitude,
+                            latitude: res.parsedRequest.latitude,
+                            radius: res.parsedRequest.radius
+                        }
                     };
-                    property.images.push(image);
 
-                    this.propertyRepository.save(property);
-                    this.imageRepository.save(image);
+                    await this.propertyRepository.save(property);
                 } else {
                     errors = {
                         userId: [
@@ -60,8 +60,8 @@ export class AddImageToPropertyUseCase {
     }
 
     validate(
-        request: AddImageToPropertyRequest
-    ): ValidateResult<AddImageToPropertyRequest> {
+        request: UpdatePropertyInformationsRequest
+    ): ValidateResult<UpdatePropertyInformationsRequest> {
         const parsedResult = this.schema.safeParse(request);
 
         if (!parsedResult.success) {
