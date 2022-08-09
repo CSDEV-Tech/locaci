@@ -1,12 +1,11 @@
-import { UserRepositoryBuilder } from './../builder/UserRepositoryBuilder';
-import { PropertyRepositoryBuilder } from './../builder/PropertyRepositoryBuilder';
 import { generateUser } from './../factories/UserFactory';
 import {
     CreatePropertyUseCase,
     CreatePropertyPresenter,
     CreatePropertyResponse,
     CreatePropertyRequestSchema,
-    CreatePropertyRequest,
+    UserRepositoryBuilder,
+    PropertyRepositoryBuilder,
     generateMock,
     Role,
     randomItemInArray,

@@ -1,5 +1,3 @@
-import { ListingRepositoryBuilder } from './../builder/ListingRepositoryBuilder';
-import { PropertyRepositoryBuilder } from './../builder/PropertyRepositoryBuilder';
 import { generateProperty } from './../factories/PropertyFactory';
 import { generateListing } from './../factories/ListingFactory';
 
@@ -12,6 +10,8 @@ import {
     Listing,
     RentType,
     randomItemInArray,
+    ListingRepositoryBuilder,
+    PropertyRepositoryBuilder,
     Uuid,
     RoomType
 } from '../../src';

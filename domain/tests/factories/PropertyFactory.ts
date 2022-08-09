@@ -23,15 +23,7 @@ export function generateProperty(defaultValue?: Partial<Property>): Property {
             })
         },
         rentType: randomItemInArray(RentTypes),
-        images: range(
-            0,
-            faker.datatype.number({
-                min: 1,
-                max: 10
-            })
-        ).map(() => ({
-            path: faker.image.imageUrl()
-        })),
+        images: [],
         surfaceArea: faker.datatype.number({
             min: 6,
             max: 100

@@ -1,5 +1,3 @@
-import { RoomRepositoryBuilder } from './../builder/RoomRepositoryBuilder';
-import { RoomType } from './../../src/entities/Room/Room';
 import { expect, describe, it } from 'vitest';
 import {
     AddRoomToPropertyRequestSchema,
@@ -7,14 +5,15 @@ import {
     AddRoomToPropertyPresenter,
     AddRoomToPropertyResponse,
     generateMock,
-    AddRoomToPropertyRequest,
+    PropertyRepositoryBuilder,
     randomItemInArray,
+    RoomRepositoryBuilder,
     RoomTypes,
     Room,
     Property,
+    RoomType,
     Uuid
 } from '../../src';
-import { PropertyRepositoryBuilder } from '../builder/PropertyRepositoryBuilder';
 import { generateProperty } from '../factories/PropertyFactory';
 import { generateUser } from '../factories/UserFactory';
 

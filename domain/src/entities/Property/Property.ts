@@ -1,7 +1,8 @@
 import { Room } from './../Room/Room';
-import { Image, Uuid } from '../../Dto';
+import { Uuid } from '../../Dto';
 import { User } from '../User';
 import { Amenity } from '../Amenity';
+import { Image } from '../Image';
 
 export type Property = {
     id: Uuid;

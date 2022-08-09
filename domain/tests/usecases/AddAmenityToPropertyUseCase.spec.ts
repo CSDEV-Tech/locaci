@@ -1,5 +1,4 @@
 import { expect, describe, it } from 'vitest';
-import { AmenityRepositoryBuilder } from './../builder/AmenityRepositoryBuilder';
 import {
     AddAmenityToPropertyRequestSchema,
     AddAmenityToPropertyUseCase,
@@ -10,10 +9,11 @@ import {
     RentType,
     Amenity,
     randomItemInArray,
+    AmenityRepositoryBuilder,
+    PropertyRepositoryBuilder,
     Uuid
 } from '../../src';
 
-import { PropertyRepositoryBuilder } from '../builder/PropertyRepositoryBuilder';
 import { generateProperty } from '../factories/PropertyFactory';
 import { generateUser } from '../factories/UserFactory';
 
