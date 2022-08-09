@@ -1,11 +1,16 @@
-import "../src/styles/styles.css";
+import '../src/styles/styles.css';
+import { themes } from '@storybook/theming';
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+    docs: {
+        theme: themes.dark
     },
-  },
+    layout: 'fullscreen',
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    controls: {
+        matchers: {
+            color: /(background|color)$/i,
+            date: /Date$/
+        }
+    }
 };
