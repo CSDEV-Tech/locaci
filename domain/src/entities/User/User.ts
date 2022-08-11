@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { Uuid } from '../../Dto';
 
 export type User = {
-    id: string;
+    id: Uuid;
     firstName: string;
     lastName: string;
     role: Role;

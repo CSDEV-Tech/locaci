@@ -35,7 +35,7 @@ describe('AddImageToProperty Use case', () => {
             .withGetPropertyById(async () =>
                 generateProperty({
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     }),
                     images: []
                 })
@@ -71,14 +71,14 @@ describe('AddImageToProperty Use case', () => {
         // Given
         let property: Property | null = null;
 
-        const roomRepository = new ImageRepositoryBuilder().build();
+        const imageRepository = new ImageRepositoryBuilder().build();
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () => null)
             .build();
 
         const useCase = new AddImageToPropertyUseCase(
             propertyRepository,
-            roomRepository
+            imageRepository
         );
 
         // When

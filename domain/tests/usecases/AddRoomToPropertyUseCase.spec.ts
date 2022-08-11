@@ -39,7 +39,7 @@ describe('AddRoomToProperty Use case', () => {
             .withGetPropertyById(async () =>
                 generateProperty({
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -79,7 +79,7 @@ describe('AddRoomToProperty Use case', () => {
             .withGetPropertyById(async () =>
                 generateProperty({
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -124,7 +124,7 @@ describe('AddRoomToProperty Use case', () => {
             .withGetPropertyById(async () =>
                 generateProperty({
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )

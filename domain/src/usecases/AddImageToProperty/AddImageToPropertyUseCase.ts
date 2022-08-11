@@ -29,7 +29,7 @@ export class AddImageToPropertyUseCase {
             );
 
             if (property) {
-                if (property.owner.id === res.parsedRequest.userId) {
+                if (property.owner.id.toString() === res.parsedRequest.userId) {
                     const image: Image = {
                         id: new Uuid(),
                         path: res.parsedRequest.path

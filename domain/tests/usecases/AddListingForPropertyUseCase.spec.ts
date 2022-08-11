@@ -44,7 +44,7 @@ describe('AddListingForProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.LOCATION,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -81,7 +81,7 @@ describe('AddListingForProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.COLOCATION,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -126,7 +126,7 @@ describe('AddListingForProperty Use case', () => {
                         RentType.SHORT_TERM
                     ]),
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -167,7 +167,7 @@ describe('AddListingForProperty Use case', () => {
             .withGetPropertyById(async () =>
                 generateProperty({
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     }),
                     rentType: RentType.COLOCATION,
                     rooms: [
@@ -223,7 +223,7 @@ describe('AddListingForProperty Use case', () => {
             .withGetPropertyById(async () =>
                 generateProperty({
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     }),
                     rentType: randomItemInArray([
                         RentType.LOCATION,
@@ -269,7 +269,7 @@ describe('AddListingForProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.SHORT_TERM,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -311,7 +311,7 @@ describe('AddListingForProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.COLOCATION,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -353,7 +353,7 @@ describe('AddListingForProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.SHORT_TERM,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -397,7 +397,7 @@ describe('AddListingForProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.LOCATION,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -441,7 +441,7 @@ describe('AddListingForProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.LOCATION,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )

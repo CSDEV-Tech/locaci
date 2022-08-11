@@ -26,7 +26,7 @@ export class UpdatePropertyInformationsUseCase {
             );
 
             if (property) {
-                if (property.owner.id === res.parsedRequest.userId) {
+                if (property.owner.id.toString() === res.parsedRequest.userId) {
                     property = {
                         ...property,
                         ...res.parsedRequest,

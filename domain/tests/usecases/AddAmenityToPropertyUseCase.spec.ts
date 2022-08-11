@@ -38,7 +38,7 @@ describe('AddAmenityToProperty Use case', () => {
                 generateProperty({
                     rentType: RentType.SHORT_TERM,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -80,7 +80,7 @@ describe('AddAmenityToProperty Use case', () => {
                         RentType.LOCATION
                     ]),
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )

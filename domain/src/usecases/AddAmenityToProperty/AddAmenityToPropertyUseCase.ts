@@ -72,7 +72,7 @@ export class AddAmenityToPropertyUseCase {
     }
 
     checkIfCanAddAmenity(req: AddAmenityToPropertyRequest, property: Property) {
-        if (property.owner.id !== req.userId) {
+        if (property.owner.id.toString() !== req.userId) {
             return {
                 userId: [
                     `This user is not the owner of the property and thus cannot add a room to the property.`

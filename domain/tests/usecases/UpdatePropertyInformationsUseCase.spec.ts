@@ -36,7 +36,7 @@ describe('UpdatePropertyInformations Use case', () => {
                     id: new Uuid(request.propertyId),
                     rentType: RentType.LOCATION,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )
@@ -97,7 +97,7 @@ describe('UpdatePropertyInformations Use case', () => {
                     id: new Uuid(request.propertyId),
                     rentType: RentType.LOCATION,
                     owner: generateUser({
-                        id: request.userId
+                        id: new Uuid(request.userId)
                     })
                 })
             )

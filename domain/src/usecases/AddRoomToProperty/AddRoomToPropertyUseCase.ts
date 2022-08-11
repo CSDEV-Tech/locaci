@@ -31,7 +31,7 @@ export class AddRoomToPropertyUseCase {
             );
 
             if (property) {
-                if (property.owner.id === res.parsedRequest.userId) {
+                if (property.owner.id.toString() === res.parsedRequest.userId) {
                     roomAdded = {
                         id: new Uuid(),
                         type: res.parsedRequest.roomType
@@ -61,7 +61,7 @@ export class AddRoomToPropertyUseCase {
             } else {
                 errors = {
                     propertyId: [
-                        `The property with id '${res.parsedRequest.propertyId}' does exists.`
+                        `The property with id '${res.parsedRequest.propertyId}' does not exists.`
                     ]
                 };
             }

@@ -31,8 +31,4 @@ describe('__UC__ Use case', () => {
         // Then
         expect(presenter.response).not.toBe(null);
     });
-
-    it('Is a Negative Use Case', async () => {
-        expect(false).toBe(true);
-    });
 });
