@@ -10,6 +10,8 @@ Stack :
         - NextJS
             - tRPC -> logique
             - NextAuth -> authentification -> (outlook, facebook, google)
+            - (Supabase auth) -> ?
+            - Firebase auth -> ?
         - Quirrel -> queue jobbing (+ redis)
 
     - Database
@@ -19,6 +21,7 @@ Stack :
 
     - externes
         - sentry -> Alertes erreurs
-        - eversign -> signature documents
+        - eversign -> signature documents (-> x)
         - matomo (self-hosted) -> stocker analytics users
-        - twilio -> send SMS
+        - twilio -> send SMS (x)
+        - facebook -> (WhatsApp API) 

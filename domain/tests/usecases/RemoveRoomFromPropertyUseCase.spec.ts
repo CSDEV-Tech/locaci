@@ -8,12 +8,14 @@ import {
     PropertyRepositoryBuilder,
     RoomRepositoryBuilder,
     Uuid,
-    RoomType
+    RoomType,
+    ListingRepositoryBuilder
 } from '../../src';
 
 import { expect, describe, it } from 'vitest';
 import { generateProperty } from '../factories/PropertyFactory';
 import { generateUser } from '../factories/UserFactory';
+import { generateListing } from '../factories/ListingFactory';
 
 const presenter = new (class implements RemoveRoomFromPropertyPresenter {
     response: RemoveRoomFromPropertyResponse;
@@ -61,9 +63,12 @@ describe('RemoveRoomFromProperty Use case', () => {
             })
             .build();
 
+        const listingRepository = new ListingRepositoryBuilder().build();
+
         const useCase = new RemoveRoomFromPropertyUseCase(
             propertyRepository,
-            roomRepository
+            roomRepository,
+            listingRepository
         );
 
         // When
@@ -112,10 +117,12 @@ describe('RemoveRoomFromProperty Use case', () => {
                 removedRoomId = roomId;
             })
             .build();
+        const listingRepository = new ListingRepositoryBuilder().build();
 
         const useCase = new RemoveRoomFromPropertyUseCase(
             propertyRepository,
-            roomRepository
+            roomRepository,
+            listingRepository
         );
 
         // When
@@ -162,10 +169,12 @@ describe('RemoveRoomFromProperty Use case', () => {
             })
             .build();
         const roomRepository = new RoomRepositoryBuilder().build();
+        const listingRepository = new ListingRepositoryBuilder().build();
 
         const useCase = new RemoveRoomFromPropertyUseCase(
             propertyRepository,
-            roomRepository
+            roomRepository,
+            listingRepository
         );
 
         // When
@@ -209,10 +218,12 @@ describe('RemoveRoomFromProperty Use case', () => {
             })
             .build();
         const roomRepository = new RoomRepositoryBuilder().build();
+        const listingRepository = new ListingRepositoryBuilder().build();
 
         const useCase = new RemoveRoomFromPropertyUseCase(
             propertyRepository,
-            roomRepository
+            roomRepository,
+            listingRepository
         );
 
         // When
@@ -241,10 +252,12 @@ describe('RemoveRoomFromProperty Use case', () => {
             })
             .build();
         const roomRepository = new RoomRepositoryBuilder().build();
+        const listingRepository = new ListingRepositoryBuilder().build();
 
         const useCase = new RemoveRoomFromPropertyUseCase(
             propertyRepository,
-            roomRepository
+            roomRepository,
+            listingRepository
         );
 
         // When
@@ -268,10 +281,12 @@ describe('RemoveRoomFromProperty Use case', () => {
                 property = p;
             })
             .build();
+        const listingRepository = new ListingRepositoryBuilder().build();
 
         const useCase = new RemoveRoomFromPropertyUseCase(
             propertyRepository,
-            roomRepository
+            roomRepository,
+            listingRepository
         );
 
         // When
@@ -297,10 +312,12 @@ describe('RemoveRoomFromProperty Use case', () => {
             })
             .build();
         const roomRepository = new RoomRepositoryBuilder().build();
+        const listingRepository = new ListingRepositoryBuilder().build();
 
         const useCase = new RemoveRoomFromPropertyUseCase(
             propertyRepository,
-            roomRepository
+            roomRepository,
+            listingRepository
         );
 
         // When
@@ -316,6 +333,55 @@ describe('RemoveRoomFromProperty Use case', () => {
         expect(presenter.response).not.toBe(null);
         expect(presenter.response?.errors).not.toBeFalsy();
         expect(presenter.response?.errors?.userId).toHaveLength(1);
+        expect(property).toBeNull();
+    });
+
+    it('Should show error if there is at least one active listing', async () => {
+        // Given
+        let property: Property | null = null;
+
+        const propertyRepository = new PropertyRepositoryBuilder()
+            .withGetPropertyById(async () =>
+                generateProperty({
+                    owner: generateUser({
+                        id: new Uuid(request.userId)
+                    }),
+                    rooms: [
+                        {
+                            id: new Uuid(),
+                            type: RoomType.BEDROOM
+                        },
+                        {
+                            id: new Uuid(request.roomId),
+                            type: RoomType.BATHROOM
+                        }
+                    ]
+                })
+            )
+            .withSave(async p => {
+                property = p;
+            })
+            .build();
+        const listingRepository = new ListingRepositoryBuilder()
+            .withGetActiveListingsForProperty(async () => [generateListing()])
+            .build();
+        const roomRepository = new RoomRepositoryBuilder().build();
+
+        const useCase = new RemoveRoomFromPropertyUseCase(
+            propertyRepository,
+            roomRepository,
+            listingRepository
+        );
+
+        // When
+        await useCase.execute(request, presenter);
+
+        console.log(presenter.response?.errors);
+
+        // Then
+        expect(presenter.response).not.toBe(null);
+        expect(presenter.response?.errors).not.toBeFalsy();
+        expect(presenter.response?.errors?.global).toHaveLength(1);
         expect(property).toBeNull();
     });
 });
