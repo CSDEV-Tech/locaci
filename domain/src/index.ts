@@ -5,6 +5,7 @@ export * from './usecases/AddAmenityToProperty';
 export * from './usecases/AddListingForProperty';
 export * from './usecases/AddImageToProperty';
 export * from './usecases/UpdatePropertyInformations';
+export * from './usecases/RemoveRoomFromProperty';
 
 // entities
 export * from './entities/Property';
