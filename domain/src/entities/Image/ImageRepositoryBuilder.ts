@@ -5,9 +5,16 @@ export class ImageRepositoryBuilder {
         Promise.resolve();
     private getImageById: (id: string) => Promise<Image | null> = () =>
         Promise.resolve(null);
+    private deleteImage: (id: string) => Promise<void> = () =>
+        Promise.resolve();
 
     withSave(save: (entity: Image) => Promise<void>) {
         this.save = save;
+        return this;
+    }
+
+    withDeleteImage(deleteImage: (id: string) => Promise<void>) {
+        this.deleteImage = deleteImage;
         return this;
     }
 
@@ -19,7 +26,8 @@ export class ImageRepositoryBuilder {
     build(): ImageRepository {
         return {
             save: this.save,
-            getImageById: this.getImageById
+            getImageById: this.getImageById,
+            deleteImage: this.deleteImage
         };
     }
 }
