@@ -34,6 +34,7 @@ export class CreatePropertyUseCase {
             if (owner) {
                 propertyCreated = {
                     ...res.parsedRequest,
+                    archived: false,
                     id: new Uuid(),
                     position: {
                         longitude: res.parsedRequest.longitude,

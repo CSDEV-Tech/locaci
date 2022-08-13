@@ -8,6 +8,7 @@ export * from './usecases/UpdatePropertyInformations';
 export * from './usecases/RemoveRoomFromProperty';
 export * from './usecases/RemoveImageFromProperty';
 export * from './usecases/UpdateListing';
+export * from './usecases/ArchiveProperty';
 
 // entities
 export * from './entities/Property';

@@ -9,6 +9,10 @@ export class ListingRepositoryBuilder {
         propertyId: string
     ) => Promise<Listing[]> = () => Promise.resolve([]);
 
+    private deleteActiveListingsForProperty: (
+        propertyId: string
+    ) => Promise<void> = () => Promise.resolve();
+
     withSave(save: (listing: Listing) => Promise<void>) {
         this.save = save;
         return this;
@@ -28,11 +32,20 @@ export class ListingRepositoryBuilder {
         return this;
     }
 
+    withDeleteActiveListingsForProperty(
+        deleteActiveListingsForProperty: (propertyId: string) => Promise<void>
+    ) {
+        this.deleteActiveListingsForProperty = deleteActiveListingsForProperty;
+        return this;
+    }
+
     build(): ListingRepository {
         return {
             save: this.save,
             getListingById: this.getListingById,
-            getActiveListingsForProperty: this.getActiveListingsForProperty
+            getActiveListingsForProperty: this.getActiveListingsForProperty,
+            deleteActiveListingsForProperty:
+                this.deleteActiveListingsForProperty
         };
     }
 }

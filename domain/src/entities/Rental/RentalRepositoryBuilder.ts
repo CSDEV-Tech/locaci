@@ -9,6 +9,10 @@ export class RentalRepositoryBuilder {
         listingId: string
     ) => Promise<Rental[]> = () => Promise.resolve([]);
 
+    private getActiveOrReservedRentalsForProperty: (
+        propertyId: string
+    ) => Promise<Rental[]> = () => Promise.resolve([]);
+
     withSave(save: (entity: Rental) => Promise<Rental>) {
         this.save = save;
         return this;
@@ -24,6 +28,16 @@ export class RentalRepositoryBuilder {
         return this;
     }
 
+    withGetActiveOrReservedRentalsForProperty(
+        getActiveOrReservedRentalsForProperty: (
+            propertyId: string
+        ) => Promise<Rental[]>
+    ) {
+        this.getActiveOrReservedRentalsForProperty =
+            getActiveOrReservedRentalsForProperty;
+        return this;
+    }
+
     withGetRentalById(getRentalById: (id: string) => Promise<Rental | null>) {
         this.getRentalById = getRentalById;
         return this;
@@ -34,7 +48,9 @@ export class RentalRepositoryBuilder {
             save: this.save,
             getRentalById: this.getRentalById,
             getActiveOrReservedRentalsForListing:
-                this.getActiveOrReservedRentalsForListing
+                this.getActiveOrReservedRentalsForListing,
+            getActiveOrReservedRentalsForProperty:
+                this.getActiveOrReservedRentalsForProperty
         };
     }
 }

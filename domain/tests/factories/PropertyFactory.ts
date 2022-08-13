@@ -35,6 +35,7 @@ export function generateProperty(defaultValue?: Partial<Property>): Property {
         owner: generateUser({
             role: Role.PROPERTY_OWNER
         }),
+        archived: false,
         ...defaultValue
     };
 }

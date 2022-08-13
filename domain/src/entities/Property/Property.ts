@@ -19,6 +19,7 @@ export type Property = {
     images: Image[];
     rooms: Room[];
     amenities: Amenity[];
+    archived: boolean;
 };
 
 export type Position = {
