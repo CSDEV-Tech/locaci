@@ -30,7 +30,7 @@ export type Position = {
 
 export enum RentType {
     LOCATION = 'LOCATION',
-    COLOCATION = 'COLOCATION',
+    SHARED_APPARTMENT = 'SHARED_APPARTMENT',
     SHORT_TERM = 'SHORT_TERM'
 }
 

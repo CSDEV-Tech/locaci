@@ -46,7 +46,7 @@ export class AddListingForPropertyUseCase {
                     // set tne number of free bedrooms only for COLOCATION
                     //  because for the others they rent all the available rooms
                     const noOfFreeBedRooms =
-                        property.rentType !== RentType.COLOCATION
+                        property.rentType !== RentType.SHARED_APPARTMENT
                             ? undefined
                             : res.parsedRequest.noOfFreeBedRooms;
 
@@ -129,7 +129,7 @@ export class AddListingForPropertyUseCase {
         ).length;
 
         if (
-            property.rentType === RentType.COLOCATION &&
+            property.rentType === RentType.SHARED_APPARTMENT &&
             req.noOfFreeBedRooms !== undefined &&
             req.noOfFreeBedRooms > totalBedRooms
         ) {

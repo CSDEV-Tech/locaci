@@ -79,7 +79,7 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.COLOCATION,
+                    rentType: RentType.SHARED_APPARTMENT,
                     owner: generateUser({
                         id: new Uuid(request.userId)
                     })
@@ -169,7 +169,7 @@ describe('AddListingForProperty Use case', () => {
                     owner: generateUser({
                         id: new Uuid(request.userId)
                     }),
-                    rentType: RentType.COLOCATION,
+                    rentType: RentType.SHARED_APPARTMENT,
                     rooms: [
                         {
                             id: new Uuid(),
@@ -227,7 +227,7 @@ describe('AddListingForProperty Use case', () => {
                     }),
                     rentType: randomItemInArray([
                         RentType.LOCATION,
-                        RentType.COLOCATION
+                        RentType.SHARED_APPARTMENT
                     ])
                 })
             )
@@ -309,7 +309,7 @@ describe('AddListingForProperty Use case', () => {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withGetPropertyById(async () =>
                 generateProperty({
-                    rentType: RentType.COLOCATION,
+                    rentType: RentType.SHARED_APPARTMENT,
                     owner: generateUser({
                         id: new Uuid(request.userId)
                     })
