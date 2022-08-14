@@ -12,5 +12,5 @@ dist/
 .swc/
 .next/
 build
-web-old/
-web-old.*/
+
+*.old.*

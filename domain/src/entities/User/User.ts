@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import { Uuid } from '../../Dto';
 
 export type User = {

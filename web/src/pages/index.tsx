@@ -4,7 +4,9 @@ import { trpc, createSSGHelpers } from '../utils/trpc';
 import { Button } from '@locaci/ui';
 
 const Home: NextPage = () => {
-    const hello = trpc.useQuery(['example.hello', { text: 'from tRPC' }]);
+    const data = trpc.useQuery(['property.getLastThreeCreated'], {
+        staleTime: Infinity
+    });
 
     return (
         <>
@@ -14,18 +16,17 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4">
-                <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-white">
+            <main className="flex flex-col items-center justify-center min-h-screen p-4 bg-dark text-white">
+                <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold ">
                     Create <span className="text-purple-300">T3</span> App
                 </h1>
 
                 <Button variant="primary">Hello there</Button>
-                <div className="pt-6 text-2xl text-blue-500 flex justify-center items-center w-full">
-                    {hello.data ? (
-                        <p>{hello.data.greeting}</p>
-                    ) : (
-                        <p>Loading..</p>
-                    )}
+
+                <div>
+                    {data.data!.map(p => (
+                        <pre>{JSON.stringify(p, null, 2)}</pre>
+                    ))}
                 </div>
             </main>
         </>
@@ -37,8 +38,7 @@ export default Home;
 export const getStaticProps: GetStaticProps = async () => {
     const ssg = await createSSGHelpers();
 
-    await ssg.fetchQuery('example.hello', { text: 'from tRPC' });
-    await ssg.fetchQuery('example.getAll');
+    await ssg.fetchQuery('property.getLastThreeCreated');
 
     return {
         props: {

@@ -6,10 +6,40 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id String @id @default(cuid())
+model User {
+    id          String     @id @default(uuid()) @db.Uuid
+    firstName   String?
+    lastName    String?
+    phoneNumber String?
+    email       String     @unique
+    role        Role       @default(HOUSING_APPLICANT)
+    properties  Property[] // A user can have many properties
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+}
+
+model Property {
+    id        String   @id @default(uuid()) @db.Uuid
+    rentType  RentType @default(LOCATION)
+    userId    String   @db.Uuid
+    owner     User     @relation(fields: [userId], references: [id]) // A Property have one owner
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    archived  Boolean  @default(false)
+}
+
+enum Role {
+    HOUSING_APPLICANT
+    PROPERTY_OWNER
+    ADMIN
+}
+
+enum RentType {
+    LOCATION
+    SHARED_APPARTMENT
+    SHORT_TERM
 }
