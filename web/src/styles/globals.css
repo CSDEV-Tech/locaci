@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
-    color: theme(colors.dark.DEFAULT);
+    color: theme('colors.dark.DEFAULT');
     font-family: 'Inter', sans-serif;
 }
