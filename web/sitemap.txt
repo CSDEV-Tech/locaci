@@ -1,0 +1,19 @@
+* (SSG)
++ (ISR)
+° (SPA)
+- (SSR)
+
++ / (each day)
+  * /about
+  * /privacy-terms
+  * /faq
+
+  * /signin
+  * /signup
+
+  * /search
+  + /property/:id (manual)
+    + /book (manual)
+
+  ° /landlord/*
+  ° /tenant/*

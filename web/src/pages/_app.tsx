@@ -46,6 +46,12 @@ export default withTRPC<AppRouter>({
                         staleTime: 300_000
                     }
                 }
+            },
+            headers: () => {
+                // on ssr, forward client's headers to the server
+                return {
+                    cookie: ctx?.req?.headers.cookie
+                };
             }
         };
     },

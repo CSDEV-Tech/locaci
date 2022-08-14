@@ -2,11 +2,26 @@ import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { trpc, createSSGHelpers } from '../utils/trpc';
 import { Button } from '@locaci/ui';
+import { getHostWithScheme } from '../lib/functions';
+import { supabase } from '../utils/supabase-client';
 
 const Home: NextPage = () => {
     const data = trpc.useQuery(['property.getLastThreeCreated'], {
         staleTime: Infinity
     });
+
+    async function login(provider: 'google' | 'facebook' | 'azure') {
+        await supabase.auth.signIn(
+            {
+                provider
+            },
+            {
+                redirectTo: `${getHostWithScheme(
+                    window.location.href
+                )}/auth/callback`
+            }
+        );
+    }
 
     return (
         <>
@@ -21,11 +36,13 @@ const Home: NextPage = () => {
                     Create <span className="text-purple-300">T3</span> App
                 </h1>
 
-                <Button variant="primary">Hello there</Button>
+                <Button variant="primary" onClick={() => login('google')}>
+                    Login with google
+                </Button>
 
                 <div>
                     {data.data!.map(p => (
-                        <pre>{JSON.stringify(p, null, 2)}</pre>
+                        <pre key={p.id}>{JSON.stringify(p, null, 2)}</pre>
                     ))}
                 </div>
             </main>
