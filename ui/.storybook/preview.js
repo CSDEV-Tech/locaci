@@ -5,7 +5,6 @@ export const parameters = {
     docs: {
         theme: themes.dark
     },
-    layout: 'fullscreen',
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
         matchers: {
