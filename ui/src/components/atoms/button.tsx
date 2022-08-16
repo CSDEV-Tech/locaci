@@ -47,15 +47,15 @@ export function Button({
                     'inline-flex': !block,
                     '!px-2': square,
                     'bg-primary hover:bg-primary-75 active:bg-primary-75 ring-primary/50 text-white':
-                        variant === `primary`,
+                        variant === 'primary',
                     'bg-secondary hover:bg-secondary-75 active:bg-secondary-75 ring-secondary/50 text-white':
                         variant === 'secondary',
                     'bg-lightgray text-dark ring-gray/50': variant === 'hollow',
-                    'bg-gray !text-white cursor-not-allowed hover:bg-gray active:bg-gray':
+                    'disabled:bg-gray disabled:text-white disabled:cursor-not-allowed disabled:hover:bg-gray disabled:active:bg-gray':
                         loading || disabled,
                     'bg-transparent text-dark ring-gray/50':
-                        variant === `outline`,
-                    'bg-dark text-white ring-dark/50': variant === `dark`
+                        variant === 'outline',
+                    'bg-dark text-white ring-dark/50': variant === 'dark'
                 }
             )}
             onClick={onClick}>
