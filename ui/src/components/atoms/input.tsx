@@ -13,61 +13,97 @@ export type InputProps<T> = {
     className?: string;
     disabled?: boolean;
     autoFocus?: boolean;
+    required?: boolean;
+    errorText?: string;
 };
 
 export interface TextInputProps extends InputProps<string> {
     type?: 'text' | 'tel' | 'email';
+    appendix?: React.ReactNode;
 }
 
 export function TextInput({
+    appendix,
     value,
     onChange,
     name,
     label,
     className,
     autoFocus,
+    errorText,
+    required = false,
     disabled = false,
     type = 'text',
     placeholder = 'placeholder...'
 }: TextInputProps) {
     const id = useId();
+    const errorId = useId();
     return (
-        <div
-            className={clsx(className, 'px-4 pt-4 pb-2 rounded-lg border', {
-                'bg-white': !disabled,
-                'bg-lightgray': disabled
-            })}>
-            <div className={'relative w-full'}>
-                <input
-                    id={id}
-                    name={name}
-                    autoFocus={autoFocus}
-                    type={type}
-                    value={value}
-                    disabled={disabled}
-                    onChange={e => onChange?.(e.target.value)}
-                    className={clsx(
-                        'peer h-10 w-full text-dark font-semibold placeholder-transparent',
-                        'bg-transparent focus:outline-none'
+        <div className="flex flex-col gap-1">
+            <div
+                className={clsx(className, 'px-4 pt-4 pb-2 rounded-lg border', {
+                    'bg-white': !disabled,
+                    'bg-lightgray': disabled,
+                    'border-red-400': !!errorText,
+                    'focus-within:ring-2 focus-within:ring-red-300': !!errorText
+                })}>
+                <div className={'relative w-full group flex items-center'}>
+                    <input
+                        aria-describedby={errorId}
+                        id={id}
+                        name={name}
+                        autoFocus={autoFocus}
+                        type={type}
+                        value={value}
+                        required={required}
+                        disabled={disabled}
+                        onChange={e => onChange?.(e.target.value)}
+                        className={clsx(
+                            'peer h-10 w-full font-semibold placeholder-transparent text-dark',
+                            'bg-transparent focus:outline-none'
+                        )}
+                        placeholder={placeholder}
+                    />
+                    <label
+                        htmlFor={id}
+                        className={clsx(
+                            'absolute left-0 -top-3.5 text-sm transition-all font-semibold',
+                            'peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
+                            'peer-focus:-top-3.5 peer-focus:text-sm',
+                            'text-gray peer-placeholder-shown:text-gray peer-focus:text-gray'
+                        )}>
+                        {label}
+                        {required && (
+                            <span
+                                aria-label="ce champ est requis"
+                                className="text-red-400">
+                                *
+                            </span>
+                        )}
+                    </label>
+
+                    {appendix && (
+                        <span
+                            className={clsx(
+                                `font-semibold text-gray group-focus-within:text-dark`
+                            )}>
+                            {appendix}
+                        </span>
                     )}
-                    placeholder={placeholder}
-                />
-                <label
-                    htmlFor={id}
-                    className={clsx(
-                        'absolute left-0 -top-3.5 text-gray text-sm transition-all font-semibold',
-                        'peer-placeholder-shown:text-base peer-placeholder-shown:text-gray peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
-                        'peer-focus:-top-3.5 peer-focus:text-gray peer-focus:text-sm'
-                    )}>
-                    {label}
-                </label>
+                </div>
             </div>
+
+            {errorText && (
+                <small id={errorId} role={`alert`} className={`text-red-500`}>
+                    {errorText}
+                </small>
+            )}
         </div>
     );
 }
 
 export interface NumberInputProps extends InputProps<number> {
-    appendix?: string;
+    appendix?: React.ReactNode;
     showButtons?: boolean;
     min?: number;
     max?: number;
@@ -80,6 +116,8 @@ export function NumberInput({
     label,
     className,
     autoFocus,
+    errorText,
+    required = false,
     showButtons = false,
     disabled = false,
     min = 0,
@@ -88,6 +126,7 @@ export function NumberInput({
     placeholder = 'placeholder...'
 }: NumberInputProps) {
     const id = useId();
+    const errorId = useId();
 
     let valueToDisplay = Intl.NumberFormat('fr-FR').format(
         parseInt(value?.toString() ?? '0')
@@ -130,69 +169,89 @@ export function NumberInput({
     }
 
     return (
-        <div
-            className={clsx(className, 'px-4 pt-5 pb-2 rounded-md border', {
-                'bg-white': !disabled,
-                'bg-lightgray': disabled
-            })}>
-            <div className={'relative w-full flex items-center gap-1'}>
-                <input
-                    id={id}
-                    name={name}
-                    type="text"
-                    autoFocus={autoFocus}
-                    disabled={disabled}
-                    inputMode="numeric"
-                    value={valueToDisplay}
-                    onChange={e => handleChange(e.target.value)}
-                    className={clsx(
-                        'peer h-10 w-full text-dark font-semibold placeholder-transparent',
-                        'bg-transparent focus:outline-none'
+        <div className="flex flex-col gap-1">
+            <div
+                className={clsx(className, 'px-4 pt-5 pb-2 rounded-md border', {
+                    'bg-white': !disabled,
+                    'bg-lightgray': disabled,
+                    'border-red-400': !!errorText,
+                    'focus-within:ring-2 focus-within:ring-red-300': !!errorText
+                })}>
+                <div
+                    className={'relative w-full flex items-center gap-1 group'}>
+                    <input
+                        id={id}
+                        aria-describedby={errorId}
+                        name={name}
+                        required={required}
+                        type="text"
+                        autoFocus={autoFocus}
+                        disabled={disabled}
+                        inputMode="numeric"
+                        value={valueToDisplay}
+                        onChange={e => handleChange(e.target.value)}
+                        className={clsx(
+                            'peer h-10 w-full text-dark font-semibold placeholder-transparent',
+                            'bg-transparent focus:outline-none'
+                        )}
+                        placeholder={placeholder}
+                    />
+                    <label
+                        htmlFor={id}
+                        className={clsx(
+                            'absolute left-0 -top-3.5 text-gray text-sm transition-all font-semibold',
+                            'peer-placeholder-shown:text-base peer-placeholder-shown:text-gray peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
+                            'peer-focus:-top-3.5 peer-focus:text-gray peer-focus:text-sm peer-focus:font-semibold'
+                        )}>
+                        {label}
+                        {required && (
+                            <span
+                                aria-label="ce champ est requis"
+                                className="text-red-400">
+                                *
+                            </span>
+                        )}
+                    </label>
+                    {appendix && (
+                        <span
+                            className={`font-semibold text-gray group-focus-within:text-dark`}>
+                            {appendix}
+                        </span>
                     )}
-                    placeholder={placeholder}
-                />
-                <label
-                    htmlFor={id}
-                    className={clsx(
-                        'absolute left-0 -top-3.5 text-gray text-sm transition-all font-semibold',
-                        'peer-placeholder-shown:text-base peer-placeholder-shown:text-gray peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
-                        'peer-focus:-top-3.5 peer-focus:text-gray peer-focus:text-sm peer-focus:font-normal'
-                    )}>
-                    {label}
-                </label>
-                {appendix && (
-                    <span className={`font-semibold text-gray`}>
-                        {appendix}
-                    </span>
-                )}
 
-                {showButtons && (
-                    <>
-                        <Button
-                            variant={`outline`}
-                            square
-                            className={clsx({
-                                'pointer-events-none': disabled
-                            })}
-                            renderTrailingIcon={cls => (
-                                <MinusCircle className={cls} />
-                            )}
-                            onClick={decrement}
-                        />
-                        <Button
-                            variant={`outline`}
-                            square
-                            className={clsx({
-                                'pointer-events-none': disabled
-                            })}
-                            renderTrailingIcon={cls => (
-                                <PlusCircle className={cls} />
-                            )}
-                            onClick={increment}
-                        />
-                    </>
-                )}
+                    {showButtons && (
+                        <>
+                            <Button
+                                variant={`outline`}
+                                square
+                                className={clsx({
+                                    'pointer-events-none': disabled
+                                })}
+                                renderTrailingIcon={cls => (
+                                    <MinusCircle className={cls} />
+                                )}
+                                onClick={decrement}
+                            />
+                            <Button
+                                variant={`outline`}
+                                square
+                                className={clsx({
+                                    'pointer-events-none': disabled
+                                })}
+                                renderTrailingIcon={cls => (
+                                    <PlusCircle className={cls} />
+                                )}
+                                onClick={increment}
+                            />
+                        </>
+                    )}
+                </div>
             </div>
+            {errorText && (
+                <small id={errorId} role={`alert`} className={`text-red-500`}>
+                    {errorText}
+                </small>
+            )}
         </div>
     );
 }
