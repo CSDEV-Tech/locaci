@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useId } from 'react';
-import { MinusCircle, PlusCircle } from 'phosphor-react';
+import { MinusCircle, PlusCircle, XCircle } from 'phosphor-react';
 import { clsx } from '../../lib/functions';
 import { Button } from '../atoms/button';
 
@@ -39,9 +39,9 @@ export function TextInput({
     const id = useId();
     const errorId = useId();
     return (
-        <div className="flex flex-col gap-1">
+        <div className={clsx(className, 'flex flex-col gap-1')}>
             <div
-                className={clsx(className, 'px-4 pt-4 pb-2 rounded-lg border', {
+                className={clsx('px-4 pt-4 pb-2 rounded-lg border', {
                     'bg-white': !disabled,
                     'bg-lightgray': disabled,
                     'border-red-400': !!errorText,
@@ -82,12 +82,17 @@ export function TextInput({
                         )}
                     </label>
 
-                    {appendix && (
+                    {(appendix !== undefined || !!errorText) && (
                         <span
-                            className={clsx(
-                                `font-semibold text-gray group-focus-within:text-dark`
-                            )}>
-                            {appendix}
+                            className={`font-semibold text-gray group-focus-within:text-dark`}>
+                            {!!errorText ? (
+                                <XCircle
+                                    weight="fill"
+                                    className="text-red-400"
+                                />
+                            ) : (
+                                appendix
+                            )}
                         </span>
                     )}
                 </div>
@@ -169,13 +174,13 @@ export function NumberInput({
     }
 
     return (
-        <div className="flex flex-col gap-1">
+        <div className={clsx(className, 'flex flex-col gap-1')}>
             <div
                 className={clsx(className, 'px-4 pt-5 pb-2 rounded-md border', {
                     'bg-white': !disabled,
                     'bg-lightgray': disabled,
                     'border-red-400': !!errorText,
-                    'focus-within:ring-2 focus-within:ring-red-300': !!errorText
+                    'focus-within:ring-2 focus-within:ring-red-400': !!errorText
                 })}>
                 <div
                     className={'relative w-full flex items-center gap-1 group'}>
@@ -212,12 +217,21 @@ export function NumberInput({
                             </span>
                         )}
                     </label>
-                    {appendix && (
-                        <span
-                            className={`font-semibold text-gray group-focus-within:text-dark`}>
-                            {appendix}
-                        </span>
-                    )}
+
+                    {!showButtons &&
+                        (appendix !== undefined || !!errorText) && (
+                            <span
+                                className={`font-semibold text-gray group-focus-within:text-dark`}>
+                                {!!errorText ? (
+                                    <XCircle
+                                        weight="fill"
+                                        className="text-red-400"
+                                    />
+                                ) : (
+                                    appendix
+                                )}
+                            </span>
+                        )}
 
                     {showButtons && (
                         <>
