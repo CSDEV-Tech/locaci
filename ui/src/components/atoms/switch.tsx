@@ -4,7 +4,7 @@ import { clsx } from '../../lib/functions';
 
 export type ToggleProps = {
     checked?: boolean;
-    onChange: (newValue: boolean) => void;
+    onChange: (checked: boolean) => void;
     title?: string;
     variant?: 'primary' | 'secondary';
 };
