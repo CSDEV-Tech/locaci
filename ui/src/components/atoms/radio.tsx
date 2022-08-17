@@ -7,7 +7,6 @@ export type RadioProps = {
     variant?: 'primary' | 'secondary';
     label: string;
     className?: string;
-    required?: boolean;
     disabled?: boolean;
 };
 
@@ -17,8 +16,7 @@ export function Radio({
     onChange,
     variant = 'primary',
     disabled = false,
-    checked = false,
-    required = false
+    checked = false
 }: RadioProps) {
     return (
         <label
@@ -30,7 +28,6 @@ export function Radio({
                 disabled={disabled}
                 type="radio"
                 checked={checked}
-                required={required}
                 className={'hidden'}
                 onChange={ev => {
                     if (ev.target.checked) {
@@ -45,18 +42,21 @@ export function Radio({
                     'rounded-full items-center justify-center flex',
                     'after:w-2 after:h-2',
                     {
-                        'after:hidden bg-lightgray': !checked,
+                        'after:hidden bg-lightgray': !checked && !disabled,
+                        'bg-gray': disabled,
                         'after:bg-white after:rounded-full after:block':
                             checked,
-                        'bg-primary': checked && variant === 'primary',
-                        'bg-secondary': checked && variant === 'secondary'
+                        'bg-primary':
+                            !disabled && checked && variant === 'primary',
+                        'bg-secondary':
+                            !disabled && checked && variant === 'secondary'
                     }
                 )}
             />
             <span
                 className={clsx('font-semibold', {
                     'text-dark': checked,
-                    'text-gray': !checked
+                    'text-gray': !checked || disabled
                 })}>
                 {label}
             </span>

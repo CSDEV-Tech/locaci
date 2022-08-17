@@ -13,6 +13,7 @@ export type RadioGroupProps = {
     className?: string;
     onChange: (newValue: string) => void;
     variant?: 'primary' | 'secondary';
+    disabled?: boolean;
 };
 
 export function RadioGroup({
@@ -21,6 +22,7 @@ export function RadioGroup({
     onChange,
     className,
     label,
+    disabled = false,
     variant = 'primary'
 }: RadioGroupProps) {
     return (
@@ -36,6 +38,7 @@ export function RadioGroup({
                 <HeadlessUIRadioGroup.Option value={value} key={value}>
                     {({ checked }) => (
                         <Radio
+                            disabled={disabled}
                             variant={variant}
                             checked={checked}
                             label={label}
