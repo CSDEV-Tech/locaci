@@ -28,7 +28,7 @@ export function Radio({
                 disabled={disabled}
                 type="radio"
                 checked={checked}
-                className={'hidden'}
+                className={'sr-only'}
                 onChange={ev => {
                     if (ev.target.checked) {
                         onChange?.(true);

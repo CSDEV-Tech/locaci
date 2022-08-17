@@ -32,16 +32,21 @@ export function Checkbox({
                 onChange={ev => {
                     onChange?.(ev.target.checked);
                 }}
-                className={'hidden'}
+                className={'sr-only'}
             />
 
             <div
                 className={clsx(
                     'w-5 h-5 min-w-[1.25rem] ',
                     'rounded-md items-center justify-center flex',
+                    'group-focus-within:ring-2',
                     {
                         'bg-lightgray': !checked,
                         'bg-gray': disabled,
+                        'group-focus-within:ring-secondary/50':
+                            !disabled && variant === 'secondary',
+                        'group-focus-within:ring-primary/50':
+                            !disabled && variant === 'primary',
                         'bg-primary':
                             !disabled && checked && variant === 'primary',
                         'bg-secondary':
