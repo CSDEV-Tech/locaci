@@ -23,6 +23,6 @@
         "suppressImplicitAnyIndexErrors": true,
         "emitDeclarationOnly": true
     },
-    "include": ["./src/**/*.ts", "./src/components/*.tsx"],
+    "include": ["./src/**/*.ts", "./src/components/**/*.tsx"],
     "exclude": ["./node_modules", "./dist", "./src/stories"]
 }
