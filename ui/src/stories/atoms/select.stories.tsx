@@ -4,7 +4,12 @@ import { Select, SelectProps } from '../../components/atoms/select';
 
 export default {
     title: 'Composants/Atoms/Select',
-    component: Select
+    component: Select,
+    argTypes: {
+        variant: {
+            control: 'select'
+        }
+    }
 } as ComponentMeta<typeof Select>;
 
 // 👇 We create a “template” of how args map to rendering

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Listbox } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
-import { CaretDown, CheckCircle } from 'phosphor-react';
+import { CaretDown, Check, CheckCircle } from 'phosphor-react';
 
 export type SelectProps = {
     value?: string;
@@ -11,6 +11,7 @@ export type SelectProps = {
     className?: string;
     autoFocus?: boolean;
     disabled?: boolean;
+    variant?: 'primary' | 'secondary';
 };
 
 export function Select({
@@ -19,6 +20,7 @@ export function Select({
     className,
     autoFocus,
     onChange,
+    variant = 'primary',
     disabled = false,
     options = []
 }: SelectProps) {
@@ -50,6 +52,7 @@ export function Select({
                                     {selected?.label ?? 'Choisissez une option'}
                                 </span>
                                 <CaretDown
+                                    weight="bold"
                                     className={clsx({
                                         'rotate-180': open
                                     })}
@@ -70,32 +73,50 @@ export function Select({
                                                 clsx(
                                                     'cursor-pointer px-4 py-2 flex items-center justify-between',
                                                     {
-                                                        'bg-accent-primary':
-                                                            active
+                                                        'bg-primary':
+                                                            active &&
+                                                            variant ===
+                                                                'primary',
+                                                        'bg-secondary':
+                                                            active &&
+                                                            variant ===
+                                                                'secondary'
                                                     }
                                                 )
                                             }>
                                             {({ selected, active }) => (
                                                 <>
                                                     <span
-                                                        className={clsx(
-                                                            'font-semibold',
-                                                            {
-                                                                'text-gray': !(
+                                                        className={clsx('', {
+                                                            'text-dark font-normal':
+                                                                !(
                                                                     selected ||
                                                                     active
                                                                 ),
-                                                                'text-dark':
-                                                                    selected ||
-                                                                    active
-                                                            }
-                                                        )}>
+                                                            'font-semibold':
+                                                                selected,
+                                                            'text-white': active
+                                                        })}>
                                                         {option.label}
                                                     </span>
 
                                                     {selected && (
                                                         <CheckCircle
-                                                            className="text-primary/75 h-4 min-w-4"
+                                                            className={clsx(
+                                                                'h-4 min-w-4',
+                                                                {
+                                                                    'text-primary':
+                                                                        !active &&
+                                                                        variant ===
+                                                                            'primary',
+                                                                    'text-secondary':
+                                                                        !active &&
+                                                                        variant ===
+                                                                            'secondary',
+                                                                    'text-white':
+                                                                        active
+                                                                }
+                                                            )}
                                                             weight="fill"
                                                         />
                                                     )}
