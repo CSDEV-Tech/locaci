@@ -6,6 +6,9 @@ export * from './components/atoms/switch';
 export * from './components/atoms/input';
 export * from './components/atoms/checkbox';
 export * from './components/atoms/radio';
+export * from './components/atoms/combobox';
+export * from './components/atoms/select';
+export * from './components/atoms/progress';
 // molecules
 export * from './components/molecules/pagination';
 export * from './components/molecules/checkbox-group';
