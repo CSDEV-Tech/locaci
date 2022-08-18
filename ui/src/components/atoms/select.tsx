@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Listbox } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
-import { CaretDown, Check, CheckCircle } from 'phosphor-react';
+import { CaretDown, CheckCircle } from 'phosphor-react';
 
 export type SelectProps = {
     value?: string;
@@ -33,10 +33,10 @@ export function Select({
                     'px-4 pt-1 pb-2 rounded-md border relative group',
                     {
                         'bg-white': !disabled,
-                        'bg-lightgray': disabled
+                        'bg-lightgray cursor-not-allowed': disabled
                     }
                 )}>
-                <Listbox value={value} onChange={onChange}>
+                <Listbox value={value} onChange={onChange} disabled={disabled}>
                     {({ open }) => (
                         <>
                             <Listbox.Label className="text-sm text-gray font-semibold">
@@ -44,10 +44,16 @@ export function Select({
                             </Listbox.Label>
 
                             <Listbox.Button
+                                disabled={disabled}
                                 autoFocus={autoFocus}
-                                className={
-                                    'h-10 w-full font-semibold text-dark text-start flex items-center justify-between'
-                                }>
+                                className={clsx(
+                                    'h-10 w-full font-semibold text-dark text-start',
+                                    'flex items-center justify-between',
+                                    {
+                                        'cursor-pointer': !disabled,
+                                        'cursor-not-allowed': disabled
+                                    }
+                                )}>
                                 <span>
                                     {selected?.label ?? 'Choisissez une option'}
                                 </span>

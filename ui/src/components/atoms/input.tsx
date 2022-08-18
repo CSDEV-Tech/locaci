@@ -15,6 +15,8 @@ export type InputProps<T> = {
     autoFocus?: boolean;
     required?: boolean;
     errorText?: string;
+    autocomplete?: 'on' | 'off';
+    onBlur?: () => void;
 };
 
 export interface TextInputProps extends InputProps<string> {
@@ -22,90 +24,104 @@ export interface TextInputProps extends InputProps<string> {
     appendix?: React.ReactNode;
 }
 
-export function TextInput({
-    appendix,
-    value,
-    onChange,
-    name,
-    label,
-    className,
-    autoFocus,
-    errorText,
-    required = false,
-    disabled = false,
-    type = 'text',
-    placeholder = 'placeholder...'
-}: TextInputProps) {
-    const id = useId();
-    const errorId = useId();
-    return (
-        <div className={clsx(className, 'flex flex-col gap-1')}>
-            <div
-                className={clsx('px-4 pt-4 pb-2 rounded-lg border', {
-                    'bg-white': !disabled,
-                    'bg-lightgray': disabled,
-                    'border-red-400': !!errorText,
-                    'focus-within:ring-2 focus-within:ring-red-300': !!errorText
-                })}>
-                <div className={'relative w-full group flex items-center'}>
-                    <input
-                        aria-describedby={errorId}
-                        id={id}
-                        name={name}
-                        autoFocus={autoFocus}
-                        type={type}
-                        value={value}
-                        required={required}
-                        disabled={disabled}
-                        onChange={e => onChange?.(e.target.value)}
-                        className={clsx(
-                            'peer h-10 w-full font-semibold placeholder-transparent text-dark',
-                            'bg-transparent focus:outline-none'
-                        )}
-                        placeholder={placeholder}
-                    />
-                    <label
-                        htmlFor={id}
-                        className={clsx(
-                            'absolute left-0 -top-3.5 text-sm transition-all font-semibold',
-                            'peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
-                            'peer-focus:-top-3.5 peer-focus:text-sm',
-                            'text-gray peer-placeholder-shown:text-gray peer-focus:text-gray'
-                        )}>
-                        {label}
-                        {required && (
+export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
+    (
+        {
+            appendix,
+            value,
+            onChange,
+            name,
+            label,
+            className,
+            autoFocus,
+            errorText,
+            onBlur,
+            autocomplete,
+            required = false,
+            disabled = false,
+            type = 'text',
+            placeholder = 'placeholder...'
+        },
+        ref
+    ) => {
+        const id = useId();
+        const errorId = useId();
+        return (
+            <div className={clsx(className, 'flex flex-col gap-1')}>
+                <div
+                    className={clsx('px-4 pt-4 pb-2 rounded-lg border', {
+                        'bg-white': !disabled,
+                        'bg-lightgray': disabled,
+                        'border-red-400': !!errorText,
+                        'focus-within:ring-2 focus-within:ring-red-300':
+                            !!errorText
+                    })}>
+                    <div className={'relative w-full group flex items-center'}>
+                        <input
+                            ref={ref}
+                            aria-describedby={errorId}
+                            id={id}
+                            name={name}
+                            autoFocus={autoFocus}
+                            onBlur={onBlur}
+                            autoComplete={autocomplete}
+                            type={type}
+                            value={value}
+                            required={required}
+                            disabled={disabled}
+                            onChange={e => onChange?.(e.target.value)}
+                            className={clsx(
+                                'peer h-10 w-full font-semibold placeholder-transparent text-dark',
+                                'bg-transparent focus:outline-none'
+                            )}
+                            placeholder={placeholder}
+                        />
+                        <label
+                            htmlFor={id}
+                            className={clsx(
+                                'absolute left-0 -top-3.5 text-sm transition-all font-semibold',
+                                'peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
+                                'peer-focus:-top-3.5 peer-focus:text-sm',
+                                'text-gray peer-placeholder-shown:text-gray peer-focus:text-gray'
+                            )}>
+                            {label}
+                            {required && (
+                                <span
+                                    aria-label="ce champ est requis"
+                                    className="text-red-400">
+                                    *
+                                </span>
+                            )}
+                        </label>
+
+                        {(appendix !== undefined || !!errorText) && (
                             <span
-                                aria-label="ce champ est requis"
-                                className="text-red-400">
-                                *
+                                className={`font-semibold text-gray group-focus-within:text-dark`}>
+                                {!!errorText ? (
+                                    <XCircle
+                                        weight="fill"
+                                        className="text-red-400"
+                                    />
+                                ) : (
+                                    appendix
+                                )}
                             </span>
                         )}
-                    </label>
-
-                    {(appendix !== undefined || !!errorText) && (
-                        <span
-                            className={`font-semibold text-gray group-focus-within:text-dark`}>
-                            {!!errorText ? (
-                                <XCircle
-                                    weight="fill"
-                                    className="text-red-400"
-                                />
-                            ) : (
-                                appendix
-                            )}
-                        </span>
-                    )}
+                    </div>
                 </div>
-            </div>
 
-            {errorText && (
-                <small id={errorId} role={`alert`} className={`text-red-500`}>
-                    {errorText}
-                </small>
-            )}
-        </div>
-    );
-}
+                {errorText && (
+                    <small
+                        id={errorId}
+                        role={`alert`}
+                        className={`text-red-500`}>
+                        {errorText}
+                    </small>
+                )}
+            </div>
+        );
+    }
+);
 
 export interface NumberInputProps extends InputProps<number> {
     appendix?: React.ReactNode;
