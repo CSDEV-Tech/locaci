@@ -1,30 +1,11 @@
-import * as React from 'react';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { trpc, createSSGHelpers } from '../utils/trpc';
-import { Button, TextInput } from '@locaci/ui';
-import { getHostWithScheme } from '../lib/functions';
-import { supabase } from '../utils/supabase-client';
 
 const Home: NextPage = () => {
     const data = trpc.useQuery(['property.getLastThreeCreated'], {
         staleTime: Infinity
     });
-
-    const [email, setEmail] = React.useState('');
-
-    async function login(email: string) {
-        await supabase.auth.signIn(
-            {
-                email
-            },
-            {
-                redirectTo: `${getHostWithScheme(
-                    window.location.href
-                )}/auth/callback`
-            }
-        );
-    }
 
     return (
         <>
@@ -39,27 +20,11 @@ const Home: NextPage = () => {
                     LOCACI
                 </h1>
 
-                <form
-                    className="flex flex-col gap-4 items-stretch"
-                    onSubmit={e => {
-                        e.preventDefault();
-                        login(email);
-                    }}>
-                    <TextInput
-                        type="email"
-                        value={email}
-                        label="Email"
-                        onChange={setEmail}
-                    />
-                    <Button variant="hollow" type="submit" block>
-                        Login with email
-                    </Button>
-                </form>
-                <div>
+                {/* <div>
                     {data.data!.map(p => (
                         <pre key={p.id}>{JSON.stringify(p, null, 2)}</pre>
                     ))}
-                </div>
+                </div> */}
             </main>
         </>
     );

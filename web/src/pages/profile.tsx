@@ -3,24 +3,24 @@ import type { NextPage } from 'next';
 import { trpc } from 'web/src/utils/trpc';
 import { Button } from '@locaci/ui';
 import { supabase } from '../utils/supabase-client';
-import { useAuthCookieMutation } from './hooks/use-auth-cookie';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
+    const router = useRouter();
     const { data, isLoading } = trpc.useQuery(['auth.getUser']);
-    const mutation = useAuthCookieMutation();
+    const mutation = trpc.useMutation('auth.remove-auth-cookie');
 
     return (
         <main className="bg-dark min-h-screen w-full text-white">
             <h1 className="text-white">PROFILE</h1>
 
             <Button
+                loading={mutation.isLoading}
                 variant="secondary"
                 onClick={async () => {
                     await supabase.auth.signOut();
-                    mutation.mutate({
-                        event: 'SIGNED_OUT',
-                        session: null
-                    });
+                    mutation.mutate();
+                    router.push('/');
                 }}>
                 Logout
             </Button>

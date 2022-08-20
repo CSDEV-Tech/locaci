@@ -32,3 +32,22 @@ export async function jsonFetch<T>(
             console.error('There was an error ?', error);
         });
 }
+
+/**
+ * Get the value of a cookie with the given name and given the cookie string,
+ * can be a server cookie or a document cookie
+ * @example
+ *      getCookie('name', document.cookie);
+ *      // => "value"
+ * @param name
+ * @returns
+ */
+export function getCookie(name: string, cookieStr: string): string | null {
+    const value = `; ${cookieStr}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        return parts.pop()?.split(';').shift() ?? null;
+    }
+
+    return null;
+}

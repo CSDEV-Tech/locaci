@@ -5,6 +5,8 @@ import type { AppProps } from 'next/app';
 import superjson from 'superjson';
 import '../styles/globals.css';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { loggerLink } from '@trpc/client/links/loggerLink';
+import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
@@ -33,8 +35,20 @@ export default withTRPC<AppRouter>({
          */
         const url = `${getBaseUrl()}/api/trpc`;
 
+        const links = [
+            httpBatchLink({
+                maxBatchSize: 10,
+                url
+            })
+        ];
+
+        if (process.env.NODE_ENV === 'development') {
+            links.push(loggerLink());
+        }
+
         return {
             url,
+            links,
             transformer: superjson,
             /**
              * @link https://react-query.tanstack.com/reference/QueryClient
@@ -43,7 +57,7 @@ export default withTRPC<AppRouter>({
                 defaultOptions: {
                     queries: {
                         refetchOnWindowFocus: false,
-                        staleTime: 300_000
+                        staleTime: 5 * 60 * 1_000 // 5 minutes
                     }
                 }
             },

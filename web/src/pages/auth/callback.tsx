@@ -2,8 +2,9 @@ import * as React from 'react';
 import type { NextPage } from 'next';
 import { supabase } from 'web/src/utils/supabase-client';
 import { trpc } from 'web/src/utils/trpc';
-import { useAuthCookieMutation } from '../hooks/use-auth-cookie';
 import { useRouter } from 'next/router';
+// import { useAuthCookieMutation } from '../hooks/use-auth-cookie';
+// import { getHostWithScheme } from 'web/src/lib/functions';
 
 /**
  *
@@ -20,32 +21,36 @@ import { useRouter } from 'next/router';
  *
  */
 
-const Home: NextPage = () => {
+export default function () {
     const router = useRouter();
-    const authCookieMutation = useAuthCookieMutation();
+
+    const authCookieMutation = trpc.useMutation('auth.set-auth-cookie', {
+        onSuccess() {
+            router.push('/profile');
+        }
+    });
     const userMutation = trpc.useMutation('auth.getOrCreateUser', {
-        onSuccess(data, { event, session }) {
+        onSuccess(data) {
             authCookieMutation.mutate({
-                session: session,
-                event
+                uid: data.id
             });
         }
     });
 
     React.useEffect(() => {
-        const hash = window.location.hash.trim();
+        const params = new URLSearchParams(window.location.hash.substring(1));
 
-        if (!hash) {
-            router.push('/');
+        // if no token, redirect to login
+        if (!params.has('access_token')) {
+            router.push('/login');
         }
 
-        const { data: authListener } = supabase.auth.onAuthStateChange(
+        const { subscription: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
                 if (session?.user) {
                     userMutation.mutate({
                         email: session.user.email!,
-                        event,
-                        session
+                        uid: session.user.id
                     });
                 }
             }
@@ -56,11 +61,39 @@ const Home: NextPage = () => {
         };
     }, []);
 
+    // React.useEffect(() => {
+    //     const verify = async () => {
+    //         const params = new URLSearchParams(
+    //             window.location.hash.substring(1)
+    //         );
+
+    //         // if not redirect to home with error !
+    //         if (params.has('access_token')) {
+    //             const token = params.get('access_token') as string;
+
+    //             const { data, error } = await supabase.auth.verifyOtp(
+    //                 {
+    //                     token,
+    //                     type: 'magiclink',
+    //                     email: 'fredkiss3@gmail.com'
+    //                 },
+    //                 {
+    //                     redirectTo: `${getHostWithScheme(
+    //                         window.location.href
+    //                     )}/auth/callback`
+    //                 }
+    //             );
+
+    //             console.log({ data, error });
+    //         }
+    //     };
+
+    //     verify();
+    // }, []);
+
     return (
         <main className="bg-dark h-screen w-screen">
             <h1 className="text-white">LOADING...</h1>
         </main>
     );
-};
-
-export default Home;
+}

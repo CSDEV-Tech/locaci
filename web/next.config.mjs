@@ -18,6 +18,6 @@ const nextConfig = defineNextConfig({
     swcMinify: true
 });
 
-const withTM = transpile(['@locaci/ui']);
+const withTM = transpile(['@locaci/ui', '@locaci/domain']);
 
 export default withTM(nextConfig);

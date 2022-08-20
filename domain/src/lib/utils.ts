@@ -10,6 +10,7 @@ export function generateMock<T extends z.ZodTypeAny>(
     options?: GenerateMockOptions
 ) {
     return {
+        // @ts-ignore
         ...trueGenerateMock(zodRef, options),
         ...defaultValue
     };
