@@ -10,7 +10,7 @@ export type LoginPageProps = {};
 export default function LoginPage(props: LoginPageProps) {
     const [email, setEmail] = React.useState('');
     const [msg, setMsg] = React.useState<string | null>(null);
-    const mutation = trpc.useMutation('auth.send-email-link');
+    const mutation = trpc.useMutation('auth.sendEmailLink');
 
     async function login(email: string) {
         await mutation.mutateAsync({
@@ -37,6 +37,7 @@ export default function LoginPage(props: LoginPageProps) {
                         square
                         variant="outline"
                         onClick={() => setMsg(null)}
+                        ariaLabel="fermer"
                         renderLeadingIcon={cls => (
                             <X className={cls} weight="bold" />
                         )}

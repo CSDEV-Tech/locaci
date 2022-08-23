@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 const Home: NextPage = () => {
     const router = useRouter();
     const { data, isLoading } = trpc.useQuery(['auth.getUser']);
-    const mutation = trpc.useMutation('auth.remove-auth-cookie');
+    const mutation = trpc.useMutation('auth.removeAuthCookie');
 
     return (
         <main className="bg-dark min-h-screen w-full text-white">

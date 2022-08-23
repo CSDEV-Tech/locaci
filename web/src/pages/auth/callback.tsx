@@ -20,11 +20,10 @@ import { useRouter } from 'next/router';
  *      - redirect to profile page
  *
  */
-
 export default function () {
     const router = useRouter();
 
-    const authCookieMutation = trpc.useMutation('auth.set-auth-cookie', {
+    const authCookieMutation = trpc.useMutation('auth.setAuthCookie', {
         onSuccess() {
             router.push('/profile');
         }
@@ -45,16 +44,16 @@ export default function () {
             router.push('/login');
         }
 
-        const { subscription: authListener } = supabase.auth.onAuthStateChange(
-            (event, session) => {
-                if (session?.user) {
-                    userMutation.mutate({
-                        email: session.user.email!,
-                        uid: session.user.id
-                    });
-                }
+        const {
+            data: { subscription: authListener }
+        } = supabase.auth.onAuthStateChange((event, session) => {
+            if (session?.user) {
+                userMutation.mutate({
+                    email: session.user.email!,
+                    uid: session.user.id
+                });
             }
-        );
+        });
 
         return () => {
             authListener?.unsubscribe();

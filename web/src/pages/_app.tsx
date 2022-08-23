@@ -3,10 +3,10 @@ import { withTRPC } from '@trpc/next';
 import type { AppRouter } from '../server/router';
 import type { AppProps } from 'next/app';
 import superjson from 'superjson';
-import '../styles/globals.css';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
