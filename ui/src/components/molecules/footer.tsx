@@ -1,7 +1,7 @@
-import { FacebookLogo, LinkedinLogo } from 'phosphor-react';
 import * as React from 'react';
 import { clsx } from '../../lib/functions';
 import { CustomLink, Link } from '../atoms/link';
+import { FacebookLogo, LinkedinLogo } from 'phosphor-react';
 
 export type NavLinks = {
     title: string;
@@ -72,7 +72,7 @@ export function Footer({ className, links, customLink }: FooterProps) {
                                 aria-label="Lien Facebook">
                                 <FacebookLogo
                                     weight="fill"
-                                    className="h-8 w-8"
+                                    className="h-8 w-8 hover:text-[#2374e1] transition-colors duration-300"
                                 />
                             </a>
                         </li>
@@ -83,7 +83,7 @@ export function Footer({ className, links, customLink }: FooterProps) {
                                 aria-label="Lien Linkedin">
                                 <LinkedinLogo
                                     weight="fill"
-                                    className="h-8 w-8"
+                                    className="h-8 w-8 hover:text-[#0A66C2] transition-colors duration-300"
                                 />
                             </a>
                         </li>
