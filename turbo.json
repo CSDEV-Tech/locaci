@@ -6,7 +6,6 @@
             "outputs": ["dist/**", ".next/**"]
         },
         "test": {
-            "dependsOn": ["build"],
             "outputs": [],
             "inputs": ["src/**/*.ts", "test/**/*.ts"]
         },
@@ -17,7 +16,7 @@
             "outputs": []
         },
         "deploy": {
-            "dependsOn": ["build", "test", "lint"],
+            "dependsOn": ["test", "build"],
             "outputs": []
         }
     }

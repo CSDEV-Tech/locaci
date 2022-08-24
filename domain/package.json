@@ -13,7 +13,6 @@
     "scripts": {
         "gen": "node ./scripts/generate.js",
         "build": "tsup ./src/** --treeshake && tsc --emitDeclarationOnly",
-        "dev": "nodemon",
         "test": "FORCE_COLOR=true vitest run",
         "test:watch": "FORCE_COLOR=true vitest",
         "test:ui": "vitest --ui"

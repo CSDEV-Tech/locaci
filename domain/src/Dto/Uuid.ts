@@ -16,7 +16,7 @@ export class Uuid {
     }
 
     short() {
-        return short().fromUUID(this.value);
+        return short().fromUUID(this.value).toString();
     }
 
     static fromShort(shortUUID: string) {
