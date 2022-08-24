@@ -15,6 +15,7 @@ export type InputProps<T> = {
     autoFocus?: boolean;
     required?: boolean;
     errorText?: string;
+    helpText?: string;
     autocomplete?: 'on' | 'off';
     onBlur?: () => void;
 };
@@ -37,6 +38,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             errorText,
             onBlur,
             autocomplete,
+            helpText,
             required = false,
             disabled = false,
             type = 'text',
@@ -46,6 +48,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     ) => {
         const id = useId();
         const errorId = useId();
+        const helpId = useId();
         return (
             <div className={clsx(className, 'flex flex-col gap-1')}>
                 <div
@@ -118,6 +121,12 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                         {errorText}
                     </small>
                 )}
+
+                {helpText && (
+                    <small id={helpId} className={`text-gray`}>
+                        {helpText}
+                    </small>
+                )}
             </div>
         );
     }
@@ -138,6 +147,7 @@ export function NumberInput({
     className,
     autoFocus,
     errorText,
+    helpText,
     required = false,
     showButtons = false,
     disabled = false,
@@ -148,6 +158,7 @@ export function NumberInput({
 }: NumberInputProps) {
     const id = useId();
     const errorId = useId();
+    const helpId = useId();
 
     let valueToDisplay = Intl.NumberFormat('fr-FR').format(
         parseInt(value?.toString() ?? '0')
@@ -280,6 +291,12 @@ export function NumberInput({
             {errorText && (
                 <small id={errorId} role={`alert`} className={`text-red-500`}>
                     {errorText}
+                </small>
+            )}
+
+            {helpText && (
+                <small id={helpId} className={`text-gray`}>
+                    {helpText}
                 </small>
             )}
         </div>

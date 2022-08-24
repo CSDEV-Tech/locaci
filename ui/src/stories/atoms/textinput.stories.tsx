@@ -36,11 +36,12 @@ Disabled.args = {
     disabled: true
 };
 
-export const WithError = Template.bind({});
-WithError.args = {
+export const WithText = Template.bind({});
+WithText.args = {
     label: 'Email',
     placeholder: `kkouakou@gmail.com`,
     className: `inline-block w-80`,
     value: `kkouakougmail.com`,
-    errorText: "Email invalide ! Il manque un '@'"
+    errorText: "Email invalide ! Il manque un '@'",
+    helpText: 'Nous vous enverrons un email pour vous connecter'
 };
