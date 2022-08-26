@@ -6,19 +6,43 @@ export type LinkProps = {
     className?: string;
     target?: '_blank' | '_self' | '_parent' | '_top';
     children?: React.ReactNode;
+    'aria-label'?: string;
+    rel?: string;
+    'aria-current'?: React.AriaAttributes['aria-current'];
     Custom?: CustomLink;
 };
 
-export type CustomLink = React.ComponentType<Omit<LinkProps, 'custom'>>;
+export type CustomLink = React.ComponentType<Omit<LinkProps, 'Custom'>>;
 
-export function Link({ children, className, Custom, href, target }: LinkProps) {
+export function Link({
+    children,
+    className,
+    Custom,
+    href,
+    target,
+    rel,
+    'aria-label': ariaLabel,
+    'aria-current': ariaCurrent
+}: LinkProps) {
     if (Custom) {
-        return <Custom children={children} className={className} href={href} />;
+        return (
+            <Custom
+                rel={rel}
+                aria-current={ariaCurrent}
+                aria-label={ariaLabel}
+                children={children}
+                className={clsx(className)}
+                href={href}
+            />
+        );
     }
 
     return (
         <a
-            className={clsx(className, 'hover:underline')}
+            rel={rel}
+            aria-label={ariaLabel}
+            aria-current={ariaCurrent}
+            className={clsx(className)}
             href={href}
             target={target}>
             {children}
