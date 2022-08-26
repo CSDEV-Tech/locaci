@@ -11,7 +11,7 @@ export interface ButtonProps {
     children?: React.ReactNode;
     variant?: 'primary' | 'secondary' | 'hollow' | 'outline' | 'dark';
     type?: 'button' | 'submit' | 'reset';
-    ariaLabel?: string;
+    'aria-label'?: string;
     square?: boolean;
     className?: string;
     loading?: boolean;
@@ -23,12 +23,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {
             children,
             onClick,
-            ariaLabel,
             renderTrailingIcon,
             renderLeadingIcon,
             className,
             title,
             type,
+            'aria-label': ariaLabel,
             loading = false,
             disabled = false,
             square = false,
