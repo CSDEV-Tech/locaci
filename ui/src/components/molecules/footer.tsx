@@ -20,29 +20,34 @@ export type FooterProps = {
 export function Footer({ className, links, customLink }: FooterProps) {
     return (
         <footer className={clsx(className, 'w-full')}>
-            <div className="p-10 bg-lightgray">
-                <ul
-                    className={clsx(
-                        'grid grid-cols-2 gap-8',
-                        'max-w-[1200px] mx-auto',
-                        'md:grid-cols-4'
-                    )}>
-                    {links?.map(({ links, title }) => (
-                        <li key={title} className="flex flex-col gap-4">
-                            <h3 className="font-bold">{title}</h3>
-                            <ul className="font-normal flex flex-col gap-3 text-gray">
-                                {links?.map(({ label, href }) => (
-                                    <li key={href}>
-                                        <Link Custom={customLink} href={href}>
-                                            {label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {links?.length > 0 && (
+                <div className="p-10 bg-lightgray">
+                    <ul
+                        className={clsx(
+                            'grid grid-cols-2 gap-8',
+                            'max-w-[1200px] mx-auto',
+                            'md:grid-cols-4'
+                        )}>
+                        {links?.map(({ links, title }) => (
+                            <li key={title} className="flex flex-col gap-4">
+                                <h3 className="font-bold">{title}</h3>
+                                <ul className="font-normal flex flex-col gap-3 text-gray">
+                                    {links?.map(({ label, href }) => (
+                                        <li key={href}>
+                                            <Link
+                                                Custom={customLink}
+                                                href={href}
+                                                className="hover:underline">
+                                                {label}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             <div className="p-4 bg-white">
                 <div

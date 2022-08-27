@@ -70,3 +70,6 @@ Default.args = {
         }
     ]
 } as FooterProps;
+
+export const NoLinks = Template.bind({});
+NoLinks.args = {};
