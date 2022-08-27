@@ -76,7 +76,8 @@ export function Select({
                                 <Listbox.Options
                                     className={clsx(
                                         'bg-white py-3 flex flex-col rounded-md border shadow-card',
-                                        'absolute top-[calc(100%+0.5rem)] left-0 right-0'
+                                        'absolute top-[calc(100%+0.5rem)] left-0 right-0',
+                                        'max-h-[300px] overflow-y-scroll'
                                     )}>
                                     {options.map(option => (
                                         <Listbox.Option
