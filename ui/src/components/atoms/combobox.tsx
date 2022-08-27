@@ -49,7 +49,7 @@ export function ComboBox({
                 }
             }}>
             {({ open }) => (
-                <div className={clsx(className, 'relative')}>
+                <div className={clsx(className, 'relative w-full')}>
                     <div>
                         <Combobox.Input<
                             'div',

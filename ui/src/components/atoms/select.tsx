@@ -30,7 +30,7 @@ export function Select({
             <div
                 className={clsx(
                     className,
-                    'px-4 pt-1 pb-2 rounded-md border relative group',
+                    'px-4 pt-1 pb-0 rounded-md border relative group w-full',
                     {
                         'bg-white': !disabled,
                         'bg-lightgray cursor-not-allowed': disabled
