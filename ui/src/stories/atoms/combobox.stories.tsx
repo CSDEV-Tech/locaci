@@ -3,7 +3,7 @@ import type { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ComboBox, ComboBoxProps } from '../../components/atoms/combobox';
 
 export default {
-    title: 'Composants/Atoms/ComboBox',
+    title: 'Composants/Molecules/ComboBox',
     component: ComboBox,
     argTypes: {
         variant: {
