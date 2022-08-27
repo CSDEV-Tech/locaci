@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Listbox } from '@headlessui/react';
+import { Listbox, Transition } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
 import { CaretDown, CheckCircle } from 'phosphor-react';
 
@@ -30,7 +30,7 @@ export function Select({
             <div
                 className={clsx(
                     className,
-                    'px-4 pt-1 pb-0 rounded-md border relative group w-full',
+                    'px-4 pt-1 pb-2 rounded-md border relative group w-full',
                     {
                         'bg-white': !disabled,
                         'bg-lightgray cursor-not-allowed': disabled
@@ -39,7 +39,7 @@ export function Select({
                 <Listbox value={value} onChange={onChange} disabled={disabled}>
                     {({ open }) => (
                         <>
-                            <Listbox.Label className="text-sm text-gray font-semibold">
+                            <Listbox.Label className="text-sm text-gray font-normal">
                                 {label}
                             </Listbox.Label>
 
@@ -64,11 +64,18 @@ export function Select({
                                     })}
                                 />
                             </Listbox.Button>
-                            {open && (
+
+                            <Transition
+                                as={React.Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95">
                                 <Listbox.Options
-                                    static
                                     className={clsx(
-                                        'bg-white py-3 flex flex-col rounded-md',
+                                        'bg-white py-3 flex flex-col rounded-md border shadow-card',
                                         'absolute top-[calc(100%+0.5rem)] left-0 right-0'
                                     )}>
                                     {options.map(option => (
@@ -131,7 +138,7 @@ export function Select({
                                         </Listbox.Option>
                                     ))}
                                 </Listbox.Options>
-                            )}
+                            </Transition>
                         </>
                     )}
                 </Listbox>
