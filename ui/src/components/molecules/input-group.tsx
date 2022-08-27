@@ -6,11 +6,12 @@ type RenderFunction = (className: string) => React.ReactNode;
 
 export type InputGroupProps = {
     children: RenderFunction | Array<RenderFunction>;
+    className?: string;
 };
 
-export function InputGroup({ children }: InputGroupProps) {
+export function InputGroup({ children, className }: InputGroupProps) {
     return (
-        <div className="flex items-center rounded-md">
+        <div className={clsx(className, 'flex items-center rounded-md')}>
             {Array.isArray(children) ? (
                 children.map((child, index) => {
                     return child(
