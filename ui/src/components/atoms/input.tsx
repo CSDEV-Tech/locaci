@@ -89,8 +89,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                         <label
                             htmlFor={id}
                             className={clsx(
-                                'absolute left-0 -top-3.5 text-sm transition-all font-semibold',
-                                'peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
+                                'absolute left-0 -top-3.5 text-sm transition-all font-normal',
+                                'peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-normal',
                                 'peer-focus:-top-3.5 peer-focus:text-sm',
                                 'text-gray peer-placeholder-shown:text-gray peer-focus:text-gray'
                             )}>
@@ -106,7 +106,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
 
                         {(appendix !== undefined || !!errorText) && (
                             <span
-                                className={`font-semibold text-gray group-focus-within:text-dark`}>
+                                className={`font-normal text-gray group-focus-within:text-dark`}>
                                 {!!errorText ? (
                                     <XCircle
                                         weight="fill"
@@ -240,9 +240,9 @@ export function NumberInput({
                     <label
                         htmlFor={id}
                         className={clsx(
-                            'absolute left-0 -top-3.5 text-gray text-sm transition-all font-semibold',
+                            'absolute left-0 -top-3.5 text-gray text-sm transition-all font-normal',
                             'peer-placeholder-shown:text-base peer-placeholder-shown:text-gray peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
-                            'peer-focus:-top-3.5 peer-focus:text-gray peer-focus:text-sm peer-focus:font-semibold',
+                            'peer-focus:-top-3.5 peer-focus:text-gray peer-focus:text-sm peer-focus:font-normal',
                             'whitespace-nowrap text-ellipsis'
                         )}>
                         {label}
@@ -258,7 +258,7 @@ export function NumberInput({
                     {!showButtons &&
                         (appendix !== undefined || !!errorText) && (
                             <span
-                                className={`font-semibold text-gray group-focus-within:text-dark`}>
+                                className={`font-normal text-gray group-focus-within:text-dark`}>
                                 {!!errorText ? (
                                     <XCircle
                                         weight="fill"
