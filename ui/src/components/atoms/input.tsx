@@ -123,6 +123,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                 {errorText && (
                     <small
                         id={errorId}
+                        aria-live={`assertive`}
                         role={`alert`}
                         className={`text-red-500`}>
                         {errorText}
@@ -299,7 +300,11 @@ export function NumberInput({
                 </div>
             </div>
             {errorText && (
-                <small id={errorId} role={`alert`} className={`text-red-500`}>
+                <small
+                    id={errorId}
+                    role={`alert`}
+                    className={`text-red-500`}
+                    aria-live={`assertive`}>
                     {errorText}
                 </small>
             )}
