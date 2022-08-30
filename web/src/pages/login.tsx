@@ -1,4 +1,3 @@
-import type { GetStaticProps } from 'next';
 import * as React from 'react';
 import { Button, TextInput } from '@locaci/ui';
 import { getHostWithScheme } from '../lib/functions';
@@ -67,13 +66,3 @@ export default function LoginPage(props: LoginPageProps) {
         </main>
     );
 }
-
-export const getStaticProps: GetStaticProps<LoginPageProps> = async () => {
-    // TODO
-    const props = {};
-
-    return {
-        props,
-        revalidate: 1
-    };
-};

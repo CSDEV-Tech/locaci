@@ -60,36 +60,6 @@ export default function () {
         };
     }, []);
 
-    // React.useEffect(() => {
-    //     const verify = async () => {
-    //         const params = new URLSearchParams(
-    //             window.location.hash.substring(1)
-    //         );
-
-    //         // if not redirect to home with error !
-    //         if (params.has('access_token')) {
-    //             const token = params.get('access_token') as string;
-
-    //             const { data, error } = await supabase.auth.verifyOtp(
-    //                 {
-    //                     token,
-    //                     type: 'magiclink',
-    //                     email: 'fredkiss3@gmail.com'
-    //                 },
-    //                 {
-    //                     redirectTo: `${getHostWithScheme(
-    //                         window.location.href
-    //                     )}/auth/callback`
-    //                 }
-    //             );
-
-    //             console.log({ data, error });
-    //         }
-    //     };
-
-    //     verify();
-    // }, []);
-
     return (
         <main className="bg-dark h-screen w-screen">
             <h1 className="text-white">LOADING...</h1>

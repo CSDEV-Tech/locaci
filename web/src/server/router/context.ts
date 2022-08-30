@@ -1,15 +1,14 @@
 // src/server/router/context.ts
 import * as trpc from '@trpc/server';
-import * as trpcNext from '@trpc/server/adapters/next';
 import { getCookie } from 'web/src/lib/functions';
 import { prisma } from '../db/client';
 import { Uuid } from '@locaci/domain';
 
+import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+
 import type { User } from '@prisma/client';
 
-export const createContext = async (
-    opts?: trpcNext.CreateNextContextOptions
-) => {
+export const createContext = async (opts?: CreateNextContextOptions) => {
     const req = opts?.req;
     const res = opts?.res;
 
