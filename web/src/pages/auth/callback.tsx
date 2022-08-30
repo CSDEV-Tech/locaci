@@ -1,8 +1,8 @@
 import * as React from 'react';
-import type { NextPage } from 'next';
 import { supabase } from 'web/src/utils/supabase-client';
-import { trpc } from 'web/src/utils/trpc';
+import { trpc } from 'web/src/utils/trpc-rq-hooks';
 import { useRouter } from 'next/router';
+import { LoadingIndicator } from '@locaci/ui';
 
 /**
  *
@@ -21,12 +21,12 @@ import { useRouter } from 'next/router';
 export default function () {
     const router = useRouter();
 
-    const authCookieMutation = trpc.useMutation('auth.setAuthCookie', {
+    const authCookieMutation = trpc.proxy.auth.setAuthCookie.useMutation({
         onSuccess() {
             router.push('/profile');
         }
     });
-    const userMutation = trpc.useMutation('auth.getOrCreateUser', {
+    const userMutation = trpc.proxy.auth.getOrCreateUser.useMutation({
         onSuccess(data) {
             authCookieMutation.mutate({
                 uid: data.id
@@ -59,8 +59,10 @@ export default function () {
     }, []);
 
     return (
-        <main className="bg-dark h-screen w-screen">
-            <h1 className="text-white">LOADING...</h1>
+        <main className="h-screen w-screen flex items-center justify-center">
+            <h1 className="text-4xl flex items-center gap-4">
+                <LoadingIndicator className="h-10" /> CHARGEMENT...
+            </h1>
         </main>
     );
 }

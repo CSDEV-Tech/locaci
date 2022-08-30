@@ -1,8 +1,7 @@
-import { createRouter } from './context';
-import { z } from 'zod';
+import { t } from '../trpc-server-root';
 
-export const propertyRouter = createRouter().query('getLastThreeCreated', {
-    async resolve({ ctx }) {
+export const propertyRouter = t.router({
+    getLastThreeCreated: t.procedure.query(async ({ ctx }) => {
         return await ctx.prisma.property.findMany({
             where: {
                 archived: false
@@ -12,5 +11,5 @@ export const propertyRouter = createRouter().query('getLastThreeCreated', {
                 createdAt: 'desc'
             }
         });
-    }
+    })
 });

@@ -1,11 +1,20 @@
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import { trpc, createSSGHelpers } from '../utils/trpc';
+import { trpc } from '../utils/trpc-rq-hooks';
+
+// All these imports are necessary SSG & SSR
+import { appRouter } from '../server/trpc/router';
+import type { AppRouter } from '../server/trpc/router';
+import { createProxySSGHelpers } from '@trpc/react/ssg';
+import { createContext } from '../server/trpc/context';
+import superjson from 'superjson';
 
 const Home: NextPage = () => {
-    const data = trpc.useQuery(['property.getLastThreeCreated'], {
-        staleTime: Infinity
-    });
+    const { data, isLoading, isError, error } =
+        trpc.proxy.property.getLastThreeCreated.useQuery(undefined, {
+            staleTime: Infinity,
+            retry: 2
+        });
 
     return (
         <>
@@ -20,11 +29,14 @@ const Home: NextPage = () => {
                     LOCACI
                 </h1>
 
-                {/* <div>
-                    {data.data!.map(p => (
-                        <pre key={p.id}>{JSON.stringify(p, null, 2)}</pre>
-                    ))}
-                </div> */}
+                {isLoading && <p className="text-lg">LOADING...</p>}
+                {isError && (
+                    <div className="text-lg">
+                        Error : <div>{error.toString()}</div>
+                    </div>
+                )}
+
+                <div>{data && <pre>{JSON.stringify(data, null, 2)}</pre>}</div>
             </main>
         </>
     );
@@ -33,9 +45,13 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-    const ssg = await createSSGHelpers();
+    const ssg = createProxySSGHelpers<AppRouter>({
+        router: appRouter,
+        ctx: await createContext(),
+        transformer: superjson
+    });
 
-    await ssg.fetchQuery('property.getLastThreeCreated');
+    await ssg.property.getLastThreeCreated.fetch();
 
     return {
         props: {

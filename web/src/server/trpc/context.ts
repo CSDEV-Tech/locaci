@@ -5,7 +5,6 @@ import { prisma } from '../db/client';
 import { Uuid } from '@locaci/domain';
 
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
-
 import type { User } from '@prisma/client';
 
 export const createContext = async (opts?: CreateNextContextOptions) => {
@@ -13,15 +12,17 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
     const res = opts?.res;
 
     // get user from cookie
-    const uid = getCookie('user', req?.headers.cookie);
     let user: User | null = null;
+    if (req?.headers.cookie) {
+        const uid = getCookie('user', req?.headers.cookie);
 
-    if (uid) {
-        user = await prisma.user.findFirst({
-            where: {
-                id: Uuid.fromShort(uid).toString()
-            }
-        });
+        if (uid) {
+            user = await prisma.user.findFirst({
+                where: {
+                    id: Uuid.fromShort(uid).toString()
+                }
+            });
+        }
     }
 
     return {
@@ -33,5 +34,3 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
 };
 
 export type Context = trpc.inferAsyncReturnType<typeof createContext>;
-
-export const createRouter = () => trpc.router<Context>();

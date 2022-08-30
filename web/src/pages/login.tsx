@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { Button, TextInput } from '@locaci/ui';
 import { getHostWithScheme } from '../lib/functions';
-import { X } from 'phosphor-react';
-import { trpc } from '../utils/trpc';
+import { trpc } from '../utils/trpc-rq-hooks';
+import toast, { Toaster } from 'react-hot-toast';
 
 export type LoginPageProps = {};
 
 export default function LoginPage(props: LoginPageProps) {
     const [email, setEmail] = React.useState('');
-    const [msg, setMsg] = React.useState<string | null>(null);
-    const mutation = trpc.useMutation('auth.sendEmailLink');
+    const mutation = trpc.proxy.auth.sendEmailLink.useMutation();
 
     async function login(email: string) {
         await mutation.mutateAsync({
@@ -19,7 +18,7 @@ export default function LoginPage(props: LoginPageProps) {
             )}/auth/callback`
         });
 
-        setMsg('Email envoyé !');
+        toast.success('Email envoyé!');
     }
 
     return (
@@ -27,22 +26,6 @@ export default function LoginPage(props: LoginPageProps) {
             <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-primary">
                 LOGIN
             </h1>
-
-            {msg && (
-                <div className="flex items-center gap-1 border border-secondary p-2 bg-secondary-15 rounded-md text-dark font-medium">
-                    <span>{msg}</span>
-
-                    <Button
-                        square
-                        variant="outline"
-                        onClick={() => setMsg(null)}
-                        ariaLabel="fermer"
-                        renderLeadingIcon={cls => (
-                            <X className={cls} weight="bold" />
-                        )}
-                    />
-                </div>
-            )}
             <form
                 className="flex flex-col gap-4 items-stretch"
                 onSubmit={e => {
@@ -51,6 +34,7 @@ export default function LoginPage(props: LoginPageProps) {
                 }}>
                 <TextInput
                     type="email"
+                    required
                     value={email}
                     label="Email"
                     onChange={setEmail}
@@ -63,6 +47,7 @@ export default function LoginPage(props: LoginPageProps) {
                     Login with email
                 </Button>
             </form>
+            <Toaster />
         </main>
     );
 }
