@@ -3,8 +3,6 @@ import type { NextPage } from 'next';
 import { supabase } from 'web/src/utils/supabase-client';
 import { trpc } from 'web/src/utils/trpc';
 import { useRouter } from 'next/router';
-// import { useAuthCookieMutation } from '../hooks/use-auth-cookie';
-// import { getHostWithScheme } from 'web/src/lib/functions';
 
 /**
  *
