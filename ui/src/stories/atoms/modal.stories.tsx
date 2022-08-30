@@ -16,7 +16,18 @@ export default {
 // 👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof Modal> = args => <Modal {...args} />;
 
-export const Default = Template.bind({});
+export const Default: ComponentStory<typeof Modal> = args => {
+    const [isOpen, setIsOpen] = React.useState(args.isOpen ?? true);
+    return (
+        <>
+            <Button variant="primary" onClick={() => setIsOpen(true)}>
+                Open Modal
+            </Button>
+            <Modal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        </>
+    );
+};
+
 Default.args = {
     title: `Modal Title`,
     isOpen: true,
@@ -34,7 +45,18 @@ Default.args = {
     )
 } as ModalProps;
 
-export const Complex = Template.bind({});
+export const Complex: ComponentStory<typeof Modal> = args => {
+    const [isOpen, setIsOpen] = React.useState(args.isOpen ?? true);
+    return (
+        <>
+            <Button variant="primary" onClick={() => setIsOpen(true)}>
+                Open Modal
+            </Button>
+            <Modal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        </>
+    );
+};
+
 Complex.args = {
     title: `Connexion`,
     isOpen: true,
