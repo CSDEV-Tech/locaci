@@ -7,7 +7,15 @@ import {
 
 export default {
     title: 'Composants/Atoms/LinkButton',
-    component: LinkButton
+    component: LinkButton,
+    argTypes: {
+        variant: {
+            control: `select`
+        },
+        target: {
+            control: `select`
+        }
+    }
 } as ComponentMeta<typeof LinkButton>;
 
 // 👇 We create a “template” of how args map to rendering
