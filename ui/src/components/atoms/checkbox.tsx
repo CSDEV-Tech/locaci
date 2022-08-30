@@ -62,7 +62,7 @@ export function Checkbox({
                 />
             </div>
             <span
-                className={clsx('font-semibold', {
+                className={clsx('font-medium', {
                     'text-dark': checked,
                     'text-gray': !checked || disabled
                 })}>

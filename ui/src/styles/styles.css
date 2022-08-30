@@ -4,6 +4,7 @@
 @tailwind utilities;
 
 :root {
+    font-size: 14px;
     color: theme('colors.dark.DEFAULT');
     font-family: 'Poppins', sans-serif;
 }

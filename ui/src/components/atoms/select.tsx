@@ -47,7 +47,7 @@ export function Select({
                                 disabled={disabled}
                                 autoFocus={autoFocus}
                                 className={clsx(
-                                    'h-10 w-full font-semibold text-dark text-start',
+                                    'h-10 w-full font-medium text-dark text-start',
                                     'flex items-center justify-between',
                                     {
                                         'cursor-pointer': !disabled,
