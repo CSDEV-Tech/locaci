@@ -6,7 +6,6 @@ import { Button } from '../atoms/button';
 
 export type InputProps<T> = {
     value?: T;
-    onChange: (newValue: T) => void;
     label: string;
     name?: string;
     placeholder?: string;
@@ -24,6 +23,8 @@ export type InputProps<T> = {
 export interface TextInputProps extends InputProps<string> {
     type?: 'text' | 'tel' | 'email' | 'search';
     appendix?: React.ReactNode;
+    onChange?: (newValue: string) => void;
+    defaultValue?: string;
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
@@ -41,6 +42,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             autocomplete,
             helpText,
             rootClassName,
+            defaultValue,
             required = false,
             disabled = false,
             type = 'text',
@@ -77,11 +79,12 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             autoComplete={autocomplete}
                             type={type}
                             value={value}
+                            defaultValue={defaultValue}
                             required={required}
                             disabled={disabled}
                             onChange={e => onChange?.(e.target.value)}
                             className={clsx(
-                                'peer h-10 w-full font-semibold placeholder-transparent text-dark',
+                                'peer h-10 w-full font-medium placeholder-transparent text-dark',
                                 'bg-transparent focus:outline-none'
                             )}
                             placeholder={placeholder}
@@ -145,6 +148,7 @@ export interface NumberInputProps extends InputProps<number> {
     showButtons?: boolean;
     min?: number;
     max?: number;
+    onChange: (newValue: number) => void;
 }
 
 export function NumberInput({
@@ -233,7 +237,7 @@ export function NumberInput({
                         value={valueToDisplay}
                         onChange={e => handleChange(e.target.value)}
                         className={clsx(
-                            'peer h-10 w-full text-dark font-semibold placeholder-transparent',
+                            'peer h-10 w-full text-dark font-medium placeholder-transparent',
                             'bg-transparent focus:outline-none'
                         )}
                         placeholder={placeholder}
@@ -242,7 +246,7 @@ export function NumberInput({
                         htmlFor={id}
                         className={clsx(
                             'absolute left-0 -top-3.5 text-gray text-sm transition-all font-normal',
-                            'peer-placeholder-shown:text-base peer-placeholder-shown:text-gray peer-placeholder-shown:top-2 peer-placeholder-shown:font-semibold',
+                            'peer-placeholder-shown:text-base peer-placeholder-shown:text-gray peer-placeholder-shown:top-2 peer-placeholder-shown:font-medium',
                             'peer-focus:-top-3.5 peer-focus:text-gray peer-focus:text-sm peer-focus:font-normal',
                             'whitespace-nowrap text-ellipsis'
                         )}>
