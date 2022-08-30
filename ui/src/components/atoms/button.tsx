@@ -47,26 +47,27 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 type={type}
                 className={clsx(
                     className,
-                    `px-4 py-2 rounded-md gap-2 items-center justify-center focus:outline-none`,
-                    `font-bold`,
+                    `px-4 py-2 rounded-md gap-2 items-center justify-center`,
+                    `font-medium`,
                     {
                         'focus:ring': !loading && !disabled,
                         flex: block,
                         'inline-flex': !block,
                         '!px-2': square,
-                        'bg-primary ring-primary/50 text-white':
+                        'cursor-default': loading || disabled,
+                        'bg-primary ring-primary/50 text-white focus:outline-none':
                             variant === 'primary',
                         'hover:bg-primary-75 active:bg-primary-75':
                             variant === 'primary' && !loading && !disabled,
-                        'bg-secondary ring-secondary/50 text-white':
+                        'bg-secondary ring-secondary/50 text-white focus:outline-none':
                             variant === 'secondary',
                         'hover:bg-secondary-75 active:bg-secondary-75':
                             variant === 'secondary' && !loading && !disabled,
-                        'bg-lightgray text-dark ring-gray/50':
+                        'bg-lightgray text-dark ring-gray/50 focus:outline-none':
                             variant === 'hollow',
-                        'cursor-default': loading || disabled,
-                        'bg-transparent text-dark ring-gray/50':
+                        'bg-transparent text-gray ring-gray/50':
                             variant === 'outline',
+                        'outline outline-1 outline-gray': variant === 'outline',
                         'bg-dark text-white ring-dark/50': variant === 'dark'
                     }
                 )}

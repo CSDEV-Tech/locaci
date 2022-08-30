@@ -36,7 +36,7 @@ export function LinkButton({
                     'bg-secondary hover:bg-secondary-75 active:bg-secondary-75 ring-secondary/50 text-white':
                         variant === 'secondary',
                     'bg-lightgray text-dark ring-gray/50': variant === 'hollow',
-                    'bg-transparent text-dark ring-gray/50':
+                    'bg-transparent ring-gray/50 outline outline-1 outline-gray text-gray':
                         variant === 'outline',
                     'bg-dark text-white ring-dark/50': variant === 'dark'
                 }
