@@ -4,13 +4,29 @@ import { getHostWithScheme } from '../lib/functions';
 import { trpc } from '../utils/trpc-rq-hooks';
 import toast, { Toaster } from 'react-hot-toast';
 
+import { sendEmailLinkSchema } from '../server/trpc/validation/auth-schema';
+import { useZodForm } from '../hooks/use-zod-form';
+
 export type LoginPageProps = {};
 
 export default function LoginPage(props: LoginPageProps) {
-    const [email, setEmail] = React.useState('');
+    const {
+        handleSubmit,
+        register,
+        reset: resetForm,
+        formState: { errors }
+    } = useZodForm({
+        schema: sendEmailLinkSchema.omit({
+            redirectTo: true
+        }),
+        defaultValues: {
+            email: ''
+        }
+    });
+
     const mutation = trpc.proxy.auth.sendEmailLink.useMutation();
 
-    async function login(email: string) {
+    async function login({ email }: { email: string }) {
         await mutation.mutateAsync({
             email,
             redirectTo: `${getHostWithScheme(
@@ -19,28 +35,27 @@ export default function LoginPage(props: LoginPageProps) {
         });
 
         toast.success('Email envoyé!');
+        resetForm();
     }
 
     return (
-        <main className="flex flex-col gap-4 items-center justify-center min-h-screen p-4 bg-dark text-white">
+        <main className="flex flex-col gap-4 items-center justify-center min-h-screen p-4 bg-dark">
             <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-primary">
                 LOGIN
             </h1>
             <form
                 className="flex flex-col gap-4 items-stretch"
-                onSubmit={e => {
-                    e.preventDefault();
-                    login(email);
-                }}>
+                onSubmit={handleSubmit(login)}>
                 <TextInput
                     type="email"
-                    required
-                    value={email}
                     label="Email"
-                    onChange={setEmail}
+                    required
+                    {...register('email')}
+                    errorText={errors.email?.message}
                 />
+
                 <Button
-                    variant="hollow"
+                    variant="primary"
                     type="submit"
                     block
                     loading={mutation.isLoading}>

@@ -4,17 +4,13 @@ import { t } from '../trpc-server-root';
 import { supabaseAdmin as supabase } from 'web/src/utils/supabase-admin';
 import { TRPCError } from '@trpc/server';
 import { Uuid } from '@locaci/domain';
+import { sendEmailLinkSchema } from '../validation/auth-schema';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 
 export const authRouter = t.router({
     sendEmailLink: t.procedure
-        .input(
-            z.object({
-                email: z.string().email(),
-                redirectTo: z.string().url()
-            })
-        )
+        .input(sendEmailLinkSchema)
         .mutation(async ({ input: { email, redirectTo } }) => {
             const { error } = await supabase.auth.signInWithOtp({
                 email,

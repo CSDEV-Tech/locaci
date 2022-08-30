@@ -17,13 +17,14 @@ export type InputProps<T> = {
     errorText?: string;
     helpText?: string;
     autocomplete?: 'on' | 'off';
-    onBlur?: () => void;
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
 
 export interface TextInputProps extends InputProps<string> {
     type?: 'text' | 'tel' | 'email' | 'search';
     appendix?: React.ReactNode;
-    onChange?: (newValue: string) => void;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
+    onChangeValue?: (newValue: string) => void;
     defaultValue?: string;
 }
 
@@ -33,6 +34,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             appendix,
             value,
             onChange,
+            onChangeValue,
             name,
             label,
             className,
@@ -82,7 +84,10 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             defaultValue={defaultValue}
                             required={required}
                             disabled={disabled}
-                            onChange={e => onChange?.(e.target.value)}
+                            onChange={e => {
+                                onChange?.(e);
+                                onChangeValue?.(e.target.value);
+                            }}
                             className={clsx(
                                 'peer h-10 w-full font-medium placeholder-transparent text-dark',
                                 'bg-transparent focus:outline-none'
