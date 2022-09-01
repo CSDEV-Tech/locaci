@@ -1,17 +1,29 @@
 import * as React from 'react';
-import type { NextPage } from 'next';
-import { trpc } from 'web/src/utils/trpc-rq-hooks';
+import { t } from 'web/src/utils/trpc-rq-hooks';
 import { Button } from '@locaci/ui';
 import { supabase } from '../utils/supabase-client';
 import { useRouter } from 'next/router';
 
-const Home: NextPage = () => {
+import type { NextPageWithLayout } from './_app';
+import { DefaultLayout } from '../components/layouts/default-layout';
+
+const ProfilePage: NextPageWithLayout = () => {
     const router = useRouter();
-    const { data, isLoading } = trpc.proxy.auth.getUser.useQuery();
-    const mutation = trpc.proxy.auth.removeAuthCookie.useMutation();
+    const utils = t.proxy.useContext();
+    const { data, isLoading, isError } =
+        t.proxy.auth.getAuthenticatedUser.useQuery();
+    const mutation = t.proxy.auth.removeAuthCookie.useMutation({
+        onSuccess() {
+            utils.auth.getAuthenticatedUser.invalidate();
+        }
+    });
+
+    if (isError) {
+        router.replace('/login');
+    }
 
     return (
-        <main className="bg-dark min-h-screen w-full text-white">
+        <div className="h-full w-full bg-dark text-white">
             <h1 className="text-white">PROFILE</h1>
 
             <Button
@@ -32,8 +44,12 @@ const Home: NextPage = () => {
             ) : (
                 <div>NO DATA</div>
             )}
-        </main>
+        </div>
     );
 };
 
-export default Home;
+export default ProfilePage;
+
+ProfilePage.getLayout = page => {
+    return <DefaultLayout>{page}</DefaultLayout>;
+};
