@@ -6,8 +6,8 @@ import { z } from 'zod';
  * This way you can ensure the app isn't built with invalid env vars.
  */
 export const serverSchema = z.object({
-    DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(['development', 'test', 'production']),
+    DATABASE_URL: z.string().url(),
     SUPABASE_ADMIN_KEY: z.string()
 });
 
@@ -18,7 +18,8 @@ export const serverSchema = z.object({
  */
 export const clientSchema = z.object({
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-    NEXT_PUBLIC_SUPABASE_KEY: z.string()
+    NEXT_PUBLIC_SUPABASE_KEY: z.string(),
+    NEXT_PUBLIC_SITE_URL: z.string().url().optional()
 });
 
 /**
@@ -29,5 +30,6 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_KEY: process.env.NEXT_PUBLIC_SUPABASE_KEY
+    NEXT_PUBLIC_SUPABASE_KEY: process.env.NEXT_PUBLIC_SUPABASE_KEY,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL
 };

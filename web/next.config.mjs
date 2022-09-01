@@ -15,7 +15,10 @@ function defineNextConfig(config) {
 
 const nextConfig = defineNextConfig({
     reactStrictMode: true,
-    swcMinify: true
+    swcMinify: true,
+    experimental: {
+        newNextLinkBehavior: true
+    }
 });
 
 const withTM = transpile(['@locaci/ui', '@locaci/domain']);

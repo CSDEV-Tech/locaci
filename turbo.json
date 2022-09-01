@@ -12,6 +12,9 @@
         "dev": {
             "cache": false
         },
+        "storybook": {
+            "cache": false
+        },
         "lint": {
             "outputs": []
         },
