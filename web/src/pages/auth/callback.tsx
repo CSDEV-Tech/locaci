@@ -1,52 +1,37 @@
 import * as React from 'react';
 import { supabase } from 'web/src/utils/supabase-client';
-import { trpc } from 'web/src/utils/trpc-rq-hooks';
+import { t } from 'web/src/utils/trpc-rq-hooks';
 import { useRouter } from 'next/router';
 import { LoadingIndicator } from '@locaci/ui';
 
-/**
- *
- * 1- Auth (provider)
- * 2- callback (tokens)
- *   - get user from supabase
- *
- *  useEffect:
- *   - if user is null :
- *      - redirect('home', => 'Non connecté')
- *   - if user is not null :
- *      - getOrCreateUser -> save user in cookie
- *      - redirect to profile page
- *
- */
-export default function () {
+export default function CallbackPage() {
     const router = useRouter();
-
-    const authCookieMutation = trpc.proxy.auth.setAuthCookie.useMutation({
+    const setAuthCookieMutation = t.proxy.auth.setAuthCookie.useMutation({
         onSuccess() {
             router.push('/profile');
         }
     });
-    const userMutation = trpc.proxy.auth.getOrCreateUser.useMutation({
+    const getUserMutation = t.proxy.auth.getOrCreateUser.useMutation({
         onSuccess(data) {
-            authCookieMutation.mutate({
+            setAuthCookieMutation.mutate({
                 uid: data.id
             });
         }
     });
 
     React.useEffect(() => {
+        // if no token, redirect to login page
         const params = new URLSearchParams(window.location.hash.substring(1));
-
-        // if no token, redirect to login
         if (!params.has('access_token')) {
             router.push('/login');
         }
 
+        // Listen for supabase login event
         const {
             data: { subscription: authListener }
-        } = supabase.auth.onAuthStateChange((event, session) => {
+        } = supabase.auth.onAuthStateChange((_, session) => {
             if (session?.user) {
-                userMutation.mutate({
+                getUserMutation.mutate({
                     email: session.user.email!,
                     uid: session.user.id
                 });
@@ -59,9 +44,9 @@ export default function () {
     }, []);
 
     return (
-        <main className="h-screen w-screen flex items-center justify-center">
-            <h1 className="text-4xl flex items-center gap-4">
-                <LoadingIndicator className="h-10" /> CHARGEMENT...
+        <main className="flex h-screen w-screen items-center justify-center">
+            <h1 className="flex items-center gap-4 text-4xl">
+                <LoadingIndicator className="h-10" /> <span>CHARGEMENT...</span>
             </h1>
         </main>
     );
