@@ -14,7 +14,7 @@ export type NavLinks = {
 export type FooterProps = {
     className?: string;
     links: NavLinks[];
-    customLink?: CustomLink;
+    customLink?: React.ComponentType<CustomLink>;
 };
 
 export function Footer({ className, links, customLink }: FooterProps) {

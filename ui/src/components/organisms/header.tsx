@@ -8,7 +8,7 @@ export type HeaderProps = {
     logoAltText: string;
     logoHref?: string;
     className?: string;
-    customLink?: CustomLink;
+    customLink?: React.ComponentType<CustomLink>;
     /**
      * the content displayed aside the logo
      */

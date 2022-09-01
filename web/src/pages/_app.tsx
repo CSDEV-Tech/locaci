@@ -1,16 +1,29 @@
 import '../styles/globals.css';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { trpc } from '../utils/trpc-rq-hooks';
+import { t } from '../utils/trpc-rq-hooks';
 
+// To enable layouts
 import type { AppProps } from 'next/app';
+import type { NextPage } from 'next';
 
-function MyApp({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+    getLayout?: (page: React.ReactElement) => React.ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+    Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+    // Use the layout defined at the page level, if available
+    const getLayout = Component.getLayout || (page => page);
+
     return (
         <>
-            <Component {...pageProps} />
+            {getLayout(<Component {...pageProps} />)}
             <ReactQueryDevtools />
         </>
     );
 }
 
-export default trpc.withTRPC(MyApp);
+export default t.withTRPC(MyApp);
