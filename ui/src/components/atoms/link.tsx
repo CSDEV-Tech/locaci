@@ -9,10 +9,10 @@ export type LinkProps = {
     'aria-label'?: string;
     rel?: string;
     'aria-current'?: React.AriaAttributes['aria-current'];
-    Custom?: CustomLink;
+    Custom?: React.ComponentType<CustomLink>;
 };
 
-export type CustomLink = React.ComponentType<Omit<LinkProps, 'Custom'>>;
+export type CustomLink = Omit<LinkProps, 'Custom'>;
 
 export function Link({
     children,

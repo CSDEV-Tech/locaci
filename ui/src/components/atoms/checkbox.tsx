@@ -5,7 +5,7 @@ import { Check } from 'phosphor-react';
 export type CheckboxProps = {
     className?: string;
     variant?: 'primary' | 'secondary';
-    label: string;
+    label: React.ReactNode;
     checked?: boolean;
     disabled?: boolean;
     onChange?: (newValue: boolean) => void;
@@ -21,7 +21,7 @@ export function Checkbox({
 }: CheckboxProps) {
     return (
         <label
-            className={clsx(className, 'flex items-center gap-2 group', {
+            className={clsx(className, 'group flex items-start gap-2', {
                 'cursor-pointer': !disabled,
                 'cursor-not-allowed': disabled
             })}>
@@ -37,8 +37,8 @@ export function Checkbox({
 
             <div
                 className={clsx(
-                    'w-5 h-5 min-w-[1.25rem] ',
-                    'rounded-md items-center justify-center flex',
+                    'h-5 w-5 min-w-[1.25rem] ',
+                    'flex items-center justify-center rounded-md',
                     'group-focus-within:ring-2',
                     {
                         'bg-lightgray': !checked,
