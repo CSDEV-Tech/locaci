@@ -89,7 +89,10 @@ export const authRouter = t.router({
                 update: {}
             });
         }),
-    getUser: protectedProcedure.query(({ ctx }) => {
+    getAuthenticatedUser: protectedProcedure.query(({ ctx }) => {
+        return ctx.user;
+    }),
+    getUser: t.procedure.query(({ ctx }) => {
         return ctx.user;
     }),
     updateNameProfile: protectedProcedure
