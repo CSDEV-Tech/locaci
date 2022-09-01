@@ -16,7 +16,7 @@ function getBaseUrl() {
     return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 }
 
-export const trpc: TRPCHooksType = setupTRPC<AppRouter>({
+export const t: TRPCHooksType = setupTRPC<AppRouter>({
     config({ ctx }) {
         return {
             transformer: superjson,
