@@ -62,7 +62,8 @@ export const LoginPage: NextPageWithLayout = () => {
 
                 <form
                     className="flex flex-col items-stretch gap-4"
-                    onSubmit={form.handleSubmit(login)}>
+                    onSubmit={form.handleSubmit(login)}
+                >
                     <div className="flex flex-col gap-4 text-lg">
                         <TextInput
                             className="w-full"
@@ -77,7 +78,8 @@ export const LoginPage: NextPageWithLayout = () => {
                             variant="primary"
                             type="submit"
                             block
-                            loading={loginWithEmailMutation.isLoading}>
+                            loading={loginWithEmailMutation.isLoading}
+                        >
                             Connexion
                         </Button>
 
@@ -86,14 +88,16 @@ export const LoginPage: NextPageWithLayout = () => {
                             <NextLink
                                 target="_blank"
                                 className="font-bold"
-                                href="/cgu">
+                                href="/cgu"
+                            >
                                 conditions générales
                             </NextLink>
                             &nbsp;et notre&nbsp;
                             <NextLink
                                 target="_blank"
                                 className="font-bold"
-                                href="/terms-and-policy">
+                                href="/terms-and-policy"
+                            >
                                 politique de confidentialité
                             </NextLink>
                             .
@@ -115,7 +119,8 @@ export const LoginPage: NextPageWithLayout = () => {
                             renderLeadingIcon={cls => (
                                 <img src={`/Google_Logo.svg`} className={cls} />
                             )}
-                            variant="outline">
+                            variant="outline"
+                        >
                             Connectez-vous avec google
                         </Button>
                     </div>
@@ -139,7 +144,8 @@ LoginPage.getLayout = page => {
                         Vous êtes un bailleur ?
                     </NextLinkButton>
                 </>
-            }>
+            }
+        >
             {page}
         </DefaultLayout>
     );
@@ -162,10 +168,12 @@ function SuccessModal({ email, onClose, open }: SuccessModalProps) {
                 minHeight,
                 maxHeight * 0.95
             ]}
-            className={`md:hidden `}>
+            className={`md:hidden `}
+        >
             <div
                 className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10"
-                aria-live="assertive">
+                aria-live="assertive"
+            >
                 <img
                     src="/success_illustration.svg"
                     alt="Image de succès"

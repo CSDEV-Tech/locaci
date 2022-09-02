@@ -36,7 +36,8 @@ const ProfilePage: NextPageWithLayout = () => {
                     await supabase.auth.signOut();
                     mutation.mutate();
                     router.push('/');
-                }}>
+                }}
+            >
                 Logout
             </Button>
 

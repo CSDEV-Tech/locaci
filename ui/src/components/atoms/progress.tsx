@@ -28,14 +28,15 @@ export function Progress({
         <div
             className={clsx(
                 className,
-                'relative w-full h-2 rounded-md bg-gray',
+                'relative h-2 w-full rounded-md bg-gray',
                 {
                     'bg-primary-15': variant === 'primary',
                     'bg-secondary-15': variant === 'secondary'
                 }
-            )}>
+            )}
+        >
             <div
-                className={clsx('absolute left-0 rounded-md h-full', {
+                className={clsx('absolute left-0 h-full rounded-md', {
                     'bg-primary': variant === 'primary',
                     'bg-secondary': variant === 'secondary'
                 })}

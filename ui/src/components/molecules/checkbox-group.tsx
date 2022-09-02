@@ -38,7 +38,8 @@ export function CheckboxGroup({
         <div
             className={clsx(className, 'flex flex-col gap-2')}
             role={'group'}
-            aria-labelledby={labelId}>
+            aria-labelledby={labelId}
+        >
             <label id={labelId} className="font-semibold text-dark">
                 {label}
             </label>

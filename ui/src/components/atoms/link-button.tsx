@@ -41,7 +41,8 @@ export function LinkButton({
                     'bg-dark text-white ring-dark/50': variant === 'dark'
                 }
             )}
-            {...linkProps}>
+            {...linkProps}
+        >
             {renderLeadingIcon && renderLeadingIcon(`h-5 w-5`)}
             {children}
             {renderTrailingIcon && renderTrailingIcon(`h-5 w-5`)}

@@ -32,7 +32,8 @@ export function Modal({
                     as="div"
                     className="relative z-10"
                     onClose={onClose}
-                    initialFocus={cancelButtonRef}>
+                    initialFocus={cancelButtonRef}
+                >
                     <Transition.Child
                         as={React.Fragment}
                         enter="ease-out duration-300"
@@ -40,7 +41,8 @@ export function Modal({
                         enterTo="opacity-100"
                         leave="ease-in duration-200"
                         leaveFrom="opacity-100"
-                        leaveTo="opacity-0">
+                        leaveTo="opacity-0"
+                    >
                         <div className="fixed inset-0 bg-black bg-opacity-25" />
                     </Transition.Child>
 
@@ -53,17 +55,20 @@ export function Modal({
                                 enterTo="opacity-100 scale-100"
                                 leave="ease-in duration-200"
                                 leaveFrom="opacity-100 scale-100"
-                                leaveTo="opacity-0 scale-95">
+                                leaveTo="opacity-0 scale-95"
+                            >
                                 <Dialog.Panel
                                     className={clsx(
                                         className,
                                         'w-full max-w-md transform overflow-hidden',
                                         'rounded-2xl bg-white text-left align-middle shadow-xl transition-all'
-                                    )}>
-                                    <div className="flex items-center justify-center relative py-4 px-6 border-b border-lightgray">
+                                    )}
+                                >
+                                    <div className="relative flex items-center justify-center border-b border-lightgray py-4 px-6">
                                         <Dialog.Title
                                             as="h3"
-                                            className="text-lg font-medium leading-6 text-gray-900">
+                                            className="text-lg font-medium leading-6 text-gray-900"
+                                        >
                                             {title}
                                         </Dialog.Title>
                                         <Button
@@ -80,8 +85,9 @@ export function Modal({
                                     <div
                                         className={clsx(
                                             footerClassName,
-                                            'py-4 px-6 border-t border-lightgray'
-                                        )}>
+                                            'border-t border-lightgray py-4 px-6'
+                                        )}
+                                    >
                                         {footer}
                                     </div>
                                 </Dialog.Panel>

@@ -20,7 +20,7 @@ export function Switch({
             checked={checked}
             onChange={onChange}
             className={clsx(
-                `relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer rounded-full border-2 items-center`,
+                `relative inline-flex h-[22px] w-[42px] shrink-0 cursor-pointer items-center rounded-full border-2`,
                 `border-transparent transition-colors duration-200 ease-in-out`,
                 `focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`,
                 {
@@ -28,7 +28,8 @@ export function Switch({
                     'bg-primary': checked && variant === 'primary',
                     'bg-secondary': checked && variant === 'secondary'
                 }
-            )}>
+            )}
+        >
             <span className="sr-only">{title}</span>
             <span
                 aria-hidden="true"

@@ -73,7 +73,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         'bg-dark text-white ring-dark/50': variant === 'dark'
                     }
                 )}
-                onClick={ev => !disabled && !loading && onClick?.(ev)}>
+                onClick={ev => !disabled && !loading && onClick?.(ev)}
+            >
                 <span className="sr-only" aria-live="assertive">
                     {loading ? loadingMessage : ''}
                 </span>

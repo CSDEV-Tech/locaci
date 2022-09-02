@@ -13,7 +13,7 @@ export function Avatar({ src, name, className }: AvatarProps) {
             <img
                 src={src}
                 alt={`Image de profil de ${name}`}
-                className={'h-10 w-10 object-cover object-center rounded-md'}
+                className={'h-10 w-10 rounded-md object-cover object-center'}
             />
         </div>
     );

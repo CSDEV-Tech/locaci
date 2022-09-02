@@ -29,7 +29,8 @@ export function RadioGroup({
         <HeadlessUIRadioGroup
             value={value}
             onChange={onChange}
-            className={clsx(className, 'flex flex-col gap-2')}>
+            className={clsx(className, 'flex flex-col gap-2')}
+        >
             <HeadlessUIRadioGroup.Label className={'font-semibold'}>
                 {label}
             </HeadlessUIRadioGroup.Label>

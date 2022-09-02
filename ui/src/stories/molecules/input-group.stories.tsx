@@ -81,7 +81,7 @@ export function SearchBar({ className }: { className?: string }) {
                     onChange={setMaxPrice}
                     rootClassName={`w-[250px]`}
                     appendix={
-                        <div className="flex gap-2 items-center">
+                        <div className="flex items-center gap-2">
                             <span>FCFA</span>
                             <Button
                                 aria-label="Appliquer les filtres de logement"

@@ -20,10 +20,11 @@ export function Radio({
 }: RadioProps) {
     return (
         <label
-            className={clsx(className, 'flex items-center gap-2 group', {
+            className={clsx(className, 'group flex items-center gap-2', {
                 'cursor-pointer': !disabled,
                 'cursor-not-allowed': disabled
-            })}>
+            })}
+        >
             <input
                 disabled={disabled}
                 type="radio"
@@ -38,13 +39,13 @@ export function Radio({
 
             <div
                 className={clsx(
-                    'w-5 h-5 min-w-[1.25rem] ',
-                    'rounded-full items-center justify-center flex',
-                    'after:w-2 after:h-2',
+                    'h-5 w-5 min-w-[1.25rem] ',
+                    'flex items-center justify-center rounded-full',
+                    'after:h-2 after:w-2',
                     {
-                        'after:hidden bg-lightgray': !checked && !disabled,
+                        'bg-lightgray after:hidden': !checked && !disabled,
                         'bg-gray': disabled,
-                        'after:bg-white after:rounded-full after:block':
+                        'after:block after:rounded-full after:bg-white':
                             checked,
                         'bg-primary':
                             !disabled && checked && variant === 'primary',
@@ -57,7 +58,8 @@ export function Radio({
                 className={clsx('font-medium', {
                     'text-dark': checked,
                     'text-gray': !checked || disabled
-                })}>
+                })}
+            >
                 {label}
             </span>
         </label>

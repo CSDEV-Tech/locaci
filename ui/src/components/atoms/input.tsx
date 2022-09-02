@@ -56,11 +56,11 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         const errorId = useId();
         const helpId = useId();
         return (
-            <div className={clsx(rootClassName, 'flex flex-col gap-1 w-full')}>
+            <div className={clsx(rootClassName, 'flex w-full flex-col gap-1')}>
                 <div
                     className={clsx(
                         className,
-                        'px-4 pt-4 pb-2 rounded-lg border',
+                        'rounded-lg border px-4 pt-4 pb-2',
                         {
                             'bg-white': !disabled,
                             'bg-lightgray': disabled,
@@ -68,8 +68,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             'focus-within:ring-2 focus-within:ring-red-300':
                                 !!errorText
                         }
-                    )}>
-                    <div className={'relative w-full group flex items-center'}>
+                    )}
+                >
+                    <div className={'group relative flex w-full items-center'}>
                         <input
                             ref={ref}
                             aria-describedby={!!errorText ? errorId : helpId}
@@ -89,7 +90,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                                 onChangeValue?.(e.target.value);
                             }}
                             className={clsx(
-                                'peer h-10 w-full font-medium placeholder-transparent text-dark',
+                                'peer h-10 w-full font-medium text-dark placeholder-transparent',
                                 'bg-transparent focus:outline-none'
                             )}
                             placeholder={placeholder}
@@ -97,16 +98,18 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                         <label
                             htmlFor={id}
                             className={clsx(
-                                'absolute left-0 -top-3.5 text-sm transition-all font-normal',
-                                'peer-placeholder-shown:text-base peer-placeholder-shown:top-2 peer-placeholder-shown:font-normal',
+                                'absolute left-0 -top-3.5 text-sm font-normal transition-all',
+                                'peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:font-normal',
                                 'peer-focus:-top-3.5 peer-focus:text-sm',
                                 'text-gray peer-placeholder-shown:text-gray peer-focus:text-gray'
-                            )}>
+                            )}
+                        >
                             {label}
                             {required && (
                                 <span
                                     aria-label="ce champ est requis"
-                                    className="text-red-400">
+                                    className="text-red-400"
+                                >
                                     *
                                 </span>
                             )}
@@ -114,7 +117,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
 
                         {(appendix !== undefined || !!errorText) && (
                             <span
-                                className={`font-normal text-gray group-focus-within:text-dark`}>
+                                className={`font-normal text-gray group-focus-within:text-dark`}
+                            >
                                 {!!errorText ? (
                                     <XCircle
                                         weight="fill"
@@ -133,7 +137,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                         id={errorId}
                         aria-live={`assertive`}
                         role={`alert`}
-                        className={`text-red-500`}>
+                        className={`text-red-500`}
+                    >
                         {errorText}
                     </small>
                 )}
@@ -219,16 +224,18 @@ export function NumberInput({
     }
 
     return (
-        <div className={clsx(rootClassName, 'flex flex-col gap-1 w-full')}>
+        <div className={clsx(rootClassName, 'flex w-full flex-col gap-1')}>
             <div
-                className={clsx(className, 'px-4 pt-5 pb-2 rounded-md border', {
+                className={clsx(className, 'rounded-md border px-4 pt-5 pb-2', {
                     'bg-white': !disabled,
                     'bg-lightgray': disabled,
                     'border-red-400': !!errorText,
                     'focus-within:ring-2 focus-within:ring-red-400': !!errorText
-                })}>
+                })}
+            >
                 <div
-                    className={'relative w-full flex items-center gap-1 group'}>
+                    className={'group relative flex w-full items-center gap-1'}
+                >
                     <input
                         id={id}
                         aria-describedby={!!errorText ? errorId : helpId}
@@ -242,7 +249,7 @@ export function NumberInput({
                         value={valueToDisplay}
                         onChange={e => handleChange(e.target.value)}
                         className={clsx(
-                            'peer h-10 w-full text-dark font-medium placeholder-transparent',
+                            'peer h-10 w-full font-medium text-dark placeholder-transparent',
                             'bg-transparent focus:outline-none'
                         )}
                         placeholder={placeholder}
@@ -250,16 +257,18 @@ export function NumberInput({
                     <label
                         htmlFor={id}
                         className={clsx(
-                            'absolute left-0 -top-3.5 text-gray text-sm transition-all font-normal',
-                            'peer-placeholder-shown:text-base peer-placeholder-shown:text-gray peer-placeholder-shown:top-2 peer-placeholder-shown:font-medium',
-                            'peer-focus:-top-3.5 peer-focus:text-gray peer-focus:text-sm peer-focus:font-normal',
-                            'whitespace-nowrap text-ellipsis'
-                        )}>
+                            'absolute left-0 -top-3.5 text-sm font-normal text-gray transition-all',
+                            'peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:font-medium peer-placeholder-shown:text-gray',
+                            'peer-focus:-top-3.5 peer-focus:text-sm peer-focus:font-normal peer-focus:text-gray',
+                            'text-ellipsis whitespace-nowrap'
+                        )}
+                    >
                         {label}
                         {required && (
                             <span
                                 aria-label="ce champ est requis"
-                                className="text-red-400">
+                                className="text-red-400"
+                            >
                                 *
                             </span>
                         )}
@@ -268,7 +277,8 @@ export function NumberInput({
                     {!showButtons &&
                         (appendix !== undefined || !!errorText) && (
                             <span
-                                className={`font-normal text-gray group-focus-within:text-dark`}>
+                                className={`font-normal text-gray group-focus-within:text-dark`}
+                            >
                                 {!!errorText ? (
                                     <XCircle
                                         weight="fill"
@@ -313,7 +323,8 @@ export function NumberInput({
                     id={errorId}
                     role={`alert`}
                     className={`text-red-500`}
-                    aria-live={`assertive`}>
+                    aria-live={`assertive`}
+                >
                     {errorText}
                 </small>
             )}

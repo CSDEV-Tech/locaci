@@ -33,14 +33,16 @@ export function Header({
         <header
             className={clsx(
                 className,
-                'lg:shadow-header flex p-4 bg-white items-center justify-between'
-            )}>
+                'lg:shadow-header flex items-center justify-between bg-white p-4'
+            )}
+        >
             <nav
                 className={clsx(
                     'flex items-center gap-2',
                     'md:gap-4',
                     'lg:gap-8'
-                )}>
+                )}
+            >
                 <Link Custom={customLink} href={logoHref}>
                     <img
                         src={logoUrlMobile}
@@ -50,7 +52,7 @@ export function Header({
                     <img
                         src={logoUrlDesktop}
                         alt={logoAltText}
-                        className="h-10 object-contain object-center hidden md:inline"
+                        className="hidden h-10 object-contain object-center md:inline"
                     />
                 </Link>
                 {leadingElement}

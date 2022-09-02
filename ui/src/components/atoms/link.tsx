@@ -44,7 +44,8 @@ export function Link({
             aria-current={ariaCurrent}
             className={clsx(className)}
             href={href}
-            target={target}>
+            target={target}
+        >
             {children}
         </a>
     );

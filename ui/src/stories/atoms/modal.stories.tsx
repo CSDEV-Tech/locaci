@@ -74,26 +74,27 @@ Complex.args = {
 
                 <Button variant="primary">Connexion</Button>
 
-                <div className="flex items-center gap-2 my-2">
-                    <hr className="h-[1px] bg-lightgray w-full" />
+                <div className="my-2 flex items-center gap-2">
+                    <hr className="h-[1px] w-full bg-lightgray" />
                     <span className="text-gray">Ou</span>
-                    <hr className="h-[1px] bg-lightgray w-full" />
+                    <hr className="h-[1px] w-full bg-lightgray" />
                 </div>
 
                 <Button
                     variant="outline"
                     renderLeadingIcon={cls => (
                         <img src={GoogleLogoSVG} className={cls} />
-                    )}>
+                    )}
+                >
                     Connectez-vous avec google
                 </Button>
             </div>
         </>
     ),
     footer: (
-        <p className="w-full inline-flex justify-center text-gray">
+        <p className="inline-flex w-full justify-center text-gray">
             Vous avez déjà un compte ?&nbsp;
-            <strong className="font-bold cursor-pointer hover:underline">
+            <strong className="cursor-pointer font-bold hover:underline">
                 Connectez-vous
             </strong>
         </p>

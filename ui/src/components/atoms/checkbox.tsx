@@ -24,7 +24,8 @@ export function Checkbox({
             className={clsx(className, 'group flex items-start gap-2', {
                 'cursor-pointer': !disabled,
                 'cursor-not-allowed': disabled
-            })}>
+            })}
+        >
             <input
                 type="checkbox"
                 checked={checked}
@@ -52,7 +53,8 @@ export function Checkbox({
                         'bg-secondary':
                             !disabled && checked && variant === 'secondary'
                     }
-                )}>
+                )}
+            >
                 <Check
                     weight="bold"
                     className={clsx('text-white', {
@@ -65,7 +67,8 @@ export function Checkbox({
                 className={clsx('font-medium', {
                     'text-dark': checked,
                     'text-gray': !checked || disabled
-                })}>
+                })}
+            >
                 {label}
             </span>
         </label>

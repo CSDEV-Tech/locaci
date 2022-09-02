@@ -17,13 +17,14 @@ export function SearchButton({
         <button
             className={clsx(
                 className,
-                'border-2 border-[#EDE8E9] rounded-md',
-                'flex gap-4 items-center justify-between px-3 py-2',
-                'text-gray font-semibold text-sm  max-w-[180px]',
-                'md:px-4 md:text-base md:max-w-[300px]'
+                'rounded-md border-2 border-[#EDE8E9]',
+                'flex items-center justify-between gap-4 px-3 py-2',
+                'max-w-[180px] text-sm font-semibold  text-gray',
+                'md:max-w-[300px] md:px-4 md:text-base'
             )}
-            onClick={onClick}>
-            <span className="whitespace-nowrap text-ellipsis overflow-hidden w-full">
+            onClick={onClick}
+        >
+            <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
                 {children}
             </span>
 

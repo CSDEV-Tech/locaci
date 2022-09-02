@@ -20,7 +20,7 @@ export default {
 
 // 👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof RadioGroup> = args => (
-    <div className="w-full h-full bg-white min-h-screen p-2">
+    <div className="h-full min-h-screen w-full bg-white p-2">
         <RadioGroup {...args} />
     </div>
 );

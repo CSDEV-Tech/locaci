@@ -30,16 +30,17 @@ export function Select({
             <div
                 className={clsx(
                     className,
-                    'px-4 pt-1 pb-2 rounded-md border relative group w-full',
+                    'group relative w-full rounded-md border px-4 pt-1 pb-2',
                     {
                         'bg-white': !disabled,
-                        'bg-lightgray cursor-not-allowed': disabled
+                        'cursor-not-allowed bg-lightgray': disabled
                     }
-                )}>
+                )}
+            >
                 <Listbox value={value} onChange={onChange} disabled={disabled}>
                     {({ open }) => (
                         <>
-                            <Listbox.Label className="text-sm text-gray font-normal">
+                            <Listbox.Label className="text-sm font-normal text-gray">
                                 {label}
                             </Listbox.Label>
 
@@ -47,13 +48,14 @@ export function Select({
                                 disabled={disabled}
                                 autoFocus={autoFocus}
                                 className={clsx(
-                                    'h-10 w-full font-medium text-dark text-start',
+                                    'h-10 w-full text-start font-medium text-dark',
                                     'flex items-center justify-between',
                                     {
                                         'cursor-pointer': !disabled,
                                         'cursor-not-allowed': disabled
                                     }
-                                )}>
+                                )}
+                            >
                                 <span>
                                     {selected?.label ?? 'Choisissez une option'}
                                 </span>
@@ -72,20 +74,22 @@ export function Select({
                                 enterTo="transform opacity-100 scale-100"
                                 leave="transition ease-in duration-75"
                                 leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95">
+                                leaveTo="transform opacity-0 scale-95"
+                            >
                                 <Listbox.Options
                                     className={clsx(
-                                        'bg-white py-3 flex flex-col rounded-md border shadow-card',
+                                        'flex flex-col rounded-md border bg-white py-3 shadow-card',
                                         'absolute top-[calc(100%+0.5rem)] left-0 right-0',
                                         'max-h-[300px] overflow-y-scroll'
-                                    )}>
+                                    )}
+                                >
                                     {options.map(option => (
                                         <Listbox.Option
                                             key={option.value}
                                             value={option.value}
                                             className={({ active }) =>
                                                 clsx(
-                                                    'cursor-pointer px-4 py-2 flex items-center justify-between',
+                                                    'flex cursor-pointer items-center justify-between px-4 py-2',
                                                     {
                                                         'bg-primary':
                                                             active &&
@@ -97,12 +101,13 @@ export function Select({
                                                                 'secondary'
                                                     }
                                                 )
-                                            }>
+                                            }
+                                        >
                                             {({ selected, active }) => (
                                                 <>
                                                     <span
                                                         className={clsx('', {
-                                                            'text-dark font-normal':
+                                                            'font-normal text-dark':
                                                                 !(
                                                                     selected ||
                                                                     active
@@ -110,14 +115,15 @@ export function Select({
                                                             'font-semibold':
                                                                 selected,
                                                             'text-white': active
-                                                        })}>
+                                                        })}
+                                                    >
                                                         {option.label}
                                                     </span>
 
                                                     {selected && (
                                                         <CheckCircle
                                                             className={clsx(
-                                                                'h-4 min-w-4',
+                                                                'min-w-4 h-4',
                                                                 {
                                                                     'text-primary':
                                                                         !active &&

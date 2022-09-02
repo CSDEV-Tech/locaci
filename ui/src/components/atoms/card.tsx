@@ -1,49 +1,49 @@
-import * as React from "react";
-import { clsx } from "../../lib/functions";
+import * as React from 'react';
+import { clsx } from '../../lib/functions';
 
 export type CardProps = {
-  animated?: boolean;
-  className?: string;
-  children?: React.ReactNode;
+    animated?: boolean;
+    className?: string;
+    children?: React.ReactNode;
 };
 
 export type DefaultCardProps = CardProps & {
-  href: never;
-  asLink: never;
+    href: never;
+    asLink: never;
 };
 
 export type LinkCardProps = CardProps & {
-  href: string;
-  asLink?: React.ComponentType<Omit<LinkCardProps, "asLink">>;
+    href: string;
+    asLink?: React.ComponentType<Omit<LinkCardProps, 'asLink'>>;
 };
 
 export function Card({
-  className,
-  children,
-  animated = false,
-  ...restProps
+    className,
+    children,
+    animated = false,
+    ...restProps
 }: DefaultCardProps | LinkCardProps) {
-  let Tag: React.ComponentType<any> | string = "div";
+    let Tag: React.ComponentType<any> | string = 'div';
 
-  if (restProps.href) {
-    Tag = restProps.asLink ? restProps.asLink : "a";
-  }
+    if (restProps.href) {
+        Tag = restProps.asLink ? restProps.asLink : 'a';
+    }
 
-  return (
-    <Tag
-      href={restProps.href}
-      className={clsx(
-        `bg-white rounded-md border border-lightgray`,
-        `inline-flex`,
-        className,
-        {
-          "transition duration-300 ease-in-out hover:scale-105 active:scale-105":
-            animated,
-          "hover:border-none hover:shadow-card": animated,
-        }
-      )}
-    >
-      {children}
-    </Tag>
-  );
+    return (
+        <Tag
+            href={restProps.href}
+            className={clsx(
+                `rounded-md border border-lightgray bg-white`,
+                `inline-flex`,
+                className,
+                {
+                    'transition duration-300 ease-in-out hover:scale-105 active:scale-105':
+                        animated,
+                    'hover:border-none hover:shadow-card': animated
+                }
+            )}
+        >
+            {children}
+        </Tag>
+    );
 }

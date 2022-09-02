@@ -47,7 +47,8 @@ Default.args = {
                     variant="primary"
                     onClick={() => {
                         sheetRef.current?.snapTo(({ maxHeight }) => maxHeight);
-                    }}>
+                    }}
+                >
                     Snap to max
                 </Button>
                 <Button
@@ -56,14 +57,16 @@ Default.args = {
                         sheetRef.current?.snapTo(
                             ({ maxHeight }) => maxHeight / 2
                         );
-                    }}>
+                    }}
+                >
                     Snap to middle
                 </Button>
                 <Button
                     variant="dark"
                     onClick={() => {
                         sheetRef.current?.snapTo(({ minHeight }) => minHeight);
-                    }}>
+                    }}
+                >
                     Snap to min
                 </Button>
                 <Button
@@ -71,7 +74,8 @@ Default.args = {
                     onClick={() => {
                         dismiss?.();
                     }}
-                    renderTrailingIcon={cls => <X className={cls} />}>
+                    renderTrailingIcon={cls => <X className={cls} />}
+                >
                     Close
                 </Button>
             </div>

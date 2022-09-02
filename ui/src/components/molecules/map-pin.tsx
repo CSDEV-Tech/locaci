@@ -13,15 +13,17 @@ export function MapPin({ price, className, title }: MapPinProps) {
             aria-label={title}
             className={clsx(
                 className,
-                `inline-flex flex-col gap-2 items-center group`
-            )}>
+                `group inline-flex flex-col items-center gap-2`
+            )}
+        >
             <div
                 className={clsx(
                     `rounded-full bg-white text-sm font-bold`,
                     `py-2 px-4`,
                     `group-hover:bg-primary group-hover:text-white`,
                     `transition duration-300 group-hover:scale-105`
-                )}>
+                )}
+            >
                 {formatNumberToFCFA(price)}
             </div>
         </button>

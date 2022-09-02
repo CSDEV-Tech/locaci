@@ -21,23 +21,25 @@ export function Footer({ className, links, customLink }: FooterProps) {
     return (
         <footer className={clsx(className, 'w-full')}>
             {links?.length > 0 && (
-                <div className="p-10 bg-lightgray">
+                <div className="bg-lightgray p-10">
                     <ul
                         className={clsx(
                             'grid grid-cols-2 gap-8',
-                            'max-w-[1200px] mx-auto',
+                            'mx-auto max-w-[1200px]',
                             'md:grid-cols-4'
-                        )}>
+                        )}
+                    >
                         {links?.map(({ links, title }) => (
                             <li key={title} className="flex flex-col gap-4">
                                 <h3 className="font-bold">{title}</h3>
-                                <ul className="font-normal flex flex-col gap-3 text-gray">
+                                <ul className="flex flex-col gap-3 font-normal text-gray">
                                     {links?.map(({ label, href }) => (
                                         <li key={href}>
                                             <Link
                                                 Custom={customLink}
                                                 href={href}
-                                                className="hover:underline">
+                                                className="hover:underline"
+                                            >
                                                 {label}
                                             </Link>
                                         </li>
@@ -49,13 +51,14 @@ export function Footer({ className, links, customLink }: FooterProps) {
                 </div>
             )}
 
-            <div className="p-4 bg-white">
+            <div className="bg-white p-4">
                 <div
                     className={clsx(
                         'flex flex-col gap-4',
-                        'md:flex-row md:justify-between md:items-center',
-                        'max-w-[1200px] mx-auto'
-                    )}>
+                        'md:flex-row md:items-center md:justify-between',
+                        'mx-auto max-w-[1200px]'
+                    )}
+                >
                     <ul className="flex flex-col gap-4 md:flex-row md:items-center">
                         <li className="text-gray">
                             &copy; 2022 locaci.net, Tous droits réservés
@@ -64,20 +67,22 @@ export function Footer({ className, links, customLink }: FooterProps) {
                             <Link
                                 Custom={customLink}
                                 href="/mentions-legales"
-                                className="font-semibold">
+                                className="font-semibold"
+                            >
                                 Mentions légales
                             </Link>
                         </li>
                     </ul>
-                    <ul className="flex gap-4 items-center">
+                    <ul className="flex items-center gap-4">
                         <li>
                             <a
                                 href="#"
                                 target="_blank"
-                                aria-label="Lien Facebook">
+                                aria-label="Lien Facebook"
+                            >
                                 <FacebookLogo
                                     weight="fill"
-                                    className="h-8 w-8 hover:text-[#2374e1] transition-colors duration-300"
+                                    className="h-8 w-8 transition-colors duration-300 hover:text-[#2374e1]"
                                 />
                             </a>
                         </li>
@@ -85,10 +90,11 @@ export function Footer({ className, links, customLink }: FooterProps) {
                             <a
                                 href="#"
                                 target="_blank"
-                                aria-label="Lien Linkedin">
+                                aria-label="Lien Linkedin"
+                            >
                                 <LinkedinLogo
                                     weight="fill"
-                                    className="h-8 w-8 hover:text-[#0A66C2] transition-colors duration-300"
+                                    className="h-8 w-8 transition-colors duration-300 hover:text-[#0A66C2]"
                                 />
                             </a>
                         </li>
