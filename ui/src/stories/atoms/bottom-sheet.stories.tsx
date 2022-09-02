@@ -42,13 +42,12 @@ Default.args = {
     snapPoints: ({ maxHeight }) => [maxHeight, maxHeight / 2, maxHeight / 4],
     children: (sheetRef, dismiss) => (
         <>
-            <div className="flex w-full justify-between gap-2 p-4">
+            <div className="flex w-full flex-col justify-between gap-2 p-4 md:flex-row">
                 <Button
                     variant="primary"
                     onClick={() => {
                         sheetRef.current?.snapTo(({ maxHeight }) => maxHeight);
-                    }}
-                >
+                    }}>
                     Snap to max
                 </Button>
                 <Button
@@ -57,16 +56,14 @@ Default.args = {
                         sheetRef.current?.snapTo(
                             ({ maxHeight }) => maxHeight / 2
                         );
-                    }}
-                >
+                    }}>
                     Snap to middle
                 </Button>
                 <Button
                     variant="dark"
                     onClick={() => {
                         sheetRef.current?.snapTo(({ minHeight }) => minHeight);
-                    }}
-                >
+                    }}>
                     Snap to min
                 </Button>
                 <Button
@@ -74,8 +71,7 @@ Default.args = {
                     onClick={() => {
                         dismiss?.();
                     }}
-                    renderTrailingIcon={cls => <X className={cls} />}
-                >
+                    renderTrailingIcon={cls => <X className={cls} />}>
                     Close
                 </Button>
             </div>
