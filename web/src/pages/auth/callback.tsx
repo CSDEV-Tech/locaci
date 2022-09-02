@@ -1,8 +1,11 @@
 import * as React from 'react';
+// components
+import { LoadingIndicator } from '@locaci/ui';
+
+// functions & others
 import { supabase } from 'web/src/utils/supabase-client';
 import { t } from 'web/src/utils/trpc-rq-hooks';
 import { useRouter } from 'next/router';
-import { LoadingIndicator } from '@locaci/ui';
 
 export default function CallbackPage() {
     const router = useRouter();
@@ -25,6 +28,18 @@ export default function CallbackPage() {
         if (!params.has('access_token')) {
             router.push('/login');
         }
+
+        // if user is already connected, then redirect automatically to profile
+        async function checkUserSession() {
+            const { data } = await supabase.auth.getSession();
+            if (data.session?.user) {
+                getUserMutation.mutate({
+                    email: data.session.user.email!,
+                    uid: data.session.user.id
+                });
+            }
+        }
+        checkUserSession();
 
         // Listen for supabase login event
         const {
