@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { t } from 'web/src/utils/trpc-rq-hooks';
 import { Button } from '@locaci/ui';
 import { supabase } from '../utils/supabase-client';
 import { useRouter } from 'next/router';
+
+import { t } from 'web/src/utils/trpc-rq-hooks';
 
 import type { NextPageWithLayout } from './_app';
 import { DefaultLayout } from '../components/layouts/default-layout';
@@ -13,8 +14,10 @@ const ProfilePage: NextPageWithLayout = () => {
     const { data, isLoading, isError } =
         t.proxy.auth.getAuthenticatedUser.useQuery();
     const mutation = t.proxy.auth.removeAuthCookie.useMutation({
-        onSuccess() {
+        onSuccess: async () => {
+            supabase.auth.signOut();
             utils.auth.getAuthenticatedUser.invalidate();
+            utils.auth.getUser.invalidate();
         }
     });
 
@@ -40,7 +43,9 @@ const ProfilePage: NextPageWithLayout = () => {
             {isLoading ? (
                 <div>Loading User...</div>
             ) : data ? (
-                <pre>{JSON.stringify(data, null, 2)}</pre>
+                <pre className="w-full overflow-scroll">
+                    {JSON.stringify(data, null, 2)}
+                </pre>
             ) : (
                 <div>NO DATA</div>
             )}
