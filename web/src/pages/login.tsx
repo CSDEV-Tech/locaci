@@ -9,6 +9,7 @@ import { getHostWithScheme } from '../lib/functions';
 import { t } from '../utils/trpc-rq-hooks';
 import { sendEmailLinkSchema } from '../server/trpc/validation/auth-schema';
 import { useZodForm } from '../hooks/use-zod-form';
+import { useOAuthMutation } from '../hooks/use-oauth-mutation';
 
 // types
 import type { NextPageWithLayout } from './_app';
@@ -23,11 +24,12 @@ export const LoginPage: NextPageWithLayout = () => {
         }
     });
 
-    const mutation = t.proxy.auth.sendEmailLink.useMutation();
+    const loginWithEmailMutation = t.proxy.auth.sendEmailLink.useMutation();
+    const loginWithOAuthMutation = useOAuthMutation();
     const [receiverEmail, setReceiverEmail] = React.useState<string>();
 
     async function login({ email }: { email: string }) {
-        await mutation.mutateAsync({
+        await loginWithEmailMutation.mutateAsync({
             email,
             redirectTo: `${getHostWithScheme(
                 window.location.href
@@ -41,8 +43,10 @@ export const LoginPage: NextPageWithLayout = () => {
     return (
         <>
             <SuccessModal
-                onClose={mutation.reset}
-                open={mutation.isSuccess && receiverEmail !== null}
+                onClose={loginWithEmailMutation.reset}
+                open={
+                    loginWithEmailMutation.isSuccess && receiverEmail !== null
+                }
                 email={receiverEmail}
             />
 
@@ -73,7 +77,7 @@ export const LoginPage: NextPageWithLayout = () => {
                             variant="primary"
                             type="submit"
                             block
-                            loading={mutation.isLoading}>
+                            loading={loginWithEmailMutation.isLoading}>
                             Connexion
                         </Button>
 
@@ -104,6 +108,10 @@ export const LoginPage: NextPageWithLayout = () => {
 
                         <Button
                             type="button"
+                            loading={loginWithOAuthMutation.isLoading}
+                            onClick={() =>
+                                loginWithOAuthMutation.mutate('google')
+                            }
                             renderLeadingIcon={cls => (
                                 <img src={`/Google_Logo.svg`} className={cls} />
                             )}
