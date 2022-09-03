@@ -1,5 +1,7 @@
 # LOCACI
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/181ff0b4-3ff0-4836-a2de-b31727919630/deploy-status)](https://app.netlify.com/sites/locaci-ui-lib/deploys)
+
 ## Prérequis
 
 - Node >= v14.17.0
