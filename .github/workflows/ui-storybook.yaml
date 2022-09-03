@@ -39,7 +39,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: FORCE_COLOR=true pnpm install --strict-peer-dependencies=false --no-frozen-lockfile --filter=ui --filter=root
+        run: FORCE_COLOR=true pnpm install --strict-peer-dependencies=false --filter=ui --filter=root
 
       # TODO: use turbo remote cache => https://turborepo.org/docs/upgrading-to-v1#3-setup-remote-caching
       - name: Build the package
