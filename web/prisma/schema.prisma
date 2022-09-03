@@ -11,16 +11,47 @@ datasource db {
 }
 
 model User {
-    id             String     @id @default(uuid()) @db.Uuid
+    id             String   @id @default(uuid()) @db.Uuid
     firstName      String?
     lastName       String?
     phoneNumber    String?
-    email          String     @unique
-    role           Role       @default(HOUSING_APPLICANT)
-    properties     Property[] // A user can have many properties
-    createdAt      DateTime   @default(now())
-    updatedAt      DateTime   @updatedAt
-    email_verified Boolean    @default(false)
+    email          String   @unique
+    role           Role     @default(HOUSING_APPLICANT)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    email_verified Boolean  @default(false)
+    civicTitle     Civility @default(MR)
+
+    properties       Property[] // A user can have many properties
+    RequestOwnerRole RequestOwnerRole?
+}
+
+enum Role {
+    HOUSING_APPLICANT
+    PROPERTY_OWNER
+    ADMIN
+}
+
+enum Civility {
+    MR
+    MME
+}
+
+model RequestOwnerRole {
+    id          String        @id @default(uuid()) @db.Uuid
+    validatedAt DateTime?
+    status      RequestStatus @default(WAITING)
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String @unique @db.Uuid
+}
+
+enum RequestStatus {
+    WAITING
+    GRANTED
+    REFUSED
 }
 
 model Property {
@@ -31,12 +62,6 @@ model Property {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     archived  Boolean  @default(false)
-}
-
-enum Role {
-    HOUSING_APPLICANT
-    PROPERTY_OWNER
-    ADMIN
 }
 
 enum RentType {
