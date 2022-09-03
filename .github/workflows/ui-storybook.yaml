@@ -43,7 +43,7 @@ jobs:
 
       # TODO: use turbo remote cache => https://turborepo.org/docs/upgrading-to-v1#3-setup-remote-caching
       - name: Build the package
-        run: turbo run build --filter=ui
+        run: pnpm run turbo run build --filter=ui
 
       - name: Publish the components
         run: FORCE_COLOR=true pnpm run deploy-ui-lib

@@ -8,7 +8,8 @@
         "dev": "turbo run dev storybook --parallel",
         "test": "turbo run test",
         "format": "prettier --write ./web/src ./ui/src ./domain/src ./domain/tests",
-        "deploy-ui-lib": "netlify deploy"
+        "deploy-ui-lib": "netlify deploy",
+        "turbo": "turbo"
     },
     "author": "Adrien KISSIE <fredkiss3@gmail.com>",
     "license": "ISC",
