@@ -33,32 +33,33 @@ export function Header({
         <header
             className={clsx(
                 className,
-                'lg:shadow-header flex items-center justify-between bg-white p-4'
-            )}
-        >
-            <nav
-                className={clsx(
-                    'flex items-center gap-2',
-                    'md:gap-4',
-                    'lg:gap-8'
-                )}
-            >
-                <Link Custom={customLink} href={logoHref}>
-                    <img
-                        src={logoUrlMobile}
-                        alt={logoAltText}
-                        className="h-10 w-10 object-contain object-center md:hidden"
-                    />
-                    <img
-                        src={logoUrlDesktop}
-                        alt={logoAltText}
-                        className="hidden h-10 object-contain object-center md:inline"
-                    />
-                </Link>
-                {leadingElement}
-            </nav>
+                'lg:shadow-header bg-white p-4',
+                'md:px-8 md:py-6'
+            )}>
+            <ul className="mx-auto flex max-w-[1200px] items-center justify-between">
+                <nav
+                    className={clsx(
+                        'flex items-center gap-2',
+                        'md:gap-4',
+                        'lg:gap-8'
+                    )}>
+                    <Link Custom={customLink} href={logoHref}>
+                        <img
+                            src={logoUrlMobile}
+                            alt={logoAltText}
+                            className="h-10 w-10 object-contain object-center md:hidden"
+                        />
+                        <img
+                            src={logoUrlDesktop}
+                            alt={logoAltText}
+                            className="hidden h-10 object-contain object-center md:inline"
+                        />
+                    </Link>
+                    {leadingElement}
+                </nav>
 
-            <div>{trailingElement}</div>
+                <div>{trailingElement}</div>
+            </ul>
         </header>
     );
 }
