@@ -3,5 +3,4 @@ import { FieldErrors } from '../../lib/types';
 
 export type UpdateListingResponse = {
     errors?: FieldErrors<UpdateListingRequest>;
-    // TODO: Response args
 };

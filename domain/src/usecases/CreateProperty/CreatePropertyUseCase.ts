@@ -69,7 +69,6 @@ export class CreatePropertyUseCase {
     validate(
         request: CreatePropertyRequest
     ): ValidateResult<CreatePropertyRequest> {
-        // TODO : Validation Rules
         const parsedResult = this.schema.safeParse(request);
 
         if (!parsedResult.success) {

@@ -26,7 +26,6 @@ export class UpdateListingUseCase {
         request: UpdateListingRequest,
         presenter: UpdateListingPresenter
     ): Promise<void> {
-        // TODO : UseCase Logic
         const res = this.validate(request);
 
         let errors = res.errors;

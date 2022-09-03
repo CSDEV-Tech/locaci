@@ -4,7 +4,6 @@ import faker from '@faker-js/faker';
 
 export function generateAmenity(defaultValue?: Partial<Amenity>): Amenity {
     return {
-        // TODO: generate factory
         id: new Uuid(),
         name: faker.lorem.word(),
         type: randomItemInArray(AmenityTypes),

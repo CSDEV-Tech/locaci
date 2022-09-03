@@ -25,9 +25,7 @@ const presenter = new (class implements RemoveRoomFromPropertyPresenter {
     }
 })();
 
-const request = generateMock(RemoveRoomFromPropertyRequestSchema, {
-    // TODO: overrides
-});
+const request = generateMock(RemoveRoomFromPropertyRequestSchema, {});
 
 describe('RemoveRoomFromProperty Use case', () => {
     it('removes successfully the room', async () => {
