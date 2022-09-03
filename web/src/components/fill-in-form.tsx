@@ -33,7 +33,10 @@ export function FillInForm() {
     return (
         <>
             <BottomSheet
-                open={true}
+                open={
+                    !!user &&
+                    (user.firstName === null || user.lastName === null)
+                }
                 expandOnContentDrag
                 className={`md:hidden`}
                 snapPoints={({ minHeight }) => [minHeight]}>
