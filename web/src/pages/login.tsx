@@ -2,7 +2,8 @@ import * as React from 'react';
 // components
 import { DefaultLayout } from '../components/layouts/default-layout';
 import { NextLink, NextLinkButton } from '../components/next-link';
-import { BottomSheet, Button, TextInput } from '@locaci/ui';
+import { Button, clsx, TextInput } from '@locaci/ui';
+import { LoginSuccessModal } from '../components/login-success-modal';
 
 // functions & others
 import { getHostWithScheme } from '../lib/functions';
@@ -42,7 +43,7 @@ export const LoginPage: NextPageWithLayout = () => {
 
     return (
         <>
-            <SuccessModal
+            <LoginSuccessModal
                 onClose={loginWithEmailMutation.reset}
                 open={
                     loginWithEmailMutation.isSuccess && receiverEmail !== null
@@ -50,77 +51,103 @@ export const LoginPage: NextPageWithLayout = () => {
                 email={receiverEmail}
             />
 
-            <div className="flex h-full w-full flex-col justify-between gap-14 px-6 pt-20 pb-10">
-                <div>
-                    <h1 className="text-center text-2xl font-extrabold leading-normal md:text-3xl">
-                        Bienvenue sur Locaci
-                    </h1>
-                    <h2 className="text-center text-lg text-gray">
-                        Entrez vos informations pour continuer
-                    </h2>
-                </div>
-
-                <form
-                    className="flex flex-col items-stretch gap-4"
-                    onSubmit={form.handleSubmit(login)}>
-                    <div className="flex flex-col gap-4 text-lg">
-                        <TextInput
-                            className="w-full"
-                            type="email"
-                            label="Email"
-                            required
-                            {...form.register('email')}
-                            errorText={form.formState.errors.email?.message}
-                        />
-
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            block
-                            loading={loginWithEmailMutation.isLoading}>
-                            Connexion
-                        </Button>
-
-                        <small className="text-gray">
-                            En cliquant sur "Connexion", vous acceptez nos&nbsp;
-                            <NextLink
-                                target="_blank"
-                                className="font-bold"
-                                href="/cgu">
-                                conditions générales
-                            </NextLink>
-                            &nbsp;et notre&nbsp;
-                            <NextLink
-                                target="_blank"
-                                className="font-bold"
-                                href="/terms-and-policy">
-                                politique de confidentialité
-                            </NextLink>
-                            .
-                        </small>
-
-                        {/* Separator */}
-                        <div className="my-2 flex items-center gap-2">
-                            <hr className="h-[1px] w-full bg-lightgray" />
-                            <span className="text-gray">Ou</span>
-                            <hr className="h-[1px] w-full bg-lightgray" />
-                        </div>
-
-                        <Button
-                            type="button"
-                            loading={loginWithOAuthMutation.isLoading}
-                            onClick={() =>
-                                loginWithOAuthMutation.mutate('google')
-                            }
-                            renderLeadingIcon={cls => (
-                                <img src={`/Google_Logo.svg`} className={cls} />
-                            )}
-                            variant="outline">
-                            Connectez-vous avec google
-                        </Button>
+            <section className="flex h-full items-center justify-center">
+                <div
+                    className={clsx(
+                        'flex h-full w-full flex-col gap-14 px-6 pt-20 pb-10',
+                        'md:m-auto md:h-auto md:w-[450px]'
+                    )}>
+                    <div>
+                        <h1 className="text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                            Bienvenue sur Locaci
+                        </h1>
+                        <h2 className="text-center text-lg text-gray">
+                            Entrez vos informations pour continuer
+                        </h2>
                     </div>
-                </form>
-            </div>
+
+                    <form
+                        className="flex flex-col items-stretch gap-4"
+                        onSubmit={form.handleSubmit(login)}>
+                        <div className="flex flex-col gap-4 text-lg">
+                            <TextInput
+                                className="w-full"
+                                type="email"
+                                label="Email"
+                                required
+                                {...form.register('email')}
+                                errorText={form.formState.errors.email?.message}
+                            />
+
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                block
+                                loading={loginWithEmailMutation.isLoading}>
+                                Connexion
+                            </Button>
+
+                            <small className="text-gray">
+                                En cliquant sur "Connexion", vous acceptez
+                                nos&nbsp;
+                                <NextLink
+                                    target="_blank"
+                                    className="font-bold"
+                                    href="/cgu">
+                                    conditions générales
+                                </NextLink>
+                                &nbsp;et notre&nbsp;
+                                <NextLink
+                                    target="_blank"
+                                    className="font-bold"
+                                    href="/terms-and-policy">
+                                    politique de confidentialité
+                                </NextLink>
+                                .
+                            </small>
+
+                            {/* Separator */}
+                            <div className="my-2 flex items-center gap-2">
+                                <hr className="h-[1px] w-full bg-lightgray" />
+                                <span className="text-gray">Ou</span>
+                                <hr className="h-[1px] w-full bg-lightgray" />
+                            </div>
+
+                            <Button
+                                type="button"
+                                loading={loginWithOAuthMutation.isLoading}
+                                onClick={() =>
+                                    loginWithOAuthMutation.mutate('google')
+                                }
+                                renderLeadingIcon={cls => (
+                                    <img
+                                        src={`/Google_Logo.svg`}
+                                        className={cls}
+                                    />
+                                )}
+                                variant="outline">
+                                Connectez-vous avec google
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section
+                className={clsx(
+                    'fixed bottom-0 right-0 z-[-1] hidden',
+                    'md:flex md:items-end md:justify-end'
+                )}>
+                <img
+                    src="/empty_street.svg"
+                    alt="Maison vide"
+                    className={clsx(
+                        'w-52 object-contain object-center',
+                        'lg:w-64',
+                        'xl:w-7'
+                    )}
+                />
+            </section>
         </>
     );
 };
@@ -133,6 +160,7 @@ LoginPage.getLayout = page => {
             hideFooter
             headerLeadingElement={<></>}
             toastDirection={`top-center`}
+            className={`md:h-[calc(100vh-78px)]`}
             headerTrailingElement={
                 <>
                     <NextLinkButton href="/request-access" variant="hollow">
@@ -144,54 +172,3 @@ LoginPage.getLayout = page => {
         </DefaultLayout>
     );
 };
-
-type SuccessModalProps = {
-    open: boolean;
-    onClose: () => void;
-    email?: string | null;
-};
-
-function SuccessModal({ email, onClose, open }: SuccessModalProps) {
-    return (
-        <BottomSheet
-            open={open}
-            expandOnContentDrag
-            onDismiss={onClose}
-            defaultSnap={({ minHeight }) => minHeight}
-            snapPoints={({ maxHeight, minHeight }) => [
-                minHeight,
-                maxHeight * 0.95
-            ]}
-            className={`md:hidden`}>
-            <div className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10">
-                <img
-                    src="/success_illustration.svg"
-                    alt="Image de succès"
-                    className="h-[165px] w-[240px]"
-                />
-
-                <h2 className="text-2xl font-extrabold">
-                    Vérifiez votre boîte email
-                </h2>
-                <section
-                    aria-live="assertive"
-                    className="flex flex-col gap-4 text-left text-gray">
-                    <p>
-                        Nous avons envoyé un email de vérification à
-                        l'adresse&nbsp;
-                        <strong className="font-bold">{email}</strong>.
-                    </p>
-                    <p>
-                        Vous n'avez qu'à cliquer sur le lien dans cet email pour
-                        vous connecter. Si vous ne le trouvez pas, veuillez
-                        vérifier dans vos SPAMS.
-                    </p>
-                </section>
-
-                <Button variant="hollow" onClick={onClose}>
-                    Fermer ce message.
-                </Button>
-            </div>
-        </BottomSheet>
-    );
-}
