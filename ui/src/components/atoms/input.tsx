@@ -48,7 +48,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             required = false,
             disabled = false,
             type = 'text',
-            placeholder = 'placeholder...'
+            placeholder = ' '
         },
         ref
     ) => {
@@ -68,8 +68,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             'focus-within:ring-2 focus-within:ring-red-300':
                                 !!errorText
                         }
-                    )}
-                >
+                    )}>
                     <div className={'group relative flex w-full items-center'}>
                         <input
                             ref={ref}
@@ -90,8 +89,12 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                                 onChangeValue?.(e.target.value);
                             }}
                             className={clsx(
-                                'peer h-10 w-full font-medium text-dark placeholder-transparent',
-                                'bg-transparent focus:outline-none'
+                                'peer h-10 w-full font-medium  placeholder-transparent opacity-100',
+                                'bg-transparent focus:outline-none',
+                                {
+                                    'text-gray': disabled,
+                                    'text-dark': !disabled
+                                }
                             )}
                             placeholder={placeholder}
                         />
@@ -102,14 +105,12 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                                 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:font-normal',
                                 'peer-focus:-top-3.5 peer-focus:text-sm',
                                 'text-gray peer-placeholder-shown:text-gray peer-focus:text-gray'
-                            )}
-                        >
+                            )}>
                             {label}
                             {required && (
                                 <span
                                     aria-label="ce champ est requis"
-                                    className="text-red-400"
-                                >
+                                    className="text-red-400">
                                     *
                                 </span>
                             )}
@@ -117,8 +118,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
 
                         {(appendix !== undefined || !!errorText) && (
                             <span
-                                className={`font-normal text-gray group-focus-within:text-dark`}
-                            >
+                                className={`font-normal text-gray group-focus-within:text-dark`}>
                                 {!!errorText ? (
                                     <XCircle
                                         weight="fill"
@@ -137,8 +137,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                         id={errorId}
                         aria-live={`assertive`}
                         role={`alert`}
-                        className={`text-red-500`}
-                    >
+                        className={`text-red-500`}>
                         {errorText}
                     </small>
                 )}
@@ -231,11 +230,9 @@ export function NumberInput({
                     'bg-lightgray': disabled,
                     'border-red-400': !!errorText,
                     'focus-within:ring-2 focus-within:ring-red-400': !!errorText
-                })}
-            >
+                })}>
                 <div
-                    className={'group relative flex w-full items-center gap-1'}
-                >
+                    className={'group relative flex w-full items-center gap-1'}>
                     <input
                         id={id}
                         aria-describedby={!!errorText ? errorId : helpId}
@@ -249,8 +246,12 @@ export function NumberInput({
                         value={valueToDisplay}
                         onChange={e => handleChange(e.target.value)}
                         className={clsx(
-                            'peer h-10 w-full font-medium text-dark placeholder-transparent',
-                            'bg-transparent focus:outline-none'
+                            'peer h-10 w-full font-medium placeholder-transparent',
+                            'bg-transparent focus:outline-none',
+                            {
+                                'text-gray': disabled,
+                                'text-dark': !disabled
+                            }
                         )}
                         placeholder={placeholder}
                     />
@@ -261,14 +262,12 @@ export function NumberInput({
                             'peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:font-medium peer-placeholder-shown:text-gray',
                             'peer-focus:-top-3.5 peer-focus:text-sm peer-focus:font-normal peer-focus:text-gray',
                             'text-ellipsis whitespace-nowrap'
-                        )}
-                    >
+                        )}>
                         {label}
                         {required && (
                             <span
                                 aria-label="ce champ est requis"
-                                className="text-red-400"
-                            >
+                                className="text-red-400">
                                 *
                             </span>
                         )}
@@ -277,8 +276,7 @@ export function NumberInput({
                     {!showButtons &&
                         (appendix !== undefined || !!errorText) && (
                             <span
-                                className={`font-normal text-gray group-focus-within:text-dark`}
-                            >
+                                className={`font-normal text-gray group-focus-within:text-dark`}>
                                 {!!errorText ? (
                                     <XCircle
                                         weight="fill"
@@ -323,8 +321,7 @@ export function NumberInput({
                     id={errorId}
                     role={`alert`}
                     className={`text-red-500`}
-                    aria-live={`assertive`}
-                >
+                    aria-live={`assertive`}>
                     {errorText}
                 </small>
             )}

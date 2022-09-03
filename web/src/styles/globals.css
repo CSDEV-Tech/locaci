@@ -9,3 +9,21 @@
         font-family: 'Poppins', sans-serif;
     }
 }
+
+@layer utilities {
+    .text-dark {
+        -webkit-text-fill-color: theme('colors.dark.DEFAULT');
+        opacity: 1;
+    }
+
+    .text-gray {
+        -webkit-text-fill-color: theme('colors.gray.DEFAULT');
+        opacity: 1;
+    }
+
+    .placeholder-transparent::placeholder {
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        opacity: 0;
+    }
+}
