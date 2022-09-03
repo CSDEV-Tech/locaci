@@ -56,14 +56,13 @@ export const LoginPage: NextPageWithLayout = () => {
                         Bienvenue sur Locaci
                     </h1>
                     <h2 className="text-center text-lg text-gray">
-                        Entrez vos coordonnées pour continuer
+                        Entrez vos informations pour continuer
                     </h2>
                 </div>
 
                 <form
                     className="flex flex-col items-stretch gap-4"
-                    onSubmit={form.handleSubmit(login)}
-                >
+                    onSubmit={form.handleSubmit(login)}>
                     <div className="flex flex-col gap-4 text-lg">
                         <TextInput
                             className="w-full"
@@ -78,8 +77,7 @@ export const LoginPage: NextPageWithLayout = () => {
                             variant="primary"
                             type="submit"
                             block
-                            loading={loginWithEmailMutation.isLoading}
-                        >
+                            loading={loginWithEmailMutation.isLoading}>
                             Connexion
                         </Button>
 
@@ -88,16 +86,14 @@ export const LoginPage: NextPageWithLayout = () => {
                             <NextLink
                                 target="_blank"
                                 className="font-bold"
-                                href="/cgu"
-                            >
+                                href="/cgu">
                                 conditions générales
                             </NextLink>
                             &nbsp;et notre&nbsp;
                             <NextLink
                                 target="_blank"
                                 className="font-bold"
-                                href="/terms-and-policy"
-                            >
+                                href="/terms-and-policy">
                                 politique de confidentialité
                             </NextLink>
                             .
@@ -119,8 +115,7 @@ export const LoginPage: NextPageWithLayout = () => {
                             renderLeadingIcon={cls => (
                                 <img src={`/Google_Logo.svg`} className={cls} />
                             )}
-                            variant="outline"
-                        >
+                            variant="outline">
                             Connectez-vous avec google
                         </Button>
                     </div>
@@ -144,8 +139,7 @@ LoginPage.getLayout = page => {
                         Vous êtes un bailleur ?
                     </NextLinkButton>
                 </>
-            }
-        >
+            }>
             {page}
         </DefaultLayout>
     );
@@ -168,12 +162,8 @@ function SuccessModal({ email, onClose, open }: SuccessModalProps) {
                 minHeight,
                 maxHeight * 0.95
             ]}
-            className={`md:hidden `}
-        >
-            <div
-                className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10"
-                aria-live="assertive"
-            >
+            className={`md:hidden`}>
+            <div className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10">
                 <img
                     src="/success_illustration.svg"
                     alt="Image de succès"
@@ -183,7 +173,9 @@ function SuccessModal({ email, onClose, open }: SuccessModalProps) {
                 <h2 className="text-2xl font-extrabold">
                     Vérifiez votre boîte email
                 </h2>
-                <section className="flex flex-col gap-4 text-left text-gray">
+                <section
+                    aria-live="assertive"
+                    className="flex flex-col gap-4 text-left text-gray">
                     <p>
                         Nous avons envoyé un email de vérification à
                         l'adresse&nbsp;
@@ -197,7 +189,7 @@ function SuccessModal({ email, onClose, open }: SuccessModalProps) {
                 </section>
 
                 <Button variant="hollow" onClick={onClose}>
-                    Fermer
+                    Fermer ce message.
                 </Button>
             </div>
         </BottomSheet>
