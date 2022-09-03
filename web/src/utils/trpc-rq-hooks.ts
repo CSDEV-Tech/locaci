@@ -39,7 +39,7 @@ export const t: TRPCHooksType = setupTRPC<AppRouter>({
                     queries: {
                         refetchOnWindowFocus: false,
                         retry: 2, // retry twice by default
-                        staleTime: 5 * 60 * 1_000 // 5 minutes
+                        staleTime: 60 * 60 * 1_000 // 1 hour
                     }
                 }
             },
