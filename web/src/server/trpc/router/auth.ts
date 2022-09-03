@@ -4,7 +4,10 @@ import { t } from '../trpc-server-root';
 import { supabaseAdmin as supabase } from 'web/src/utils/supabase-admin';
 import { TRPCError } from '@trpc/server';
 import { Uuid } from '@locaci/domain';
-import { sendEmailLinkSchema } from '../validation/auth-schema';
+import {
+    updateNameAndProfileSchema,
+    sendEmailLinkSchema
+} from '../validation/auth-schema';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 
@@ -96,12 +99,7 @@ export const authRouter = t.router({
         return ctx.user;
     }),
     updateNameProfile: protectedProcedure
-        .input(
-            z.object({
-                firstName: z.string().min(1),
-                lastName: z.string().min(1)
-            })
-        )
+        .input(updateNameAndProfileSchema)
         .mutation(async ({ ctx, input: { firstName, lastName } }) => {
             await ctx.prisma.user.update({
                 where: {
