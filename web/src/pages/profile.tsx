@@ -1,13 +1,16 @@
 import * as React from 'react';
+// components
 import { Button } from '@locaci/ui';
+import { DefaultLayout } from '../components/layouts/default-layout';
+import { FillInForm } from '../components/fill-in-form';
+
+// utils & functions
+import { t } from 'web/src/utils/trpc-rq-hooks';
 import { supabase } from '../utils/supabase-client';
 import { useRouter } from 'next/router';
 
-import { t } from 'web/src/utils/trpc-rq-hooks';
-
+// types
 import type { NextPageWithLayout } from './_app';
-import { DefaultLayout } from '../components/layouts/default-layout';
-import { FillInForm } from '../components/fill-in-form';
 
 const ProfilePage: NextPageWithLayout = () => {
     const router = useRouter();
