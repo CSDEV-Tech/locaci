@@ -6,7 +6,8 @@ import { TRPCError } from '@trpc/server';
 import { Uuid } from '@locaci/domain';
 import {
     updateNameAndProfileSchema,
-    sendEmailLinkSchema
+    sendEmailLinkSchema,
+    requestOwnerAccessSchema
 } from '../validation/auth-schema';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
@@ -108,6 +109,37 @@ export const authRouter = t.router({
                 data: {
                     firstName,
                     lastName
+                }
+            });
+
+            return { success: true };
+        }),
+    requestOwnerAccess: t.procedure
+        .input(requestOwnerAccessSchema)
+        .mutation(async ({ ctx, input }) => {
+            // Update new user informations
+            const user = await ctx.prisma.user.upsert({
+                create: {
+                    ...input,
+                    email_verified: false
+                },
+                update: {
+                    ...input,
+                    email_verified: false
+                },
+                where: {
+                    email: input.email
+                }
+            });
+
+            // create the request if it does not exists, else do nothing
+            await ctx.prisma.requestOwnerRole.upsert({
+                create: {
+                    userId: user.id
+                },
+                update: {},
+                where: {
+                    userId: user.id
                 }
             });
 
