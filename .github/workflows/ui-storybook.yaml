@@ -30,7 +30,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@646cdf48217256a3d0b80361c5a50727664284f2
         with:
-          version: 6.22.2
+          version: 7.1.0
 
       - name: Setup Node version
         uses: actions/setup-node@v2
@@ -39,7 +39,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: FORCE_COLOR=true pnpm i --strict-peer-dependencies=false --prefix ui
+        run: FORCE_COLOR=true pnpm i --strict-peer-dependencies=false --no-frozen-lockfile --prefix ui
 
       # TODO: use turbo remote cache => https://turborepo.org/docs/upgrading-to-v1#3-setup-remote-caching
       - name: Build the package
