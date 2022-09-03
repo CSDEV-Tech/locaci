@@ -7,7 +7,7 @@ import { Button } from './button';
 export type ModalProps = {
     title: string;
     isOpen: boolean;
-    onClose: () => void;
+    onClose?: () => void;
     children?: React.ReactNode;
     footer?: React.ReactNode;
     cancelButtonRef?: React.RefObject<HTMLButtonElement>;
@@ -31,9 +31,8 @@ export function Modal({
                 <Dialog
                     as="div"
                     className="relative z-10"
-                    onClose={onClose}
-                    initialFocus={cancelButtonRef}
-                >
+                    onClose={() => onClose?.()}
+                    initialFocus={cancelButtonRef}>
                     <Transition.Child
                         as={React.Fragment}
                         enter="ease-out duration-300"
@@ -41,8 +40,7 @@ export function Modal({
                         enterTo="opacity-100"
                         leave="ease-in duration-200"
                         leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
+                        leaveTo="opacity-0">
                         <div className="fixed inset-0 bg-black bg-opacity-25" />
                     </Transition.Child>
 
@@ -55,41 +53,41 @@ export function Modal({
                                 enterTo="opacity-100 scale-100"
                                 leave="ease-in duration-200"
                                 leaveFrom="opacity-100 scale-100"
-                                leaveTo="opacity-0 scale-95"
-                            >
+                                leaveTo="opacity-0 scale-95">
                                 <Dialog.Panel
                                     className={clsx(
                                         className,
-                                        'w-full max-w-md transform overflow-hidden',
+                                        'w-full max-w-lg transform overflow-hidden',
                                         'rounded-2xl bg-white text-left align-middle shadow-xl transition-all'
-                                    )}
-                                >
+                                    )}>
                                     <div className="relative flex items-center justify-center border-b border-lightgray py-4 px-6">
                                         <Dialog.Title
                                             as="h3"
-                                            className="text-lg font-medium leading-6 text-gray-900"
-                                        >
+                                            className="text-lg font-medium leading-6 text-gray-900">
                                             {title}
                                         </Dialog.Title>
-                                        <Button
-                                            variant="outline"
-                                            className="absolute right-6"
-                                            square
-                                            onClick={onClose}
-                                            renderLeadingIcon={cls => (
-                                                <X className={cls} />
-                                            )}
-                                        />
+                                        {onClose && (
+                                            <Button
+                                                variant="outline"
+                                                className="absolute right-6"
+                                                square
+                                                onClick={onClose}
+                                                renderLeadingIcon={cls => (
+                                                    <X className={cls} />
+                                                )}
+                                            />
+                                        )}
                                     </div>
                                     <div className="p-6">{children}</div>
-                                    <div
-                                        className={clsx(
-                                            footerClassName,
-                                            'border-t border-lightgray py-4 px-6'
-                                        )}
-                                    >
-                                        {footer}
-                                    </div>
+                                    {footer && (
+                                        <div
+                                            className={clsx(
+                                                footerClassName,
+                                                'border-t border-lightgray py-4 px-6'
+                                            )}>
+                                            {footer}
+                                        </div>
+                                    )}
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
