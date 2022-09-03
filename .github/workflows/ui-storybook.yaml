@@ -8,7 +8,7 @@ on:
   push:
     paths:
       - "ui/**"
-      - .github/workflows/ui-storybook.yml
+      - .github/workflows/ui-storybook.yaml
     branches:
       - develop
 
