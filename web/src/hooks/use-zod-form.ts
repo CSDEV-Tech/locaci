@@ -9,6 +9,7 @@ export function useZodForm<TSchema extends z.ZodType>(
 ) {
     const form = useForm<TSchema['_input']>({
         ...props,
+        // @ts-ignore
         resolver: zodResolver(props.schema, undefined, {
             // This makes it so we can use `.transform()`s on the schema without same transform getting applied again when it reaches the server
             rawValues: true
