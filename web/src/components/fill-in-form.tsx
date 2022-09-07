@@ -20,15 +20,17 @@ export function FillInForm() {
 
     const utils = t.proxy.useContext();
 
-    const mutation = t.proxy.auth.updateNameProfile.useMutation();
+    const mutation = t.proxy.auth.updateNameProfile.useMutation({
+        async onSuccess() {
+            await utils.auth.getAuthenticatedUser.invalidate();
+            form.reset();
+        }
+    });
 
     async function fillInForm(
         values: z.TypeOf<typeof updateNameAndProfileSchema>
     ) {
-        await mutation.mutateAsync(values);
-
-        await utils.auth.getAuthenticatedUser.invalidate();
-        form.reset();
+        mutation.mutateAsync(values);
     }
 
     const FormContent = () => (
