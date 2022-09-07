@@ -26,6 +26,7 @@ export interface TextInputProps extends InputProps<string> {
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
     onChangeValue?: (newValue: string) => void;
     defaultValue?: string;
+    inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
@@ -45,6 +46,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             helpText,
             rootClassName,
             defaultValue,
+            inputMode,
             required = false,
             disabled = false,
             placeholder = ' ',
@@ -75,6 +77,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             aria-describedby={!!errorText ? errorId : helpId}
                             id={id}
                             name={name}
+                            inputMode={inputMode}
                             autoFocus={autoFocus}
                             onBlur={onBlur}
                             aria-invalid={!!errorText}
