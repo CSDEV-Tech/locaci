@@ -18,8 +18,10 @@ export * from './components/atoms/link-button';
 export * from './components/atoms/link';
 export * from './components/atoms/avatar';
 export * from './components/atoms/bottom-sheet';
+export * from './components/atoms/textarea';
 
 // molecules
+export * from './components/molecules/popover';
 export * from './components/molecules/pagination';
 export * from './components/molecules/checkbox-group';
 export * from './components/molecules/radio-group';
