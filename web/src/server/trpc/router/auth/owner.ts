@@ -26,8 +26,19 @@ export const ownerRouter = t.router({
 
                 const uid = Uuid.fromShort(decoded.id);
 
-                // pass state to granted because the user has validated now
-                const request = await ctx.prisma.requestOwnerRole.update({
+                // Only users which exists and that we didn't refuse the access
+                const request = await ctx.prisma.requestOwnerRole.findFirst({
+                    where: {
+                        id: uid.toString(),
+                        status: RequestStatus.WAITING
+                    }
+                });
+
+                // Throw error to say that the link is invalid
+                if (request === null) throw new Error();
+
+                // update state to granted because the user has validated now
+                await ctx.prisma.requestOwnerRole.update({
                     where: {
                         id: uid.toString()
                     },
