@@ -28,6 +28,7 @@ import type { NextPageWithLayout } from '../_app';
 import type { AppRouter } from 'web/src/server/trpc/router';
 import type { inferProcedureOutput } from '@trpc/server';
 import type { ArrayElement } from 'web/src/utils/types';
+import { supabase } from 'web/src/utils/supabase-client';
 
 export type DashBoardAdminPageProps = {};
 
@@ -43,42 +44,19 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
             enabled: !!user && user.role === Role.ADMIN
         });
 
-    const generateLinkMutation =
-        t.proxy.admin.generateLinkForOwner.useMutation();
-
-    const refuseOwnerAccessMutation =
-        t.proxy.admin.refuseOwnerAccess.useMutation({
-            async onSuccess(data, variables, context) {
-                await utils.admin.getAllRequests.invalidate();
-                form.reset();
-            }
-        });
-
-    const form = useZodForm({
-        schema: refuseOwnerAccessSchema.omit({
-            uid: true
-        })
-    });
-
     if (user && user.role !== Role.ADMIN) {
         toast.error("Vous n'avez pas le droit d'accéder à cette page");
         router.replace(`/login`);
         return <></>;
     }
 
-    async function generateLink(variables: { uid: string; host: string }) {
-        const link = await generateLinkMutation.mutateAsync(variables);
-        // alert(`The link is : ${link}`);
-        toast.success('Message copié dans votre presse-papier');
-        await navigator.clipboard.writeText(link);
-    }
-
-    async function refuseAccess(variables: { uid: string; reason: string }) {
-        await refuseOwnerAccessMutation.mutateAsync(variables);
-        toast('Requête refusée avec succès', {
-            icon: 'ℹ️'
-        });
-    }
+    const logoutMutation = t.proxy.auth.removeAuthCookie.useMutation({
+        onSuccess: async () => {
+            supabase.auth.signOut();
+            utils.auth.getAuthenticatedUser.invalidate();
+            utils.auth.getUser.invalidate();
+        }
+    });
 
     return isLoading || isLoadingRequests ? (
         <section className="flex h-screen w-screen items-center justify-center">
@@ -89,6 +67,19 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
         </section>
     ) : (
         <section className="my-8 w-full">
+            <div className="flex justify-end p-4 md:px-8">
+                <Button
+                    loading={logoutMutation.isLoading}
+                    variant="secondary"
+                    onClick={async () => {
+                        await supabase.auth.signOut();
+                        logoutMutation.mutate();
+                        router.push('/');
+                    }}>
+                    Logout
+                </Button>
+            </div>
+
             <h1 className="mt-8 mb-4 text-center text-xl font-bold uppercase">
                 Liste des requêtes de création de compte propriétaire
             </h1>
