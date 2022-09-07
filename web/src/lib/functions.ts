@@ -51,3 +51,33 @@ export function getCookie(name: string, cookieStr: string): string | null {
 
     return null;
 }
+
+/**
+ * This function allows you to format a date in French format.
+ * It takes the date as it is naturally formatted in JS then returns it in French
+ *
+ * @example
+ *    formatDate("2020-05-13T14:04:00.000Z")  // => "13/05/2020"
+ *    formatDate(new Date(0), '.') // => "01.01.1970"
+ *
+ */
+export function formatDate(
+    date: string | Date,
+    separator: string = '/'
+): string {
+    const dt = new Date(date);
+
+    const day = Intl.NumberFormat('fr-FR', {
+        minimumIntegerDigits: 2,
+        maximumFractionDigits: 0
+    }).format(dt.getDate());
+
+    const month = Intl.NumberFormat('fr-FR', {
+        minimumIntegerDigits: 2,
+        maximumFractionDigits: 0
+    }).format(dt.getMonth() + 1);
+
+    const year = dt.getFullYear();
+
+    return `${day}${separator}${month}${separator}${year}`;
+}

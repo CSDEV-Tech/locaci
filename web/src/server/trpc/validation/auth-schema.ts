@@ -63,3 +63,16 @@ export const requestOwnerAccessSchema = z.object({
             )
     )
 });
+
+export const refuseOwnerAccessSchema = z.object({
+    uid: z.string().uuid(),
+    reason: z
+        .string({
+            required_error:
+                'Veuillez saisir la raison pour laquelle vous refusez cette requête.'
+        })
+        .min(
+            1,
+            'Veuillez saisir la raison pour laquelle vous refusez cette requête.'
+        )
+});
