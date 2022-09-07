@@ -7,7 +7,11 @@ import { supabase } from 'web/src/utils/supabase-client';
 import { t } from 'web/src/utils/trpc-rq-hooks';
 import { useRouter } from 'next/router';
 
-export default function CallbackPage() {
+// types
+import type { NextPageWithLayout } from '../_app';
+import { DefaultLayout } from 'web/src/components/layouts/default-layout';
+
+export const CallbackPage: NextPageWithLayout = () => {
     const router = useRouter();
     const setAuthCookieMutation = t.proxy.auth.setAuthCookie.useMutation({
         onSuccess() {
@@ -59,10 +63,17 @@ export default function CallbackPage() {
     }, []);
 
     return (
-        <main className="flex h-screen w-screen items-center justify-center">
+        <section className="flex h-screen w-screen items-center justify-center">
             <h1 className="flex items-center gap-4 text-4xl">
                 <LoadingIndicator className="h-10" /> <span>CHARGEMENT...</span>
             </h1>
-        </main>
+        </section>
     );
-}
+};
+
+export default CallbackPage;
+CallbackPage.getLayout = page => (
+    <DefaultLayout hideFooter hideHeader title="Connexion à votre compte...">
+        {page}
+    </DefaultLayout>
+);
