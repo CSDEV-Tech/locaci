@@ -37,8 +37,8 @@ export const requestOwnerAccessSchema = z.object({
             required_error: `Veuillez saisir votre prénom`
         })
         .min(1, 'Le prénom ne doit pas être vide'),
-    civility: z.nativeEnum(Civility, {
-        required_error: `Veuillez saisir votre civilité (Mme ou Mr)`
+    civicTitle: z.nativeEnum(Civility, {
+        required_error: `Veuillez choisir votre civilité (Mme ou Mr)`
     }),
     email: z
         .string({
