@@ -19,6 +19,7 @@ export type DefaultLayoutProps = {
     headerLeadingElement?: React.ReactNode;
     headerTrailingElement?: React.ReactNode;
     hideFooter?: boolean;
+    hideHeader?: boolean;
     className?: string;
     toastDirection?: ToastPosition;
 } & SeoData;
@@ -26,6 +27,7 @@ export type DefaultLayoutProps = {
 export function DefaultLayout({
     children,
     hideFooter = false,
+    hideHeader = false,
     ...props
 }: DefaultLayoutProps) {
     const title =
@@ -95,23 +97,26 @@ export function DefaultLayout({
                 />
             </Head>
 
-            <Header
-                logoHref={`/`}
-                customLink={NextLink}
-                logoAltText="Logo LOCACI"
-                logoUrlDesktop="/logo.svg"
-                logoUrlMobile="/favicon.svg"
-                leadingElement={
-                    props.headerLeadingElement ?? (
-                        <DefaultHeaderLeadingElement />
-                    )
-                }
-                trailingElement={
-                    props.headerTrailingElement ?? (
-                        <DefaultHeaderTrailingElement />
-                    )
-                }
-            />
+            {!hideHeader && (
+                <Header
+                    logoHref={`/`}
+                    customLink={NextLink}
+                    logoAltText="Logo LOCACI"
+                    logoUrlDesktop="/logo.svg"
+                    logoUrlMobile="/favicon.svg"
+                    leadingElement={
+                        props.headerLeadingElement ?? (
+                            <DefaultHeaderLeadingElement />
+                        )
+                    }
+                    trailingElement={
+                        props.headerTrailingElement ?? (
+                            <DefaultHeaderTrailingElement />
+                        )
+                    }
+                />
+            )}
+
             <main className={clsx(props.className, 'h-full')}>{children}</main>
 
             {!hideFooter && (
@@ -141,7 +146,9 @@ function DefaultHeaderTrailingElement() {
 
     return user ? (
         <NextLinkButton href="/profile" className="gap-4">
-            <span className="font-semibold">Hello</span>
+            <span className="font-semibold">
+                {user.firstName} {user.lastName}
+            </span>
             <Avatar
                 name={`${user.firstName} ${user.lastName}`}
                 // TODO : Use user's image
