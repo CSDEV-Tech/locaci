@@ -1,5 +1,6 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
+    "prettier.configPath": ".prettierrc.js" ,
     "vitest.commandLine": "pnpm --filter domain run test",
     "vitest.enable": true,
     "vitest.exclude": [
