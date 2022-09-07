@@ -1,18 +1,24 @@
-import { isLoggedIn } from './../middleware/auth';
 import { z } from 'zod';
-import { t } from '../trpc-server-root';
+import { t } from '../../trpc-server-root';
 import { supabaseAdmin as supabase } from 'web/src/utils/supabase-admin';
 import { TRPCError } from '@trpc/server';
 import { Uuid } from '@locaci/domain';
 import {
     updateNameAndProfileSchema,
-    sendEmailLinkSchema,
-    requestOwnerAccessSchema
-} from '../validation/auth-schema';
+    sendEmailLinkSchema
+} from '../../validation/auth-schema';
+import jwt from 'jsonwebtoken';
+
+import { ownerRouter } from './owner';
+import { adminRouter } from '../admin';
+import { isLoggedIn } from '../../middleware/auth';
+import { env } from 'web/src/env/server.mjs';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 
 export const authRouter = t.router({
+    owner: ownerRouter,
+    // base routes
     sendEmailLink: t.procedure
         .input(sendEmailLinkSchema)
         .mutation(async ({ input: { email, redirectTo } }) => {
@@ -45,18 +51,27 @@ export const authRouter = t.router({
             const expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 30);
 
+            const token = jwt.sign(
+                {
+                    id: new Uuid(uid).short()
+                },
+                env.JWT_SECRET,
+                {
+                    expiresIn: `30d`, // 30 days
+                    algorithm: 'HS256'
+                }
+            );
+
             ctx.res?.setHeader(
                 'set-cookie',
-                `user=${new Uuid(
-                    uid
-                ).short()}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
+                `__session=${token}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
             );
             return { success: true };
         }),
     removeAuthCookie: t.procedure.mutation(async ({ ctx }) => {
         ctx.res?.setHeader(
             'set-cookie',
-            `user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict; httponly;`
+            `__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict; httponly;`
         );
         return { success: true };
     }),
@@ -109,37 +124,6 @@ export const authRouter = t.router({
                 data: {
                     firstName,
                     lastName
-                }
-            });
-
-            return { success: true };
-        }),
-    requestOwnerAccess: t.procedure
-        .input(requestOwnerAccessSchema)
-        .mutation(async ({ ctx, input }) => {
-            // Update new user informations
-            const user = await ctx.prisma.user.upsert({
-                create: {
-                    ...input,
-                    email_verified: false
-                },
-                update: {
-                    ...input,
-                    email_verified: false
-                },
-                where: {
-                    email: input.email
-                }
-            });
-
-            // create the request if it does not exists, else do nothing
-            await ctx.prisma.requestOwnerRole.upsert({
-                create: {
-                    userId: user.id
-                },
-                update: {},
-                where: {
-                    userId: user.id
                 }
             });
 
