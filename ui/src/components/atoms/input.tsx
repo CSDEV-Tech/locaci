@@ -8,9 +8,9 @@ export type InputProps<T> = {
     value?: T;
     label: string;
     name?: string;
-    placeholder?: string;
     className?: string;
     rootClassName?: string;
+    placeholder?: string;
     disabled?: boolean;
     autoFocus?: boolean;
     required?: boolean;
@@ -47,8 +47,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             defaultValue,
             required = false,
             disabled = false,
-            type = 'text',
-            placeholder = ' '
+            placeholder = ' ',
+            type = 'text'
         },
         ref
     ) => {
