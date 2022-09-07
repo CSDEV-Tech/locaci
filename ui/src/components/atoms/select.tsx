@@ -12,6 +12,7 @@ export type SelectProps = {
     autoFocus?: boolean;
     disabled?: boolean;
     variant?: 'primary' | 'secondary';
+    errorText?: string;
 };
 
 export function Select({
@@ -20,23 +21,26 @@ export function Select({
     className,
     autoFocus,
     onChange,
+    errorText,
     variant = 'primary',
     disabled = false,
     options = []
 }: SelectProps) {
     const selected = options.find(option => option.value === value);
     return (
-        <>
+        <div className="flex flex-col gap-1">
             <div
                 className={clsx(
                     className,
                     'group relative w-full rounded-md border px-4 pt-1 pb-2',
                     {
                         'bg-white': !disabled,
-                        'cursor-not-allowed bg-lightgray': disabled
+                        'cursor-not-allowed bg-lightgray': disabled,
+                        'border-red-400': !!errorText,
+                        'focus-within:ring-2 focus-within:ring-red-300':
+                            !!errorText
                     }
-                )}
-            >
+                )}>
                 <Listbox value={value} onChange={onChange} disabled={disabled}>
                     {({ open }) => (
                         <>
@@ -54,8 +58,7 @@ export function Select({
                                         'cursor-pointer': !disabled,
                                         'cursor-not-allowed': disabled
                                     }
-                                )}
-                            >
+                                )}>
                                 <span>
                                     {selected?.label ?? 'Choisissez une option'}
                                 </span>
@@ -74,15 +77,13 @@ export function Select({
                                 enterTo="transform opacity-100 scale-100"
                                 leave="transition ease-in duration-75"
                                 leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95"
-                            >
+                                leaveTo="transform opacity-0 scale-95">
                                 <Listbox.Options
                                     className={clsx(
                                         'flex flex-col rounded-md border bg-white py-3 shadow-card',
                                         'absolute top-[calc(100%+0.5rem)] left-0 right-0',
-                                        'max-h-[300px] overflow-y-scroll'
-                                    )}
-                                >
+                                        'z-20 max-h-[300px] overflow-y-scroll'
+                                    )}>
                                     {options.map(option => (
                                         <Listbox.Option
                                             key={option.value}
@@ -101,8 +102,7 @@ export function Select({
                                                                 'secondary'
                                                     }
                                                 )
-                                            }
-                                        >
+                                            }>
                                             {({ selected, active }) => (
                                                 <>
                                                     <span
@@ -115,8 +115,7 @@ export function Select({
                                                             'font-semibold':
                                                                 selected,
                                                             'text-white': active
-                                                        })}
-                                                    >
+                                                        })}>
                                                         {option.label}
                                                     </span>
 
@@ -150,6 +149,15 @@ export function Select({
                     )}
                 </Listbox>
             </div>
-        </>
+
+            {errorText && (
+                <small
+                    aria-live={`assertive`}
+                    role={`alert`}
+                    className={`text-red-500`}>
+                    {errorText}
+                </small>
+            )}
+        </div>
     );
 }
