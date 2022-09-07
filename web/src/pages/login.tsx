@@ -158,6 +158,7 @@ LoginPage.getLayout = page => {
     return (
         <DefaultLayout
             hideFooter
+            title="Connexion"
             headerLeadingElement={<></>}
             toastDirection={`top-center`}
             className={`md:h-[calc(100vh-78px)]`}
