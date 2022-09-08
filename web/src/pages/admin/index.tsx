@@ -10,7 +10,7 @@ import {
     TextArea
 } from '@locaci/ui';
 import { DefaultLayout } from '../../components/layouts/default-layout';
-import { Link, Prohibit } from 'phosphor-react';
+import { ArrowsClockwise, Link, Prohibit } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 import { NextLinkButton } from 'web/src/components/next-link';
 
@@ -39,12 +39,16 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
         t.proxy.auth.getAuthenticatedUser.useQuery();
     const router = useRouter();
 
-    const { data: requests, isLoading: isLoadingRequests } =
-        t.proxy.admin.getAllRequests.useQuery(undefined, {
-            enabled: !!user && user.role === Role.ADMIN,
-            refetchOnWindowFocus: true,
-            cacheTime: 300_000 // 5 minutes
-        });
+    const {
+        data: requests,
+        isLoading: isLoadingRequests,
+        isFetching: isFetchingRequests,
+        refetch
+    } = t.proxy.admin.getAllRequests.useQuery(undefined, {
+        enabled: !!user && user.role === Role.ADMIN,
+        refetchOnWindowFocus: true,
+        cacheTime: 300_000 // 5 minutes
+    });
 
     if (user && user.role !== Role.ADMIN) {
         toast.error("Vous n'avez pas le droit d'accéder à cette page");
@@ -69,7 +73,19 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
         </section>
     ) : (
         <section className="my-8 w-full">
-            <div className="flex justify-end p-4 md:px-8">
+            <div className="flex justify-end gap-2 p-4 md:px-8">
+                <Button
+                    loading={isFetchingRequests}
+                    variant="primary"
+                    onClick={async () => {
+                        refetch();
+                    }}
+                    renderLeadingIcon={cls => (
+                        <ArrowsClockwise className={cls} />
+                    )}>
+                    Logout
+                </Button>
+
                 <Button
                     loading={logoutMutation.isLoading}
                     variant="secondary"
