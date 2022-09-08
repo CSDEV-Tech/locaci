@@ -15,8 +15,9 @@ import { Controller } from 'react-hook-form';
 import { NextLinkButton } from 'web/src/components/next-link';
 
 // functions & others
-import toast from 'react-hot-toast';
 import { t } from 'web/src/utils/trpc-rq-hooks';
+import toast from 'react-hot-toast';
+import { supabase } from 'web/src/utils/supabase-client';
 import { useRouter } from 'next/router';
 import { RequestStatus, Role } from '@prisma/client';
 import { formatDate, getHostWithScheme } from 'web/src/lib/functions';
@@ -28,7 +29,6 @@ import type { NextPageWithLayout } from '../_app';
 import type { AppRouter } from 'web/src/server/trpc/router';
 import type { inferProcedureOutput } from '@trpc/server';
 import type { ArrayElement } from 'web/src/utils/types';
-import { supabase } from 'web/src/utils/supabase-client';
 
 export type DashBoardAdminPageProps = {};
 
@@ -41,7 +41,9 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
 
     const { data: requests, isLoading: isLoadingRequests } =
         t.proxy.admin.getAllRequests.useQuery(undefined, {
-            enabled: !!user && user.role === Role.ADMIN
+            enabled: !!user && user.role === Role.ADMIN,
+            refetchOnWindowFocus: true,
+            cacheTime: 300_000 // 5 minutes
         });
 
     if (user && user.role !== Role.ADMIN) {

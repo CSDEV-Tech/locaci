@@ -164,7 +164,9 @@ LoginPage.getLayout = page => {
             className={`md:h-[calc(100vh-78px)]`}
             headerTrailingElement={
                 <>
-                    <NextLinkButton href="/request-access" variant="hollow">
+                    <NextLinkButton
+                        href="/auth/request-access"
+                        variant="hollow">
                         Vous êtes un bailleur ?
                     </NextLinkButton>
                 </>

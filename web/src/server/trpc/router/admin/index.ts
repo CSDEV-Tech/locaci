@@ -51,7 +51,7 @@ export const adminRouter = t.router({
                 }
             );
 
-            return `${input.host}/auth/confirm-access/${token}`;
+            return `${input.host}/auth/confirm-access?token=${token}`;
         }),
     refuseOwnerAccess: protectedProcedure
         .input(refuseOwnerAccessSchema)

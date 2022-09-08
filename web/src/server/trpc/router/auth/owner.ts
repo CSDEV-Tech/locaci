@@ -59,7 +59,7 @@ export const ownerRouter = t.router({
                     }
                 });
 
-                return { success: true };
+                return { uid: request.userId };
             } catch (error) {
                 throw new TRPCError({
                     code: 'BAD_REQUEST',

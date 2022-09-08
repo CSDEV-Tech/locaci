@@ -1,18 +1,18 @@
 // components
 import { Button, clsx, Select, TextInput } from '@locaci/ui';
-import { DefaultLayout } from '../components/layouts/default-layout';
-import { NextLink, NextLinkButton } from '../components/next-link';
+import { DefaultLayout } from '../../components/layouts/default-layout';
+import { NextLink, NextLinkButton } from '../../components/next-link';
 import { At, Phone, User } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 
 // functions & others
-import { t } from '../utils/trpc-rq-hooks';
-import { useZodForm } from '../hooks/use-zod-form';
-import { requestOwnerAccessSchema } from '../server/trpc/validation/auth-schema';
+import { t } from '../../utils/trpc-rq-hooks';
+import { useZodForm } from '../../hooks/use-zod-form';
+import { requestOwnerAccessSchema } from '../../server/trpc/validation/auth-schema';
 
 // types
-import type { NextPageWithLayout } from './_app';
-import { RequestAccessSuccessModal } from '../components/request-access-success-modal';
+import type { NextPageWithLayout } from '../_app';
+import { RequestAccessSuccessModal } from '../../components/request-access-success-modal';
 
 export type RequestPageProps = {};
 
