@@ -51,7 +51,10 @@ const RequestPage: NextPageWithLayout<RequestPageProps> = props => {
                             <Controller
                                 name="civicTitle"
                                 control={form.control}
-                                render={({ field, formState: { errors } }) => (
+                                render={({
+                                    field: { ref, ...field },
+                                    formState: { errors }
+                                }) => (
                                     <Select
                                         label="Civilité"
                                         {...field}

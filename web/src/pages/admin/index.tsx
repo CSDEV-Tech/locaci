@@ -83,7 +83,7 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
                     renderLeadingIcon={cls => (
                         <ArrowsClockwise className={cls} />
                     )}>
-                    Logout
+                    Refetch
                 </Button>
 
                 <Button

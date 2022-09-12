@@ -24,26 +24,30 @@ const ConfirmAccessPage: NextPageWithLayout<ConfirmAccessPageProps> = props => {
     });
 
     const confirmAccessMutation = t.proxy.auth.owner.confirmAccess.useMutation({
-        onSuccess(data, variables, context) {
+        onSuccess(data) {
             setAuthCookieMutation.mutate({
                 uid: data.uid
             });
         },
-        onError(error, variables, context) {
+        onError(error) {
             toast.error(error.message);
-            router.push('/login');
+            router.push('/auth/request-access');
         }
     });
 
+    // use effect because you cannot call router in server environment
     React.useEffect(() => {
         if (!(typeof router.query.token === 'string')) {
             toast.error(
                 `Ce lien est invalide, veuillez en demander un nouveau`
             );
-            router.push('/login');
+            router.push('/auth/request-access');
             return;
         }
-        confirmAccessMutation.mutateAsync({ token: router.query.token });
+
+        confirmAccessMutation.mutate({
+            token: router.query.token
+        });
     }, [router.query.token]);
 
     return (

@@ -63,9 +63,7 @@ export const ownerRouter = t.router({
             } catch (error) {
                 throw new TRPCError({
                     code: 'BAD_REQUEST',
-                    message: `Ce lien n'est pas valide.
-                    Si vous avez fait une demande de création de compte,
-                    veuillez contacter LOCACI, pour demander un nouveau lien.`
+                    message: `Ce lien n'est pas valide. Si vous avez fait une demande de création de compte, veuillez en refaire une.`
                 });
             }
         }),

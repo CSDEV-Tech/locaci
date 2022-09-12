@@ -13,6 +13,7 @@ import { env } from 'web/src/env/client.mjs';
 // types
 import type { SeoData } from 'web/src/types';
 import type { ToastPosition } from 'react-hot-toast';
+import { Role } from '@prisma/client';
 
 export type DefaultLayoutProps = {
     children: React.ReactNode;
@@ -20,6 +21,7 @@ export type DefaultLayoutProps = {
     headerTrailingElement?: React.ReactNode;
     hideFooter?: boolean;
     hideHeader?: boolean;
+    hideLogo?: boolean;
     className?: string;
     toastDirection?: ToastPosition;
 } & SeoData;
@@ -27,6 +29,7 @@ export type DefaultLayoutProps = {
 export function DefaultLayout({
     children,
     hideFooter = false,
+    hideLogo = false,
     hideHeader = false,
     ...props
 }: DefaultLayoutProps) {
@@ -99,6 +102,7 @@ export function DefaultLayout({
 
             {!hideHeader && (
                 <Header
+                    hideLogo={hideLogo}
                     logoHref={`/`}
                     customLink={NextLink}
                     logoAltText="Logo LOCACI"
@@ -144,17 +148,26 @@ function DefaultHeaderLeadingElement() {
 function DefaultHeaderTrailingElement() {
     const { data: user } = t.proxy.auth.getUser.useQuery();
 
+    let href = '/profile';
+    switch (user?.role) {
+        case Role.ADMIN:
+            href = `/admin`;
+            break;
+        case Role.PROPERTY_OWNER:
+            href = `/owner`;
+            break;
+        default:
+            break;
+    }
+
     return user ? (
-        <NextLinkButton href="/profile" className="gap-4">
-            <span className="font-semibold">
-                {user.firstName} {user.lastName}
-            </span>
+        <NextLink href={href} className="gap-4">
             <Avatar
                 name={`${user.firstName} ${user.lastName}`}
                 // TODO : Use user's image
                 src="https://i.pravatar.cc/300"
             />
-        </NextLinkButton>
+        </NextLink>
     ) : (
         <>
             <NextLinkButton href="/login" variant="hollow">
