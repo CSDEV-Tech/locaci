@@ -11,7 +11,9 @@ export interface ButtonProps {
     children?: React.ReactNode;
     variant?: 'primary' | 'secondary' | 'hollow' | 'outline' | 'dark';
     type?: 'button' | 'submit' | 'reset';
+    role?: string;
     'aria-label'?: string;
+    'aria-expanded'?: false;
     loadingMessage?: string;
     square?: boolean;
     className?: string;
@@ -73,8 +75,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         'bg-dark text-white ring-dark/50': variant === 'dark'
                     }
                 )}
-                onClick={ev => !disabled && !loading && onClick?.(ev)}
-            >
+                onClick={ev => !disabled && !loading && onClick?.(ev)}>
                 <span className="sr-only" aria-live="assertive">
                     {loading ? loadingMessage : ''}
                 </span>

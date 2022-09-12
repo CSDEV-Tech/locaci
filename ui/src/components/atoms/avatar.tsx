@@ -5,15 +5,19 @@ export type AvatarProps = {
     src: string;
     name: string;
     className?: string;
+    imgClassName?: string;
 };
 
-export function Avatar({ src, name, className }: AvatarProps) {
+export function Avatar({ src, name, className, imgClassName }: AvatarProps) {
     return (
         <div className={clsx(className, 'h-10 w-10 rounded-md')}>
             <img
                 src={src}
                 alt={`Image de profil de ${name}`}
-                className={'h-10 w-10 rounded-md object-cover object-center'}
+                className={clsx(
+                    imgClassName,
+                    'h-full w-full rounded-md object-cover object-center'
+                )}
             />
         </div>
     );
