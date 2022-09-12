@@ -6,6 +6,7 @@ export type HeaderProps = {
     logoUrlMobile: string;
     logoUrlDesktop: string;
     logoAltText: string;
+    hideLogo?: boolean;
     logoHref?: string;
     className?: string;
     customLink?: React.ComponentType<CustomLink>;
@@ -27,6 +28,7 @@ export function Header({
     logoUrlMobile,
     logoUrlDesktop,
     logoAltText,
+    hideLogo = false,
     logoHref = '#'
 }: HeaderProps) {
     return (
@@ -43,18 +45,20 @@ export function Header({
                         'md:gap-4',
                         'lg:gap-8'
                     )}>
-                    <Link Custom={customLink} href={logoHref}>
-                        <img
-                            src={logoUrlMobile}
-                            alt={logoAltText}
-                            className="h-10 w-10 object-contain object-center md:hidden"
-                        />
-                        <img
-                            src={logoUrlDesktop}
-                            alt={logoAltText}
-                            className="hidden h-10 object-contain object-center md:inline"
-                        />
-                    </Link>
+                    {!hideLogo && (
+                        <Link Custom={customLink} href={logoHref}>
+                            <img
+                                src={logoUrlMobile}
+                                alt={logoAltText}
+                                className="h-10 w-10 object-contain object-center md:hidden"
+                            />
+                            <img
+                                src={logoUrlDesktop}
+                                alt={logoAltText}
+                                className="hidden h-10 object-contain object-center md:inline"
+                            />
+                        </Link>
+                    )}
                     {leadingElement}
                 </nav>
 
