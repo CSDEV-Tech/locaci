@@ -27,6 +27,8 @@ export * from './components/molecules/checkbox-group';
 export * from './components/molecules/radio-group';
 export * from './components/molecules/footer';
 export * from './components/molecules/map-pin';
+export * from './components/molecules/side-nav';
+export * from './components/molecules/breadcrumb';
 
 // organisms
 export * from './components/organisms/header';
