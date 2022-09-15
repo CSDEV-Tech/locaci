@@ -29,6 +29,7 @@ export * from './components/molecules/footer';
 export * from './components/molecules/map-pin';
 export * from './components/molecules/side-nav';
 export * from './components/molecules/breadcrumb';
+export * from './components/molecules/tabs';
 
 // organisms
 export * from './components/organisms/header';
