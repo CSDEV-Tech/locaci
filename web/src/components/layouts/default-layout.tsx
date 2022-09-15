@@ -42,7 +42,7 @@ export function DefaultLayout({
     return (
         <>
             <Head key={'document-head'}>
-                <title>{title} | LOCACI</title>
+                <title>{`${title} | LOCACI`}</title>
                 <meta name="description" content={description} />
                 <link rel="icon" href="/favicon.svg" />
                 <meta name="title" content={`${title} | LOCACI`} />

@@ -50,7 +50,7 @@ export function LoginSuccessModal({
         </>
     );
 
-    const showModal = useMediaQuery(`(min-width: 768px)`);
+    const canShowModal = useMediaQuery(`(min-width: 768px)`);
 
     return (
         <>
@@ -67,7 +67,10 @@ export function LoginSuccessModal({
                 <ModalContent />
             </BottomSheet>
 
-            <Modal title="Merci" isOpen={open && showModal} onClose={onClose}>
+            <Modal
+                title="Merci"
+                isOpen={open && canShowModal}
+                onClose={onClose}>
                 <ModalContent />
             </Modal>
         </>

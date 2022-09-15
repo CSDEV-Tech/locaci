@@ -8,5 +8,5 @@ export type NextBreadcrumbProps = {
 };
 
 export function NextBreadcrumb({ links }: NextBreadcrumbProps) {
-    return <Breadcrumb links={links} customLink={NextLink} />;
+    return <Breadcrumb items={links} customLink={NextLink} />;
 }
