@@ -12,12 +12,14 @@ export default {
 
 // 👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof Breadcrumb> = args => (
-    <Breadcrumb {...args} />
+    <div className="asbolute inset-0 bg-lightgray p-4">
+        <Breadcrumb {...args} />
+    </div>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-    links: [
+    items: [
         {
             href: '#',
             label: 'Tableau de bord'

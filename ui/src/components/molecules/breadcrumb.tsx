@@ -8,18 +8,18 @@ export type BreadcrumbItem = {
 };
 
 export type BreadcrumbProps = {
-    links: Array<BreadcrumbItem>;
+    items: Array<BreadcrumbItem>;
     className?: string;
     customLink?: React.ComponentType<CustomLink>;
 };
 
-export function Breadcrumb({ className, links, customLink }: BreadcrumbProps) {
+export function Breadcrumb({ className, items, customLink }: BreadcrumbProps) {
     return (
         <nav aria-label="Fil d'Ariane" className={clsx(className, '')}>
             <ol className="flex items-center">
-                {links.map((link, index) => (
+                {items.map((item, index) => (
                     <li
-                        key={link.href}
+                        key={item.href}
                         className={clsx(
                             `overflow-hidden text-ellipsis whitespace-nowrap`,
                             {
@@ -28,16 +28,16 @@ export function Breadcrumb({ className, links, customLink }: BreadcrumbProps) {
                                 'before:h-3 before:border-r before:border-r-dark':
                                     index > 0,
                                 'min-w-[50%] font-semibold':
-                                    index === links.length - 1
+                                    index === items.length - 1
                             }
                         )}>
                         <Link
                             Custom={customLink}
-                            href={link.href}
+                            href={item.href}
                             aria-current={
-                                index === links.length - 1 ? 'page' : undefined
+                                index === items.length - 1 ? 'page' : undefined
                             }>
-                            {link.label}
+                            {item.label}
                         </Link>
                     </li>
                 ))}

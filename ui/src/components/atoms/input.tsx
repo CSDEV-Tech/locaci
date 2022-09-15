@@ -68,7 +68,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             'bg-lightgray': disabled,
                             'border-red-400': !!errorText,
                             'focus-within:ring-2 focus-within:ring-red-300':
-                                !!errorText
+                                !!errorText,
+                            'focus-within:ring-2 focus-within:ring-gray/50':
+                                !errorText
                         }
                     )}>
                     <div className={'group relative flex w-full items-center'}>
@@ -241,7 +243,9 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                             'bg-lightgray': disabled,
                             'border-red-400': !!errorText,
                             'focus-within:ring-2 focus-within:ring-red-400':
-                                !!errorText
+                                !!errorText,
+                            'focus-within:ring-2 focus-within:ring-gray/50':
+                                !errorText
                         }
                     )}>
                     <div

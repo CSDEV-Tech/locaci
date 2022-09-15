@@ -31,8 +31,10 @@ export function SideNav({
         for (const element of elementsToHide) {
             if (isOpen) {
                 element.setAttribute(`aria-hidden`, 'true');
+                (element as HTMLElement).style.overflow = 'hidden';
             } else {
                 element.removeAttribute('aria-hidden');
+                (element as HTMLElement).style.overflow = 'auto';
             }
         }
     }, [isOpen]);
@@ -43,6 +45,7 @@ export function SideNav({
         <>
             {/* Backdrop */}
             <div className="fixed inset-0 z-[998] bg-[rgba(43,39,40,0.6)] backdrop-blur-sm"></div>
+
             {/* content */}
             <nav
                 className={clsx(
@@ -66,7 +69,7 @@ export function SideNav({
                 <div className="sr-only" id={id}>
                     Menu principal
                 </div>
-                <div className="w-full">{children}</div>
+                <div className="h-full w-full">{children}</div>
             </nav>
         </>
     ) : (

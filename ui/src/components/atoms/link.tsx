@@ -10,6 +10,7 @@ export type LinkProps = {
     rel?: string;
     'aria-current'?: React.AriaAttributes['aria-current'];
     Custom?: React.ComponentType<CustomLink>;
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 };
 
 export type CustomLink = Omit<LinkProps, 'Custom'>;
@@ -20,6 +21,7 @@ export function Link({
     Custom,
     href,
     target,
+    onClick,
     rel,
     'aria-label': ariaLabel,
     'aria-current': ariaCurrent
@@ -27,6 +29,7 @@ export function Link({
     if (Custom) {
         return (
             <Custom
+                onClick={onClick}
                 rel={rel}
                 aria-current={ariaCurrent}
                 aria-label={ariaLabel}
@@ -40,12 +43,12 @@ export function Link({
     return (
         <a
             rel={rel}
+            onClick={onClick}
             aria-label={ariaLabel}
             aria-current={ariaCurrent}
             className={clsx(className)}
             href={href}
-            target={target}
-        >
+            target={target}>
             {children}
         </a>
     );
