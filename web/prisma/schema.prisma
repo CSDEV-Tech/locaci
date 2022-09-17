@@ -70,3 +70,26 @@ enum RentType {
     SHARED_APPARTMENT
     SHORT_TERM
 }
+
+model City {
+    id             String         @id @default(uuid()) @db.Uuid
+    name           String
+    municipalities Municipality[]
+}
+
+// Commune
+model Municipality {
+    id         String     @id @default(uuid()) @db.Uuid
+    name       String
+    city       City       @relation(fields: [cityId], references: [id])
+    cityId     String     @db.Uuid
+    localities Locality[]
+}
+
+// Quartier
+model Locality {
+    id             String       @id @default(uuid()) @db.Uuid
+    name           String
+    municipality   Municipality @relation(fields: [municipalityId], references: [id])
+    municipalityId String       @db.Uuid
+}
