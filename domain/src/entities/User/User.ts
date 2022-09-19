@@ -2,11 +2,11 @@ import { Uuid } from '../../Dto';
 
 export type User = {
     id: Uuid;
-    firstName: string;
-    lastName: string;
+    firstName: string | null;
+    lastName: string | null;
     role: Role;
     email: string;
-    phoneNumber: string;
+    phoneNumber: string | null;
 };
 
 export enum Role {

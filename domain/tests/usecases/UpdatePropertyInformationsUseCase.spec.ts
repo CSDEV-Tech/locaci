@@ -4,7 +4,6 @@ import {
     UpdatePropertyInformationsPresenter,
     UpdatePropertyInformationsResponse,
     generateMock,
-    ListingRepositoryBuilder,
     PropertyRepositoryBuilder,
     RentType,
     Uuid,
@@ -55,7 +54,7 @@ describe('UpdatePropertyInformations Use case', () => {
         // Then
         expect(presenter.response).not.toBe(null);
         expect(presenter.response?.errors).toBeFalsy();
-        expect(expectedProperty).toMatchObject(request);
+        expect(expectedProperty!.address).toBe(request.address);
     });
 
     it('Should show error if property does not exists', async () => {

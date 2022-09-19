@@ -19,7 +19,7 @@ import { generateProperty } from '../factories/PropertyFactory';
 import { generateUser } from '../factories/UserFactory';
 import { generateListing } from '../factories/ListingFactory';
 import { generateRental } from '../factories/RentalFactory';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 const presenter = new (class implements UpdateListingPresenter {
     response: UpdateListingResponse;

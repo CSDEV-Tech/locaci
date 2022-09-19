@@ -1,7 +1,7 @@
-import { Property, range, Role, RoomType, Uuid } from '../../src';
+import { Property, Role, RoomType, Uuid } from '../../src';
 import { randomItemInArray, RentTypes } from '../../src';
 import { generateUser } from './UserFactory';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 export function generateProperty(defaultValue?: Partial<Property>): Property {
     return {
@@ -16,12 +16,18 @@ export function generateProperty(defaultValue?: Partial<Property>): Property {
         amenities: [],
         position: {
             longitude: Number(faker.address.longitude()),
-            latitude: Number(faker.address.latitude()),
-            radius: faker.datatype.number({
-                min: 0.5,
-                max: 10
-            })
+            latitude: Number(faker.address.latitude())
         },
+        boundingBox: [
+            {
+                longitude: Number(faker.address.longitude()),
+                latitude: Number(faker.address.latitude())
+            },
+            {
+                longitude: Number(faker.address.longitude()),
+                latitude: Number(faker.address.latitude())
+            }
+        ],
         rentType: randomItemInArray(RentTypes),
         images: [],
         surfaceArea: faker.datatype.number({

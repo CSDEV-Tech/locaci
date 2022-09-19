@@ -8,7 +8,7 @@ export type Property = {
     id: Uuid;
     position: Position;
     rentType: RentType;
-    // en mètres carrés
+    // In square meters
     surfaceArea: number;
     commune: string;
     district: string;
@@ -20,13 +20,13 @@ export type Property = {
     rooms: Room[];
     amenities: Amenity[];
     archived: boolean;
+    // boundingBox with [min position & max position]
+    boundingBox: [Position, Position];
 };
 
 export type Position = {
     longitude: number;
     latitude: number;
-    // rayon autour de la position en Km
-    radius: number;
 };
 
 export enum RentType {

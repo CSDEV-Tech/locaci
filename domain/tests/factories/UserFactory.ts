@@ -1,15 +1,15 @@
-import { randomItemInArray, User } from '../../src';
+import { randomItemInArray, User, Uuid } from '../../src';
 import { Roles } from '../../src';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 export function generateUser(defaultValue?: Partial<User>): User {
     return {
-        id: faker.datatype.uuid(),
+        id: new Uuid(faker.datatype.uuid()),
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         role: randomItemInArray(Roles),
         email: faker.internet.email(),
-        phoneNumber: faker.phone.phoneNumber('0#-##-##-##-##'),
+        phoneNumber: faker.phone.number('0#-##-##-##-##'),
         ...defaultValue
     };
 }

@@ -15,7 +15,8 @@
         "outDir": "./dist",
         "moduleResolution": "Node",
         "rootDir": "./src",
-        "isolatedModules": false
+        "isolatedModules": false,
+        "noErrorTruncation": true
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules", "scripts", "uml", "dist"]

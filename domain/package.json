@@ -19,7 +19,7 @@
     },
     "devDependencies": {
         "@anatine/zod-mock": "3.3.0",
-        "@faker-js/faker": "6.0.0-beta.0",
+        "@faker-js/faker": "7.5.0",
         "@types/node": "18.0.0",
         "@types/uuid": "^8.3.4",
         "@vitest/ui": "^0.21.1",

@@ -1,6 +1,6 @@
 import { Listing, RentType, Uuid } from '../../src';
 import { generateProperty } from './PropertyFactory';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 export function generateListing(defaultValue?: Partial<Listing>): Listing {
     return {
