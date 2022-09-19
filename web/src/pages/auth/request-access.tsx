@@ -1,23 +1,23 @@
 // components
-import { Button, clsx, Select, TextInput } from '@locaci/ui';
-import { DefaultLayout } from '../../components/layouts/default-layout';
-import { NextLink, NextLinkButton } from '../../components/next-link';
-import { At, Phone, User } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
+import { At, Phone, User } from 'phosphor-react';
+import { Button, clsx, Select, TextInput } from '@locaci/ui';
+import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { NextLink, NextLinkButton } from '@web/components/next-link';
 
 // functions & others
-import { t } from '../../utils/trpc-rq-hooks';
-import { useZodForm } from '../../hooks/use-zod-form';
-import { requestOwnerAccessSchema } from '../../server/trpc/validation/auth-schema';
+import { t } from '@web/utils/trpc-rq-hooks';
+import { useZodForm } from '@web/hooks/use-zod-form';
+import { requestOwnerAccessSchema } from '@web/server/trpc/validation/auth-schema';
 
 // types
-import type { NextPageWithLayout } from '../_app';
-import { RequestAccessSuccessModal } from '../../components/request-access-success-modal';
+import type { NextPageWithLayout } from '@web/pages/_app';
+import { RequestAccessSuccessModal } from '@web/components/request-access-success-modal';
 
 export type RequestPageProps = {};
 
 const RequestPage: NextPageWithLayout<RequestPageProps> = props => {
-    const mutation = t.proxy.auth.owner.requestAccess.useMutation();
+    const mutation = t.auth.owner.requestAccess.useMutation();
 
     const form = useZodForm({
         schema: requestOwnerAccessSchema

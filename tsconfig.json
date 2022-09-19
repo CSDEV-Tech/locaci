@@ -26,7 +26,8 @@
         "paths": {
             "@locaci/ui": ["ui/src"],
             "@locaci/domain": ["domain/src"],
-            "@locaci/web": ["web/src"]
+            "@locaci/web": ["web/src"],
+            "@web/*": ["web/src/*"]
         }
     }
 }

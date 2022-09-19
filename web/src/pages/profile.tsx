@@ -5,7 +5,7 @@ import { DefaultLayout } from '../components/layouts/default-layout';
 import { FillInForm } from '../components/fill-in-form';
 
 // utils & functions
-import { t } from 'web/src/utils/trpc-rq-hooks';
+import { t } from '@web/utils/trpc-rq-hooks';
 import { supabase } from '../utils/supabase-client';
 import { useRouter } from 'next/router';
 
@@ -14,13 +14,13 @@ import type { NextPageWithLayout } from './_app';
 
 const ProfilePage: NextPageWithLayout = () => {
     const router = useRouter();
-    const utils = t.proxy.useContext();
+    const utils = t.useContext();
     const {
         data: user,
         isLoading,
         isError
-    } = t.proxy.auth.getAuthenticatedUser.useQuery();
-    const mutation = t.proxy.auth.removeAuthCookie.useMutation({
+    } = t.auth.getAuthenticatedUser.useQuery();
+    const mutation = t.auth.removeAuthCookie.useMutation({
         onSuccess: async () => {
             supabase.auth.signOut();
             utils.auth.getAuthenticatedUser.invalidate();

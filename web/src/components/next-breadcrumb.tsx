@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Breadcrumb } from '@locaci/ui';
 import type { BreadcrumbItem } from '@locaci/ui';
-import { NextLink } from './next-link';
+import { NextLink } from '@web/components/next-link';
 
 export type NextBreadcrumbProps = {
     links: BreadcrumbItem[];

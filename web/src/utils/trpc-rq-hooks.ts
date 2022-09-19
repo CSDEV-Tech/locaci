@@ -1,11 +1,11 @@
-import { setupTRPC } from '@trpc/next';
+import { createTRPCNext } from '@trpc/next';
 import { httpBatchLink } from '@trpc/client';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import superjson from 'superjson';
 
 import type { AppRouter } from '../server/trpc/router';
 
-export type TRPCHooksType = ReturnType<typeof setupTRPC<AppRouter>>;
+export type TRPCHooksType = ReturnType<typeof createTRPCNext<AppRouter>>;
 
 function getBaseUrl() {
     // browser should use relative path
@@ -16,7 +16,7 @@ function getBaseUrl() {
     return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 }
 
-export const t: TRPCHooksType = setupTRPC<AppRouter>({
+export const t: TRPCHooksType = createTRPCNext<AppRouter>({
     config({ ctx }) {
         return {
             transformer: superjson,

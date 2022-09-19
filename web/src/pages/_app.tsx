@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { t } from '../utils/trpc-rq-hooks';
+import { t } from '@web/utils/trpc-rq-hooks';
 
 // To enable layouts
 import type { AppProps } from 'next/app';

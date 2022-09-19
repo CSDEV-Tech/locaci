@@ -1,12 +1,12 @@
 // components
 import { Button, Tabs } from '@locaci/ui';
-import { OwnerLayout } from 'web/src/components/layouts/owner-layout';
+import { OwnerLayout } from '@web/components/layouts/owner-layout';
 
 // utils
-import { useListingModalStore } from 'web/src/components/add-listing-modal';
+import { useListingModalStore } from '@web/components/add-listing-modal';
 
 // types
-import type { NextPageWithLayout } from '../_app';
+import type { NextPageWithLayout } from '@web/pages/_app';
 
 export type OwnerDashboardPageProps = {};
 

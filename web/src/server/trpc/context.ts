@@ -1,10 +1,10 @@
 // src/server/router/context.ts
 import * as trpc from '@trpc/server';
-import { getCookie } from 'web/src/lib/functions';
-import { prisma } from '../db/client';
-import { Uuid } from '@locaci/domain';
 import jwt from 'jsonwebtoken';
-import { env } from 'web/src/env/server.mjs';
+import { Uuid } from '@locaci/domain';
+import { getCookie } from '@web/utils/functions';
+import { prisma } from '@web/server/db/client';
+import { env } from '@web/env/server.mjs';
 
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { User } from '@prisma/client';
@@ -35,7 +35,7 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
                     });
                 }
             } catch (error) {
-                // do nothing... that means the user is not authenticated
+                // do nothing... that means that the user is not authenticated
             }
         }
     }

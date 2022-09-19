@@ -1,13 +1,13 @@
 // components
-import { OwnerLayout } from 'web/src/components/layouts/owner-layout';
+import { OwnerLayout } from '@web/components/layouts/owner-layout';
 // utils
 // types
-import { NextPageWithLayout } from '../../_app';
+import { NextPageWithLayout } from '@web/pages/_app';
 
 export type AddPropertyPageProps = {};
 
 const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
-    return <></>;
+    return <section className=""></section>;
 };
 
 export default AddPropertyPage;

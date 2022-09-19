@@ -9,34 +9,33 @@ import {
     Tag,
     TextArea
 } from '@locaci/ui';
-import { DefaultLayout } from '../../components/layouts/default-layout';
+import { DefaultLayout } from '@web/components/layouts/default-layout';
 import { ArrowsClockwise, Link, Prohibit } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
-import { NextLinkButton } from 'web/src/components/next-link';
+import { NextLinkButton } from '@web/components/next-link';
 
 // functions & others
-import { t } from 'web/src/utils/trpc-rq-hooks';
 import toast from 'react-hot-toast';
-import { supabase } from 'web/src/utils/supabase-client';
 import { useRouter } from 'next/router';
 import { RequestStatus, Role } from '@prisma/client';
-import { formatDate, getHostWithScheme } from 'web/src/lib/functions';
-import { useZodForm } from 'web/src/hooks/use-zod-form';
-import { refuseOwnerAccessSchema } from 'web/src/server/trpc/validation/auth-schema';
+import { useZodForm } from '@web/hooks/use-zod-form';
+import { t } from '@web/utils/trpc-rq-hooks';
+import { supabase } from '@web/utils/supabase-client';
+import { formatDate, getHostWithScheme } from '@web/utils/functions';
+import { refuseOwnerAccessSchema } from '@web/server/trpc/validation/auth-schema';
 
 // types
 import type { NextPageWithLayout } from '../_app';
-import type { AppRouter } from 'web/src/server/trpc/router';
+import type { AppRouter } from '@web/server/trpc/router';
 import type { inferProcedureOutput } from '@trpc/server';
-import type { ArrayElement } from 'web/src/utils/types';
+import type { ArrayElement } from '@web/utils/types';
 
 export type DashBoardAdminPageProps = {};
 
 const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
-    const utils = t.proxy.useContext();
+    const utils = t.useContext();
 
-    const { data: user, isLoading } =
-        t.proxy.auth.getAuthenticatedUser.useQuery();
+    const { data: user, isLoading } = t.auth.getAuthenticatedUser.useQuery();
     const router = useRouter();
 
     const {
@@ -44,7 +43,7 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
         isLoading: isLoadingRequests,
         isFetching: isFetchingRequests,
         refetch
-    } = t.proxy.admin.getAllRequests.useQuery(undefined, {
+    } = t.admin.getAllRequests.useQuery(undefined, {
         enabled: !!user && user.role === Role.ADMIN,
         refetchOnWindowFocus: true,
         cacheTime: 300_000 // 5 minutes
@@ -56,7 +55,7 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
         return <></>;
     }
 
-    const logoutMutation = t.proxy.auth.removeAuthCookie.useMutation({
+    const logoutMutation = t.auth.removeAuthCookie.useMutation({
         onSuccess: async () => {
             supabase.auth.signOut();
             utils.auth.getAuthenticatedUser.invalidate();
@@ -218,8 +217,7 @@ function GenerateLinkButton({
         inferProcedureOutput<AppRouter['admin']['getAllRequests']>
     >;
 }) {
-    const generateLinkMutation =
-        t.proxy.admin.generateLinkForOwner.useMutation();
+    const generateLinkMutation = t.admin.generateLinkForOwner.useMutation();
 
     async function generateLink(variables: { uid: string; host: string }) {
         const link = await generateLinkMutation.mutateAsync(variables);
@@ -253,14 +251,13 @@ function RefuseAccessButton({
         inferProcedureOutput<AppRouter['admin']['getAllRequests']>
     >;
 }) {
-    const utils = t.proxy.useContext();
-    const refuseOwnerAccessMutation =
-        t.proxy.admin.refuseOwnerAccess.useMutation({
-            async onSuccess(data, variables, context) {
-                await utils.admin.getAllRequests.invalidate();
-                form.reset();
-            }
-        });
+    const utils = t.useContext();
+    const refuseOwnerAccessMutation = t.admin.refuseOwnerAccess.useMutation({
+        async onSuccess(data, variables, context) {
+            await utils.admin.getAllRequests.invalidate();
+            form.reset();
+        }
+    });
     const form = useZodForm({
         schema: refuseOwnerAccessSchema.omit({
             uid: true
@@ -332,8 +329,7 @@ function RefuseAccessButton({
 }
 
 AdminPage.getLayout = page => {
-    const { data: user, isLoading } =
-        t.proxy.auth.getAuthenticatedUser.useQuery();
+    const { data: user, isLoading } = t.auth.getAuthenticatedUser.useQuery();
 
     return (
         <DefaultLayout

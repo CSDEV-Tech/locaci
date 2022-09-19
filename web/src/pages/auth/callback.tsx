@@ -3,22 +3,22 @@ import * as React from 'react';
 import { LoadingIndicator } from '@locaci/ui';
 
 // functions & others
-import { supabase } from 'web/src/utils/supabase-client';
-import { t } from 'web/src/utils/trpc-rq-hooks';
+import { supabase } from '@web/utils/supabase-client';
+import { t } from '@web/utils/trpc-rq-hooks';
 import { useRouter } from 'next/router';
 
 // types
-import type { NextPageWithLayout } from '../_app';
-import { DefaultLayout } from 'web/src/components/layouts/default-layout';
+import type { NextPageWithLayout } from '@web/pages/_app';
+import { DefaultLayout } from '@web/components/layouts/default-layout';
 
 export const CallbackPage: NextPageWithLayout = () => {
     const router = useRouter();
-    const setAuthCookieMutation = t.proxy.auth.setAuthCookie.useMutation({
+    const setAuthCookieMutation = t.auth.setAuthCookie.useMutation({
         onSuccess() {
             router.push('/profile');
         }
     });
-    const getUserMutation = t.proxy.auth.getOrCreateUser.useMutation({
+    const getUserMutation = t.auth.getOrCreateUser.useMutation({
         onSuccess(data) {
             setAuthCookieMutation.mutate({
                 uid: data.id

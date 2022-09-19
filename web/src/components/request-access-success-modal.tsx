@@ -5,7 +5,7 @@ import { BottomSheet, Button, Modal } from '@locaci/ui';
 import { useRouter } from 'next/router';
 
 // functions & others
-import useMediaQuery from '../hooks/use-media-query';
+import useMediaQuery from '@web/hooks/use-media-query';
 
 export type RequestAccessSuccessModalProps = {
     open: boolean;

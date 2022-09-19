@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 // components
-import { Avatar, Button, clsx, LoadingIndicator, SideNav } from '@locaci/ui';
-import { DefaultLayout } from './default-layout';
 import { Door, HouseSimple, List, PlusCircle, User } from 'phosphor-react';
-import { NextBreadcrumb } from '../next-breadcrumb';
-import { NextLink } from '../next-link';
+import { Avatar, Button, clsx, LoadingIndicator, SideNav } from '@locaci/ui';
+import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { NextBreadcrumb } from '@web/components/next-breadcrumb';
+import { NextLink } from '@web/components/next-link';
 
 // utils & others
-import { t } from 'web/src/utils/trpc-rq-hooks';
-import { useAuthCheck } from 'web/src/hooks/use-auth-check';
-import { useMediaQuery } from 'web/src/hooks/use-media-query';
+import { t } from '@web/utils/trpc-rq-hooks';
+import { useOwnerCheck } from '@web/hooks/use-owner-check';
+import { useMediaQuery } from '@web/hooks/use-media-query';
 import { useRouter } from 'next/router';
 
 // types
@@ -29,7 +29,7 @@ export function OwnerLayout({
     title,
     breadcrumbItems
 }: OwnerLayoutProps) {
-    const { isLoading } = useAuthCheck();
+    const { isLoading } = useOwnerCheck();
 
     const showModal = useListingModalStore(state => state.show);
 
@@ -68,15 +68,11 @@ export function LeadingElement(props: {
     title: string;
     links: BreadcrumbItem[];
 }) {
-    const { data: user } = t.proxy.auth.getAuthenticatedUser.useQuery();
+    const { data: user } = t.auth.getAuthenticatedUser.useQuery();
     const [isSideNavOpen, setIsSideNavOpen] = React.useState(false);
 
     const canShowSideNav = useMediaQuery(`(max-width: 768px)`);
     const router = useRouter();
-
-    console.log({
-        path: router.asPath
-    });
 
     const navLinks = [
         {

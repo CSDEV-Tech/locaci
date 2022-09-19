@@ -3,24 +3,24 @@ import * as React from 'react';
 import { BottomSheet, Button, Modal, TextInput } from '@locaci/ui';
 
 // utils & functions
-import { t } from '../utils/trpc-rq-hooks';
-import { useZodForm } from '../hooks/use-zod-form';
-import { updateNameAndProfileSchema } from '../server/trpc/validation/auth-schema';
-import useMediaQuery from '../hooks/use-media-query';
+import { t } from '@web/utils/trpc-rq-hooks';
+import { useZodForm } from '@web/hooks/use-zod-form';
+import { updateNameAndProfileSchema } from '@web/server/trpc/validation/auth-schema';
+import useMediaQuery from '@web/hooks/use-media-query';
 
 // types
 import type { z } from 'zod';
 
 export function FillInForm() {
     const { data: user, isFetching: userIsFetching } =
-        t.proxy.auth.getAuthenticatedUser.useQuery();
+        t.auth.getAuthenticatedUser.useQuery();
     const form = useZodForm({
         schema: updateNameAndProfileSchema
     });
 
-    const utils = t.proxy.useContext();
+    const utils = t.useContext();
 
-    const mutation = t.proxy.auth.updateNameProfile.useMutation({
+    const mutation = t.auth.updateNameProfile.useMutation({
         async onSuccess() {
             await utils.auth.getAuthenticatedUser.invalidate();
             form.reset();

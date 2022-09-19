@@ -2,28 +2,28 @@ import * as React from 'react';
 
 // components
 import { LoadingIndicator } from '@locaci/ui';
-import { DefaultLayout } from 'web/src/components/layouts/default-layout';
+import { DefaultLayout } from '@web/components/layouts/default-layout';
 
 // functions & others
-import { t } from 'web/src/utils/trpc-rq-hooks';
+import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
+import { t } from '@web/utils/trpc-rq-hooks';
 
 // types
-import type { NextPageWithLayout } from '../_app';
-import toast from 'react-hot-toast';
+import type { NextPageWithLayout } from '@web/pages/_app';
 
 export type ConfirmAccessPageProps = {};
 
 const ConfirmAccessPage: NextPageWithLayout<ConfirmAccessPageProps> = props => {
     const router = useRouter();
 
-    const setAuthCookieMutation = t.proxy.auth.setAuthCookie.useMutation({
+    const setAuthCookieMutation = t.auth.setAuthCookie.useMutation({
         onSuccess() {
             router.push('/owner');
         }
     });
 
-    const confirmAccessMutation = t.proxy.auth.owner.confirmAccess.useMutation({
+    const confirmAccessMutation = t.auth.owner.confirmAccess.useMutation({
         onSuccess(data) {
             setAuthCookieMutation.mutate({
                 uid: data.uid

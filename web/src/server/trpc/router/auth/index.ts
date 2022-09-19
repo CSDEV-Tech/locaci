@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { t } from '../../trpc-server-root';
-import { supabaseAdmin as supabase } from 'web/src/utils/supabase-admin';
+import { supabaseAdmin as supabase } from '@web/utils/supabase-admin';
 import { TRPCError } from '@trpc/server';
 import { Uuid } from '@locaci/domain';
 import {
@@ -12,7 +12,7 @@ import jwt from 'jsonwebtoken';
 import { ownerRouter } from './owner';
 import { adminRouter } from '../admin';
 import { isLoggedIn } from '../../middleware/auth';
-import { env } from 'web/src/env/server.mjs';
+import { env } from '@web/env/server.mjs';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 

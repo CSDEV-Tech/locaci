@@ -82,7 +82,19 @@ export function AddListingModal({}: AddListingModalProps) {
             <Modal
                 title="Recherche"
                 isOpen={open && canShowModal}
-                onClose={onClose}>
+                onClose={onClose}
+                footer={
+                    <NextLinkButton
+                        onClick={onClose}
+                        href="/owner/properties/add"
+                        className="w-full"
+                        variant="dark"
+                        renderLeadingIcon={cls => (
+                            <PlusCircle className={cls} weight={'bold'} />
+                        )}>
+                        Nouvelle propriété
+                    </NextLinkButton>
+                }>
                 <TextInput
                     appendix={<MagnifyingGlass weight="bold" />}
                     className="w-full"
@@ -93,16 +105,6 @@ export function AddListingModal({}: AddListingModalProps) {
                     type="search"
                 />
                 <ModalContent />
-                <NextLinkButton
-                    onClick={onClose}
-                    href="/owner/properties/add"
-                    className="w-full"
-                    variant="dark"
-                    renderLeadingIcon={cls => (
-                        <PlusCircle className={cls} weight={'bold'} />
-                    )}>
-                    Nouvelle propriété
-                </NextLinkButton>
             </Modal>
         </>
     );

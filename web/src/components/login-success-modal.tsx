@@ -3,7 +3,7 @@ import * as React from 'react';
 import { BottomSheet, Button, Modal } from '@locaci/ui';
 
 // utils & functions
-import useMediaQuery from '../hooks/use-media-query';
+import useMediaQuery from '@web/hooks/use-media-query';
 
 export type LoginSuccessModalProps = {
     open: boolean;

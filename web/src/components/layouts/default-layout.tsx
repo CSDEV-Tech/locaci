@@ -7,11 +7,11 @@ import { Avatar, clsx, Footer, Header, SearchButton } from '@locaci/ui';
 import { Toaster } from 'react-hot-toast';
 
 // functions & others
-import { t } from 'web/src/utils/trpc-rq-hooks';
-import { env } from 'web/src/env/client.mjs';
+import { t } from '@web/utils/trpc-rq-hooks';
+import { env } from '@web/env/client.mjs';
 
 // types
-import type { SeoData } from 'web/src/types';
+import type { SeoData } from '@web/types';
 import type { ToastPosition } from 'react-hot-toast';
 import { Role } from '@prisma/client';
 
@@ -146,7 +146,7 @@ function DefaultHeaderLeadingElement() {
 }
 
 function DefaultHeaderTrailingElement() {
-    const { data: user } = t.proxy.auth.getUser.useQuery();
+    const { data: user } = t.auth.getUser.useQuery();
 
     let href = '/profile';
     switch (user?.role) {

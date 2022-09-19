@@ -1,16 +1,16 @@
 import * as React from 'react';
 // components
-import { DefaultLayout } from '../components/layouts/default-layout';
-import { NextLink, NextLinkButton } from '../components/next-link';
+import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { NextLink, NextLinkButton } from '@web/components/next-link';
 import { Button, clsx, TextInput } from '@locaci/ui';
-import { LoginSuccessModal } from '../components/login-success-modal';
+import { LoginSuccessModal } from '@web/components/login-success-modal';
 
 // functions & others
-import { getHostWithScheme } from '../lib/functions';
-import { t } from '../utils/trpc-rq-hooks';
-import { sendEmailLinkSchema } from '../server/trpc/validation/auth-schema';
-import { useZodForm } from '../hooks/use-zod-form';
-import { useOAuthMutation } from '../hooks/use-oauth-mutation';
+import { getHostWithScheme } from '@web/utils/functions';
+import { t } from '@web/utils/trpc-rq-hooks';
+import { sendEmailLinkSchema } from '@web/server/trpc/validation/auth-schema';
+import { useZodForm } from '@web/hooks/use-zod-form';
+import { useOAuthMutation } from '@web/hooks/use-oauth-mutation';
 
 // types
 import type { NextPageWithLayout } from './_app';
@@ -25,7 +25,7 @@ export const LoginPage: NextPageWithLayout = () => {
         }
     });
 
-    const loginWithEmailMutation = t.proxy.auth.sendEmailLink.useMutation();
+    const loginWithEmailMutation = t.auth.sendEmailLink.useMutation();
     const loginWithOAuthMutation = useOAuthMutation();
     const [receiverEmail, setReceiverEmail] = React.useState<string>();
 

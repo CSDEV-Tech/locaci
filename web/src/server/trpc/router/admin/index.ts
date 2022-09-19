@@ -4,7 +4,7 @@ import { t } from '../../trpc-server-root';
 import { isAdmin } from '../../middleware/auth';
 import { TRPCError } from '@trpc/server';
 import jwt from 'jsonwebtoken';
-import { env } from 'web/src/env/server.mjs';
+import { env } from '@web/env/server.mjs';
 import { RequestStatus } from '@prisma/client';
 import { refuseOwnerAccessSchema } from '../../validation/auth-schema';
 

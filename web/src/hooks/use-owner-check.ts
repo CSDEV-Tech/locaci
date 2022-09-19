@@ -2,15 +2,15 @@ import { useRouter } from 'next/router';
 import { supabase } from '../utils/supabase-client';
 import { t } from '../utils/trpc-rq-hooks';
 
-export function useAuthCheck() {
+export function useOwnerCheck() {
     const router = useRouter();
-    const utils = t.proxy.useContext();
+    const utils = t.useContext();
     const {
         data: user,
         isLoading,
         isError
-    } = t.proxy.auth.getAuthenticatedUser.useQuery();
-    const logoutMutation = t.proxy.auth.removeAuthCookie.useMutation({
+    } = t.auth.getAuthenticatedUser.useQuery();
+    const logoutMutation = t.auth.removeAuthCookie.useMutation({
         onSuccess: async () => {
             await supabase.auth.signOut();
             await utils.auth.getAuthenticatedUser.invalidate();
