@@ -1,6 +1,7 @@
 import * as React from 'react';
 // components
-import { BottomSheet, Button, Modal, TextInput } from '@locaci/ui';
+import { Button, Modal, TextInput } from '@locaci/ui';
+import { BottomSheet } from '@locaci/ui/src/components/atoms/bottom-sheet';
 
 // utils & functions
 import { t } from '@web/utils/trpc-rq-hooks';
@@ -11,7 +12,7 @@ import useMediaQuery from '@web/hooks/use-media-query';
 // types
 import type { z } from 'zod';
 
-export function FillInForm() {
+export default function FillInForm() {
     const { data: user, isFetching: userIsFetching } =
         t.auth.getAuthenticatedUser.useQuery();
     const form = useZodForm({

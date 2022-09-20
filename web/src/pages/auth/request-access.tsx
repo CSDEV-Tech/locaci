@@ -9,10 +9,18 @@ import { NextLink, NextLinkButton } from '@web/components/next-link';
 import { t } from '@web/utils/trpc-rq-hooks';
 import { useZodForm } from '@web/hooks/use-zod-form';
 import { requestOwnerAccessSchema } from '@web/server/trpc/validation/auth-schema';
+import dynamic from 'next/dynamic';
 
 // types
 import type { NextPageWithLayout } from '@web/pages/_app';
-import { RequestAccessSuccessModal } from '@web/components/request-access-success-modal';
+// import { RequestAccessSuccessModal } from '@web/components/request-access-success-modal';
+
+const RequestAccessSuccessModal = dynamic(
+    () => import('@web/components/request-access-success-modal'),
+    {
+        ssr: false
+    }
+);
 
 export type RequestPageProps = {};
 

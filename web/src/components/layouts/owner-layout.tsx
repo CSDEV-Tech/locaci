@@ -12,11 +12,19 @@ import { t } from '@web/utils/trpc-rq-hooks';
 import { useOwnerCheck } from '@web/hooks/use-owner-check';
 import { useMediaQuery } from '@web/hooks/use-media-query';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 // types
 import type { DefaultLayoutProps } from './default-layout';
 import type { BreadcrumbItem } from '@locaci/ui';
-import { AddListingModal, useListingModalStore } from '../add-listing-modal';
+import { useListingModalStore } from '@web/hooks/use-listing-modal-store';
+
+const AddListingModal = dynamic(
+    () => import('@web/components/add-listing-modal'),
+    {
+        ssr: false
+    }
+);
 
 export type OwnerLayoutProps = {
     children: React.ReactNode;

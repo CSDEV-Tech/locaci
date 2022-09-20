@@ -1,17 +1,19 @@
 import * as React from 'react';
 
 // components
-import { BottomSheet, Button, Modal } from '@locaci/ui';
-import { useRouter } from 'next/router';
+import { Button, Modal } from '@locaci/ui';
+import { BottomSheet } from '@locaci/ui/src/components/atoms/bottom-sheet';
 
 // functions & others
+import { useRouter } from 'next/router';
 import useMediaQuery from '@web/hooks/use-media-query';
 
+// types
 export type RequestAccessSuccessModalProps = {
     open: boolean;
 };
 
-export function RequestAccessSuccessModal({
+export default function RequestAccessSuccessModal({
     open
 }: RequestAccessSuccessModalProps) {
     const router = useRouter();

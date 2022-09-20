@@ -17,7 +17,6 @@ export * from './components/atoms/search-button';
 export * from './components/atoms/link-button';
 export * from './components/atoms/link';
 export * from './components/atoms/avatar';
-export * from './components/atoms/bottom-sheet';
 export * from './components/atoms/textarea';
 
 // molecules

@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { RentType } from '@prisma/client';
 
 /**
  * This schema is taken from the `CreatePropertyRequest` file in domain,
@@ -14,7 +13,7 @@ export const createPropertyRequestSchema = z.object({
             9,
             'La surface de votre logement ne peut pas être plus petite que 9 m²'
         ),
-    rentType: z.nativeEnum(RentType, {
+    rentType: z.enum(['LOCATION', 'SHARED_APPARTMENT', 'SHORT_TERM'], {
         invalid_type_error: 'Veuillez choisir le type de logement',
         required_error: 'Veuillez choisir le type de logement'
     }),

@@ -1,6 +1,7 @@
 import * as React from 'react';
 // components
 import { LoadingIndicator } from '@locaci/ui';
+import Head from 'next/head';
 
 // functions & others
 import { supabase } from '@web/utils/supabase-client';
@@ -9,7 +10,6 @@ import { useRouter } from 'next/router';
 
 // types
 import type { NextPageWithLayout } from '@web/pages/_app';
-import { DefaultLayout } from '@web/components/layouts/default-layout';
 
 export const CallbackPage: NextPageWithLayout = () => {
     const router = useRouter();
@@ -63,17 +63,19 @@ export const CallbackPage: NextPageWithLayout = () => {
     }, []);
 
     return (
-        <section className="flex h-screen w-screen items-center justify-center">
-            <h1 className="flex items-center gap-4 text-4xl">
-                <LoadingIndicator className="h-10" /> <span>CHARGEMENT...</span>
-            </h1>
-        </section>
+        <>
+            <Head key={'document-head'}>
+                <title>{`Connexion à votre compte... | LOCACI`}</title>
+            </Head>
+
+            <section className="flex h-screen w-screen items-center justify-center">
+                <h1 className="flex items-center gap-4 text-4xl">
+                    <LoadingIndicator className="h-10" />{' '}
+                    <span>CHARGEMENT...</span>
+                </h1>
+            </section>
+        </>
     );
 };
 
 export default CallbackPage;
-CallbackPage.getLayout = page => (
-    <DefaultLayout hideFooter hideHeader title="Connexion à votre compte...">
-        {page}
-    </DefaultLayout>
-);

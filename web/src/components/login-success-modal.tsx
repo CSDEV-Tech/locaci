@@ -1,6 +1,7 @@
 import * as React from 'react';
 // components
-import { BottomSheet, Button, Modal } from '@locaci/ui';
+import { Button, Modal } from '@locaci/ui';
+import { BottomSheet } from '@locaci/ui/src/components/atoms/bottom-sheet';
 
 // utils & functions
 import useMediaQuery from '@web/hooks/use-media-query';
@@ -11,7 +12,7 @@ export type LoginSuccessModalProps = {
     email?: string | null;
 };
 
-export function LoginSuccessModal({
+export default function LoginSuccessModal({
     email,
     onClose,
     open

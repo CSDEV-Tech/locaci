@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { Civility } from '@prisma/client';
 
 export const sendEmailLinkSchema = z.object({
     email: z
@@ -37,7 +36,7 @@ export const requestOwnerAccessSchema = z.object({
             required_error: `Veuillez saisir votre prénom`
         })
         .min(1, 'Le prénom ne doit pas être vide'),
-    civicTitle: z.nativeEnum(Civility, {
+    civicTitle: z.enum(['MR', 'MME'], {
         required_error: `Veuillez choisir votre civilité (Mme ou Mr)`
     }),
     email: z

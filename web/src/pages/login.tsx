@@ -3,7 +3,7 @@ import * as React from 'react';
 import { DefaultLayout } from '@web/components/layouts/default-layout';
 import { NextLink, NextLinkButton } from '@web/components/next-link';
 import { Button, clsx, TextInput } from '@locaci/ui';
-import { LoginSuccessModal } from '@web/components/login-success-modal';
+// import { LoginSuccessModal } from '@web/components/login-success-modal';
 
 // functions & others
 import { getHostWithScheme } from '@web/utils/functions';
@@ -11,9 +11,17 @@ import { t } from '@web/utils/trpc-rq-hooks';
 import { sendEmailLinkSchema } from '@web/server/trpc/validation/auth-schema';
 import { useZodForm } from '@web/hooks/use-zod-form';
 import { useOAuthMutation } from '@web/hooks/use-oauth-mutation';
+import dynamic from 'next/dynamic';
 
 // types
 import type { NextPageWithLayout } from './_app';
+
+const LoginSuccessModal = dynamic(
+    () => import('@web/components/login-success-modal'),
+    {
+        ssr: false
+    }
+);
 
 export const LoginPage: NextPageWithLayout = () => {
     const form = useZodForm({

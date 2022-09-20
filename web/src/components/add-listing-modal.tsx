@@ -1,23 +1,18 @@
 import * as React from 'react';
 // components
-import { BottomSheet, Modal, TextInput } from '@locaci/ui';
+import { Modal, TextInput } from '@locaci/ui';
+import { BottomSheet } from '@locaci/ui/src/components/atoms/bottom-sheet';
 import { MagnifyingGlass, PlusCircle } from 'phosphor-react';
 import { NextLinkButton } from './next-link';
 
 // utils
-import create from 'zustand';
 import useMediaQuery from '../hooks/use-media-query';
+import { useListingModalStore } from '@web/hooks/use-listing-modal-store';
 
 // types
 export type AddListingModalProps = {};
 
-type ModalStoreState = {
-    open: boolean;
-    show: () => void;
-    hide: () => void;
-};
-
-export function AddListingModal({}: AddListingModalProps) {
+export default function AddListingModal({}: AddListingModalProps) {
     const { open, onClose } = useListingModalStore(state => ({
         open: state.open,
         onClose: state.hide
@@ -109,13 +104,3 @@ export function AddListingModal({}: AddListingModalProps) {
         </>
     );
 }
-
-export const useListingModalStore = create<ModalStoreState>(set => ({
-    open: false,
-    show() {
-        set(() => ({ open: true }));
-    },
-    hide() {
-        set(() => ({ open: false }));
-    }
-}));

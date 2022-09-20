@@ -3,7 +3,7 @@ import { Button, Tabs } from '@locaci/ui';
 import { OwnerLayout } from '@web/components/layouts/owner-layout';
 
 // utils
-import { useListingModalStore } from '@web/components/add-listing-modal';
+import { useListingModalStore } from '@web/hooks/use-listing-modal-store';
 
 // types
 import type { NextPageWithLayout } from '@web/pages/_app';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 // components
 import Head from 'next/head';
-import { NextLink, NextLinkButton } from '../next-link';
+import { NextLink, NextLinkButton } from '@web/components/next-link';
 import { Avatar, clsx, Footer, Header, SearchButton } from '@locaci/ui';
 // for react-hot-toast to work
 import { Toaster } from 'react-hot-toast';
@@ -13,7 +13,6 @@ import { env } from '@web/env/client.mjs';
 // types
 import type { SeoData } from '@web/types';
 import type { ToastPosition } from 'react-hot-toast';
-import { Role } from '@prisma/client';
 
 export type DefaultLayoutProps = {
     children: React.ReactNode;
@@ -150,10 +149,10 @@ function DefaultHeaderTrailingElement() {
 
     let href = '/profile';
     switch (user?.role) {
-        case Role.ADMIN:
+        case 'ADMIN':
             href = `/admin`;
             break;
-        case Role.PROPERTY_OWNER:
+        case 'PROPERTY_OWNER':
             href = `/owner`;
             break;
         default:

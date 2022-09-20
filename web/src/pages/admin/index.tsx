@@ -17,7 +17,6 @@ import { NextLinkButton } from '@web/components/next-link';
 // functions & others
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { RequestStatus, Role } from '@prisma/client';
 import { useZodForm } from '@web/hooks/use-zod-form';
 import { t } from '@web/utils/trpc-rq-hooks';
 import { supabase } from '@web/utils/supabase-client';
@@ -25,7 +24,7 @@ import { formatDate, getHostWithScheme } from '@web/utils/functions';
 import { refuseOwnerAccessSchema } from '@web/server/trpc/validation/auth-schema';
 
 // types
-import type { NextPageWithLayout } from '../_app';
+import type { NextPageWithLayout } from '@web/pages/_app';
 import type { AppRouter } from '@web/server/trpc/router';
 import type { inferProcedureOutput } from '@trpc/server';
 import type { ArrayElement } from '@web/utils/types';
@@ -44,12 +43,12 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
         isFetching: isFetchingRequests,
         refetch
     } = t.admin.getAllRequests.useQuery(undefined, {
-        enabled: !!user && user.role === Role.ADMIN,
+        enabled: !!user && user.role === 'ADMIN',
         refetchOnWindowFocus: true,
         cacheTime: 300_000 // 5 minutes
     });
 
-    if (user && user.role !== Role.ADMIN) {
+    if (user && user.role !== 'ADMIN') {
         toast.error("Vous n'avez pas le droit d'accéder à cette page");
         router.replace(`/login`);
         return <></>;
@@ -155,30 +154,23 @@ const AdminPage: NextPageWithLayout<DashBoardAdminPageProps> = props => {
                                     <Tag
                                         className="whitespace-nowrap"
                                         variant={
-                                            request.status ===
-                                            RequestStatus.WAITING
+                                            request.status === 'WAITING'
                                                 ? 'hollow'
-                                                : request.status ===
-                                                  RequestStatus.GRANTED
+                                                : request.status === 'GRANTED'
                                                 ? 'secondary-light'
                                                 : 'primary-light'
                                         }>
                                         {clsx({
                                             'En attente':
-                                                request.status ===
-                                                RequestStatus.WAITING,
+                                                request.status === 'WAITING',
                                             Accepté:
-                                                request.status ===
-                                                RequestStatus.GRANTED,
-                                            Refusé:
-                                                request.status ===
-                                                RequestStatus.REFUSED
+                                                request.status === 'GRANTED',
+                                            Refusé: request.status === 'REFUSED'
                                         })}
                                     </Tag>
                                 </td>
                                 <td className="flex items-center gap-2 px-4 py-2">
-                                    {request.status ===
-                                        RequestStatus.WAITING && (
+                                    {request.status === 'WAITING' && (
                                         <>
                                             <GenerateLinkButton
                                                 request={request}
