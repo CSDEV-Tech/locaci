@@ -76,18 +76,19 @@ enum RoomType {
 }
 
 model Property {
-    id          String   @id @default(uuid()) @db.Uuid
-    rentType    RentType @default(LOCATION)
-    userId      String   @db.Uuid
-    owner       User     @relation(fields: [userId], references: [id]) // A Property have one owner
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    archived    Boolean  @default(false)
-    noOfRooms   Int
-    surfaceArea Int
-    city        String
-    commune     String
-    locality    String
+    id           String       @id @default(uuid()) @db.Uuid
+    rentType     RentType     @default(LOCATION)
+    userId       String       @db.Uuid
+    owner        User         @relation(fields: [userId], references: [id]) // A Property have one owner
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @updatedAt
+    archived     Boolean      @default(false)
+    noOfRooms    Int
+    surfaceArea  Int
+    city         City         @relation(fields: [cityId], references: [id])
+    commune      Municipality @relation(fields: [municipalityId], references: [id])
+    locality     Locality?    @relation(fields: [localityId], references: [id])
+    localityName String
 
     // Position
     longitude      String
@@ -97,6 +98,10 @@ model Property {
     bbMinLatitude  String
     bbMaxLongitude String
     bbMaxLatitude  String
+
+    cityId         String  @db.Uuid
+    municipalityId String  @db.Uuid
+    localityId     String? @db.Uuid
 }
 
 enum RentType {
@@ -109,6 +114,7 @@ model City {
     id             String         @id @default(uuid()) @db.Uuid
     name           String
     municipalities Municipality[]
+    Property       Property[]
 }
 
 // Commune
@@ -118,6 +124,7 @@ model Municipality {
     city       City       @relation(fields: [cityId], references: [id])
     cityId     String     @db.Uuid
     localities Locality[]
+    Property   Property[]
 }
 
 // Quartier
@@ -126,4 +133,5 @@ model Locality {
     name           String
     municipality   Municipality @relation(fields: [municipalityId], references: [id])
     municipalityId String       @db.Uuid
+    Property       Property[]
 }

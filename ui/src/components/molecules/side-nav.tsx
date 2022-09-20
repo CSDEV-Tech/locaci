@@ -34,7 +34,7 @@ export function SideNav({
                 (element as HTMLElement).style.overflow = 'hidden';
             } else {
                 element.removeAttribute('aria-hidden');
-                (element as HTMLElement).style.overflow = 'auto';
+                (element as HTMLElement).style.removeProperty('overflow');
             }
         }
     }, [isOpen]);

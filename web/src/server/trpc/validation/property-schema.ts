@@ -1,11 +1,43 @@
 import { z } from 'zod';
-import { RentType } from '@locaci/domain';
+import { RentType } from '@prisma/client';
 
 /**
  * This schema is taken from the `CreatePropertyRequest` file in domain,
  * we repeat it here because we need to add some custom error messages for the frontend
  */
 export const createPropertyRequestSchema = z.object({
+    surfaceArea: z
+        .number({
+            required_error: 'Veuillez saisir la surface de votre logement'
+        })
+        .min(
+            9,
+            'La surface de votre logement ne peut pas être plus petite que 9 m²'
+        ),
+    rentType: z.nativeEnum(RentType, {
+        invalid_type_error: 'Veuillez choisir le type de logement',
+        required_error: 'Veuillez choisir le type de logement'
+    }),
+
+    communeUid: z
+        .string({
+            required_error:
+                'Veuillez saisir la commune où est située votre logement',
+            invalid_type_error: ''
+        })
+        .uuid('Veuillez saisir la commune où est située votre logement'),
+    localityName: z.string({
+        required_error:
+            'Veuillez saisir le quartier où se trouve votre logement'
+    }),
+    cityUid: z
+        .string({
+            required_error:
+                'Veuillez saisir la ville où se trouve votre logement'
+        })
+        .uuid('Veuillez saisir la ville où se trouve votre logement'),
+    addressInstructions: z.string().nullable(),
+
     longitude: z.number({
         required_error: 'Longitude requise'
     }),
@@ -30,36 +62,5 @@ export const createPropertyRequestSchema = z.object({
         {
             required_error: 'La position est requise'
         }
-    ),
-    surfaceArea: z
-        .number({
-            required_error: 'Veuillez saisir la surface de votre logement'
-        })
-        .min(
-            9,
-            'La surface de votre logement ne peut pas être plus petite que 9 mètres carrés'
-        ),
-    commune: z
-        .string({
-            required_error:
-                'Veuillez saisir la commune où est située votre logement'
-        })
-        .min(1, 'Veuillez saisir la commune où est située votre logement'),
-    district: z
-        .string({
-            required_error:
-                'Veuillez saisir le quartier où se trouve votre logement'
-        })
-        .min(1, 'Veuillez saisir le quartier où se trouve votre logement'),
-    city: z
-        .string({
-            required_error:
-                'Veuillez saisir la ville où se trouve votre logement'
-        })
-        .min(1, 'Veuillez saisir la ville où se trouve votre logement'),
-    adresse: z.string().nullable(),
-    rentType: z.nativeEnum(RentType, {
-        invalid_type_error: 'Veuillez choisir le type de logement',
-        required_error: 'Veuillez choisir le type de logement'
-    })
+    )
 });

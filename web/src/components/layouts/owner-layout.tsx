@@ -20,14 +20,13 @@ import { AddListingModal, useListingModalStore } from '../add-listing-modal';
 
 export type OwnerLayoutProps = {
     children: React.ReactNode;
-    title: string;
     breadcrumbItems: BreadcrumbItem[];
 } & DefaultLayoutProps;
 
 export function OwnerLayout({
     children,
-    title,
-    breadcrumbItems
+    breadcrumbItems,
+    ...props
 }: OwnerLayoutProps) {
     const { isLoading } = useOwnerCheck();
 
@@ -43,9 +42,7 @@ export function OwnerLayout({
         <DefaultLayout
             hideLogo
             hideHeader={isLoading}
-            headerLeadingElement={
-                <LeadingElement title={title} links={breadcrumbItems} />
-            }
+            headerLeadingElement={<LeadingElement links={breadcrumbItems} />}
             headerTrailingElement={
                 <Button
                     onClick={showModal}
@@ -56,7 +53,8 @@ export function OwnerLayout({
                     )}
                 />
             }
-            hideFooter>
+            hideFooter
+            {...props}>
             {children}
 
             <AddListingModal />
@@ -64,10 +62,7 @@ export function OwnerLayout({
     );
 }
 
-export function LeadingElement(props: {
-    title: string;
-    links: BreadcrumbItem[];
-}) {
+export function LeadingElement(props: { links: BreadcrumbItem[] }) {
     const { data: user } = t.auth.getAuthenticatedUser.useQuery();
     const [isSideNavOpen, setIsSideNavOpen] = React.useState(false);
 

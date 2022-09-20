@@ -10,13 +10,15 @@ export type ComboBoxProps = {
     onChange: (newValue: string | null) => void;
     onSearch: (query: string) => void;
     isLoading?: boolean;
-    options?: Array<{ value: string; label: string }>;
+    options?: Array<{ value: string; label: string; hint?: string }>;
     label: string;
     className?: string;
     inputClassName?: string;
     autoFocus?: boolean;
     disabled?: boolean;
     variant?: 'primary' | 'secondary';
+    errorText?: string;
+    helpText?: string;
 };
 
 export function ComboBox({
@@ -28,6 +30,8 @@ export function ComboBox({
     disabled,
     className,
     inputClassName,
+    errorText,
+    helpText,
     isLoading = false,
     variant = 'primary',
     options = []
@@ -49,8 +53,7 @@ export function ComboBox({
                     onChange(newValue?.value ?? null);
                     setQuery(newValue.label);
                 }
-            }}
-        >
+            }}>
             {({ open }) => (
                 <div className={clsx(className, 'relative w-full')}>
                     <div>
@@ -60,8 +63,7 @@ export function ComboBox({
                         >
                             displayValue={option => option?.label ?? ''}
                             as={'div'}
-                            onChange={() => {}}
-                        >
+                            onChange={() => {}}>
                             {() => {
                                 return (
                                     <TextInput
@@ -81,11 +83,12 @@ export function ComboBox({
                                                 />
                                             </Combobox.Button>
                                         }
-                                        onChange={query => {
+                                        onChangeValue={query => {
                                             setQuery(query);
                                             onChange(null);
                                             onSearch(query);
                                         }}
+                                        onChange={() => {}}
                                         onBlur={() => {
                                             setQuery(
                                                 lastSelected.current?.label ??
@@ -101,6 +104,8 @@ export function ComboBox({
                                                 );
                                             }
                                         }}
+                                        errorText={errorText}
+                                        helpText={helpText}
                                     />
                                 );
                             }}
@@ -113,15 +118,13 @@ export function ComboBox({
                         enterTo="transform opacity-100 scale-100"
                         leave="transition ease-in duration-75"
                         leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                    >
+                        leaveTo="transform opacity-0 scale-95">
                         <Combobox.Options
                             className={clsx(
-                                'flex flex-col rounded-md bg-white py-3',
-                                'absolute top-[calc(100%+0.5rem)] left-0 right-0',
+                                'flex flex-col rounded-md bg-white py-3 shadow-card',
+                                'absolute top-[calc(100%+0.5rem)] left-0 right-0 z-10',
                                 'max-h-[300px] overflow-y-scroll'
-                            )}
-                        >
+                            )}>
                             {options.length === 0 || isLoading ? (
                                 <div
                                     className={clsx(
@@ -129,8 +132,7 @@ export function ComboBox({
                                         {
                                             'text-gray': isLoading
                                         }
-                                    )}
-                                >
+                                    )}>
                                     {isLoading
                                         ? 'Recherche...'
                                         : 'Aucun résultat trouvé'}
@@ -158,8 +160,7 @@ export function ComboBox({
                                                         variant === 'secondary'
                                                 }
                                             )
-                                        }
-                                    >
+                                        }>
                                         {({ selected, active }) => (
                                             <>
                                                 <span
@@ -172,9 +173,16 @@ export function ComboBox({
                                                         'font-semibold':
                                                             selected,
                                                         'text-white': active
-                                                    })}
-                                                >
+                                                    })}>
                                                     {option.label}
+                                                    {option.hint && (
+                                                        <>
+                                                            &nbsp;
+                                                            <span className="font-normal">
+                                                                {option.hint}
+                                                            </span>
+                                                        </>
+                                                    )}
                                                 </span>
 
                                                 {selected && (

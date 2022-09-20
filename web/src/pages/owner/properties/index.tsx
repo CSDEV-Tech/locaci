@@ -16,8 +16,7 @@ export type PropertiesListPageProps = {};
 const PropertiesListPage: NextPageWithLayout<
     PropertiesListPageProps
 > = props => {
-    const { data: properties, isLoading } =
-        t.owner.property.getAll.useQuery(undefined);
+    const { data: properties, isLoading } = t.owner.property.getAll.useQuery();
 
     return (
         <section className="flex flex-col gap-4 p-4">

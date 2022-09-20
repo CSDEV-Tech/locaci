@@ -13,6 +13,7 @@ export type SelectProps = {
     disabled?: boolean;
     variant?: 'primary' | 'secondary';
     errorText?: string;
+    helpText?: string;
 };
 
 export function Select({
@@ -22,10 +23,12 @@ export function Select({
     autoFocus,
     onChange,
     errorText,
+    helpText,
     variant = 'primary',
     disabled = false,
     options = []
 }: SelectProps) {
+    const id = React.useId();
     const selected = options.find(option => option.value === value);
     return (
         <div className="flex flex-col gap-1">
@@ -156,6 +159,11 @@ export function Select({
                     role={`alert`}
                     className={`text-red-500`}>
                     {errorText}
+                </small>
+            )}
+            {helpText && (
+                <small id={id} className={`text-gray`}>
+                    {helpText}
                 </small>
             )}
         </div>

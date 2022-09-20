@@ -313,6 +313,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                                 <Button
                                     variant={`outline`}
                                     square
+                                    type="button"
                                     className={clsx({
                                         'pointer-events-none': disabled
                                     })}
@@ -324,6 +325,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                                 <Button
                                     variant={`outline`}
                                     square
+                                    type="button"
                                     className={clsx({
                                         'pointer-events-none': disabled
                                     })}
