@@ -28,7 +28,8 @@ export function SideNav({
 
         // Hide all elements from screen readers
         const elementsToHide = document.querySelectorAll(`main,header,footer`);
-        for (const element of elementsToHide) {
+        for (let i = 0; i < elementsToHide.length; i++) {
+            const element = elementsToHide[i];
             if (isOpen) {
                 element.setAttribute(`aria-hidden`, 'true');
                 (element as HTMLElement).style.overflow = 'hidden';

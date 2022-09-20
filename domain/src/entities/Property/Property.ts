@@ -13,7 +13,7 @@ export type Property = {
     commune: string;
     district: string;
     city: string;
-    address?: string;
+    address: string | null;
     owner: User;
     noOfRooms: number;
     images: Image[];

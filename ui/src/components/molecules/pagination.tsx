@@ -8,7 +8,7 @@ export type PaginationProps = {
     currentPage: number;
     totalPages: number;
     getPageUrl: (page: number) => string;
-    customLink?: CustomLink;
+    customLink?: React.ComponentType<CustomLink>;
 };
 
 export function Pagination({
@@ -25,15 +25,13 @@ export function Pagination({
     return (
         <nav
             className={`flex items-center gap-4`}
-            aria-label="Navigation par pagination"
-        >
+            aria-label="Navigation par pagination">
             {hasPreviousPage && (
                 <LinkButton
                     Custom={customLink}
                     aria-label={`Page précédente`}
                     href={getPageUrl(currentPage - 1)}
-                    renderLeadingIcon={cls => <ArrowLeft className={cls} />}
-                >
+                    renderLeadingIcon={cls => <ArrowLeft className={cls} />}>
                     Précédent
                 </LinkButton>
             )}
@@ -47,8 +45,7 @@ export function Pagination({
                             }Page ${p}`}
                             aria-current={p === currentPage ? 'true' : 'false'}
                             variant={p === currentPage ? `primary` : `hollow`}
-                            href={getPageUrl(currentPage)}
-                        >
+                            href={getPageUrl(currentPage)}>
                             {p}
                         </LinkButton>
                     </li>
@@ -59,8 +56,7 @@ export function Pagination({
                     Custom={customLink}
                     aria-label={`Page suivante`}
                     href={getPageUrl(currentPage + 1)}
-                    renderTrailingIcon={cls => <ArrowRight className={cls} />}
-                >
+                    renderTrailingIcon={cls => <ArrowRight className={cls} />}>
                     Suivant
                 </LinkButton>
             )}

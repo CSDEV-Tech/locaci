@@ -8,7 +8,7 @@ export const CreatePropertyRequestSchema = z.object({
     commune: z.string().min(1),
     district: z.string().min(1),
     city: z.string().min(1),
-    adresse: z.string().nullable(),
+    address: z.string().nullable(),
     rentType: z.nativeEnum(RentType),
     ownerId: z.string().uuid(),
     boundingBox: z.object({

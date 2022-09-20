@@ -25,12 +25,13 @@ export class CreatePropertyController {
     }) {
         const propertyRepository = new PropertyRepositoryBuilder()
             .withSave(async p => {
-                await ctx.prisma.property.create({
-                    data: {
-                        userId: ctx.user.id,
-                        rentType: p.rentType
-                    }
-                });
+                // TODO
+                // await ctx.prisma.property.create({
+                //     data: {
+                //         userId: ctx.user.id,
+                //         rentType: p.rentType
+                //     }
+                // });
             })
             .build();
         const userRepository = new UserRepositoryBuilder()

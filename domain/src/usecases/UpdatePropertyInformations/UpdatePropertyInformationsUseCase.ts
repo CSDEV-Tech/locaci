@@ -4,8 +4,7 @@ import {
 } from './UpdatePropertyInformationsRequest';
 import { UpdatePropertyInformationsPresenter } from './UpdatePropertyInformationsPresenter';
 import { ValidateResult } from './../../lib/types';
-import { Property, PropertyRepository } from '../../entities/Property';
-import { ListingRepository } from '../../entities/Listing';
+import { PropertyRepository } from '../../entities/Property';
 
 export class UpdatePropertyInformationsUseCase {
     schema = UpdatePropertyInformationsRequestSchema;
