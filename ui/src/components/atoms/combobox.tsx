@@ -68,9 +68,10 @@ export function ComboBox({
             disabled={disabled}
             value={selected}
             onChange={newValue => {
-                onChange(newValue?.value ?? null);
-            }}
-            nullable>
+                if (newValue) {
+                    onChange(newValue.value);
+                }
+            }}>
             {() => (
                 <div className={clsx(className, 'relative w-full')}>
                     <div>
