@@ -30,7 +30,9 @@ async function main() {
                             return {
                                 name: m.name.toLowerCase(),
                                 localities: {
-                                    create: m.localities
+                                    create: m.localities.map(l => ({
+                                        name: l.name.toLowerCase()
+                                    }))
                                 }
                             };
                         })

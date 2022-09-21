@@ -3,7 +3,7 @@ cities:
     municipalities:
       - name: Abobo
         localities:
-          - name: Abobo Baoulé
+          - name: Abobo Baoule
           - name: Abobo Nord
           - name: Abobo RTI
           - name: Abobo Sud
@@ -13,27 +13,27 @@ cities:
           - name: Aman
           - name: Anador
           - name: Anonkoua
-          - name: Anonkoua-Kouté
+          - name: Anonkoua-Koute
           - name: Atsin
           - name: Avocatier
-          - name: Étoile
+          - name: Etoile
           - name: Banco
           - name: Belleville
           - name: Biabou
           - name: Boussake
           - name: Broukoua
-          - name: Cité Ado
-          - name: Cité de la Grâce
+          - name: Cite Ado
+          - name: Cite de la Grâce
           - name: Cobakro
           - name: Kouadjo Kouakou
-          - name: L’habitat
+          - name: L'habitat
           - name: Moni
-          - name: N’dotré
+          - name: N'dotre
           - name: Palmafrique – V2
           - name: PK 18
-          - name: Sagbé
-          - name: Sagbé Nord
-          - name: Sagbé Sud
+          - name: Sagbe
+          - name: Sagbe Nord
+          - name: Sagbe Sud
           - name: Sagbe celeste
           - name: Samake
           - name: Sapa
@@ -44,53 +44,53 @@ cities:
       - name: Yopougon
         localities:
           - name: Sikasso
-          - name: Île Boulay
+          - name: ile Boulay
           - name: Abiatrana
-          - name: Académie
-          - name: Académie résidentiel
+          - name: Academie
+          - name: Academie residentiel
           - name: Ananeraie
           - name: Andokoi
           - name: Atchi
-          - name: Attié
+          - name: Attie
           - name: Azito Village
           - name: Bagouda
           - name: Banco 2
           - name: Batim 2
-          - name: Béago
+          - name: Beago
           - name: Bel Air
           - name: Boissy
           - name: Bonikro
-          - name: Cité Élisée
-          - name: Cité Bracodi
-          - name: Cité Caféiers
-          - name: Cité CNPS
-          - name: Cité marine
-          - name: Cité Nawa
-          - name: Cité Ngouan 1
-          - name: Cité Saco II
-          - name: Cité SGBCI
-          - name: Cité Sodefor Lauriers 11 & 12
-          - name: Cité Sotra
-          - name: Cité Verte
+          - name: Cite Elisee
+          - name: Cite Bracodi
+          - name: Cite Cafeiers
+          - name: Cite CNPS
+          - name: Cite marine
+          - name: Cite Nawa
+          - name: Cite Ngouan 1
+          - name: Cite Saco II
+          - name: Cite SGBCI
+          - name: Cite Sodefor Lauriers 11 & 12
+          - name: Cite Sotra
+          - name: Cite Verte
           - name: Complexe
           - name: Coprim Zenith
-          - name: Deuxième tranche
+          - name: Deuxieme tranche
           - name: Diop
-          - name: Doukouré
+          - name: Doukoure
           - name: Fanny
           - name: Figayo
           - name: Fin goudron
           - name: Gabriel Gare
-          - name: Galilée
+          - name: Galilee
           - name: Gbamnan Djidan 1
           - name: Gesco
           - name: GFCI
-          - name: Hôpital
+          - name: Hopital
           - name: Issamboua
-          - name: Judée
+          - name: Judee
           - name: Keneya
-          - name: Kouté
-          - name: Kouté village
+          - name: Koute
+          - name: Koute village
           - name: Koweit
           - name: Lauriers 2
           - name: Lauriers Sacos
@@ -98,15 +98,15 @@ cities:
           - name: Les Pays-Bas
           - name: Les Pays-Bas_101
           - name: Lezou Aman
-          - name: Lièvre rouge
+          - name: Lievre rouge
           - name: Lokoa extention
           - name: Mamie Adjoua
-          - name: Mbakré
+          - name: Mbakre
           - name: Micao
-          - name: N’zimakro
+          - name: N'zimakro
           - name: Niaba
           - name: Niangon
-          - name: Niangon Adjamé
+          - name: Niangon Adjame
           - name: Niangon à droite
           - name: Niangon à gauche
           - name: Niangon Lokoa
@@ -115,7 +115,7 @@ cities:
           - name: Niangon sud
           - name: Niangon Sud - Sicogi
           - name: Nouveau quartier
-          - name: Port-Bouët II
+          - name: Port-Bouet II
           - name: Quartier LEM
           - name: Quartier Maroc
           - name: Quartier Millionnaire
@@ -129,90 +129,90 @@ cities:
           - name: Sopim
           - name: Toit vert
           - name: Wassakara
-          - name: Yao Séhi
+          - name: Yao Sehi
           - name: Yesso
-          - name: Yopougon-Santé
+          - name: Yopougon-Sante
           - name: Zone Industrielle
       - name: Le plateau
         localities:
-          - name: Indénié
+          - name: Indenie
           - name: Quai Fruitier (QB1 – QB2)
-          - name: Cité Esculape
-          - name: Résidence Roume
-      - name: Attécoubé
+          - name: Cite Esculape
+          - name: Residence Roume
+      - name: Attecoube
         localities:
-          - name: Abobo Doumé
-          - name: Abobo Doumé village
-          - name: Agban-Attié
+          - name: Abobo Doume
+          - name: Abobo Doume village
+          - name: Agban-Attie
           - name: Agban-village
-          - name: Attécoubé 3
-          - name: Attécoubé Nimatoulaye
-          - name: Attécoubé 3
+          - name: Attecoube 3
+          - name: Attecoube Nimatoulaye
+          - name: Attecoube 3
           - name: Banco nord
-          - name: Bidjanté
+          - name: Bidjante
           - name: Boribana
-          - name: Cité Fairmont 2
-          - name: Djéné
+          - name: Cite Fairmont 2
+          - name: Djene
           - name: Gbebouto
-          - name: Jérusalem
-          - name: Jérusalem-résidentiel
-          - name: Jérusalem 1
-          - name: Jérusalem 2
+          - name: Jerusalem
+          - name: Jerusalem-residentiel
+          - name: Jerusalem 1
+          - name: Jerusalem 2
           - name: Lackman
           - name: Locodjro
-          - name: Loukoukro Ekaré
+          - name: Loukoukro Ekare
           - name: Moussikro
           - name: Nimatoulaye
-          - name: Quartier École
-          - name: Quartier Djéné Ecaré
+          - name: Quartier Ecole
+          - name: Quartier Djene Ecare
           - name: Quartier Espoir
           - name: Quartier Gbebouto
           - name: Quartier La Paix
           - name: Quartier Lagune
-          - name: Quartier Mosquée
-          - name: Quartier Résidentiel
+          - name: Quartier Mosquee
+          - name: Quartier Residentiel
           - name: Quartier Sante 2 Mossikro
           - name: Quartier Sebroko
-          - name: Santé-village
+          - name: Sante-village
           - name: Sebroko
       - name: Cocody
         localities:
           - name: 8e et 9e tranche
           - name: Aghien
-          - name: Akouédo
+          - name: Akouedo
           - name: Ambassade
-          - name: Angré
+          - name: Angre
           - name: Blockauss
           - name: Bonoumin
-          - name: Caféier
+          - name: Cafeier
           - name: Camp Militaire
           - name: Deux Plateaux
           - name: Djibi
-          - name: Djorogobité
+          - name: Djorogobite
           - name: Gendarmerie Agban
           - name: Genie 2000
-          - name: Lycée Technique
+          - name: Lycee Technique
           - name: M'pouto
-          - name: M’Badon
-          - name: M’pouto
+          - name: M'Badon
+          - name: M'pouto
           - name: Palmeraie
-          - name: Riviéra 1
-          - name: Riviéra 2
-          - name: Riviéra 3
-          - name: Riviéra 4
-          - name: Riviéra 6
-          - name: Riviéra Bonoumin
+          - name: Riviera 1
+          - name: Riviera 2
+          - name: Riviera 3
+          - name: Riviera 4
+          - name: Riviera 6
+          - name: Riviera Bonoumin
           - name: RTI
           - name: Vieux Cocody
       - name: Koumassi
         localities:
-          - name: Île Désirée
-          - name: Île des Chauves-Souris
+          - name: ile Desiree
+          - name: ile des Chauves-Souris
       - name: Marcory
         localities:
-          - name: Île d’Anoumabo
-          - name: Île de Petit-Bassam
-      - name: Port-Bouët
+          - name: ile d'Anoumabo
+          - name: ile de Petit-Bassam
+      - name: Port-Bouet
         localities:
           - name: Abouabou
           - name: Adjifou Deux
@@ -222,16 +222,16 @@ cities:
           - name: Anani-Amamou
           - name: Ancien camp CNRA
           - name: Benogosso
-          - name: Cité CIE n°5
+          - name: Cite CIE n°5
           - name: Gonzagueville
           - name: Janfoldi
           - name: Kaotri
-          - name: Mafiblé 2
+          - name: Mafible 2
           - name: Nouveau camp CRNA
-          - name: Pedéko
+          - name: Pedeko
           - name: Petit Bassam
-          - name: Quartier Éléphant
-          - name: Sié
+          - name: Quartier Elephant
+          - name: Sie
           - name: Vera
           - name: Vridi
           - name: Vridi Ako
@@ -241,77 +241,77 @@ cities:
           - name: Apollo
           - name: Arras
           - name: Belleville
-      - name: Brofodoumé
+      - name: Brofodoume
         localities: []
       - name: Anyama
         localities:
-          - name: Adakié
-          - name: Adaromé
-          - name: Aghien-Télégraphe
-          - name: Akékoua
-          - name: Akoupé
-          - name: Anyama Adjamé
+          - name: Adakie
+          - name: Adarome
+          - name: Aghien-Telegraphe
+          - name: Akekoua
+          - name: Akoupe
+          - name: Anyama Adjame
           - name: Anyama Ahouabo
           - name: Anyama Sossokoua
           - name: Assokro
-          - name: Atiékoi
+          - name: Atiekoi
           - name: Atsin
-          - name: Attinguié
-          - name: Azaguié Blida
-          - name: Bébakoua
-          - name: Ebimpé
+          - name: Attinguie
+          - name: Azaguie Blida
+          - name: Bebakoua
+          - name: Ebimpe
           - name: Halfo
           - name: Kouaokrou
-          - name: Les résidences Akwaba
-          - name: M’Brago I
-          - name: M’Brago-II
+          - name: Les residences Akwaba
+          - name: M'Brago I
+          - name: M'Brago-II
           - name: Mbonouan
           - name: Mpody
-          - name: Nzékro
+          - name: Nzekro
           - name: PK38
-          - name: Tapékro
+          - name: Tapekro
           - name: Thomasse
           - name: Yace
           - name: Yapokoua
           - name: Zogri
       - name: Songon
         localities:
-          - name: Abadjin-Doumé
-          - name: Abadjin-Kouté
+          - name: Abadjin-Doume
+          - name: Abadjin-Koute
           - name: Achanti
           - name: Adiapo Moronou
-          - name: Adiapoté Té
+          - name: Adiapote Te
           - name: Adiapoto-I
           - name: Adiapoto-II
-          - name: Adiopodoumé
+          - name: Adiopodoume
           - name: Adonkoua
           - name: Allokoi
-          - name: Anguédédou
+          - name: Anguededou
           - name: Audoin
           - name: Ayi Maman
           - name: Ayou Oua
           - name: Bimbresso
           - name: Bogui
-          - name: Cité La grace
-          - name: Diéké
+          - name: Cite La grace
+          - name: Dieke
           - name: Ekouran
-          - name: Kilomètre 17
+          - name: Kilometre 17
           - name: Koffikro
           - name: Koroukro
           - name: Kouadio Ncho
           - name: Labion
           - name: Laka
           - name: Le Nieky
-          - name: Mérégougnéré
-          - name: N’Djem
-          - name: Niéky Bonjour
+          - name: Meregougnere
+          - name: N'Djem
+          - name: Nieky Bonjour
           - name: Seydou Kamara
-          - name: Songon Dagbé
+          - name: Songon Dagbe
           - name: Songon Gare
-          - name: Songon-Agban Attié II
-          - name: Songon-Kassemblé
-          - name: Songon-M’brathé
-          - name: Songon-Té
+          - name: Songon-Agban Attie II
+          - name: Songon-Kassemble
+          - name: Songon-M'brathe
+          - name: Songon-Te
           - name: Tomatekro
           - name: Yao
           - name: Yao Niaba
@@ -319,48 +319,48 @@ cities:
         localities:
           - name: Abatta
           - name: Abatta BCEAO
-          - name: Abatta Cité Police
+          - name: Abatta Cite Police
           - name: Abatta Sicta
           - name: Achokoi
           - name: Aguien
           - name: Akakro
-          - name: Akandjé
-          - name: Akoué Santé
-          - name: Akouédo Attié
-          - name: Akoue Santé 2
-          - name: Akoyaté
-          - name: Akwè Djèmin
+          - name: Akandje
+          - name: Akoue Sante
+          - name: Akouedo Attie
+          - name: Akoue Sante 2
+          - name: Akoyate
+          - name: Akwe Djemin
           - name: Ana
           - name: Angoran
           - name: Blanchon
           - name: Bokate
-          - name: Brégbo
-          - name: Cité CIE
-          - name: Cité Olympe Promogim
-          - name: Cité Promogim Athena
+          - name: Bregbo
+          - name: Cite CIE
+          - name: Cite Olympe Promogim
+          - name: Cite Promogim Athena
           - name: Ebrah
           - name: Eloka
-          - name: Eloka-Té
+          - name: Eloka-Te
           - name: Eloka-To
-          - name: Faya 225;Riviéra 5
-          - name: Feh Kessé
+          - name: Faya 225;Riviera 5
+          - name: Feh Kesse
           - name: Figuier
           - name: Gbagba
           - name: Gbagba Extension
           - name: Kouassi Kakou
           - name: Lauriers 9
-          - name: M'batto-Bouaké
+          - name: M'batto-Bouake
           - name: Mobio
           - name: Ogriville
-          - name: Palmafrique Éloka
+          - name: Palmafrique Eloka
           - name: Quartier Scierie GIB
           - name: Sebia Yao
-      - name: Adjamé
+      - name: Adjame
         localities:
           - name: 220 logements
           - name: Abobo Adjame
           - name: Bracodi
-          - name: Bromakoté
+          - name: Bromakote
           - name: Habitat
           - name: Humici
           - name: Latin
