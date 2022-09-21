@@ -19,13 +19,10 @@ const PropertiesListPage: NextPageWithLayout<
     return (
         <React.Suspense
             fallback={
-                <section className="flex w-full items-center justify-center py-64">
+                <section className="mx-auto flex w-full items-center justify-center py-64 px-4">
                     <h1 className="flex items-center gap-4 text-2xl">
                         <LoadingIndicator className="h-10" />
-                        <span>
-                            Chargement de vos propriétés...{' '}
-                            {typeof window === 'undefined' ? 'SSR' : 'CSR'}{' '}
-                        </span>
+                        <span>Chargement de vos propriétés...</span>
                     </h1>
                 </section>
             }>

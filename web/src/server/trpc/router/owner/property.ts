@@ -10,7 +10,6 @@ import { wait } from '@web/utils/functions';
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
     getAll: protectedProcedure.query(async ({ ctx, input }) => {
-        await wait(1500);
         return ctx.prisma.property.findMany({
             where: {
                 userId: ctx.user.id
