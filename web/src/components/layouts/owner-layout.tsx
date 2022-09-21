@@ -144,6 +144,7 @@ export function LeadingElement(props: { links: BreadcrumbItem[] }) {
                                         weight="bold"
                                     />
                                     <NextLink
+                                        onClick={() => setIsSideNavOpen(false)}
                                         href={href}
                                         className="after:absolute after:inset-0">
                                         {label}
@@ -166,6 +167,7 @@ export function LeadingElement(props: { links: BreadcrumbItem[] }) {
                                 weight="fill"
                             />
                             <NextLink
+                                onClick={() => setIsSideNavOpen(false)}
                                 href="/owner"
                                 className="after:absolute after:inset-0">
                                 Paramètres du compte
