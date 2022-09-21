@@ -27,6 +27,14 @@ export interface TextInputProps extends InputProps<string> {
     onChangeValue?: (newValue: string) => void;
     defaultValue?: string;
     inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
+    id?: string;
+    // required for accessibility and to make headlessui ComboBox integration easier
+    'aria-activedescendant'?: string;
+    'aria-controls'?: string;
+    'aria-labelledby'?: string;
+    'aria-expanded'?: boolean;
+    'aria-multiselectable'?: boolean;
+    'data-headlessui-state'?: string;
 }
 
 export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
@@ -50,7 +58,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             required = false,
             disabled = false,
             placeholder = ' ',
-            type = 'text'
+            type = 'text',
+            id: defaultId,
+            ...otherProps
         },
         ref
     ) => {
@@ -58,7 +68,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         const errorId = useId();
         const helpId = useId();
         return (
-            <div className={clsx(rootClassName, 'flex w-full flex-col gap-1')}>
+            <div
+                className={clsx(rootClassName, 'flex w-full flex-col gap-1')}
+                onBlur={onBlur}>
                 <div
                     className={clsx(
                         className,
@@ -75,9 +87,10 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                     )}>
                     <div className={'group relative flex w-full items-center'}>
                         <input
+                            {...otherProps}
                             ref={ref}
                             aria-describedby={!!errorText ? errorId : helpId}
-                            id={id}
+                            id={defaultId ?? id}
                             name={name}
                             inputMode={inputMode}
                             autoFocus={autoFocus}
@@ -104,7 +117,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             placeholder={placeholder}
                         />
                         <label
-                            htmlFor={id}
+                            htmlFor={defaultId ?? id}
                             className={clsx(
                                 'absolute left-0 -top-3.5 text-sm font-normal transition-all',
                                 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:font-normal',
