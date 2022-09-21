@@ -91,7 +91,7 @@ export const CommuneSearch = () => {
         },
         {
             nom: 'RENNES LES BAINS',
-            codePostal: '11190'
+            codePostal: '11191'
         },
         {
             nom: 'COURTEMONT VARENNES',

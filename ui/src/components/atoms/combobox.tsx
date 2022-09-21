@@ -1,7 +1,8 @@
-import { Combobox, Transition } from '@headlessui/react';
 import * as React from 'react';
+
+import { Combobox, Transition } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
-import { TextInput } from './input';
+import { TextInput, TextInputProps } from './input';
 import { CaretDown, CheckCircle } from 'phosphor-react';
 import { LoadingIndicator } from './loading-indicator';
 
@@ -21,6 +22,30 @@ export type ComboBoxProps = {
     helpText?: string;
 };
 
+const CustomComboboxInput = React.forwardRef<HTMLInputElement, TextInputProps>(
+    (props, ref) => {
+        return (
+            <TextInput
+                {...props}
+                ref={ref}
+                autocomplete="off"
+                appendix={
+                    <Combobox.Button aria-label="Ouvrir le menu">
+                        {({ open }) => (
+                            <CaretDown
+                                weight="bold"
+                                className={clsx('h-4 w-4', {
+                                    'rotate-180': open
+                                })}
+                            />
+                        )}
+                    </Combobox.Button>
+                }
+            />
+        );
+    }
+);
+
 export function ComboBox({
     value,
     onChange,
@@ -37,79 +62,34 @@ export function ComboBox({
     options = []
 }: ComboBoxProps) {
     const selected = options.find(option => option.value === value) ?? null;
-    const [query, setQuery] = React.useState(selected?.label ?? '');
-    const lastSelected = React.useRef<{ value: string; label: string } | null>(
-        null
-    );
 
     return (
         <Combobox
             disabled={disabled}
             value={selected}
             onChange={newValue => {
-                // ne pas appeler onChange si la valeur est la même que la dernière selection
-                if (newValue && newValue.value !== value) {
-                    lastSelected.current = newValue;
-                    onChange(newValue?.value ?? null);
-                    setQuery(newValue.label);
-                }
-            }}>
-            {({ open }) => (
+                onChange(newValue?.value ?? null);
+            }}
+            nullable>
+            {() => (
                 <div className={clsx(className, 'relative w-full')}>
                     <div>
                         <Combobox.Input<
-                            'div',
+                            any,
                             { value: string; label: string } | null
                         >
+                            as={CustomComboboxInput}
                             displayValue={option => option?.label ?? ''}
-                            as={'div'}
-                            onChange={() => {}}>
-                            {() => {
-                                return (
-                                    <TextInput
-                                        label={label}
-                                        disabled={disabled}
-                                        className={inputClassName}
-                                        autoFocus={autoFocus}
-                                        value={query}
-                                        autocomplete="off"
-                                        appendix={
-                                            <Combobox.Button aria-label="Ouvrir le menu">
-                                                <CaretDown
-                                                    weight="bold"
-                                                    className={clsx('h-4 w-4', {
-                                                        'rotate-180': open
-                                                    })}
-                                                />
-                                            </Combobox.Button>
-                                        }
-                                        onChangeValue={query => {
-                                            setQuery(query);
-                                            onChange(null);
-                                            onSearch(query);
-                                        }}
-                                        onChange={() => {}}
-                                        onBlur={() => {
-                                            setQuery(
-                                                lastSelected.current?.label ??
-                                                    ''
-                                            );
-                                            // Return the selected value in the select if it has been modified
-                                            if (
-                                                selected === null &&
-                                                lastSelected.current !== null
-                                            ) {
-                                                onChange(
-                                                    lastSelected.current.value
-                                                );
-                                            }
-                                        }}
-                                        errorText={errorText}
-                                        helpText={helpText}
-                                    />
-                                );
+                            onChange={event => {
+                                onSearch(event.target.value);
                             }}
-                        </Combobox.Input>
+                            errorText={errorText}
+                            helpText={helpText}
+                            label={label}
+                            disabled={disabled}
+                            className={inputClassName}
+                            autoFocus={autoFocus}
+                        />
                     </div>
                     <Transition
                         as={React.Fragment}
