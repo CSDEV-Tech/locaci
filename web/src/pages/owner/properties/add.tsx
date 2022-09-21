@@ -170,6 +170,7 @@ type FormStep2Props = {
 };
 
 export function FormStep2(props: FormStep2Props) {
+    // form state
     const form = useZodForm({
         schema: createPropertyRequestSchema.pick({
             cityUid: true,
@@ -209,7 +210,7 @@ export function FormStep2(props: FormStep2Props) {
     const debouncedSearchByCommune = useDebouncedCallBack(searchMunicaplity);
 
     // locality
-    const [communeUid, setCommuneUid] = React.useState<string | null>(null);
+    const watchMunicipalityUid = form.watch('communeUid');
     const [localityQuery, setLocalityQuery] = React.useState('');
 
     const {
@@ -219,7 +220,7 @@ export function FormStep2(props: FormStep2Props) {
     } = t.owner.property.searchLocalityByName.useQuery(
         {
             name: localityQuery,
-            communeUid: communeUid ?? ''
+            communeUid: watchMunicipalityUid ?? ''
         },
         {
             enabled: false
@@ -254,8 +255,8 @@ export function FormStep2(props: FormStep2Props) {
                                 label="Commune"
                                 {...field}
                                 onChange={value => {
-                                    setCommuneUid(value);
                                     field.onChange(value);
+                                    form.resetField('localityName');
                                 }}
                                 onSearch={query => {
                                     setMunicipalityQuery(query);
@@ -279,33 +280,36 @@ export function FormStep2(props: FormStep2Props) {
                         render={({
                             field: { ref, ...field },
                             formState: { errors }
-                        }) => (
-                            <ComboBox
-                                label="Quartier"
-                                disabled={communeUid === null}
-                                {...field}
-                                onSearch={query => {
-                                    setLocalityQuery(query);
-                                    debouncedSearchByLocality();
-                                }}
-                                options={
-                                    localityList?.length === 0
-                                        ? [
-                                              {
-                                                  label: localityQuery,
-                                                  value: localityQuery,
-                                                  hint: '(Ajouter)'
-                                              }
-                                          ]
-                                        : localityList?.map(c => ({
-                                              label: c.name,
-                                              value: c.name
-                                          })) ?? []
-                                }
-                                isLoading={isSearchingLocalities}
-                                errorText={errors.localityName?.message}
-                            />
-                        )}
+                        }) => {
+                            // TODO : BUG WITH VALUE which does not work well with debounce
+                            return (
+                                <ComboBox
+                                    label="Quartier"
+                                    disabled={!watchMunicipalityUid}
+                                    {...field}
+                                    onSearch={query => {
+                                        setLocalityQuery(query);
+                                        debouncedSearchByLocality();
+                                    }}
+                                    options={
+                                        localityList?.length === 0
+                                            ? [
+                                                  {
+                                                      label: localityQuery,
+                                                      value: localityQuery,
+                                                      hint: '(Ajouter)'
+                                                  }
+                                              ]
+                                            : localityList?.map(c => ({
+                                                  label: c.name,
+                                                  value: c.name
+                                              })) ?? []
+                                    }
+                                    isLoading={isSearchingLocalities}
+                                    errorText={errors.localityName?.message}
+                                />
+                            );
+                        }}
                     />
 
                     <div className="flex items-center gap-4">
