@@ -22,12 +22,13 @@ export type SearchAutocompleteProps = {
     helpText?: string;
     isLoading?: boolean;
     initialQuery?: string;
-    onChange: (newValue: string) => void;
+    onChange: (newValue: ListBoxOption | null) => void;
     value?: string;
     label: string;
     options: Array<ListBoxOption>;
     children?: (item: ListBoxOption) => React.ReactNode;
     onSearch?: (query: string) => void;
+    disabled?: boolean;
 };
 
 export function SearchAutocomplete(props: SearchAutocompleteProps) {
@@ -69,10 +70,11 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
             props.onSearch?.(val);
         },
         children: getItem,
+        isDisabled: props.disabled,
         selectedKey: props.value,
         onSelectionChange: key => {
             setQuery(props.options.find(o => o.key === key)?.label ?? '');
-            props.onChange?.(key.toString());
+            props.onChange?.(props.options.find(o => o.key === key) ?? null);
         },
         defaultFilter: contains
     });
@@ -103,8 +105,9 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
     return (
         <div className={clsx(props.className, 'relative w-full')}>
             <TextInput
-                labelProps={{ ...labelProps }}
                 {...inputProps}
+                labelProps={{ ...labelProps }}
+                disabled={props.disabled}
                 label={props.label}
                 ref={inputRef}
                 errorText={props.errorText}
