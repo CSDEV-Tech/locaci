@@ -14,7 +14,7 @@ function defineNextConfig(config) {
 }
 
 const nextConfig = defineNextConfig({
-    reactStrictMode: true,
+    reactStrictMode: false,
     swcMinify: true,
     experimental: {
         newNextLinkBehavior: true
