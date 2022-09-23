@@ -1,11 +1,7 @@
 import * as React from 'react';
 import type { ComponentStory, ComponentMeta } from '@storybook/react';
-import {
-    InputGroup,
-    InputGroupProps
-} from '../../components/molecules/input-group';
-import { NumberInput, TextInput } from '../../components/atoms/input';
-import { ComboBox } from '../../components/atoms/combobox';
+import { InputGroup } from '../../components/molecules/input-group';
+import { NumberInput } from '../../components/atoms/input';
 import { Select } from '../../components/atoms/select';
 import { Button } from '../../components/atoms/button';
 import { MagnifyingGlass } from 'phosphor-react';
