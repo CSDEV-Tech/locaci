@@ -23,7 +23,7 @@ const Template: ComponentStory<typeof Popover> = args => <Popover {...args} />;
 export const Default = Template.bind({});
 Default.args = {
     className: `text-white mt-[200px]`,
-    button: <Button>Solutions</Button>,
+    button: open => <Button>Solutions {open && '(Ouvert)'}</Button>,
     children: (
         <form className="flex w-64 flex-col gap-2">
             <TextArea label="raison du refus" cols={20} />

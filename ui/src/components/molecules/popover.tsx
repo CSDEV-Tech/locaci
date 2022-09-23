@@ -2,11 +2,10 @@ import * as React from 'react';
 import { Popover as HeadlessUIPopover, Transition } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
 
-
 export type PopoverProps = {
     children?: React.ReactNode;
     className?: string;
-    button?: React.ReactNode;
+    button?: (open: boolean) => React.ReactNode;
     alignInline?: 'left' | 'right';
     alignBlock?: 'top' | 'bottom';
 };
@@ -23,7 +22,7 @@ export function Popover({
             {({ open }) => (
                 <>
                     <HeadlessUIPopover.Button>
-                        {({open}) => <>{button}</>}
+                        {({ open }) => <>{button?.(open)}</>}
                     </HeadlessUIPopover.Button>
 
                     <Transition
