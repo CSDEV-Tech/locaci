@@ -7,6 +7,7 @@ import {
     ComboBox,
     NumberInput,
     Progress,
+    SearchAutocomplete,
     Select,
     TextInput
 } from '@locaci/ui';
@@ -56,7 +57,10 @@ const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
                 {step === 2 && (
                     <FormStep2
                         defaultValues={{}}
-                        onSubmit={v2 => console.log({ v2 })}
+                        onSubmit={v2 => {
+                            console.log({ v2 });
+                            setStep(3);
+                        }}
                         onPreviousClick={() => {
                             setStep(1);
                         }}
@@ -113,11 +117,12 @@ export function FormStep1(props: FormStep1Props) {
                             <Select
                                 label="Type de logement"
                                 {...field}
+                                autoFocus
                                 options={[
                                     { value: 'LOCATION', label: 'Appartement' },
                                     {
                                         value: 'SHARED_APPARTMENT',
-                                        label: 'Colocation'
+                                        label: 'Chambre en colocation'
                                     },
                                     {
                                         value: 'SHORT_TERM',
@@ -175,7 +180,8 @@ export function FormStep2(props: FormStep2Props) {
         schema: createPropertyRequestSchema.pick({
             cityUid: true,
             communeUid: true,
-            localityName: true
+            localityName: true,
+            localityUid: true
         }),
         defaultValues: {
             ...props.defaultValues
@@ -187,6 +193,7 @@ export function FormStep2(props: FormStep2Props) {
         name: 'Abidjan'
     });
 
+    // fetch the data for abidjan
     if (abidjanCityQuery.data) {
         form.setValue('cityUid', abidjanCityQuery.data.id);
     }
@@ -194,40 +201,31 @@ export function FormStep2(props: FormStep2Props) {
     // municipality (or commune)
     const [municipalityQuery, setMunicipalityQuery] = React.useState('');
 
-    const {
-        data: municipalitiesList,
-        isLoading: isSearchingMunicipalities,
-        refetch: searchMunicaplity
-    } = t.owner.property.searchCommuneByName.useQuery(
-        {
-            name: municipalityQuery
-        },
-        {
-            enabled: false
-        }
-    );
-
-    const debouncedSearchByCommune = useDebouncedCallBack(searchMunicaplity);
+    const { data: municipalitiesList, isLoading: isSearchingMunicipalities } =
+        t.owner.property.searchCommuneByName.useQuery(
+            {
+                name: municipalityQuery
+            },
+            {
+                trpc: { abortOnUnmount: true }
+            }
+        );
 
     // locality
     const watchMunicipalityUid = form.watch('communeUid');
     const [localityQuery, setLocalityQuery] = React.useState('');
 
-    const {
-        data: localityList,
-        isLoading: isSearchingLocalities,
-        refetch: searchLocality
-    } = t.owner.property.searchLocalityByName.useQuery(
-        {
-            name: localityQuery,
-            communeUid: watchMunicipalityUid ?? ''
-        },
-        {
-            enabled: false
-        }
-    );
-
-    const debouncedSearchByLocality = useDebouncedCallBack(searchLocality);
+    const { data: localityList, isFetching: isSearchingLocalities } =
+        t.owner.property.searchLocalityByName.useQuery(
+            {
+                name: localityQuery,
+                communeUid: watchMunicipalityUid ?? ''
+            },
+            {
+                enabled: !!watchMunicipalityUid,
+                trpc: { abortOnUnmount: true }
+            }
+        );
 
     return (
         <>
@@ -244,72 +242,52 @@ export function FormStep2(props: FormStep2Props) {
                 <div className="flex flex-col gap-4 text-lg">
                     <TextInput value="Abidjan" disabled label="Ville" />
 
-                    <Controller
-                        name="communeUid"
-                        control={form.control}
-                        render={({
-                            field: { ref, ...field },
-                            formState: { errors }
-                        }) => (
-                            <ComboBox
-                                label="Commune"
-                                {...field}
-                                onChange={value => {
-                                    field.onChange(value);
-                                    form.resetField('localityName');
-                                }}
-                                onSearch={query => {
-                                    setMunicipalityQuery(query);
-                                    debouncedSearchByCommune();
-                                }}
-                                options={
-                                    municipalitiesList?.map(c => ({
-                                        label: c.name,
-                                        value: c.id
-                                    })) ?? []
-                                }
-                                isLoading={isSearchingMunicipalities}
-                                errorText={errors.communeUid?.message}
-                            />
-                        )}
+                    <SearchAutocomplete
+                        label="Commune"
+                        autoFocus
+                        value={form.watch('communeUid')}
+                        onChange={value => {
+                            form.setValue('communeUid', value);
+                            form.resetField('localityName');
+                        }}
+                        onSearch={query => {
+                            setMunicipalityQuery(query);
+                        }}
+                        options={
+                            municipalitiesList?.map(c => ({
+                                label: c.name,
+                                key: c.id
+                            })) ?? []
+                        }
+                        isLoading={isSearchingMunicipalities}
+                        errorText={form.formState.errors.communeUid?.message}
                     />
 
-                    <Controller
-                        name="localityName"
-                        control={form.control}
-                        render={({
-                            field: { ref, ...field },
-                            formState: { errors }
-                        }) => {
-                            // TODO : BUG WITH VALUE which does not work well with debounce
-                            return (
-                                <ComboBox
-                                    label="Quartier"
-                                    disabled={!watchMunicipalityUid}
-                                    {...field}
-                                    onSearch={query => {
-                                        setLocalityQuery(query);
-                                        debouncedSearchByLocality();
-                                    }}
-                                    options={
-                                        localityList?.length === 0
-                                            ? [
-                                                  {
-                                                      label: localityQuery,
-                                                      value: localityQuery,
-                                                      hint: '(Ajouter)'
-                                                  }
-                                              ]
-                                            : localityList?.map(c => ({
-                                                  label: c.name,
-                                                  value: c.name
-                                              })) ?? []
-                                    }
-                                    isLoading={isSearchingLocalities}
-                                    errorText={errors.localityName?.message}
-                                />
+                    <SearchAutocomplete
+                        label="Quartier"
+                        value={form.watch('localityUid') ?? undefined}
+                        onChange={newValue => {
+                            form.setValue(
+                                'localityName',
+                                localityList?.find(l => l.id === newValue)
+                                    ?.name ?? ''
                             );
+                            form.setValue('localityUid', newValue);
                         }}
+                        disabled={!watchMunicipalityUid}
+                        // Force refresh when municipalityId changes
+                        key={watchMunicipalityUid}
+                        onSearch={query => {
+                            setLocalityQuery(query);
+                        }}
+                        options={
+                            localityList?.map(c => ({
+                                label: c.name,
+                                key: c.id
+                            })) ?? []
+                        }
+                        isLoading={isSearchingLocalities}
+                        errorText={form.formState.errors.localityName?.message}
                     />
 
                     <div className="flex items-center gap-4">

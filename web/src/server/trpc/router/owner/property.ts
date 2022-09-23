@@ -43,7 +43,7 @@ export const ownerRouter = t.router({
             return ctx.prisma.municipality.findMany({
                 where: {
                     name: {
-                        startsWith: input.name,
+                        contains: input.name,
                         mode: 'insensitive'
                     }
                 },
