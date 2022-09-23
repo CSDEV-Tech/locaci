@@ -48,7 +48,7 @@ const Template: ComponentStory<typeof SearchAutocomplete> = args => {
                 {...args}
                 onSearch={handleSearch}
                 value={selectedCharacter}
-                onChange={option => setSelectedCharacter(option?.key)}
+                onChange={setSelectedCharacter}
                 options={characterList}
                 isLoading={isLoading}
             />

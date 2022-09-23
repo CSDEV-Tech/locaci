@@ -22,13 +22,14 @@ export type SearchAutocompleteProps = {
     helpText?: string;
     isLoading?: boolean;
     initialQuery?: string;
-    onChange: (newValue: ListBoxOption | null) => void;
+    onChange: (selectedKey: string) => void;
     value?: string;
     label: string;
     options: Array<ListBoxOption>;
     children?: (item: ListBoxOption) => React.ReactNode;
     onSearch?: (query: string) => void;
     disabled?: boolean;
+    autoFocus?: boolean;
 };
 
 export function SearchAutocomplete(props: SearchAutocompleteProps) {
@@ -74,7 +75,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
         selectedKey: props.value,
         onSelectionChange: key => {
             setQuery(props.options.find(o => o.key === key)?.label ?? '');
-            props.onChange?.(props.options.find(o => o.key === key) ?? null);
+            props.onChange?.(key.toString());
         },
         defaultFilter: contains
     });
@@ -110,6 +111,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
                 disabled={props.disabled}
                 label={props.label}
                 ref={inputRef}
+                autoFocus={props.autoFocus}
                 errorText={props.errorText}
                 helpText={props.helpText}
                 appendix={
