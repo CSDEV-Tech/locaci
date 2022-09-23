@@ -5,20 +5,24 @@ import type { ListState } from 'react-stately';
 import type { Node } from '@react-types/shared';
 import { useListBox, useListBoxSection, useOption } from 'react-aria';
 import { CheckCircle } from 'phosphor-react';
+import { ListBoxOption } from '../molecules/search-autocomplete';
+import { clsx } from '../../lib/functions';
 
-interface ListBoxProps extends AriaListBoxOptions<unknown> {
+interface ListBoxProps extends AriaListBoxOptions<ListBoxOption> {
     listBoxRef?: React.RefObject<HTMLUListElement>;
-    state: ListState<unknown>;
+    state: ListState<ListBoxOption>;
+    variant?: 'primary' | 'secondary';
 }
 
 interface SectionProps {
-    section: Node<unknown>;
-    state: ListState<unknown>;
+    section: Node<ListBoxOption>;
+    state: ListState<ListBoxOption>;
 }
 
 interface OptionProps {
-    item: Node<unknown>;
-    state: ListState<unknown>;
+    item: Node<ListBoxOption>;
+    state: ListState<ListBoxOption>;
+    variant?: 'primary' | 'secondary';
 }
 
 export function ListBox(props: ListBoxProps) {
@@ -39,7 +43,12 @@ export function ListBox(props: ListBoxProps) {
                         state={state}
                     />
                 ) : (
-                    <Option key={item.key} item={item} state={state} />
+                    <Option
+                        key={item.key}
+                        item={item}
+                        state={state}
+                        variant={props.variant}
+                    />
                 )
             )}
         </ul>
@@ -72,7 +81,7 @@ function ListBoxSection({ section, state }: SectionProps) {
     );
 }
 
-function Option({ item, state }: OptionProps) {
+function Option({ item, state, variant = 'primary' }: OptionProps) {
     let ref = React.useRef<HTMLLIElement>(null);
     let { optionProps, isDisabled, isSelected, isFocused } = useOption(
         {
@@ -82,25 +91,29 @@ function Option({ item, state }: OptionProps) {
         ref
     );
 
-    let text = 'text-gray-700';
-    if (isFocused || isSelected) {
-        text = 'text-pink-600';
-    } else if (isDisabled) {
-        text = 'text-gray-200';
-    }
-
     return (
         <li
             {...optionProps}
             ref={ref}
-            className={`m-1 flex cursor-default items-center justify-between rounded-md py-2 px-2 text-sm outline-none ${text} ${
-                isFocused ? 'bg-pink-100' : ''
-            } ${isSelected ? 'font-bold' : ''}`}>
+            className={clsx('flex items-center justify-between px-4 py-2', {
+                'font-normal text-dark': !(isSelected || isFocused),
+                'cursor-default text-gray': isDisabled,
+                'cursor-pointer': !isDisabled,
+                'font-semibold': isSelected,
+                'text-white': isFocused,
+                'bg-primary': isFocused && variant === 'primary',
+                'bg-secondary': isFocused && variant === 'secondary'
+            })}>
             {item.rendered}
             {isSelected && (
                 <CheckCircle
                     aria-hidden="true"
-                    className="h-5 w-5 text-pink-600"
+                    className={clsx('min-w-4 h-4', {
+                        'text-primary': !isFocused && variant === 'primary',
+                        'text-secondary': !isFocused && variant === 'secondary',
+                        'text-white': isFocused
+                    })}
+                    weight="fill"
                 />
             )}
         </li>

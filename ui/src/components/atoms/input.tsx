@@ -20,24 +20,27 @@ export type InputProps<T> = {
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
 
-export interface TextInputProps extends InputProps<string> {
-    type?: 'text' | 'tel' | 'email' | 'search';
+export interface TextInputProps extends Omit<InputProps<string>, 'value'> {
     appendix?: React.ReactNode;
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
     onChangeValue?: (newValue: string) => void;
-    defaultValue?: string;
     inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
     id?: string;
     // required for accessibility and to make headlessui ComboBox integration easier
-    'aria-activedescendant'?: string;
-    'aria-controls'?: string;
-    'aria-labelledby'?: string;
-    'aria-expanded'?: boolean;
-    'aria-multiselectable'?: boolean;
     'data-headlessui-state'?: string;
 }
 
-export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
+export type ReactAriaProps = React.InputHTMLAttributes<HTMLInputElement> & {
+    labelProps?: React.DetailedHTMLProps<
+        React.LabelHTMLAttributes<HTMLLabelElement>,
+        HTMLLabelElement
+    >;
+};
+
+export const TextInput = React.forwardRef<
+    HTMLInputElement,
+    TextInputProps & ReactAriaProps
+>(
     (
         {
             appendix,
@@ -60,6 +63,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
             placeholder = ' ',
             type = 'text',
             id: defaultId,
+            labelProps,
             ...otherProps
         },
         ref
@@ -117,6 +121,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                             placeholder={placeholder}
                         />
                         <label
+                            {...labelProps}
                             htmlFor={defaultId ?? id}
                             className={clsx(
                                 'absolute left-0 -top-3.5 text-sm font-normal transition-all',

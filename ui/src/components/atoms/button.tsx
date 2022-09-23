@@ -2,7 +2,7 @@ import * as React from 'react';
 import { clsx } from '../../lib/functions';
 import { LoadingIndicator } from './loading-indicator';
 
-export interface ButtonProps {
+export type ButtonProps = {
     title?: string;
     renderLeadingIcon?: (classNames: string) => JSX.Element;
     renderTrailingIcon?: (classNames: string) => JSX.Element;
@@ -12,14 +12,12 @@ export interface ButtonProps {
     variant?: 'primary' | 'secondary' | 'hollow' | 'outline' | 'dark';
     type?: 'button' | 'submit' | 'reset';
     role?: string;
-    'aria-label'?: string;
-    'aria-expanded'?: false;
     loadingMessage?: string;
     square?: boolean;
     className?: string;
     loading?: boolean;
     block?: boolean;
-}
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     (
@@ -32,12 +30,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             title,
             type,
             loadingMessage = `Chargement, veuillez patientez...`,
-            'aria-label': ariaLabel,
             loading = false,
             disabled = false,
             square = false,
             block = false,
-            variant = `hollow`
+            variant = `hollow`,
+            ...buttonProps
         },
         ref
     ) => {
@@ -45,7 +43,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <button
                 ref={ref}
                 title={title}
-                aria-label={ariaLabel}
                 type={type}
                 className={clsx(
                     className,
@@ -75,7 +72,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         'bg-dark text-white ring-dark/50': variant === 'dark'
                     }
                 )}
-                onClick={ev => !disabled && !loading && onClick?.(ev)}>
+                onClick={ev => !disabled && !loading && onClick?.(ev)}
+                {...buttonProps}>
                 <span className="sr-only" aria-live="assertive">
                     {loading ? loadingMessage : ''}
                 </span>

@@ -1,45 +1,68 @@
+import { CaretDown } from 'phosphor-react';
 import * as React from 'react';
 import { useButton, useComboBox, useFilter } from 'react-aria';
 import { Item, useComboBoxState } from 'react-stately';
+import { clsx } from '../../lib/functions';
 
-import { Button } from '../atoms/button';
+import { TextInput } from '../atoms/input';
 import { ListBox } from '../atoms/listbox-ra';
+import { LoadingIndicator } from '../atoms/loading-indicator';
 import { Popover } from '../atoms/popover-ra';
 
-export type AutocompleteOptionValue = {
+export type ListBoxOption = {
     key: string;
     label: string;
+    disabled?: boolean;
 };
 
 export type SearchAutocompleteProps = {
-    // className?: string;
-    // inputClassName?: string;
-    // autoFocus?: boolean;
-    // disabled?: boolean;
-    // variant?: 'primary' | 'secondary';
-    // errorText?: string;
-    // helpText?: string;
+    variant?: 'primary' | 'secondary';
+    className?: string;
+    errorText?: string;
+    helpText?: string;
     isLoading?: boolean;
     initialQuery?: string;
     onChange: (newValue: string) => void;
     value?: string;
     label: string;
-    options: Array<AutocompleteOptionValue>;
-    children?: (item: AutocompleteOptionValue) => React.ReactNode;
+    options: Array<ListBoxOption>;
+    children?: (item: ListBoxOption) => React.ReactNode;
     onSearch?: (query: string) => void;
 };
 
 export function SearchAutocomplete(props: SearchAutocompleteProps) {
     const [query, setQuery] = React.useState(props.initialQuery ?? '');
 
-    function getItem(item: AutocompleteOptionValue) {
+    const id = React.useId();
+    const initialEmptyId = React.useRef(id);
+
+    const options: ListBoxOption[] = props.isLoading
+        ? [
+              {
+                  key: `disabled-id-${initialEmptyId.current}`,
+                  label: 'Recherche...',
+                  disabled: true
+              }
+          ]
+        : props.options.length === 0
+        ? [
+              {
+                  key: `disabled-id-${initialEmptyId.current}`,
+                  label: 'Aucun résultat trouvé',
+                  disabled: true
+              }
+          ]
+        : props.options;
+
+    function getItem(item: ListBoxOption) {
         return <Item key={item.key}>{item.label}</Item>;
     }
 
     // Setup filter function and state.
     const { contains } = useFilter({ sensitivity: 'base' });
     const state = useComboBoxState({
-        items: props.options,
+        items: options,
+        disabledKeys: options.filter(o => o.disabled).map(o => o.key),
         inputValue: query,
         onInputChange: val => {
             setQuery(val);
@@ -77,37 +100,30 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
     );
 
     const { buttonProps } = useButton(triggerProps, buttonRef);
-
     return (
-        <div className="relative inline-flex flex-col">
-            <label
-                {...labelProps}
-                className="block text-left text-sm font-medium text-gray-700">
-                {props.label}
-            </label>
-            <div
-                className={`relative inline-flex flex-row overflow-hidden rounded-md border-2 shadow-sm ${
-                    state.isFocused ? 'border-pink-500' : 'border-gray-300'
-                }`}>
-                <input
-                    {...inputProps}
-                    ref={inputRef}
-                    className="px-3 py-1 outline-none"
-                />
-                <Button
-                    {...buttonProps}
-                    ref={buttonRef}
-                    loading={!!props.isLoading}
-                    className={`cursor-default border-l-2 bg-gray-100 px-1 ${
-                        state.isFocused
-                            ? 'border-pink-500 text-pink-600'
-                            : 'border-gray-300 text-gray-500'
-                    }`}>
-                    <span aria-hidden="true" style={{ padding: '0 2px' }}>
-                        ▼
-                    </span>
-                </Button>
-            </div>
+        <div className={clsx(props.className, 'relative w-full')}>
+            <TextInput
+                labelProps={{ ...labelProps }}
+                {...inputProps}
+                label={props.label}
+                ref={inputRef}
+                errorText={props.errorText}
+                helpText={props.helpText}
+                appendix={
+                    <button {...buttonProps} ref={buttonRef} className={``}>
+                        {props.isLoading ? (
+                            <LoadingIndicator className="h-5 w-5" />
+                        ) : (
+                            <CaretDown
+                                weight="bold"
+                                className={clsx('h-4 w-4', {
+                                    'rotate-180': state.isOpen
+                                })}
+                            />
+                        )}
+                    </button>
+                }
+            />
             {state.isOpen && (
                 <Popover
                     popoverRef={popoverRef}
@@ -115,6 +131,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
                     onClose={state.close}>
                     <ListBox
                         {...listBoxProps}
+                        variant={props.variant}
                         listBoxRef={listBoxRef}
                         state={state}
                     />

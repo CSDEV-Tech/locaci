@@ -8,7 +8,7 @@ export * from './components/atoms/switch';
 export * from './components/atoms/input';
 export * from './components/atoms/checkbox';
 export * from './components/atoms/radio';
-export * from './components/atoms/combobox';
+export * from './components/molecules/combobox';
 export * from './components/atoms/select';
 export * from './components/atoms/progress';
 export * from './components/atoms/loading-indicator';
@@ -18,6 +18,7 @@ export * from './components/atoms/link-button';
 export * from './components/atoms/link';
 export * from './components/atoms/avatar';
 export * from './components/atoms/textarea';
+export * from './components/molecules/search-autocomplete';
 
 // molecules
 export * from './components/molecules/popover';
