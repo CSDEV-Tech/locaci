@@ -2,16 +2,21 @@ import * as React from 'react';
 
 import { Combobox, Transition } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
-import { TextInput, TextInputProps } from './input';
+import { TextInput, TextInputProps } from '../atoms/input';
 import { CaretDown, CheckCircle } from 'phosphor-react';
-import { LoadingIndicator } from './loading-indicator';
+import { LoadingIndicator } from '../atoms/loading-indicator';
 
 export type ComboBoxProps = {
     value?: string;
     onChange: (newValue: string | null) => void;
     onSearch: (query: string) => void;
     isLoading?: boolean;
-    options?: Array<{ value: string; label: string; hint?: string }>;
+    options?: Array<{
+        value: string;
+        label: string;
+        hint?: string;
+        uniqueId?: string;
+    }>;
     label: string;
     className?: string;
     inputClassName?: string;
@@ -21,30 +26,6 @@ export type ComboBoxProps = {
     errorText?: string;
     helpText?: string;
 };
-
-const CustomComboboxInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-    (props, ref) => {
-        return (
-            <TextInput
-                {...props}
-                ref={ref}
-                autocomplete="off"
-                appendix={
-                    <Combobox.Button aria-label="Ouvrir le menu">
-                        {({ open }) => (
-                            <CaretDown
-                                weight="bold"
-                                className={clsx('h-4 w-4', {
-                                    'rotate-180': open
-                                })}
-                            />
-                        )}
-                    </Combobox.Button>
-                }
-            />
-        );
-    }
-);
 
 export function ComboBox({
     value,
@@ -68,9 +49,11 @@ export function ComboBox({
             disabled={disabled}
             value={selected}
             onChange={newValue => {
-                if (newValue) {
-                    onChange(newValue.value);
-                }
+                // if (newValue) {
+                console.log('onChange : ', { newValue });
+
+                onChange(newValue?.value ?? null);
+                // }
             }}>
             {() => (
                 <div className={clsx(className, 'relative w-full')}>
@@ -127,7 +110,7 @@ export function ComboBox({
                             ) : (
                                 options.map(option => (
                                     <Combobox.Option
-                                        key={option.value}
+                                        key={option.uniqueId ?? option.value}
                                         value={option}
                                         className={({ active }) =>
                                             clsx(
@@ -198,3 +181,27 @@ export function ComboBox({
         </Combobox>
     );
 }
+
+const CustomComboboxInput = React.forwardRef<HTMLInputElement, TextInputProps>(
+    (props, ref) => {
+        return (
+            <TextInput
+                {...props}
+                ref={ref}
+                autocomplete="off"
+                appendix={
+                    <Combobox.Button aria-label="Ouvrir le menu">
+                        {({ open }) => (
+                            <CaretDown
+                                weight="bold"
+                                className={clsx('h-4 w-4', {
+                                    'rotate-180': open
+                                })}
+                            />
+                        )}
+                    </Combobox.Button>
+                }
+            />
+        );
+    }
+);
