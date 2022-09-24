@@ -35,7 +35,7 @@ export function ListBox(props: ListBoxProps) {
             {...listBoxProps}
             ref={listBoxRef}
             className="max-h-72 overflow-auto outline-none">
-            {[...state.collection].map(item =>
+            {Array.from(state.collection).map(item =>
                 item.type === 'section' ? (
                     <ListBoxSection
                         key={item.key}
@@ -72,7 +72,7 @@ function ListBoxSection({ section, state }: SectionProps) {
                     </span>
                 )}
                 <ul {...groupProps}>
-                    {[...section.childNodes].map(node => (
+                    {Array.from(section.childNodes).map(node => (
                         <Option key={node.key} item={node} state={state} />
                     ))}
                 </ul>
