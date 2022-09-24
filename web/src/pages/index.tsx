@@ -1,5 +1,5 @@
+import * as React from 'react';
 import type { GetStaticProps, NextPage } from 'next';
-import Head from 'next/head';
 import { t } from '@web/utils/trpc-rq-hooks';
 
 // All these imports are necessary SSG & SSR
@@ -19,6 +19,20 @@ const Home: NextPageWithLayout = () => {
             staleTime: Infinity,
             retry: 2
         });
+
+    // TODO : TO REMOVE
+    const utils = t.useContext();
+    const mut = t.auth.setDefaultCookie.useMutation({
+        async onSuccess(data, variables, context) {
+            await utils.auth.getUser.invalidate();
+            await utils.auth.getAuthenticatedUser.invalidate();
+        }
+    });
+
+    React.useEffect(() => {
+        mut.mutate();
+    }, []);
+    // END TODO : TO REMOVE
 
     return (
         <>

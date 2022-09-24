@@ -40,6 +40,37 @@ export const authRouter = t.router({
 
             return { success: true };
         }),
+    // TODO : TO REMOVE
+    setDefaultCookie: t.procedure.mutation(async ({ input, ctx }) => {
+        // Stay connected for 30 days
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 30);
+
+        const user = await ctx.prisma.user.findFirst({
+            where: {
+                role: 'PROPERTY_OWNER'
+            }
+        });
+
+        const token = jwt.sign(
+            {
+                id: new Uuid(user!.id).short()
+            },
+            env.JWT_SECRET,
+            {
+                expiresIn: `30d`, // 30 days
+                algorithm: 'HS256'
+            }
+        );
+
+        ctx.res?.setHeader(
+            'set-cookie',
+            `__session=${token}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
+        );
+        return { success: true };
+    }),
+    // END TODO : TO REMOVE
+
     setAuthCookie: t.procedure
         .input(
             z.object({
