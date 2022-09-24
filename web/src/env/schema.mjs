@@ -19,6 +19,8 @@ export const serverSchema = z.object({
  */
 export const clientSchema = z.object({
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+    OSM_SEARCH_URL: z.string().url(),
+    NEXT_PUBLIC_MAPBOX_KEY: z.string(),
     NEXT_PUBLIC_SUPABASE_KEY: z.string(),
     NEXT_PUBLIC_SITE_URL: z.string().url().optional()
 });
@@ -31,6 +33,8 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    OSM_SEARCH_URL: process.env.OSM_SEARCH_URL,
+    NEXT_PUBLIC_MAPBOX_KEY: process.env.NEXT_PUBLIC_MAPBOX_KEY,
     NEXT_PUBLIC_SUPABASE_KEY: process.env.NEXT_PUBLIC_SUPABASE_KEY,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL
 };
