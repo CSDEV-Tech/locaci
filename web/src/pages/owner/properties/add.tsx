@@ -4,7 +4,8 @@ import * as React from 'react';
 import {
     Button,
     clsx,
-    ComboBox,
+    LoadingIndicator,
+    MapPin,
     NumberInput,
     Progress,
     SearchAutocomplete,
@@ -12,23 +13,31 @@ import {
     TextInput
 } from '@locaci/ui';
 import { OwnerLayout } from '@web/components/layouts/owner-layout';
-import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
-
-// utils
+import { CaretDoubleLeft, CaretDoubleRight, House } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 
-// types
-import { NextPageWithLayout } from '@web/pages/_app';
+// utils
+import { env } from '@web/env/client.mjs';
 import { useZodForm } from '@web/hooks/use-zod-form';
 import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { z } from 'zod';
 import { t } from '@web/utils/trpc-rq-hooks';
-import { useDebouncedCallBack } from '@web/hooks/use-debounced-callback';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
+// types
+import type { z } from 'zod';
+import type { NextPageWithLayout } from '@web/pages/_app';
 export type AddPropertyPageProps = {};
+
+// set mapbox token
+mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_KEY;
 
 const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
     const [step, setStep] = React.useState<1 | 2 | 3 | 4>(1);
+    const [currentLocality, setCurrentLocality] = React.useState({
+        name: '',
+        id: ''
+    });
 
     return (
         <section className="relative flex h-full items-center justify-center">
@@ -42,7 +51,7 @@ const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
             <div
                 className={clsx(
                     'flex h-full w-full flex-col',
-                    'gap-14 px-6 pt-20 pb-10',
+                    'gap-14 pt-20 pb-10',
                     'md:m-auto md:h-auto md:w-[450px]'
                 )}>
                 {step === 1 && (
@@ -59,6 +68,10 @@ const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
                         defaultValues={{}}
                         onSubmit={v2 => {
                             console.log({ v2 });
+                            setCurrentLocality({
+                                id: v2.localityUid,
+                                name: v2.localityName
+                            });
                             setStep(3);
                         }}
                         onPreviousClick={() => {
@@ -66,7 +79,15 @@ const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
                         }}
                     />
                 )}
-                {step === 3 && <FormStep3 />}
+                {step === 3 && (
+                    <FormStep3
+                        localityUid={currentLocality.id}
+                        localityName={currentLocality.name}
+                        onPreviousClick={() => {
+                            setStep(2);
+                        }}
+                    />
+                )}
             </div>
         </section>
     );
@@ -97,12 +118,12 @@ export function FormStep1(props: FormStep1Props) {
     return (
         <>
             <div>
-                <h1 className="text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Quel type de logement voulez-vous ajouter ?
                 </h1>
             </div>
             <form
-                className="flex flex-col items-stretch gap-4"
+                className="flex flex-col items-stretch gap-4 px-6"
                 onSubmit={form.handleSubmit(variables =>
                     props.onSubmit(variables)
                 )}>
@@ -165,7 +186,7 @@ export function FormStep1(props: FormStep1Props) {
 
 type Form2Values = Pick<
     z.TypeOf<typeof createPropertyRequestSchema>,
-    'cityUid' | 'communeUid' | 'localityName'
+    'cityUid' | 'communeUid' | 'localityName' | 'localityUid'
 >;
 
 type FormStep2Props = {
@@ -230,12 +251,12 @@ export function FormStep2(props: FormStep2Props) {
     return (
         <>
             <div>
-                <h1 className="text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Où se situe votre logement ?
                 </h1>
             </div>
             <form
-                className="flex flex-col items-stretch gap-4"
+                className="flex flex-col items-stretch gap-4 px-6"
                 onSubmit={form.handleSubmit(variables =>
                     props.onSubmit(variables)
                 )}>
@@ -320,11 +341,144 @@ export function FormStep2(props: FormStep2Props) {
 }
 
 type FormStep3Props = {
-    // ...
+    onPreviousClick: () => void;
+    localityUid: string;
+    localityName: string;
 };
 
-export function FormStep3() {
-    return <></>;
+export function FormStep3(props: FormStep3Props) {
+    const { data, isLoading } = t.owner.property.getLocalityData.useQuery({
+        localityId: props.localityUid
+    });
+
+    console.log({
+        locality: props.localityName,
+        id: props.localityUid
+    });
+
+    const mapRef = React.useRef<HTMLDivElement>(null);
+    const markerRef = React.useRef<HTMLDivElement>(null);
+
+    // Initialize map when component mounts
+    React.useEffect(() => {
+        let map: mapboxgl.Map;
+        if (data && mapRef.current) {
+            map = new mapboxgl.Map({
+                container: mapRef.current!,
+                style: 'mapbox://styles/mapbox/streets-v11',
+                bounds: data.boundingbox
+            });
+
+            // Add navigation control (the +/- zoom buttons)
+            map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+            map.on('load', () => {
+                // add map polygon
+                map.addSource('maine', {
+                    type: 'geojson',
+                    data: {
+                        properties: [],
+                        type: 'Feature',
+                        geometry: data.geojson
+                    }
+                });
+
+                // Add a new layer to visualize the polygon.
+                map.addLayer({
+                    id: 'maine',
+                    type: 'fill',
+                    source: 'maine', // reference the data source
+                    layout: {},
+                    paint: {
+                        'fill-color': '#3a3335', // dark color fill
+                        'fill-opacity': 0.3
+                    }
+                });
+
+                // Add a black outline around the polygon.
+                map.addLayer({
+                    id: 'outline',
+                    type: 'line',
+                    source: 'maine',
+                    layout: {},
+                    paint: {
+                        'line-color': '#3a3335',
+                        'line-width': 1
+                    }
+                });
+
+                new mapboxgl.Marker(markerRef.current!)
+                    .setLngLat([Number(data.lon), Number(data.lat)])
+                    .addTo(map);
+            });
+        }
+        // Clean up on unmount
+        return () => map?.remove();
+    }, [data?.lon, data?.lat, data?.geojson, data?.boundingbox]);
+
+    return (
+        <>
+            <template>
+                <MapPin
+                    ref={markerRef}
+                    children={
+                        <div className="rounded-md bg-white p-2 shadow-md">
+                            <House
+                                className="h-4 w-4 text-dark"
+                                weight="fill"
+                            />
+                        </div>
+                    }
+                />
+            </template>
+            <div className="flex flex-col gap-4">
+                <div>
+                    <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                        Est-ce que le placement du point sur la carte est
+                        correct ?
+                    </h1>
+
+                    <h2 className="text-center text-lg text-gray">
+                        Si ce n'est pas le cas, veuillez retourner à l'étape
+                        précédente et changer de quartier ou commune
+                    </h2>
+                </div>
+
+                <div className="relative h-[25rem]  bg-primary-15">
+                    {isLoading && (
+                        <div className="absolute top-1/2 left-1/2 inline-flex -translate-y-1/2 -translate-x-1/2 items-center gap-2">
+                            <LoadingIndicator className="h-4 w-4" />
+                            <span>Chargement de la carte</span>
+                        </div>
+                    )}
+                    <div ref={mapRef} className={`h-full w-full`} />
+                </div>
+
+                <div className="flex items-center gap-4 px-6">
+                    <Button
+                        type="button"
+                        variant="hollow"
+                        className="w-full"
+                        onClick={props.onPreviousClick}
+                        renderLeadingIcon={cls => (
+                            <CaretDoubleLeft className={cls} />
+                        )}>
+                        Précédent
+                    </Button>
+
+                    <Button
+                        type="button"
+                        variant="dark"
+                        className="w-full"
+                        renderTrailingIcon={cls => (
+                            <CaretDoubleRight className={cls} />
+                        )}>
+                        Suivant
+                    </Button>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default AddPropertyPage;

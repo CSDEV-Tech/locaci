@@ -113,3 +113,24 @@ export function debounce<T extends Function>(
     };
     return fn as unknown as T;
 }
+
+/**
+ * Compare 2 strings case insensitive and accents insensitive
+ *
+ * @param str1
+ * @param str2
+ * @returns
+ */
+export function compareStrIgnoreAccent(str1?: string, str2?: string) {
+    const first = str1
+        ?.normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        .toLocaleLowerCase();
+
+    const second = str2
+        ?.normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        .toLocaleLowerCase();
+
+    return first === second;
+}

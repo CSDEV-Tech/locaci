@@ -36,8 +36,7 @@ export const createPropertyRequestSchema = z.object({
             required_error:
                 'Veuillez saisir le quartier où se trouve votre logement'
         })
-        .min(1, 'Veuillez saisir le quartier où se trouve votre logement')
-        .nullish(),
+        .min(1, 'Veuillez saisir le quartier où se trouve votre logement'),
     cityUid: z
         .string({
             required_error:
