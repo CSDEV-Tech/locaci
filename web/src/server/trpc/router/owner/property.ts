@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { env } from '@web/env/client.mjs';
+import { env } from '@web/env/server.mjs';
 import { isOwner } from '@web/server/trpc/middleware/auth';
 import { t } from '@web/server/trpc/trpc-server-root';
 import { compareStrIgnoreAccent, jsonFetch } from '@web/utils/functions';
