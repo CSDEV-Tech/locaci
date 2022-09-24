@@ -125,7 +125,8 @@ export const ownerRouter = t.router({
                         'residential',
                         'industrial',
                         'administrative',
-                        'island'
+                        'island',
+                        'suburb'
                     ].includes(el.type);
 
                     const isInMunicipality = compareStrIgnoreAccent(
@@ -151,6 +152,10 @@ export const ownerRouter = t.router({
                         el.address.neighbourhood,
                         locality.name
                     );
+                    const isAResidentialPlace = compareStrIgnoreAccent(
+                        el.address.residential,
+                        locality.name
+                    );
 
                     return (
                         isOfCorrectType &&
@@ -158,7 +163,8 @@ export const ownerRouter = t.router({
                             isInMunicipality ||
                             isAnIndustrationPlace ||
                             isAVillagePlace ||
-                            isANeighbourhoodPlace)
+                            isANeighbourhoodPlace ||
+                            isAResidentialPlace)
                     );
                 })[0] ?? null;
 
