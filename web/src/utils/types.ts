@@ -16,7 +16,7 @@ export type GeoJSON = PointGeoJSON | PolygonGeoJSON;
 export type OSMResultData = {
     osm_id: number;
     type: string;
-    boundingbox: [string, string, string, string]; // min lat, max lat, min long, max long
+    boundingbox: [number, number, number, number]; // min lat, max lat, min long, max long
     lat: string;
     lon: string;
     display_name: string;

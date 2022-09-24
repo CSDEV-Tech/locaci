@@ -5,7 +5,6 @@ import {
     Button,
     clsx,
     LoadingIndicator,
-    MapPin,
     NumberInput,
     Progress,
     SearchAutocomplete,
@@ -13,24 +12,26 @@ import {
     TextInput
 } from '@locaci/ui';
 import { OwnerLayout } from '@web/components/layouts/owner-layout';
-import { CaretDoubleLeft, CaretDoubleRight, House } from 'phosphor-react';
+import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 
 // utils
-import { env } from '@web/env/client.mjs';
 import { useZodForm } from '@web/hooks/use-zod-form';
 import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 import { t } from '@web/utils/trpc-rq-hooks';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 
 // types
 import type { z } from 'zod';
 import type { NextPageWithLayout } from '@web/pages/_app';
+import dynamic from 'next/dynamic';
+
 export type AddPropertyPageProps = {};
 
-// set mapbox token
-mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_KEY;
+// lazy load the map component
+const Map = dynamic(() => import('@web/components/map'), {
+    ssr: false,
+    suspense: true
+});
 
 const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
     const [step, setStep] = React.useState<1 | 2 | 3 | 4>(1);
@@ -42,7 +43,7 @@ const AddPropertyPage: NextPageWithLayout<AddPropertyPageProps> = props => {
     return (
         <section className="relative flex h-full items-center justify-center">
             <Progress
-                value={(step / 3) * 100}
+                value={(step / 4) * 100}
                 min={0}
                 max={100}
                 className="!absolute top-0 left-0 right-0"
@@ -346,91 +347,26 @@ type FormStep3Props = {
     localityName: string;
 };
 
-export function FormStep3(props: FormStep3Props) {
-    const { data, isLoading } = t.owner.property.getLocalityData.useQuery({
-        localityId: props.localityUid
-    });
-
-    console.log({
-        locality: props.localityName,
-        id: props.localityUid
-    });
-
-    const mapRef = React.useRef<HTMLDivElement>(null);
-    const markerRef = React.useRef<HTMLDivElement>(null);
-
-    // Initialize map when component mounts
-    React.useEffect(() => {
-        let map: mapboxgl.Map;
-        if (data && mapRef.current) {
-            map = new mapboxgl.Map({
-                container: mapRef.current!,
-                style: 'mapbox://styles/mapbox/streets-v11',
-                bounds: data.boundingbox
-            });
-
-            // Add navigation control (the +/- zoom buttons)
-            map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-            map.on('load', () => {
-                // add map polygon
-                map.addSource('maine', {
-                    type: 'geojson',
-                    data: {
-                        properties: [],
-                        type: 'Feature',
-                        geometry: data.geojson
-                    }
-                });
-
-                // Add a new layer to visualize the polygon.
-                map.addLayer({
-                    id: 'maine',
-                    type: 'fill',
-                    source: 'maine', // reference the data source
-                    layout: {},
-                    paint: {
-                        'fill-color': '#3a3335', // dark color fill
-                        'fill-opacity': 0.3
-                    }
-                });
-
-                // Add a black outline around the polygon.
-                map.addLayer({
-                    id: 'outline',
-                    type: 'line',
-                    source: 'maine',
-                    layout: {},
-                    paint: {
-                        'line-color': '#3a3335',
-                        'line-width': 1
-                    }
-                });
-
-                new mapboxgl.Marker(markerRef.current!)
-                    .setLngLat([Number(data.lon), Number(data.lat)])
-                    .addTo(map);
-            });
+/**
+ * A wrapper around the map loading
+ * @param props
+ * @returns
+ */
+function MapLoader(props: { localityUid: string }) {
+    const { data } = t.owner.property.getLocalityData.useQuery(
+        {
+            localityId: props.localityUid
+        },
+        {
+            suspense: true
         }
-        // Clean up on unmount
-        return () => map?.remove();
-    }, [data?.lon, data?.lat, data?.geojson, data?.boundingbox]);
+    );
+    return <Map localityData={data} />;
+}
 
+export function FormStep3(props: FormStep3Props) {
     return (
         <>
-            <template>
-                <MapPin
-                    ref={markerRef}
-                    children={
-                        <div className="rounded-md bg-white p-2 shadow-md">
-                            <House
-                                className="h-4 w-4 text-dark"
-                                weight="fill"
-                            />
-                        </div>
-                    }
-                />
-            </template>
             <div className="flex flex-col gap-4">
                 <div>
                     <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
@@ -444,15 +380,17 @@ export function FormStep3(props: FormStep3Props) {
                     </h2>
                 </div>
 
-                <div className="relative h-[25rem]  bg-primary-15">
-                    {isLoading && (
-                        <div className="absolute top-1/2 left-1/2 inline-flex -translate-y-1/2 -translate-x-1/2 items-center gap-2">
-                            <LoadingIndicator className="h-4 w-4" />
-                            <span>Chargement de la carte</span>
+                <React.Suspense
+                    fallback={
+                        <div className="relative h-[25rem]  bg-primary-15">
+                            <div className="absolute top-1/2 left-1/2 inline-flex -translate-y-1/2 -translate-x-1/2 items-center gap-2">
+                                <LoadingIndicator className="h-4 w-4" />
+                                <span>Chargement de la carte</span>
+                            </div>
                         </div>
-                    )}
-                    <div ref={mapRef} className={`h-full w-full`} />
-                </div>
+                    }>
+                    <MapLoader localityUid={props.localityUid} />
+                </React.Suspense>
 
                 <div className="flex items-center gap-4 px-6">
                     <Button
