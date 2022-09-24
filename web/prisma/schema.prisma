@@ -93,12 +93,8 @@ model Property {
     // Position
     longitude      String
     latitude       String
-    // Bounding box limits
-    bbMinLongitude String
-    bbMinLatitude  String
-    bbMaxLongitude String
-    bbMaxLatitude  String
-
+    // position limits
+    geoData        Json
     cityId         String  @db.Uuid
     municipalityId String  @db.Uuid
     localityId     String? @db.Uuid

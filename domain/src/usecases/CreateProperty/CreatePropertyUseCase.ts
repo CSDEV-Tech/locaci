@@ -36,22 +36,11 @@ export class CreatePropertyUseCase {
                     ...res.parsedRequest,
                     archived: false,
                     id: new Uuid(),
-                    position: {
+                    centerPosition: {
                         longitude: res.parsedRequest.longitude,
                         latitude: res.parsedRequest.latitude
                     },
-                    boundingBox: [
-                        {
-                            longitude:
-                                res.parsedRequest.boundingBox.minLongitude,
-                            latitude: res.parsedRequest.boundingBox.minLatitude
-                        },
-                        {
-                            longitude:
-                                res.parsedRequest.boundingBox.maxLongitude,
-                            latitude: res.parsedRequest.boundingBox.maxLatitude
-                        }
-                    ],
+                    positionData: res.parsedRequest.polygonData,
                     noOfRooms: 1,
                     owner,
                     rooms: [

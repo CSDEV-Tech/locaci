@@ -6,9 +6,9 @@ import { Image } from '../Image';
 
 export type Property = {
     id: Uuid;
-    position: Position;
     rentType: RentType;
     // In square meters
+    centerPosition: Position;
     surfaceArea: number;
     commune: string;
     district: string;
@@ -20,8 +20,8 @@ export type Property = {
     rooms: Room[];
     amenities: Amenity[];
     archived: boolean;
-    // boundingBox with [min position & max position]
-    boundingBox: [Position, Position];
+    // a list of positions in polygon shape corresponding to the place where the property is
+    positionData: Position[];
 };
 
 export type Position = {

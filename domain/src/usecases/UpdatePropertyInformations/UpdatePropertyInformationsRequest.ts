@@ -11,12 +11,12 @@ export const UpdatePropertyInformationsRequestSchema = z.object({
     district: z.string().min(1),
     city: z.string().min(1),
     address: z.string().nullable(),
-    boundingBox: z.object({
-        minLongitude: z.number(),
-        minLatitude: z.number(),
-        maxLongitude: z.number(),
-        maxLatitude: z.number()
-    })
+    polygonData: z.array(
+        z.object({
+            longitude: z.number(),
+            latitude: z.number()
+        })
+    )
 });
 
 export type UpdatePropertyInformationsRequest = z.infer<

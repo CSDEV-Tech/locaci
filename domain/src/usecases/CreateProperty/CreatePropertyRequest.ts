@@ -11,12 +11,12 @@ export const CreatePropertyRequestSchema = z.object({
     address: z.string().nullable(),
     rentType: z.nativeEnum(RentType),
     ownerId: z.string().uuid(),
-    boundingBox: z.object({
-        minLongitude: z.number(),
-        minLatitude: z.number(),
-        maxLongitude: z.number(),
-        maxLatitude: z.number()
-    })
+    polygonData: z.array(
+        z.object({
+            longitude: z.number(),
+            latitude: z.number()
+        })
+    )
 });
 
 export type CreatePropertyRequest = z.TypeOf<
