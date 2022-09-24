@@ -3,7 +3,6 @@ import * as React from 'react';
 import { DefaultLayout } from '@web/components/layouts/default-layout';
 import { NextLink, NextLinkButton } from '@web/components/next-link';
 import { Button, clsx, TextInput } from '@locaci/ui';
-// import { LoginSuccessModal } from '@web/components/login-success-modal';
 
 // functions & others
 import { getHostWithScheme } from '@web/utils/functions';
