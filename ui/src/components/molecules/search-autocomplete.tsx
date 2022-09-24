@@ -77,7 +77,8 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
             setQuery(props.options.find(o => o.key === key)?.label ?? '');
             props.onChange?.(key.toString());
         },
-        defaultFilter: contains
+        defaultFilter: contains,
+        menuTrigger: 'focus'
     });
 
     // Setup refs and get props for child elements.
@@ -97,7 +98,8 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
             inputRef,
             buttonRef,
             listBoxRef,
-            popoverRef
+            popoverRef,
+            menuTrigger: 'focus'
         },
         state
     );
