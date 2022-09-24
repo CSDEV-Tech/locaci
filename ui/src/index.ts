@@ -18,10 +18,11 @@ export * from './components/atoms/link-button';
 export * from './components/atoms/link';
 export * from './components/atoms/avatar';
 export * from './components/atoms/textarea';
-export * from './components/molecules/search-autocomplete';
+export * from './components/atoms/price-tag-button';
 
 // molecules
 export * from './components/molecules/popover';
+export * from './components/molecules/search-autocomplete';
 export * from './components/molecules/pagination';
 export * from './components/molecules/checkbox-group';
 export * from './components/molecules/radio-group';

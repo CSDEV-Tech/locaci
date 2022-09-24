@@ -1,31 +1,26 @@
 import * as React from 'react';
-import { clsx, formatNumberToFCFA } from '../../lib/functions';
+import { clsx } from '../../lib/functions';
 
 export type MapPinProps = {
-    price: number;
     className?: string;
-    title?: string;
+    children?: React.ReactNode;
 };
 
-export function MapPin({ price, className, title }: MapPinProps) {
-    return (
-        <button
-            aria-label={title}
-            className={clsx(
-                className,
-                `group inline-flex flex-col items-center gap-2`
-            )}
-        >
+export const MapPin = React.forwardRef<HTMLDivElement, MapPinProps>(
+    ({ children, className }, ref) => {
+        return (
             <div
+                ref={ref}
                 className={clsx(
-                    `rounded-full bg-white text-sm font-bold`,
-                    `py-2 px-4`,
-                    `group-hover:bg-primary group-hover:text-white`,
-                    `transition duration-300 group-hover:scale-105`
-                )}
-            >
-                {formatNumberToFCFA(price)}
+                    className,
+                    'relative h-5 w-5 rounded-full bg-white',
+                    'flex items-center justify-center',
+                    'after:h-4 after:w-4 after:rounded-full after:bg-primary'
+                )}>
+                <div className="absolute bottom-[calc(100%+.5rem)]">
+                    {children}
+                </div>
             </div>
-        </button>
-    );
-}
+        );
+    }
+);
