@@ -1,6 +1,6 @@
 // components
 import { Button, Tabs } from '@locaci/ui';
-import { OwnerLayout } from '@web/components/layouts/owner-layout';
+import { OwnerLayout } from '@web/features/shared';
 
 // utils
 import { useListingModalStore } from '@web/hooks/use-listing-modal-store';

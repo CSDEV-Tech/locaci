@@ -1,7 +1,7 @@
 import * as React from 'react';
 // components
 import { PlusCircle } from 'phosphor-react';
-import { OwnerLayout } from '@web/components/layouts/owner-layout';
+import { OwnerLayout } from '@web/features/shared';
 import { NextLinkButton } from '@web/components/next-link';
 import { LoadingIndicator } from '@locaci/ui';
 

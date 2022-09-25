@@ -9,7 +9,7 @@ import {
     Tag,
     TextArea
 } from '@locaci/ui';
-import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { DefaultLayout } from '@web/features/shared';
 import { ArrowsClockwise, Link, Prohibit } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 import { NextLinkButton } from '@web/components/next-link';

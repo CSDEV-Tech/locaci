@@ -2,10 +2,10 @@
 import { Controller } from 'react-hook-form';
 import { At, Phone, User } from 'phosphor-react';
 import { Button, clsx, Select, TextInput } from '@locaci/ui';
-import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { DefaultLayout } from '@web/features/shared';
 import { NextLink, NextLinkButton } from '@web/components/next-link';
 
-// functions & others
+// utils
 import { t } from '@web/utils/trpc-rq-hooks';
 import { useZodForm } from '@web/hooks/use-zod-form';
 import { requestOwnerAccessSchema } from '@web/server/trpc/validation/auth-schema';

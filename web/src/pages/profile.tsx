@@ -1,7 +1,7 @@
 import * as React from 'react';
 // components
 import { Button } from '@locaci/ui';
-import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { DefaultLayout } from '@web/features/shared';
 
 // utils & functions
 import { t } from '@web/utils/trpc-rq-hooks';

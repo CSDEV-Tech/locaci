@@ -11,7 +11,7 @@ import superjson from 'superjson';
 
 // type hint for layout
 import type { NextPageWithLayout } from '@web/pages/_app';
-import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { DefaultLayout } from '@web/features/shared';
 
 const Home: NextPageWithLayout = () => {
     const { data, isLoading, isError, error } =

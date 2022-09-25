@@ -2,9 +2,9 @@ import * as React from 'react';
 
 // components
 import { LoadingIndicator } from '@locaci/ui';
-import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { DefaultLayout } from '@web/features/shared';
 
-// functions & others
+// utils
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { t } from '@web/utils/trpc-rq-hooks';

@@ -1,28 +1,32 @@
 import * as React from 'react';
 
 // components
+import Head from 'next/head';
 import { Door, HouseSimple, List, PlusCircle, User } from 'phosphor-react';
 import { Avatar, Button, clsx, LoadingIndicator, SideNav } from '@locaci/ui';
-import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { DefaultLayout } from '@web/features/shared/components/layouts/default-layout';
 import { NextBreadcrumb } from '@web/components/next-breadcrumb';
 import { NextLink } from '@web/components/next-link';
 
 // utils & others
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { t } from '@web/utils/trpc-rq-hooks';
 import { useOwnerCheck } from '@web/hooks/use-owner-check';
 import { useMediaQuery } from '@web/hooks/use-media-query';
-import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 
 // types
 import type { DefaultLayoutProps } from './default-layout';
 import type { BreadcrumbItem } from '@locaci/ui';
 import { useListingModalStore } from '@web/hooks/use-listing-modal-store';
 
+// lazy load the listing modal since it contains a chunky component (BottomSheet)
 const AddListingModal = dynamic(
     () => import('@web/components/add-listing-modal'),
     {
-        ssr: false
+        ssr: false,
+        // show nothing when loading the component
+        loading: () => <></>
     }
 );
 
@@ -42,6 +46,10 @@ export function OwnerLayout({
 
     return isLoading ? (
         <section className="flex h-screen w-screen items-center justify-center">
+            <Head key={'document-head'}>
+                <title>{`${props.title} | LOCACI`}</title>
+            </Head>
+
             <h1 className="flex items-center gap-4 text-4xl">
                 <LoadingIndicator className="h-10" /> <span>CHARGEMENT...</span>
             </h1>

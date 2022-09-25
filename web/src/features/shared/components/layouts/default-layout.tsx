@@ -43,7 +43,7 @@ export function DefaultLayout({
             <Head key={'document-head'}>
                 <title>{`${title} | LOCACI`}</title>
                 <meta name="description" content={description} />
-                <link rel="icon" href="/favicon.svg" />
+                <link rel="icon" href="/web/public/favicon.svg" />
                 <meta name="title" content={`${title} | LOCACI`} />
 
                 {/*Open Graph / Facebook */}

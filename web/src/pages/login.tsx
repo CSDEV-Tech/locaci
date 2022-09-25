@@ -1,6 +1,6 @@
 import * as React from 'react';
 // components
-import { DefaultLayout } from '@web/components/layouts/default-layout';
+import { DefaultLayout } from '@web/features/shared';
 import { NextLink, NextLinkButton } from '@web/components/next-link';
 import { Button, clsx, TextInput } from '@locaci/ui';
 
