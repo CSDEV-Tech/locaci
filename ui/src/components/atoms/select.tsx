@@ -14,6 +14,7 @@ export type SelectProps = {
     variant?: 'primary' | 'secondary';
     errorText?: string;
     helpText?: string;
+    required?: boolean;
 };
 
 export function Select({
@@ -24,6 +25,7 @@ export function Select({
     onChange,
     errorText,
     helpText,
+    required = false,
     variant = 'primary',
     disabled = false,
     options = []
@@ -49,6 +51,13 @@ export function Select({
                         <>
                             <Listbox.Label className="text-sm font-normal text-gray">
                                 {label}
+                                {required && (
+                                    <span
+                                        aria-label="ce champ est requis"
+                                        className="text-red-400">
+                                        *
+                                    </span>
+                                )}
                             </Listbox.Label>
 
                             <Listbox.Button

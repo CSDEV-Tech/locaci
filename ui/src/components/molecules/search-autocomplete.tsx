@@ -1,5 +1,5 @@
-import { CaretDown } from 'phosphor-react';
 import * as React from 'react';
+import { CaretDown } from 'phosphor-react';
 import { useButton, useComboBox, useFilter } from 'react-aria';
 import { Item, useComboBoxState } from 'react-stately';
 import { clsx } from '../../lib/functions';
@@ -22,7 +22,7 @@ export type SearchAutocompleteProps = {
     helpText?: string;
     isLoading?: boolean;
     initialQuery?: string;
-    onChange: (selectedKey: string) => void;
+    onChange: (selectedKey: string, inputValue: string) => void;
     value?: string;
     label: string;
     options: Array<ListBoxOption>;
@@ -30,14 +30,15 @@ export type SearchAutocompleteProps = {
     onSearch?: (query: string) => void;
     disabled?: boolean;
     autoFocus?: boolean;
+    required?: boolean;
 };
 
 export function SearchAutocomplete(props: SearchAutocompleteProps) {
     const [query, setQuery] = React.useState(props.initialQuery ?? '');
+    const randomId = React.useId();
+    const initialEmptyId = React.useRef(randomId);
 
-    const id = React.useId();
-    const initialEmptyId = React.useRef(id);
-
+    // when loading or no result, show the appropriate UI
     const options: ListBoxOption[] = props.isLoading
         ? [
               {
@@ -56,6 +57,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
           ]
         : props.options;
 
+    // component that render a single item
     function getItem(item: ListBoxOption) {
         return <Item key={item.key}>{item.label}</Item>;
     }
@@ -75,7 +77,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
         selectedKey: props.value,
         onSelectionChange: key => {
             setQuery(props.options.find(o => o.key === key)?.label ?? '');
-            props.onChange?.(key.toString());
+            props.onChange?.(key.toString(), query);
         },
         defaultFilter: contains,
         menuTrigger: 'focus'
@@ -113,6 +115,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
                 disabled={props.disabled}
                 label={props.label}
                 ref={inputRef}
+                required={props.required}
                 autoFocus={props.autoFocus}
                 errorText={props.errorText}
                 helpText={props.helpText}
