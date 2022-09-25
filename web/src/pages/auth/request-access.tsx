@@ -7,7 +7,7 @@ import { NextLink, NextLinkButton } from '@web/components/next-link';
 
 // utils
 import { t } from '@web/utils/trpc-rq-hooks';
-import { useZodForm } from '@web/hooks/use-zod-form';
+import { useZodForm } from '@web/features/shared/hooks/use-zod-form';
 import { requestOwnerAccessSchema } from '@web/server/trpc/validation/auth-schema';
 import dynamic from 'next/dynamic';
 

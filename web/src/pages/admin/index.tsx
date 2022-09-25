@@ -17,7 +17,7 @@ import { NextLinkButton } from '@web/components/next-link';
 // functions & others
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { useZodForm } from '@web/hooks/use-zod-form';
+import { useZodForm } from '@web/features/shared/hooks/use-zod-form';
 import { t } from '@web/utils/trpc-rq-hooks';
 import { supabase } from '@web/utils/supabase-client';
 import { formatDate, getHostWithScheme } from '@web/utils/functions';

@@ -185,7 +185,7 @@ export function LeadingElement(props: { links: BreadcrumbItem[] }) {
                 </div>
             </SideNav>
 
-            <NextBreadcrumb links={props.links} />
+            <NextBreadcrumb links={props.links} className={`w-full`} />
         </div>
     );
 }

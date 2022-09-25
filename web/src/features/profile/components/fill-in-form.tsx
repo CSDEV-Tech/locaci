@@ -1,11 +1,11 @@
 import * as React from 'react';
 // components
 import { Button, Modal, TextInput } from '@locaci/ui';
-import { BottomSheet } from '@locaci/ui/src/components/atoms/bottom-sheet';
+import { BottomSheet } from 'ui/src/components/atoms/bottom-sheet';
 
 // utils & functions
 import { t } from '@web/utils/trpc-rq-hooks';
-import { useZodForm } from '@web/hooks/use-zod-form';
+import { useZodForm } from '@web/features/shared';
 import { updateNameAndProfileSchema } from '@web/server/trpc/validation/auth-schema';
 import useMediaQuery from '@web/hooks/use-media-query';
 

@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic';
 // types
 import type { NextPageWithLayout } from '@web/pages/_app';
 
-const FillInForm = dynamic(() => import('@web/components/fill-in-form'), {
+const FillInForm = dynamic(() => import('@web/features/profile/components/fill-in-form'), {
     ssr: false
 });
 
