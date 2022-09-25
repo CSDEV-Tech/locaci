@@ -43,7 +43,7 @@ export const createPropertyRequestSchema = z.object({
                 'Veuillez saisir la ville où se trouve votre logement'
         })
         .uuid('Veuillez saisir la ville où se trouve votre logement'),
-    addressInstructions: z.string().nullable(),
+    addressInstructions: z.string().optional(),
 
     longitude: z.number({
         required_error: 'Longitude requise'

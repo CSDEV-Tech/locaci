@@ -3,12 +3,11 @@ import * as React from 'react';
 // components
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Button, SearchAutocomplete, TextInput } from '@locaci/ui';
-import { Controller } from 'react-hook-form';
 
 // utils
 import { z } from 'zod';
 import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { useZodForm } from '@web/hooks/use-zod-form';
+import { useZodForm } from '@web/features/shared';
 import { t } from '@web/utils/trpc-rq-hooks';
 
 // types
@@ -18,9 +17,16 @@ export type Form2Values = Pick<
 >;
 
 type FormStep2Props = {
-    onSubmit: (values: Form2Values) => void;
+    defaultValues: Partial<
+        Form2Values & { localityQuery: string; municipalityQuery: string }
+    >;
     onPreviousClick: () => void;
-    defaultValues: Partial<Form2Values>;
+    onSubmit: (
+        values: Form2Values & {
+            localityQuery: string;
+            municipalityQuery: string;
+        }
+    ) => void;
 };
 
 export function FormStep2(props: FormStep2Props) {
@@ -48,7 +54,9 @@ export function FormStep2(props: FormStep2Props) {
     }
 
     // municipality (or commune)
-    const [municipalityQuery, setMunicipalityQuery] = React.useState('');
+    const [municipalityQuery, setMunicipalityQuery] = React.useState(
+        props.defaultValues.municipalityQuery ?? ''
+    );
 
     const { data: municipalitiesList, isLoading: isSearchingMunicipalities } =
         t.owner.property.searchCommuneByName.useQuery(
@@ -62,7 +70,17 @@ export function FormStep2(props: FormStep2Props) {
 
     // locality
     const watchMunicipalityUid = form.watch('communeUid');
-    const [localityQuery, setLocalityQuery] = React.useState('');
+    const [localityQuery, setLocalityQuery] = React.useState(
+        props.defaultValues.localityQuery ?? ''
+    );
+
+    console.log({
+        initialQuery: {
+            locality: props.defaultValues.localityQuery,
+            commune: props.defaultValues.municipalityQuery
+        },
+        currentQuery: { localityQuery, municipalityQuery }
+    });
 
     const { data: localityList, isFetching: isSearchingLocalities } =
         t.owner.property.searchLocalityByName.useQuery(
@@ -86,44 +104,45 @@ export function FormStep2(props: FormStep2Props) {
             <form
                 className="flex flex-col items-stretch gap-4 px-6"
                 onSubmit={form.handleSubmit(variables =>
-                    props.onSubmit(variables)
+                    props.onSubmit({
+                        ...variables,
+                        localityQuery,
+                        municipalityQuery
+                    })
                 )}>
                 <div className="flex flex-col gap-4 text-lg">
                     <TextInput value="Abidjan" disabled label="Ville" />
 
-                    <Controller
-                        control={form.control}
-                        name={'communeUid'}
-                        render={({
-                            field: { ...field },
-                            formState: { errors }
-                        }) => (
-                            <SearchAutocomplete
-                                label="Commune"
-                                {...field}
-                                onChange={value => {
-                                    field.onChange(value);
-                                    form.resetField('localityName');
-                                }}
-                                onSearch={query => {
-                                    setMunicipalityQuery(query);
-                                }}
-                                options={
-                                    municipalitiesList?.map(c => ({
-                                        label: c.name,
-                                        key: c.id
-                                    })) ?? []
-                                }
-                                isLoading={isSearchingMunicipalities}
-                                errorText={errors.communeUid?.message}
-                            />
-                        )}
+                    <SearchAutocomplete
+                        label="Commune"
+                        value={form.watch('communeUid')}
+                        onChange={(value, inputValue) => {
+                            form.setValue('communeUid', value);
+                            setMunicipalityQuery(inputValue);
+                            form.resetField('localityName');
+                        }}
+                        onSearch={query => {
+                            setMunicipalityQuery(query);
+                        }}
+                        initialQuery={municipalityQuery}
+                        options={
+                            municipalitiesList?.map(c => ({
+                                label: c.name,
+                                key: c.id
+                            })) ?? []
+                        }
+                        isLoading={isSearchingMunicipalities}
+                        errorText={form.formState.errors.communeUid?.message}
                     />
 
                     <SearchAutocomplete
                         label="Quartier"
                         value={form.watch('localityUid') ?? undefined}
-                        onChange={newValue => {
+                        initialQuery={localityQuery}
+                        required
+                        onChange={(newValue, inputValue) => {
+                            setLocalityQuery(inputValue);
+
                             form.setValue(
                                 'localityName',
                                 localityList?.find(l => l.id === newValue)

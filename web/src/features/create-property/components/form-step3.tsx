@@ -7,13 +7,19 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 // utils
 import { t } from '@web/utils/trpc-rq-hooks';
 import dynamic from 'next/dynamic';
+import { z } from 'zod';
+import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 
 // types
+export type Form3Values = Pick<
+    z.TypeOf<typeof createPropertyRequestSchema>,
+    'localityName' | 'localityUid'
+>;
+
 type FormStep3Props = {
+    defaultValues: Partial<Form3Values>;
     onPreviousClick: () => void;
     onSubmit: () => void;
-    localityUid: string;
-    localityName: string;
 };
 
 // lazy load the map component
@@ -64,7 +70,7 @@ export function FormStep3(props: FormStep3Props) {
                             </div>
                         </div>
                     }>
-                    <MapLoader localityUid={props.localityUid} />
+                    <MapLoader localityUid={props.defaultValues.localityUid!} />
                 </React.Suspense>
 
                 <div className="flex items-center gap-4 px-6">

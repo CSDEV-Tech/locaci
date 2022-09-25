@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import { CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { useZodForm } from '@web/hooks/use-zod-form';
+import { useZodForm } from '@web/features/shared';
 import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 import { z } from 'zod';
 
@@ -55,6 +55,7 @@ export function FormStep1(props: FormStep1Props) {
                                 label="Type de logement"
                                 {...field}
                                 autoFocus
+                                required
                                 options={[
                                     { value: 'LOCATION', label: 'Appartement' },
                                     {
@@ -79,6 +80,7 @@ export function FormStep1(props: FormStep1Props) {
                         }) => (
                             <NumberInput
                                 {...field}
+                                required
                                 label={`Surface du logement`}
                                 appendix={`m²`}
                                 errorText={errors.surfaceArea?.message}
