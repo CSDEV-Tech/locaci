@@ -60,3 +60,9 @@ export const Default = Template.bind({});
 Default.args = {
     label: 'Character List'
 } as SearchAutocompleteProps;
+
+export const WithInitialQuery = Template.bind({});
+WithInitialQuery.args = {
+    label: 'Character List',
+    initialQuery: 'Luke Skywalker'
+} as SearchAutocompleteProps;

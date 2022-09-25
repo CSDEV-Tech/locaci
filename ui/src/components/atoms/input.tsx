@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useId } from 'react';
 import { MinusCircle, PlusCircle, XCircle } from 'phosphor-react';
 import { clsx } from '../../lib/functions';
-import { Button } from '../atoms/button';
+import { Button } from './button';
 
 export type InputProps<T> = {
     value?: T;
@@ -72,9 +72,7 @@ export const TextInput = React.forwardRef<
         const errorId = useId();
         const helpId = useId();
         return (
-            <div
-                className={clsx(rootClassName, 'flex w-full flex-col gap-1')}
-                onBlur={onBlur}>
+            <div className={clsx(rootClassName, 'flex w-full flex-col gap-1')}>
                 <div
                     className={clsx(
                         className,
