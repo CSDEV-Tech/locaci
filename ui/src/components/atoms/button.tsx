@@ -9,7 +9,13 @@ export type ButtonProps = {
     onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     disabled?: boolean;
     children?: React.ReactNode;
-    variant?: 'primary' | 'secondary' | 'hollow' | 'outline' | 'dark';
+    variant?:
+        | 'primary'
+        | 'secondary'
+        | 'hollow'
+        | 'outline'
+        | 'dark'
+        | 'danger';
     type?: 'button' | 'submit' | 'reset';
     role?: string;
     loadingMessage?: string;
@@ -57,6 +63,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         'cursor-default': loading || disabled,
                         'bg-primary text-white ring-primary/50 focus:outline-none':
                             variant === 'primary',
+                        'bg-danger text-white ring-danger/50 focus:outline-none':
+                            variant === 'danger',
+                        'hover:bg-danger-75 active:bg-danger-75':
+                            variant === 'danger' && !loading && !disabled,
                         'hover:bg-primary-75 active:bg-primary-75':
                             variant === 'primary' && !loading && !disabled,
                         'bg-secondary text-white ring-secondary/50 focus:outline-none':
@@ -69,7 +79,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                             variant === 'outline',
                         'border-gray': variant === 'outline',
                         'border-transparent': variant !== 'outline',
-                        'bg-dark text-white ring-dark/50': variant === 'dark'
+                        'bg-dark text-white ring-dark/50': variant === 'dark',
+                        'hover:bg-dark-75 active:bg-dark-75':
+                            variant === 'dark' && !loading && !disabled,
                     }
                 )}
                 onClick={ev => !disabled && !loading && onClick?.(ev)}
