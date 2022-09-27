@@ -74,14 +74,6 @@ export function FormStep2(props: FormStep2Props) {
         props.defaultValues.localityQuery ?? ''
     );
 
-    console.log({
-        initialQuery: {
-            locality: props.defaultValues.localityQuery,
-            commune: props.defaultValues.municipalityQuery
-        },
-        currentQuery: { localityQuery, municipalityQuery }
-    });
-
     const { data: localityList, isFetching: isSearchingLocalities } =
         t.owner.property.searchLocalityByName.useQuery(
             {

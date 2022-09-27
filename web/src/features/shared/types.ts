@@ -1,3 +1,4 @@
+// rooms
 export type RoomType =
     | 'BEDROOM'
     | 'LIVING_ROOM'
@@ -27,4 +28,20 @@ export const RoomTypes: Record<RoomType, string> = {
     VERANDA: 'Véranda',
     TERRACE: 'Terasse',
     TOILET: 'Toilette'
+} as const;
+
+// amenities
+export type AmenityType =
+    | 'HOT_WATER'
+    | 'CABLE'
+    | 'WIFI'
+    | 'TWIN_BED'
+    | 'RADIATOR';
+
+export const AmenityTypes: Record<AmenityType, string> = {
+    HOT_WATER: 'Eau chaude',
+    RADIATOR: 'Climatisation',
+    WIFI: 'Wi-fi ou Fibre',
+    TWIN_BED: 'Double lit ou Lit supperposé',
+    CABLE: 'TV Satellite (ex: Canal +)',
 } as const;

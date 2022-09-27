@@ -4,11 +4,13 @@ import * as React from 'react';
 import { Progress } from '@locaci/ui';
 import { OwnerLayout } from '@web/features/shared';
 import {
+    Form6Values,
     FormStep1,
     FormStep2,
     FormStep3,
     FormStep4,
-    FormStep5
+    FormStep5,
+    FormStep6
 } from '@web/features/create-property';
 
 // utils
@@ -33,6 +35,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
             Form1Values &
                 Form2Values &
                 Form5Values &
+                Form6Values &
                 Form4Values & {
                     localityQuery: string;
                     municipalityQuery: string;
@@ -66,23 +69,29 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                     <FormStep1
                         defaultValues={formValues}
                         onSubmit={values => {
-                            setFormValues(old => ({ ...old, ...values }));
-                            goToNext();
-                            console.log({
-                                formValues: {
-                                    ...formValues,
-                                    ...values
-                                }
+                            setFormValues(old => {
+                                // should not pass amenities in if the rentType is not a short term
+                                return {
+                                    ...old,
+                                    ...values,
+                                    amenities:
+                                        values.rentType !== 'SHORT_TERM'
+                                            ? []
+                                            : old.amenities ?? []
+                                };
                             });
+                            goToNext();
                         }}
                     />
                 )}
+
                 {step === 2 && (
                     <FormStep2
                         defaultValues={formValues}
                         onSubmit={values => {
                             setFormValues(old => ({ ...old, ...values }));
                             goToNext();
+
                             console.log({
                                 formValues: {
                                     ...formValues,
@@ -93,6 +102,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                         onPreviousClick={goToPrevious}
                     />
                 )}
+
                 {step === 3 && (
                     <FormStep3
                         defaultValues={formValues}
@@ -117,11 +127,36 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                         onPreviousClick={goToPrevious}
                     />
                 )}
+
                 {step === 5 && (
                     <FormStep5
                         defaultValues={formValues}
                         onSubmit={values => {
                             setFormValues(old => ({ ...old, ...values }));
+                            goToNext();
+
+                            // only go to step 6 if rentType is "short term"
+                            if (formValues.rentType !== 'SHORT_TERM') {
+                                goToNext();
+                            }
+
+                            console.log({
+                                formValues: {
+                                    ...formValues,
+                                    ...values
+                                }
+                            });
+                        }}
+                        onPreviousClick={goToPrevious}
+                    />
+                )}
+
+                {step === 6 && (
+                    <FormStep6
+                        defaultValues={formValues}
+                        onSubmit={values => {
+                            setFormValues(old => ({ ...old, ...values }));
+                            // goToNext();
                             console.log({
                                 formValues: {
                                     ...formValues,

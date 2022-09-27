@@ -87,5 +87,21 @@ export const createPropertyRequestSchema = z.object({
                 'TOILET'
             ])
         })
+    ),
+    amenities: z.array(
+        z.union([
+            z.object({
+                type: z.enum([
+                    'HOT_WATER',
+                    'CABLE',
+                    'WIFI',
+                    'TWIN_BED',
+                    'RADIATOR'
+                ])
+            }),
+            z.object({
+                name: z.string().min(1)
+            })
+        ])
     )
 });
