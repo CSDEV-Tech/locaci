@@ -91,7 +91,7 @@ export const TextInput = React.forwardRef<
                         <input
                             {...otherProps}
                             ref={ref}
-                            aria-describedby={!!errorText ? errorId : helpId}
+                            aria-describedby={`${errorId} ${helpId}`}
                             id={defaultId ?? id}
                             name={name}
                             inputMode={inputMode}
@@ -271,7 +271,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                         <input
                             id={id}
                             ref={ref}
-                            aria-describedby={!!errorText ? errorId : helpId}
+                            aria-describedby={`${errorId} ${helpId}`}
                             name={name}
                             required={required}
                             type="text"

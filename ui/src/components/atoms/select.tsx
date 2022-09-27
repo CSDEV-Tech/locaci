@@ -30,7 +30,8 @@ export function Select({
     disabled = false,
     options = []
 }: SelectProps) {
-    const id = React.useId();
+    const helpId = React.useId();
+    const errorId = React.useId();
     const selected = options.find(option => option.value === value);
     return (
         <div className="flex flex-col gap-1">
@@ -164,6 +165,7 @@ export function Select({
 
             {errorText && (
                 <small
+                    id={errorId}
                     aria-live={`assertive`}
                     role={`alert`}
                     className={`text-red-500`}>
@@ -171,7 +173,7 @@ export function Select({
                 </small>
             )}
             {helpText && (
-                <small id={id} className={`text-gray`}>
+                <small id={helpId} className={`text-gray`}>
                     {helpText}
                 </small>
             )}

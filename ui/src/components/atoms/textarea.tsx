@@ -74,6 +74,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
                             }}
                             rows={rows}
                             cols={cols}
+                            aria-describedby={`${helpId} ${errorId}`}
                             className={clsx(
                                 className,
                                 'peer w-full font-medium  placeholder-transparent opacity-100',
