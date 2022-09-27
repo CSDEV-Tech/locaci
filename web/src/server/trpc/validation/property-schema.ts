@@ -103,5 +103,12 @@ export const createPropertyRequestSchema = z.object({
                 name: z.string().min(1)
             })
         ])
-    )
+    ),
+    images: z
+        .array(
+            z.object({
+                uri: z.string().url()
+            })
+        )
+        .min(3, 'Vous devez ajouter au moins 3 images de votre logement')
 });

@@ -10,7 +10,8 @@ import {
     FormStep3,
     FormStep4,
     FormStep5,
-    FormStep6
+    FormStep6,
+    FormStep7
 } from '@web/features/create-property';
 
 // utils
@@ -22,7 +23,8 @@ import type {
     Form1Values,
     Form2Values,
     Form4Values,
-    Form5Values
+    Form5Values,
+    Form7Values
 } from '@web/features/create-property';
 
 export type CreatePropertyProps = {};
@@ -36,6 +38,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                 Form2Values &
                 Form5Values &
                 Form6Values &
+                Form7Values &
                 Form4Values & {
                     localityQuery: string;
                     municipalityQuery: string;
@@ -53,7 +56,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
     return (
         <section className="relative flex h-full items-center justify-center">
             <Progress
-                value={(step / 6) * 100}
+                value={(step / 8) * 100}
                 min={0}
                 max={100}
                 className="!absolute top-0 left-0 right-0"
@@ -156,7 +159,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                         defaultValues={formValues}
                         onSubmit={values => {
                             setFormValues(old => ({ ...old, ...values }));
-                            // goToNext();
+                            goToNext();
                             console.log({
                                 formValues: {
                                     ...formValues,
@@ -165,6 +168,29 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                             });
                         }}
                         onPreviousClick={goToPrevious}
+                    />
+                )}
+
+                {step === 7 && (
+                    <FormStep7
+                        defaultValues={formValues}
+                        onSubmit={values => {
+                            setFormValues(old => ({ ...old, ...values }));
+                            // goToNext();
+                            console.log({
+                                formValues: {
+                                    ...formValues,
+                                    ...values
+                                }
+                            });
+                        }}
+                        onPreviousClick={() => {
+                            goToPrevious();
+                            // only go to step 6 if rentType is "short term"
+                            if (formValues.rentType !== 'SHORT_TERM') {
+                                goToPrevious();
+                            }
+                        }}
                     />
                 )}
             </div>
