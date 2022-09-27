@@ -17,7 +17,6 @@ export const createPropertyRequestSchema = z.object({
         invalid_type_error: 'Veuillez choisir le type de logement',
         required_error: 'Veuillez choisir le type de logement'
     }),
-
     communeUid: z
         .string({
             required_error:
@@ -69,5 +68,24 @@ export const createPropertyRequestSchema = z.object({
         {
             required_error: 'La position est requise'
         }
+    ),
+    additionalRooms: z.array(
+        z.object({
+            type: z.enum([
+                'BEDROOM',
+                'LIVING_ROOM',
+                'KITCHEN',
+                'BATHROOM',
+                'LAUNDRY',
+                'ATTIC',
+                'BASEMENT',
+                'DINING_ROOM',
+                'GARAGE',
+                'BALCONY',
+                'VERANDA',
+                'TERRACE',
+                'TOILET'
+            ])
+        })
     )
 });

@@ -1,22 +1,27 @@
 import * as React from 'react';
 
 // components
-import { clsx, Progress } from '@locaci/ui';
+import { Progress } from '@locaci/ui';
 import { OwnerLayout } from '@web/features/shared';
 import {
-    Form1Values,
-    Form2Values,
-    Form4Values,
     FormStep1,
     FormStep2,
     FormStep3,
-    FormStep4
+    FormStep4,
+    FormStep5
 } from '@web/features/create-property';
 
 // utils
+import { clsx } from '@locaci/ui';
 
 // types
 import type { NextPageWithLayout } from '@web/pages/_app';
+import type {
+    Form1Values,
+    Form2Values,
+    Form4Values,
+    Form5Values
+} from '@web/features/create-property';
 
 export type CreatePropertyProps = {};
 
@@ -27,6 +32,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
         Partial<
             Form1Values &
                 Form2Values &
+                Form5Values &
                 Form4Values & {
                     localityQuery: string;
                     municipalityQuery: string;
@@ -44,7 +50,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
     return (
         <section className="relative flex h-full items-center justify-center">
             <Progress
-                value={(step / 4) * 100}
+                value={(step / 6) * 100}
                 min={0}
                 max={100}
                 className="!absolute top-0 left-0 right-0"
@@ -97,6 +103,22 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
 
                 {step === 4 && (
                     <FormStep4
+                        defaultValues={formValues}
+                        onSubmit={values => {
+                            setFormValues(old => ({ ...old, ...values }));
+                            goToNext();
+                            console.log({
+                                formValues: {
+                                    ...formValues,
+                                    ...values
+                                }
+                            });
+                        }}
+                        onPreviousClick={goToPrevious}
+                    />
+                )}
+                {step === 5 && (
+                    <FormStep5
                         defaultValues={formValues}
                         onSubmit={values => {
                             setFormValues(old => ({ ...old, ...values }));

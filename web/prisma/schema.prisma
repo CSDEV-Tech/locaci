@@ -67,7 +67,8 @@ enum RoomType {
     LIVING_ROOM
     KITCHEN
     BATHROOM
-    LAUDRY
+    LAUNDRY
+    TOILET
     ATTIC
     BASEMENT
     DINING_ROOM

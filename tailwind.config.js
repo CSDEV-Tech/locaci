@@ -21,13 +21,19 @@ module.exports = {
                     75: `#CA5402`,
                     15: `#fde8da`
                 },
+                danger: {
+                    DEFAULT: `#EB5E55`,
+                    75: `#ef867f`,
+                    15: `#fbe6e5`
+                },
                 secondary: {
                     DEFAULT: `#2AC084`,
                     75: `#209063`,
                     15: `#dff6ed`
                 },
                 dark: {
-                    DEFAULT: `#3a3335`
+                    DEFAULT: `#3a3335`,
+                    75: `#6f6165`,
                 },
                 gray: {
                     DEFAULT: `#908E8E`
