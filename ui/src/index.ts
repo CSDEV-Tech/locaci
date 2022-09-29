@@ -31,7 +31,7 @@ export * from './components/molecules/map-pin';
 export * from './components/molecules/side-nav';
 export * from './components/molecules/breadcrumb';
 export * from './components/molecules/tabs';
-export * from './components/molecules/drop-zone';
+export * from './components/organisms/drop-zone';
 
 // organisms
 export * from './components/organisms/header';

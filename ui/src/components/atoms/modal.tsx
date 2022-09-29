@@ -57,7 +57,7 @@ export function Modal({
                                 <Dialog.Panel
                                     className={clsx(
                                         className,
-                                        'w-full max-w-lg transform overflow-hidden',
+                                        'w-full max-w-3xl transform overflow-hidden',
                                         'rounded-2xl bg-white text-left align-middle shadow-xl transition-all'
                                     )}>
                                     <div className="relative flex items-center justify-center border-b border-lightgray py-4 px-6">
