@@ -45,8 +45,16 @@ export function FormStep7(props: FormStep7Props) {
                         props.onSubmit(variables)
                     )}>
                     <DropZone
-                        label={'Ajouter une photo'}
+                        buttonLabel={'Ajouter une photo'}
+                        secondLabel={'Faites glisser vos fichiers'}
                         className={`min-h-[400px]`}
+                        helpText={
+                            'Taille maximum de fichier acceptée : 20 mégabytes'
+                        }
+                        defaultFiles={[]}
+                        onAddFiles={files => {
+                            console.log({ files });
+                        }}
                     />
 
                     <div className="flex items-center gap-4">

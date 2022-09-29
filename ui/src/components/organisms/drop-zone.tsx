@@ -68,8 +68,6 @@ export function DropZone({
             maxSize: 20_971_520 // 20 megabytes
         });
 
-    console.log({ acceptedFiles });
-
     // input & label ids for accessibility
     const inputId = React.useId();
     const errorId = React.useId();
