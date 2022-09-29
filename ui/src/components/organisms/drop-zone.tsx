@@ -148,7 +148,7 @@ export function DropZone({
                     </div>
 
                     <p
-                        className={clsx(`hidden text-lightgray lg:block`, {
+                        className={clsx(`hidden text-gray lg:block text-center`, {
                             'sr-only': defaultFiles?.length > 0
                         })}>
                         {secondLabel}
@@ -307,7 +307,8 @@ export function FileElement({
                         `absolute inset-0 w-full`,
                         `flex items-center justify-center`,
                         `bg-lightgray/40`,
-                        `filter backdrop-blur-sm`
+                        `filter backdrop-blur-sm`,
+                        `rounded-lg cursor-default`
                     )}>
                     <div className="flex flex-col items-center gap-2">
                         <LoadingIndicator className={`h-10 w-10`} />
@@ -321,7 +322,8 @@ export function FileElement({
                         `absolute inset-0 w-full`,
                         `hidden items-center justify-center group-hover:flex`,
                         `bg-lightgray/40`,
-                        `filter backdrop-blur-sm`
+                        `filter backdrop-blur-sm`,
+                        `rounded-lg`
                     )}
                     onClick={e => {
                         e.stopPropagation();
