@@ -142,15 +142,18 @@ importers:
       '@trpc/next': 10.0.0-proxy-beta.0
       '@trpc/react': 10.0.0-proxy-beta.0
       '@trpc/server': 10.0.0-proxy-beta.0
+      '@types/formidable': ^2.0.5
       '@types/js-yaml': ^4.0.5
       '@types/jsonwebtoken': ^8.5.9
       '@types/mapbox-gl': ^2.7.5
       '@types/node': 18.0.0
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
+      '@types/uuid': ^8.3.4
       autoprefixer: ^10.4.8
       eslint: 8.18.0
       eslint-config-next: 12.2.3
+      formidable: v2
       js-yaml: ^4.1.0
       jsonwebtoken: ^8.5.1
       mapbox-gl: ^2.10.0
@@ -166,6 +169,7 @@ importers:
       superjson: ^1.9.1
       tailwindcss: ^3.1.8
       typescript: 4.7.4
+      uuid: ^8.3.2
       zod: ^3.17.3
       zustand: ^4.1.1
     dependencies:
@@ -181,6 +185,7 @@ importers:
       '@trpc/next': 10.0.0-proxy-beta.0_5bfq7gyi7dqvfk5cuoloralbue
       '@trpc/react': 10.0.0-proxy-beta.0_su55xnmmwik37zveshsqdnylfm
       '@trpc/server': 10.0.0-proxy-beta.0
+      formidable: 2.0.1
       jsonwebtoken: 8.5.1
       mapbox-gl: 2.10.0
       next: 12.2.5_biqbaboplfbrettd7655fr4n2y
@@ -191,15 +196,18 @@ importers:
       react-hook-form: 7.36.1_react@18.2.0
       react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
       superjson: 1.10.0
+      uuid: 8.3.2
       zod: 3.19.1
       zustand: 4.1.1_react@18.2.0
     devDependencies:
+      '@types/formidable': 2.0.5
       '@types/js-yaml': 4.0.5
       '@types/jsonwebtoken': 8.5.9
       '@types/mapbox-gl': 2.7.6
       '@types/node': 18.0.0
       '@types/react': 18.0.14
       '@types/react-dom': 18.0.5
+      '@types/uuid': 8.3.4
       autoprefixer: 10.4.12_postcss@8.4.16
       eslint: 8.18.0
       eslint-config-next: 12.2.3_b5e7v2qnwxfo6hmiq56u52mz3e
@@ -6289,6 +6297,12 @@ packages:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
     dev: true
 
+  /@types/formidable/2.0.5:
+    resolution: {integrity: sha512-uvMcdn/KK3maPOaVUAc3HEYbCEhjaGFwww4EsX6IJfWIJ1tzHtDHczuImH3GKdusPnAAmzB07St90uabZeCKPA==}
+    dependencies:
+      '@types/node': 18.7.23
+    dev: true
+
   /@types/geojson/7946.0.10:
     resolution: {integrity: sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==}
     dev: true
@@ -7535,7 +7549,6 @@ packages:
 
   /asap/2.0.6:
     resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
-    dev: true
 
   /ascii-table/0.0.9:
     resolution: {integrity: sha1-BqZgTWpV1L9BqaR9mHLXp42jHnM=}
@@ -9691,6 +9704,13 @@ packages:
       minimist: 1.2.6
     dev: true
 
+  /dezalgo/1.0.3:
+    resolution: {integrity: sha1-f3Qt4Gb8dIvI24IFad3c5Jvw1FY=}
+    dependencies:
+      asap: 2.0.6
+      wrappy: 1.0.2
+    dev: false
+
   /didyoumean/1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
     dev: true
@@ -11390,6 +11410,15 @@ packages:
       fetch-blob: 3.2.0
     dev: true
 
+  /formidable/2.0.1:
+    resolution: {integrity: sha512-rjTMNbp2BpfQShhFbR3Ruk3qk2y9jKpvMW78nJgx8QKtxjDVrwbZG+wvDOmVbifHyOUOQJXxqEy6r0faRrPzTQ==}
+    dependencies:
+      dezalgo: 1.0.3
+      hexoid: 1.0.0
+      once: 1.4.0
+      qs: 6.9.3
+    dev: false
+
   /forwarded/0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
@@ -12200,6 +12229,11 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
     dev: true
+
+  /hexoid/1.0.0:
+    resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
+    engines: {node: '>=8'}
+    dev: false
 
   /hey-listen/1.0.8:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
@@ -15071,7 +15105,6 @@ packages:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
     dependencies:
       wrappy: 1.0.2
-    dev: true
 
   /one-time/1.0.0:
     resolution: {integrity: sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==}
@@ -16228,6 +16261,11 @@ packages:
     dependencies:
       side-channel: 1.0.4
     dev: true
+
+  /qs/6.9.3:
+    resolution: {integrity: sha512-EbZYNarm6138UKKq46tdx08Yo/q9ZhFoAXAI1meAFd2GtbRDhbZY2WQSICskT0c5q99aFzLG1D4nvTk9tqfXIw==}
+    engines: {node: '>=0.6'}
+    dev: false
 
   /query-string/5.1.1:
     resolution: {integrity: sha512-gjWOsm2SoGlgLEdAGt7a6slVOk9mGiXmPFMqrEhLQ68rhQuBnpfs3+EmlvqKyxnCo9/PPlF+9MtY02S1aFg+Jw==}
@@ -19823,7 +19861,6 @@ packages:
 
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
-    dev: true
 
   /write-file-atomic/3.0.3:
     resolution: {integrity: sha512-AvHcyZ5JnSfq3ioSyjrBkH9yW4m7Ayk8/9My/DD9onKeu/94fwrMocemO2QAJFAlnnDN+ZDS+ZjAR5ua1/PV/Q==}
