@@ -115,7 +115,11 @@ export function debounce<T extends Function>(
 }
 
 /**
- * Compare 2 strings case insensitive and accents insensitive
+ * Compare 2 strings case-insensitive and accent-insensitive
+ *
+ * @example
+ *      compareStrIgnoreAccent('hôpital', 'hopital'); // true
+ *      compareStrIgnoreAccent('hôpita', 'hopital'); // false
  *
  * @param str1
  * @param str2
@@ -133,4 +137,18 @@ export function compareStrIgnoreAccent(str1?: string, str2?: string) {
         .toLocaleLowerCase();
 
     return first === second;
+}
+
+/**
+ * Get the extension of the filename
+ *
+ * @example
+ *  getFileExtension("file-name.webp"); // "webp"
+ *
+ * @param fileName
+ * @returns
+ */
+export function getFileExtension(fileName: string) {
+    const splitted = fileName.split('.');
+    return splitted[splitted.length - 1];
 }
