@@ -29,7 +29,8 @@ export type DropZoneProps = {
     helpText?: string;
     filesTypesAccepted?: 'images' | 'documents' | 'all';
     defaultFiles?: Array<DropZoneFile>;
-    onDeleteFile?: (file: DropZoneFile) => void;
+    onRemoveFile?: (file: DropZoneFile) => void;
+    maxFileSize?: number;
 };
 
 export function DropZone({
@@ -39,8 +40,9 @@ export function DropZone({
     onAddFiles,
     errorText,
     helpText,
-    onDeleteFile,
+    onRemoveFile,
     defaultFiles = [],
+    maxFileSize = 20_971_520, // 20 megabytes by default
     filesTypesAccepted = 'all',
     maxNumberOfFiles = Infinity,
     variant = 'primary'
@@ -65,7 +67,7 @@ export function DropZone({
             onDropAccepted,
             accept: accepted,
             maxFiles: maxNumberOfFiles,
-            maxSize: 20_971_520 // 20 megabytes
+            maxSize: maxFileSize
         });
 
     // input & label ids for accessibility
@@ -94,13 +96,14 @@ export function DropZone({
                     className,
                     `cursor-pointer`,
                     `flex flex-col items-center gap-4`,
-                    `rounded-md border-2 border-dashed border-gray/30 p-4`,
+                    `rounded-md border-2 border-dashed p-4`,
                     {
                         ring: isDragActive,
                         'ring-primary': isDragActive && variant === 'primary',
                         'ring-secondary':
                             isDragActive && variant === 'secondary',
                         'border-red-400': !!errorText,
+                        'border-gray/30': !errorText,
                         'focus-within:ring-2 focus-within:ring-red-400':
                             !!errorText,
                         'focus-within:ring-2 focus-within:ring-gray/50':
@@ -117,7 +120,7 @@ export function DropZone({
                             <FileElement
                                 file={file}
                                 key={file.name}
-                                onDeleteFile={() => onDeleteFile?.(file)}
+                                onRemoveFile={() => onRemoveFile?.(file)}
                                 onEnlarge={() => setCurrentEnlargedFile(file)}
                             />
                         ))}
@@ -148,9 +151,12 @@ export function DropZone({
                     </div>
 
                     <p
-                        className={clsx(`hidden text-gray lg:block text-center`, {
-                            'sr-only': defaultFiles?.length > 0
-                        })}>
+                        className={clsx(
+                            `hidden text-center text-gray lg:block`,
+                            {
+                                'sr-only': defaultFiles?.length > 0
+                            }
+                        )}>
                         {secondLabel}
                     </p>
                 </label>
@@ -264,11 +270,11 @@ export function EnlargedFile({ file }: { file: DropZoneFile | null }) {
 
 export function FileElement({
     file,
-    onDeleteFile,
+    onRemoveFile,
     onEnlarge
 }: {
     file: DropZoneFile;
-    onDeleteFile?: () => void;
+    onRemoveFile?: () => void;
     onEnlarge?: () => void;
 }) {
     const [imgSrcLoaded, setImgSrcLoaded] = React.useState<string | null>(null);
@@ -290,9 +296,10 @@ export function FileElement({
                     variant="hollow"
                     className="absolute right-2 top-2 z-10"
                     square
+                    type={`button`}
                     onClick={e => {
                         e.stopPropagation();
-                        onDeleteFile?.();
+                        onRemoveFile?.();
                     }}
                     renderLeadingIcon={cls => <X className={cls} />}
                 />
@@ -308,15 +315,16 @@ export function FileElement({
                         `flex items-center justify-center`,
                         `bg-lightgray/40`,
                         `filter backdrop-blur-sm`,
-                        `rounded-lg cursor-default`
+                        `cursor-default rounded-lg`
                     )}>
                     <div className="flex flex-col items-center gap-2">
                         <LoadingIndicator className={`h-10 w-10`} />
-                        <span>{file.name}</span>
+                        <span className={`text-center`}>{file.name}</span>
                     </div>
                 </div>
             ) : (
                 <button
+                    type={`button`}
                     aria-label={`Voir le fichier en plus grand`}
                     className={clsx(
                         `absolute inset-0 w-full`,
@@ -356,7 +364,9 @@ export function FileElement({
                                             hidden: !!file.isUploading
                                         })}
                                     />
-                                    <span>{file.name}</span>
+                                    <span className={`text-center`}>
+                                        {file.name}
+                                    </span>
                                 </div>
                             </div>
                         )
@@ -369,7 +379,9 @@ export function FileElement({
                                         hidden: !!file.isUploading
                                     })}
                                 />
-                                <span>{file.name}</span>
+                                <span className={`text-center`}>
+                                    {file.name}
+                                </span>
                             </div>
                         </div>
                     )}
