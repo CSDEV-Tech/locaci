@@ -12,26 +12,24 @@ export function useUploadFileMutation(fileType: 'image' | 'document') {
             body: formData
         }).then(async res => {
             // the API Response
-            const result: Record<
-                string,
+            const result:
                 | {
                       path: null;
+                      bucket: null;
                       error: string;
                   }
                 | {
                       path: string;
+                      bucket: string;
                       error: null;
-                  }
-            > = await res.json();
+                  } = await res.json();
 
             // Get only the result for the file we are uploading
-            const fileResult = result[fileObject.name];
-
-            if (fileResult.error !== null) {
-                throw new Error(fileResult.error);
+            if (result.error !== null) {
+                throw new Error(result.error);
             }
 
-            return fileResult;
+            return result;
         });
     });
 }

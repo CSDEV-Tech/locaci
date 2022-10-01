@@ -61,45 +61,47 @@ const handler: NextApiHandler = async (req, res) => {
                     });
                 }
 
-                const supabaseStorageResult: Record<
-                    string,
-                    {
-                        path: string | null;
-                        error: any;
-                    }
-                > = {};
+                let supabaseStorageResult: {
+                    path: string | null;
+                    bucket: string | null;
+                    error: any;
+                } = {
+                    path: null,
+                    bucket: null,
+                    error: 'unknown'
+                };
 
-                for (const [fileKey, file] of Object.entries(files)) {
-                    if (!(file instanceof Array)) {
-                        // we read the file before uploading it
-                        const buffer = await fs.readFile(file.filepath);
+                const [fileKey, file] = Object.entries(files)[0];
 
-                        // we upload the files
-                        const { data: fileEl, error } =
-                            await supabaseAdmin.storage
-                                .from(bucket)
-                                .upload(fileKey, buffer, {
-                                    cacheControl: '84600', // 1 day
-                                    upsert: false,
-                                    contentType: file.mimetype!
-                                });
+                if (!(file instanceof Array)) {
+                    // we read the file before uploading it
+                    const buffer = await fs.readFile(file.filepath);
 
-                        supabaseStorageResult[fileKey] = {
-                            path: `images/${fileEl?.path}` ?? null,
-                            error
-                        };
-                    }
+                    // we upload the files
+                    const { data: fileEl, error } = await supabaseAdmin.storage
+                        .from(bucket)
+                        .upload(fileKey, buffer, {
+                            cacheControl: '84600', // 1 day
+                            upsert: false,
+                            contentType: file.mimetype!
+                        });
+
+                    supabaseStorageResult = {
+                        path: fileEl?.path ?? null,
+                        bucket,
+                        error
+                    };
                 }
 
-                return res.status(200).json({ ...supabaseStorageResult });
+                return res.status(200).json(supabaseStorageResult);
             } catch (e) {
                 console.log({ e });
-                return res.status(400).json({ success: false, error: e });
+                return res.status(400).json({ path: null, bucket: null, error: e });
             }
         })
         .catch(err => {
             console.log({ err });
-            return res.status(400).json({ success: false, error: err });
+            return res.status(400).json({ path: null, bucket: null, error: err });
         });
 };
 
