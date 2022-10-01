@@ -44,27 +44,26 @@ export const createPropertyRequestSchema = z.object({
         .uuid('Veuillez saisir la ville où se trouve votre logement'),
     addressInstructions: z.string().optional(),
 
-    longitude: z.number({
+    longitude: z.string({
         required_error: 'Longitude requise'
     }),
-    latitude: z.number({
+    latitude: z.string({
         required_error: 'Latitude requise'
     }),
-    boundingBox: z.object(
-        {
-            minLongitude: z.number({
-                required_error: 'La position est requise'
+    geoJSON: z.union(
+        [
+            z.object({
+                type: z.literal(`Point`),
+                coordinates: z.tuple([z.number(), z.number()])
             }),
-            minLatitude: z.number({
-                required_error: 'La position est requise'
-            }),
-            maxLongitude: z.number({
-                required_error: 'La position est requise'
-            }),
-            maxLatitude: z.number({
-                required_error: 'La position est requise'
+            z.object({
+                type: z.literal(`Polygon`),
+                coordinates: z
+                    .array(z.array(z.tuple([z.number(), z.number()])))
+                    .min(1)
+                    .max(1)
             })
-        },
+        ],
         {
             required_error: 'La position est requise'
         }
@@ -100,9 +99,7 @@ export const createPropertyRequestSchema = z.object({
                 ])
             }),
             z.object({
-                name: z
-                    .string()
-                    .min(1, "Veuillez saisir un nom d'accessoire")
+                name: z.string().min(1, "Veuillez saisir un nom d'accessoire")
             })
         ])
     ),

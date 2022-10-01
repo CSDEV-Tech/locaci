@@ -1,10 +1,9 @@
 import * as React from 'react';
 
 // components
-import { Progress } from '@locaci/ui';
+import { Button, LoadingIndicator, Progress } from '@locaci/ui';
 import { OwnerLayout } from '@web/features/shared';
 import {
-    Form6Values,
     FormStep1,
     FormStep2,
     FormStep3,
@@ -16,33 +15,28 @@ import {
 
 // utils
 import { clsx } from '@locaci/ui';
+import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
+import { t } from '@web/utils/trpc-rq-hooks';
 
 // types
+import type { z } from 'zod';
 import type { NextPageWithLayout } from '@web/pages/_app';
-import type {
-    Form1Values,
-    Form2Values,
-    Form4Values,
-    Form5Values,
-    Form7Values
-} from '@web/features/create-property';
+import { NextLinkButton } from '@web/components/next-link';
+import { ArrowCounterClockwise, CaretDoubleLeft } from 'phosphor-react';
 
 export type CreatePropertyProps = {};
+
+type CreatePropertyInput = z.TypeOf<typeof createPropertyRequestSchema>;
 
 const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
     const [step, setStep] = React.useState(1);
 
     const [formValues, setFormValues] = React.useState<
         Partial<
-            Form1Values &
-                Form2Values &
-                Form5Values &
-                Form6Values &
-                Form7Values &
-                Form4Values & {
-                    localityQuery: string;
-                    municipalityQuery: string;
-                }
+            CreatePropertyInput & {
+                localityQuery: string;
+                municipalityQuery: string;
+            }
         >
     >({});
 
@@ -52,6 +46,8 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
     function goToNext() {
         setStep(prev => prev + 1);
     }
+
+    const createPropertyMutation = t.owner.property.create.useMutation();
 
     return (
         <section className="relative flex h-full items-center justify-center">
@@ -109,7 +105,10 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                 {step === 3 && (
                     <FormStep3
                         defaultValues={formValues}
-                        onSubmit={goToNext}
+                        onSubmit={values => {
+                            setFormValues(old => ({ ...old, ...values }));
+                            goToNext();
+                        }}
                         onPreviousClick={goToPrevious}
                     />
                 )}
@@ -176,13 +175,19 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                         defaultValues={formValues}
                         onSubmit={values => {
                             setFormValues(old => ({ ...old, ...values }));
-                            // goToNext();
+                            goToNext();
                             console.log({
                                 formValues: {
                                     ...formValues,
                                     ...values
                                 }
                             });
+
+                            const input = {
+                                ...formValues,
+                                ...values
+                            } as CreatePropertyInput;
+                            createPropertyMutation.mutate(input);
                         }}
                         onPreviousClick={() => {
                             goToPrevious();
@@ -192,6 +197,101 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                             }
                         }}
                     />
+                )}
+
+                {step === 8 && (
+                    <div
+                        className={`flex flex-col items-center gap-14 px-6 pt-24`}>
+                        {createPropertyMutation.isLoading ? (
+                            <div className={`pt-48 md:m-auto md:w-[450px]`}>
+                                <div className="flex items-center gap-4">
+                                    <LoadingIndicator className={`h-14 w-14`} />
+                                    <span className={`text-2xl font-semibold`}>
+                                        Création de votre propriété
+                                    </span>
+                                </div>
+                            </div>
+                        ) : createPropertyMutation.isSuccess ? (
+                            <>
+                                <div
+                                    className={`flex flex-col items-center gap-6 md:m-auto md:w-[450px]`}>
+                                    <img
+                                        src="/success_illustration.svg"
+                                        alt="Image de succès"
+                                        className="h-[165px] w-[240px]"
+                                    />
+
+                                    <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                                        Votre logement a été créé
+                                    </h1>
+
+                                    <h2 className="text-center text-lg text-gray">
+                                        Vous pouvez dès à présent y ajouter des
+                                        annonces pour accueuillir vos clients
+                                    </h2>
+                                </div>
+
+                                <NextLinkButton
+                                    href={`/owner/listings/add`}
+                                    variant={`secondary`}>
+                                    Créer votre première annonce
+                                </NextLinkButton>
+                            </>
+                        ) : (
+                            <>
+                                <div
+                                    className={`flex flex-col items-center gap-6 md:m-auto md:w-[450px]`}>
+                                    <img
+                                        src="/success_illustration.svg"
+                                        alt="Image de succès"
+                                        className="h-[165px] w-[240px]"
+                                    />
+
+                                    <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                                        Une erreur est survenue !
+                                    </h1>
+
+                                    <h2 className="text-center text-lg text-gray">
+                                        Veuillez cliquez sur le bouton&nbsp;
+                                        <strong>Recommencer</strong> pour
+                                        relancer ou modifier les informations de
+                                        votre logement en cliquant sur&nbsp;
+                                        <strong>Précédant</strong>
+                                    </h2>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    <Button
+                                        type="button"
+                                        variant="hollow"
+                                        className="w-full"
+                                        onClick={goToPrevious}
+                                        renderLeadingIcon={cls => (
+                                            <CaretDoubleLeft className={cls} />
+                                        )}>
+                                        Précédant
+                                    </Button>
+
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        className="w-full"
+                                        onClick={() => {
+                                            createPropertyMutation.mutate(
+                                                formValues as CreatePropertyInput
+                                            );
+                                        }}
+                                        renderTrailingIcon={cls => (
+                                            <ArrowCounterClockwise
+                                                className={cls}
+                                            />
+                                        )}>
+                                        Recommencer
+                                    </Button>
+                                </div>
+                            </>
+                        )}
+                    </div>
                 )}
             </div>
         </section>

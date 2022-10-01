@@ -76,11 +76,6 @@ export function FormStep7(props: FormStep7Props) {
                 }
             ]);
 
-            // automatically save the images to the parent form state
-            props.onSubmit({
-                images: form.watch('images')
-            });
-
             setFiles(oldFiles => {
                 return [...oldFiles].map(f => {
                     if (f.name === file.name) {
@@ -141,11 +136,6 @@ export function FormStep7(props: FormStep7Props) {
                 await deleteMutation.mutateAsync({
                     path: image.path,
                     type: fileObject.fileType
-                });
-
-                // automatically save the images to the parent form state
-                props.onSubmit({
-                    images: form.watch('images')
                 });
             }
         }
