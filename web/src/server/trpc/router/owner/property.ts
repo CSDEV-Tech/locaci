@@ -2,7 +2,7 @@ import { TRPCError } from '@trpc/server';
 import { env } from '@web/env/server.mjs';
 import { isOwner } from '@web/server/trpc/middleware/auth';
 import { t } from '@web/server/trpc/trpc-server-root';
-import { compareStrIgnoreAccent, jsonFetch } from '@web/utils/functions';
+import { compareStrIgnoreAccent, jsonFetch, wait } from '@web/utils/functions';
 import { z } from 'zod';
 
 import type { SupabaseStorageClient } from '@supabase/storage-js';
@@ -11,6 +11,7 @@ import type { SupabaseStorageClient } from '@supabase/storage-js';
 // import { CreatePropertyController } from '@web/server/trpc/router/controllers/create-property.controller';
 
 import type { OSMResultData } from '@web/utils/types';
+import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
@@ -215,26 +216,28 @@ export const ownerRouter = t.router({
                     Number(localityRes.boundingbox[1])
                 ] as [number, number, number, number] // minLon,minLat,maxLon,maxLat
             };
+        }),
+    create: protectedProcedure
+        .input(createPropertyRequestSchema)
+        .mutation(async ({ ctx, input }) => {
+            // TODO
+            console.log({ input });
+            await wait(1500);
+            //         const res = await CreatePropertyController.handle({
+            //             ctx,
+            //             input: {
+            //                 ...input,
+            //                 ownerId: ctx.user.id
+            //             }
+            //         });
+
+            //         if (res.errors) {
+            //             throw new TRPCError({
+            //                 code: 'BAD_REQUEST',
+            //                 cause: res.errors
+            //             });
+            //         }
+
+            return { success: true };
         })
-
-    // create: protectedProcedure
-    //     .input(createPropertyRequestSchema)
-    //     .mutation(async ({ ctx, input }) => {
-    //         const res = await CreatePropertyController.handle({
-    //             ctx,
-    //             input: {
-    //                 ...input,
-    //                 ownerId: ctx.user.id
-    //             }
-    //         });
-
-    //         if (res.errors) {
-    //             throw new TRPCError({
-    //                 code: 'BAD_REQUEST',
-    //                 cause: res.errors
-    //             });
-    //         }
-
-    //         return { success: true };
-    //     })
 });
