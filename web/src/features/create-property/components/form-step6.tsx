@@ -52,7 +52,7 @@ export function FormStep6(props: FormStep6Props) {
         );
     }, [amenities]);
 
-    const [customAmenity, setCustomAmenity] = React.useState('');
+    const [newCustomAmenityName, setNewCustomAmenityName] = React.useState('');
 
     function handleSetPredefinedAmenities(types: AmenityType[]) {
         const nameAmenities = amenities.filter(at =>
@@ -79,7 +79,7 @@ export function FormStep6(props: FormStep6Props) {
             ]);
         }
 
-        setCustomAmenity('');
+        setNewCustomAmenityName('');
     }
 
     function handleRemoveCustomAmenity(name: string) {
@@ -145,8 +145,8 @@ export function FormStep6(props: FormStep6Props) {
 
                     <TextInput
                         label={`Nom de l'accessoire`}
-                        onChangeValue={setCustomAmenity}
-                        value={customAmenity}
+                        onChangeValue={setNewCustomAmenityName}
+                        value={newCustomAmenityName}
                     />
 
                     <Button
@@ -154,7 +154,7 @@ export function FormStep6(props: FormStep6Props) {
                         type={`button`}
                         variant={`hollow`}
                         onClick={() => {
-                            handleAddCustomAmenity(customAmenity);
+                            handleAddCustomAmenity(newCustomAmenityName);
                         }}>
                         Ajouter une pièce
                     </Button>

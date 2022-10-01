@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { t } from '../../trpc-server-root';
-import { supabaseAdmin as supabase } from '@web/utils/supabase-admin';
 import { TRPCError } from '@trpc/server';
 import { Uuid } from '@locaci/domain';
 import {
@@ -10,7 +9,6 @@ import {
 import jwt from 'jsonwebtoken';
 
 import { ownerRouter } from './owner';
-import { adminRouter } from '../admin';
 import { isLoggedIn } from '../../middleware/auth';
 import { env } from '@web/env/server.mjs';
 
@@ -21,8 +19,8 @@ export const authRouter = t.router({
     // base routes
     sendEmailLink: t.procedure
         .input(sendEmailLinkSchema)
-        .mutation(async ({ input: { email, redirectTo } }) => {
-            const { error } = await supabase.auth.signInWithOtp({
+        .mutation(async ({ ctx, input: { email, redirectTo } }) => {
+            const { error } = await ctx.supabaseAdmin.auth.signInWithOtp({
                 email,
                 options: {
                     emailRedirectTo: redirectTo,
@@ -116,7 +114,7 @@ export const authRouter = t.router({
             })
         )
         .mutation(async ({ ctx, input }) => {
-            const { data } = await supabase.auth.admin.getUserById(input.uid);
+            const { data } = await ctx.supabaseAdmin.auth.admin.getUserById(input.uid);
 
             if (!data.user) {
                 throw new TRPCError({
