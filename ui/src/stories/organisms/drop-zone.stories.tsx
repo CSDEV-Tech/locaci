@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { DropZone, DropZoneProps } from '../../components/organisms/drop-zone';
-import {mockImgBase64} from "../assets/constants";
+import { mockImgBase64 } from '../assets/constants';
 
 export default {
     title: 'Composants/Organisms/DropZone',
@@ -41,7 +41,7 @@ function dataURLtoFile(dataurl: string, filename: string) {
 
 console.log({
     file: dataURLtoFile(mockImgBase64, 'mock-image.jpeg')
-})
+});
 
 export const WithDefaultFiles = Template.bind({});
 WithDefaultFiles.args = {
@@ -55,32 +55,37 @@ WithDefaultFiles.args = {
             fileObject: {
                 uri: 'https://picsum.photos/seed/img-1/1000/1000',
                 fileType: 'image'
-            }
+            },
+            state: 'SUCCESS'
         },
         {
             name: 'document-1.pdf',
             fileObject: {
                 uri: 'https://www.africau.edu/images/default/sample.pdf',
                 fileType: 'document'
-            }
+            },
+            state: 'SUCCESS'
         },
         {
             name: 'image-2.png',
             fileObject: {
                 uri: 'https://picsum.photos/seed/img-2/1000/1000',
                 fileType: 'image'
-            }
+            },
+            state: 'SUCCESS'
         },
         {
             name: 'document-2.pdf',
             fileObject: {
                 uri: 'https://www.africau.edu/images/default/sample.pdf',
                 fileType: 'document'
-            }
+            },
+            state: 'SUCCESS'
         },
         {
             name: 'mock-image.jpeg',
-            fileObject: dataURLtoFile(mockImgBase64, 'mock-image.jpeg')
+            fileObject: dataURLtoFile(mockImgBase64, 'mock-image.jpeg'),
+            state: 'SUCCESS'
         },
         {
             name: 'uploading-file.pdf',
@@ -88,8 +93,12 @@ WithDefaultFiles.args = {
                 uri: 'https://www.africau.edu/images/default/sample.pdf',
                 fileType: 'document'
             },
-            isUploading: true
+            state: 'UPLOADING'
         },
+        {
+            name: 'error-file.pdf',
+            fileObject: dataURLtoFile(mockImgBase64, 'error-image.jpeg'),
+            state: 'ERROR'
+        }
     ]
 } as DropZoneProps;
-

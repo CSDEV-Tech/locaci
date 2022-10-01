@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Eye, FileImage, FilePdf, UploadSimple, X } from 'phosphor-react';
+import {
+    Eye,
+    FileImage,
+    FilePdf,
+    UploadSimple,
+    WarningCircle,
+    X
+} from 'phosphor-react';
 import { clsx } from '../../lib/functions';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '../atoms/button';
@@ -15,7 +22,7 @@ export const fileExtensionsTypes = {
 export type DropZoneFile = {
     name: string;
     fileObject: File | { uri: string; fileType: 'image' | 'document' };
-    isUploading?: boolean;
+    state: 'UPLOADING' | 'ERROR' | 'SUCCESS';
 };
 
 export type DropZoneProps = {
@@ -30,6 +37,7 @@ export type DropZoneProps = {
     filesTypesAccepted?: 'images' | 'documents' | 'all';
     defaultFiles?: Array<DropZoneFile>;
     onRemoveFile?: (file: DropZoneFile) => void;
+    onReuploadFile?: (file: DropZoneFile) => void;
     maxFileSize?: number;
 };
 
@@ -41,6 +49,7 @@ export function DropZone({
     errorText,
     helpText,
     onRemoveFile,
+    onReuploadFile,
     defaultFiles = [],
     maxFileSize = 20_971_520, // 20 megabytes by default
     filesTypesAccepted = 'all',
@@ -122,6 +131,7 @@ export function DropZone({
                                 key={file.name}
                                 onRemoveFile={() => onRemoveFile?.(file)}
                                 onEnlarge={() => setCurrentEnlargedFile(file)}
+                                onReuploadFile={() => onReuploadFile?.(file)}
                             />
                         ))}
                     </div>
@@ -271,14 +281,17 @@ export function EnlargedFile({ file }: { file: DropZoneFile | null }) {
 export function FileElement({
     file,
     onRemoveFile,
-    onEnlarge
+    onEnlarge,
+    onReuploadFile
 }: {
     file: DropZoneFile;
     onRemoveFile?: () => void;
     onEnlarge?: () => void;
+    onReuploadFile?: () => void;
 }) {
     const [imgSrcLoaded, setImgSrcLoaded] = React.useState<string | null>(null);
 
+    // Read the dom file
     if (isNativeFile(file.fileObject)) {
         const fReader = new FileReader();
 
@@ -291,12 +304,14 @@ export function FileElement({
     return (
         <div
             className={`group relative h-[150px] overflow-hidden rounded-lg bg-lightgray/20`}>
-            {!file.isUploading && (
+            {/* Close Button */}
+            {file.state !== 'UPLOADING' && (
                 <Button
                     variant="hollow"
                     className="absolute right-2 top-2 z-10"
                     square
                     type={`button`}
+                    aria-label={`Retirer le fichier`}
                     onClick={e => {
                         e.stopPropagation();
                         onRemoveFile?.();
@@ -305,13 +320,14 @@ export function FileElement({
                 />
             )}
 
-            {file.isUploading ? (
+            {/* Uploading State */}
+            {file.state === 'UPLOADING' && (
                 <div
                     onClick={e => {
                         e.stopPropagation();
                     }}
                     className={clsx(
-                        `absolute inset-0 w-full`,
+                        `absolute inset-0 w-full p-2`,
                         `flex items-center justify-center`,
                         `bg-lightgray/40`,
                         `filter backdrop-blur-sm`,
@@ -322,12 +338,44 @@ export function FileElement({
                         <span className={`text-center`}>{file.name}</span>
                     </div>
                 </div>
-            ) : (
+            )}
+
+            {/* Error State */}
+            {file.state === 'ERROR' && (
                 <button
                     type={`button`}
                     aria-label={`Voir le fichier en plus grand`}
                     className={clsx(
-                        `absolute inset-0 w-full`,
+                        `absolute inset-0 w-full p-2`,
+                        `flex flex-col items-center justify-center gap-4`,
+                        `border border-danger bg-danger/60`,
+                        `text-center filter backdrop-blur-sm`,
+                        `rounded-lg`
+                    )}
+                    onClick={e => {
+                        e.stopPropagation();
+                        onReuploadFile?.();
+                    }}>
+                    <div
+                        className={clsx(
+                            `rounded-full bg-danger p-2 text-white opacity-100`
+                        )}>
+                        <WarningCircle className={`h-5 w-5`} />
+                    </div>
+
+                    <span className={`text-white`}>
+                        Une erreur est survenue ! cliquez pour réessayer
+                    </span>
+                </button>
+            )}
+
+            {/* Normal State */}
+            {file.state === 'SUCCESS' && (
+                <button
+                    type={`button`}
+                    aria-label={`Voir le fichier en plus grand`}
+                    className={clsx(
+                        `absolute inset-0 w-full p-2`,
                         `hidden items-center justify-center group-hover:flex`,
                         `bg-lightgray/40`,
                         `filter backdrop-blur-sm`,
@@ -346,6 +394,7 @@ export function FileElement({
                 </button>
             )}
 
+            {/* If the file is dom File Object */}
             {isNativeFile(file.fileObject) ? (
                 <>
                     {file.fileObject.type.startsWith(`image`) ? (
@@ -361,7 +410,7 @@ export function FileElement({
                                 <div className="flex flex-col items-center gap-2">
                                     <FileImage
                                         className={clsx(`h-10 w-10`, {
-                                            hidden: !!file.isUploading
+                                            hidden: file.state === 'UPLOADING'
                                         })}
                                     />
                                     <span className={`text-center`}>
@@ -376,7 +425,7 @@ export function FileElement({
                             <div className="flex flex-col items-center gap-2">
                                 <FilePdf
                                     className={clsx(`h-10 w-10`, {
-                                        hidden: !!file.isUploading
+                                        hidden: file.state === 'UPLOADING'
                                     })}
                                 />
                                 <span className={`text-center`}>
@@ -388,6 +437,7 @@ export function FileElement({
                 </>
             ) : (
                 <>
+                    {/* If the file is a URI */}
                     {file.fileObject.fileType === 'image' ? (
                         <img
                             src={file.fileObject.uri}
@@ -400,7 +450,7 @@ export function FileElement({
                             <div className="flex flex-col items-center gap-2">
                                 <FilePdf
                                     className={clsx(`h-10 w-10`, {
-                                        hidden: !!file.isUploading
+                                        hidden: file.state === 'UPLOADING'
                                     })}
                                 />
                                 <span>{file.name}</span>
