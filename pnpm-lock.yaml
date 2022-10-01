@@ -8,7 +8,7 @@ importers:
       '@locaci/domain': workspace:^1.0.0
       '@locaci/ui': workspace:^1.0.0
       '@next/bundle-analyzer': ^12.3.1
-      '@prisma/client': ^4.2.1
+      '@prisma/client': ^4.4.0
       '@supabase/storage-js': ^1.7.3
       '@supabase/supabase-js': 2.0.0-rc.3
       '@tanstack/react-query': ^4.2.3
@@ -36,7 +36,7 @@ importers:
       next-transpile-modules: ^9.0.0
       phosphor-react: ^1.4.1
       postcss: ^8.4.16
-      prisma: ^4.2.1
+      prisma: ^4.4.0
       react: 18.2.0
       react-dom: 18.2.0
       react-hook-form: ^7.34.2
