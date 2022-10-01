@@ -45,7 +45,7 @@ export function FormStep4(props: FormStep4Props) {
             </div>
 
             <form
-                className="flex flex-col items-stretch gap-4 px-6"
+                className="flex flex-col items-stretch gap-4 px-6 md:m-auto md:w-[450px]"
                 onSubmit={form.handleSubmit(variables =>
                     props.onSubmit(variables)
                 )}>
@@ -59,6 +59,7 @@ export function FormStep4(props: FormStep4Props) {
                         <TextArea
                             {...field}
                             label={`Instructions pour l'adresse`}
+                            rows={10}
                             helpText={`Ex: Situé 2e rue à gauche de l'immeuble de la RTI en partant vers le terminus`}
                             errorText={errors.addressInstructions?.message}
                         />

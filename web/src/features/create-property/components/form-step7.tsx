@@ -160,7 +160,7 @@ export function FormStep7(props: FormStep7Props) {
             </div>
 
             <form
-                className="flex flex-col items-stretch gap-4 px-6"
+                className="flex flex-col items-stretch gap-4 px-6 md:m-auto md:w-[800px]"
                 onSubmit={form.handleSubmit(variables =>
                     props.onSubmit(variables)
                 )}>

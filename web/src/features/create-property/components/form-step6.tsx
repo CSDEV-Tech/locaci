@@ -107,7 +107,7 @@ export function FormStep6(props: FormStep6Props) {
             </div>
 
             <form
-                className="flex flex-col items-stretch gap-4 px-6"
+                className="flex flex-col items-stretch gap-4 px-6 md:m-auto md:w-[450px]"
                 onSubmit={form.handleSubmit(variables =>
                     props.onSubmit(variables)
                 )}>

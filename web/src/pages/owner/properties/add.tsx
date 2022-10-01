@@ -66,7 +66,7 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                 className={clsx(
                     'flex h-full w-full flex-col',
                     'gap-14 pt-20 pb-10',
-                    'md:m-auto md:h-auto md:w-[450px]'
+                    'md:m-auto md:h-auto'
                 )}>
                 {step === 1 && (
                     <FormStep1

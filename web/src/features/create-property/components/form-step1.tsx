@@ -39,7 +39,7 @@ export function FormStep1(props: FormStep1Props) {
                 </h1>
             </div>
             <form
-                className="flex flex-col items-stretch gap-4 px-6"
+                className="flex flex-col items-stretch gap-4 px-6 md:w-[450px] md:m-auto"
                 onSubmit={form.handleSubmit(variables =>
                     props.onSubmit(variables)
                 )}>

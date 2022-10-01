@@ -48,7 +48,7 @@ function MapLoader(props: { localityUid: string }) {
 export function FormStep3(props: FormStep3Props) {
     return (
         <>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 gap-14 md:m-auto md:w-[800px] lg:w-[1000px]">
                 <div>
                     <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                         Est-ce que le placement du point sur la carte est
@@ -63,7 +63,7 @@ export function FormStep3(props: FormStep3Props) {
 
                 <React.Suspense
                     fallback={
-                        <div className="relative h-[25rem]  bg-primary-15">
+                        <div className="relative h-[25rem] bg-primary-15 md:h-[32rem]">
                             <div className="absolute top-1/2 left-1/2 inline-flex -translate-y-1/2 -translate-x-1/2 items-center gap-2">
                                 <LoadingIndicator className="h-4 w-4" />
                                 <span>Chargement de la carte</span>
@@ -73,7 +73,7 @@ export function FormStep3(props: FormStep3Props) {
                     <MapLoader localityUid={props.defaultValues.localityUid!} />
                 </React.Suspense>
 
-                <div className="flex items-center gap-4 px-6">
+                <div className="flex items-center gap-4 px-6 md:mx-auto md:w-[450px]">
                     <Button
                         type="button"
                         variant="hollow"
