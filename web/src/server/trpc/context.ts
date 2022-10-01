@@ -9,6 +9,7 @@ import { env } from '@web/env/server.mjs';
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { User } from '@prisma/client';
 import type { JwtPayload } from 'jsonwebtoken';
+import { supabaseAdmin } from '@web/utils/supabase-admin';
 
 export const createContext = async (opts?: CreateNextContextOptions) => {
     const req = opts?.req;
@@ -44,7 +45,8 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
         req,
         res,
         prisma,
-        user
+        user,
+        supabaseAdmin
     };
 };
 

@@ -5,6 +5,8 @@ import { t } from '@web/server/trpc/trpc-server-root';
 import { compareStrIgnoreAccent, jsonFetch } from '@web/utils/functions';
 import { z } from 'zod';
 
+import type { SupabaseStorageClient } from '@supabase/storage-js';
+
 // import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 // import { CreatePropertyController } from '@web/server/trpc/router/controllers/create-property.controller';
 
@@ -19,6 +21,28 @@ export const ownerRouter = t.router({
             }
         });
     }),
+    deleteFile: protectedProcedure
+        .input(
+            z.object({
+                path: z.string(),
+                type: z.enum(['image', 'document'])
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            const bucket = input.type === 'image' ? 'images' : 'documents';
+
+            const { error } = await (
+                ctx.supabaseAdmin.storage as unknown as SupabaseStorageClient
+            ) // We convert the storage option to a type because TS gives an error
+                // and cannot determine the type of the mutation without explicitly typing it to supabase storage
+                .from(bucket)
+                .remove([input.path]);
+
+            return {
+                error,
+                success: error === null
+            };
+        }),
     searchCityByName: t.procedure
         .input(
             z.object({

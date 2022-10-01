@@ -152,3 +152,14 @@ export function getFileExtension(fileName: string) {
     const splitted = fileName.split('.');
     return splitted[splitted.length - 1];
 }
+
+/**
+ * check a file is a native DOM File instance
+ *
+ * @param fileObject
+ */
+export function isNativeDOMFile(
+    fileObject: File | { uri: string; fileType: 'image' | 'document' }
+): fileObject is File {
+    return fileObject instanceof File;
+}

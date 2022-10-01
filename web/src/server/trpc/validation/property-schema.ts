@@ -100,14 +100,17 @@ export const createPropertyRequestSchema = z.object({
                 ])
             }),
             z.object({
-                name: z.string().min(1)
+                name: z
+                    .string()
+                    .min(1, "Veuillez saisir un nom d'accessoire")
             })
         ])
     ),
     images: z
         .array(
             z.object({
-                uri: z.string().url()
+                uri: z.string().url(),
+                path: z.string()
             })
         )
         .min(3, 'Vous devez ajouter au moins 3 images de votre logement')
