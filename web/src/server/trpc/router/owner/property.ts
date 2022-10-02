@@ -14,6 +14,10 @@ export const ownerRouter = t.router({
         return ctx.prisma.property.findMany({
             where: {
                 userId: ctx.user.id
+            },
+            include: {
+                commune: true,
+                city: true
             }
         });
     }),

@@ -2,7 +2,7 @@ import * as React from 'react';
 // components
 import { PlusCircle } from 'phosphor-react';
 import { OwnerLayout } from '@web/features/shared';
-import { NextLinkButton } from '@web/components/next-link';
+import { NextLink, NextLinkButton } from '@web/components/next-link';
 import { LoadingIndicator } from '@locaci/ui';
 
 // utils
@@ -53,24 +53,56 @@ function PropertyList() {
                             Ajouter une nouvelle propriété pour accueillir vos
                             prochains locataires
                         </p>
-
-                        <NextLinkButton
-                            href="/owner/properties/add"
-                            className="w-full"
-                            variant="dark"
-                            renderLeadingIcon={cls => (
-                                <PlusCircle className={cls} weight={'bold'} />
-                            )}>
-                            Nouvelle propriété
-                        </NextLinkButton>
                     </div>
                 ) : (
                     <>
-                        <h2 className="text-center text-2xl font-bold">
+                        <h1 className="text-center text-2xl font-bold">
                             Liste de vos propriétés
-                        </h2>
+                        </h1>
+
+                        <ul className="flex flex-col gap-4">
+                            {properties?.map(p => (
+                                <li
+                                    key={p.id}
+                                    className="rounded-md border p-2">
+                                    <NextLink
+                                        href={`/owner/properties/${p.id}`}
+                                        className="flex flex-col gap-2">
+                                        <span>
+                                            {p.noOfRooms === 1
+                                                ? 'Studio'
+                                                : 'Appartement'}
+                                            &nbsp;
+                                            {p.rentType === 'SHORT_TERM' &&
+                                                'meublé'}
+                                            {p.rentType ===
+                                                'SHARED_APPARTMENT' &&
+                                                'en colocation'}
+                                            {p.rentType === 'LOCATION' &&
+                                                'Non meublé'}
+                                            -&nbsp;{p.localityName},&nbsp;
+                                            {p.commune.name}, {p.city.name}
+                                        </span>
+                                        <span>
+                                            {p.noOfRooms} pièces -&nbsp;
+                                            {p.surfaceArea} m<sup>2</sup>
+                                        </span>
+                                    </NextLink>
+                                </li>
+                            ))}
+                        </ul>
                     </>
                 )}
+
+                <NextLinkButton
+                    href="/owner/properties/add"
+                    className="w-full"
+                    variant="dark"
+                    renderLeadingIcon={cls => (
+                        <PlusCircle className={cls} weight={'bold'} />
+                    )}>
+                    Nouvelle propriété
+                </NextLinkButton>
             </section>
         </>
     );
