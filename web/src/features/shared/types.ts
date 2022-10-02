@@ -2,7 +2,7 @@
 export type RentType = 'LOCATION' | 'SHARED_APPARTMENT' | 'SHORT_TERM';
 
 export const RentTypes: Record<RentType, string> = {
-    LOCATION: 'Appartement entier',
+    LOCATION: 'Appartement non meublé',
     SHARED_APPARTMENT: 'Appartement en colocation',
     SHORT_TERM: 'Location court-séjour (meublée)'
 };
