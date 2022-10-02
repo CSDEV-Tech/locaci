@@ -5,9 +5,9 @@ import { Button, LoadingIndicator } from '@locaci/ui';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { t } from '@web/utils/trpc-rq-hooks';
 import dynamic from 'next/dynamic';
 import { z } from 'zod';
+import { t } from '@web/utils/trpc-rq-hooks';
 import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 
 // types
@@ -36,7 +36,7 @@ const Map = dynamic(() => import('@web/features/shared/components/map'), {
  * @returns
  */
 function MapLoader(props: { localityUid: string }) {
-    const { data, isLoading } = t.owner.property.getLocalityData.useQuery({
+    const { data, isLoading } = t.getLocalityData.useQuery({
         localityId: props.localityUid
     });
     return isLoading ? (
@@ -52,13 +52,13 @@ function MapLoader(props: { localityUid: string }) {
 }
 
 export function FormStep3(props: FormStep3Props) {
-    const { data, isLoading } = t.owner.property.getLocalityData.useQuery({
+    const { data, isLoading } = t.getLocalityData.useQuery({
         localityId: props.defaultValues.localityUid!
     });
 
     return (
         <>
-            <div className="flex flex-col gap-4 gap-14 md:m-auto md:w-[800px] lg:w-[1000px]">
+            <div className="flex flex-col gap-14 md:m-auto md:w-[800px] lg:w-[1000px]">
                 <div>
                     <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                         Est-ce que le placement du point sur la carte est

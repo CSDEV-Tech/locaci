@@ -27,6 +27,7 @@ export type OSMResultData = {
         residential: string;
         industrial: string;
         village: string;
+        leisure: string;
         city: string; // city (ex: Abidjan/Bouaké)
         state: string; // state (ex: Abidjan)
     };
