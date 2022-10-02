@@ -38,10 +38,10 @@ export function Header({
                 'lg:shadow-header bg-white p-4',
                 'md:px-8 md:py-6'
             )}>
-            <ul className="mx-auto flex max-w-[1200px] items-center justify-between">
-                <nav
+            <ul className="mx-auto flex max-w-[1200px] items-center justify-between gap-4">
+                <li
                     className={clsx(
-                        'flex items-center gap-2',
+                        'flex w-full items-center gap-2 min-w-0 grow-0',
                         'md:gap-4',
                         'lg:gap-8'
                     )}>
@@ -59,10 +59,11 @@ export function Header({
                             />
                         </Link>
                     )}
-                    {leadingElement}
-                </nav>
 
-                <div>{trailingElement}</div>
+                    {leadingElement}
+                </li>
+
+                <li>{trailingElement}</li>
             </ul>
         </header>
     );

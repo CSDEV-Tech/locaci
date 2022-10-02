@@ -17,6 +17,7 @@ AddListingPage.getLayout = page => {
     const { id } = router.query;
     return (
         <OwnerLayout
+            title={`Ajouter une nouvelle annonce`}
             breadcrumbItems={[
                 {
                     href: `/owner`,
@@ -28,11 +29,11 @@ AddListingPage.getLayout = page => {
                 },
                 {
                     href: `/owner/properties/${id}`,
-                    label: `Détail de la propriété`
+                    label: `Détail`
                 },
                 {
                     href: `/owner/properties/${id}/listings/add`,
-                    label: `Ajout d'une annonce`
+                    label: `Ajouter une annonce`
                 }
             ]}>
             {page}

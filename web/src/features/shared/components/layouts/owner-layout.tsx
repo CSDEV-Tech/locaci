@@ -104,10 +104,10 @@ export function LeadingElement(props: { links: BreadcrumbItem[] }) {
     ];
 
     return (
-        <div className="flex items-center gap-2">
+        <>
             <Button
                 square
-                aria-label="menu"
+                aria-label="Ouvrir le menu"
                 onClick={() => setIsSideNavOpen(true)}
                 renderLeadingIcon={cls => (
                     <List className={cls} weight={`bold`} />
@@ -186,6 +186,6 @@ export function LeadingElement(props: { links: BreadcrumbItem[] }) {
             </SideNav>
 
             <NextBreadcrumb links={props.links} className={`w-full`} />
-        </div>
+        </>
     );
 }

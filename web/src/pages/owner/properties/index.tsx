@@ -112,7 +112,7 @@ export default PropertiesListPage;
 PropertiesListPage.getLayout = function (page) {
     return (
         <OwnerLayout
-            title="Tableau de bord"
+            title="Liste des propriétés"
             breadcrumbItems={[
                 {
                     href: `/owner`,

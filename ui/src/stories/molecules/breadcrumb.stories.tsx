@@ -7,12 +7,12 @@ import {
 
 export default {
     title: 'Composants/Molecules/Breadcrumb',
-    component: Breadcrumb
+    component: Breadcrumb,
 } as ComponentMeta<typeof Breadcrumb>;
 
 // 👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof Breadcrumb> = args => (
-    <div className="asbolute inset-0 bg-lightgray p-4">
+    <div className="bg-lightgray p-4">
         <Breadcrumb {...args} />
     </div>
 );

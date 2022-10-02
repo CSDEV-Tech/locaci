@@ -15,20 +15,21 @@ export type BreadcrumbProps = {
 
 export function Breadcrumb({ className, items, customLink }: BreadcrumbProps) {
     return (
-        <nav aria-label="Fil d'Ariane" className={clsx(className, '')}>
-            <ol className="flex items-center">
+        <nav aria-label="Fil d'Ariane" className={clsx(className, 'grow-0 min-w-0')}>
+            <ol className="flex items-center grow-0 min-w-0">
                 {items.map((item, index) => (
                     <li
                         key={item.href}
                         className={clsx(
-                            `overflow-hidden text-ellipsis whitespace-nowrap`,
+                            `text-ellipsis whitespace-nowrap  shrink`,
                             {
                                 'before:my-0 before:mx-2 before:inline-block before:rotate-[15deg]':
                                     index > 0,
                                 'before:h-3 before:border-r before:border-r-dark':
                                     index > 0,
-                                'min-w-[50%] font-semibold':
-                                    index === items.length - 1
+                                'min-w-fit font-semibold':
+                                    index === items.length - 1,
+                                'min-w-0 overflow-hidden': index !== items.length - 1
                             }
                         )}>
                         <Link

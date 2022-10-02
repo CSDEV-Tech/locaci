@@ -28,6 +28,7 @@ PropertyDetailsPage.getLayout = page => {
     const { id } = router.query;
     return (
         <OwnerLayout
+            title={`Détail de la propriété`}
             breadcrumbItems={[
                 {
                     href: `/owner`,
@@ -39,7 +40,7 @@ PropertyDetailsPage.getLayout = page => {
                 },
                 {
                     href: `/owner/properties/${id}`,
-                    label: `Détail de la propriété`
+                    label: `Détail`
                 }
             ]}>
             {page}
