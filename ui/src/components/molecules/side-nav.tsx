@@ -1,5 +1,7 @@
 import { X } from 'phosphor-react';
 import * as React from 'react';
+import { createPortal } from 'react-dom';
+
 import { clsx } from '../../lib/functions';
 import { useOnClickOutside } from '../../lib/hooks';
 import { Button } from '../atoms/button';
@@ -43,36 +45,39 @@ export function SideNav({
     const id = React.useId();
 
     return isOpen ? (
-        <>
-            {/* Backdrop */}
-            <div className="fixed inset-0 z-[998] bg-[rgba(43,39,40,0.6)] backdrop-blur-sm"></div>
+        createPortal(
+            <>
+                {/* Backdrop */}
+                <div className="fixed inset-0 z-[998] bg-[rgba(43,39,40,0.6)] backdrop-blur-sm"></div>
 
-            {/* content */}
-            <nav
-                className={clsx(
-                    className,
-                    'fixed top-0 bottom-0 right-[20%] left-0',
-                    'z-[999] bg-white',
-                    'animate-translate-in',
-                    'flex flex-col items-start gap-4'
-                )}
-                aria-describedby={id}
-                aria-expanded={true}
-                ref={ref}>
-                <Button
-                    square
-                    variant="hollow"
-                    ref={cancelButtonRef}
-                    onClick={onClose}
-                    className="mr-4 mt-4 self-end"
-                    renderLeadingIcon={cls => <X className={cls} />}
-                />
-                <div className="sr-only" id={id}>
-                    Menu principal
-                </div>
-                <div className="h-full w-full">{children}</div>
-            </nav>
-        </>
+                {/* content */}
+                <nav
+                    className={clsx(
+                        className,
+                        'fixed top-0 bottom-0 right-[20%] left-0',
+                        'z-[999] bg-white',
+                        'animate-translate-in',
+                        'flex flex-col items-start gap-4'
+                    )}
+                    aria-describedby={id}
+                    aria-expanded={true}
+                    ref={ref}>
+                    <Button
+                        square
+                        variant="hollow"
+                        ref={cancelButtonRef}
+                        onClick={onClose}
+                        className="mr-4 mt-4 self-end"
+                        renderLeadingIcon={cls => <X className={cls} />}
+                    />
+                    <div className="sr-only" id={id}>
+                        Menu principal
+                    </div>
+                    <div className="h-full w-full">{children}</div>
+                </nav>
+            </>,
+            document.body
+        )
     ) : (
         <></>
     );
