@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import { CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { useZodForm } from '@web/features/shared';
+import { RentTypes, useZodForm } from '@web/features/shared';
 import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 import { z } from 'zod';
 
@@ -39,7 +39,7 @@ export function FormStep1(props: FormStep1Props) {
                 </h1>
             </div>
             <form
-                className="flex flex-col items-stretch gap-4 px-6 md:w-[450px] md:m-auto"
+                className="flex flex-col items-stretch gap-4 px-6 md:m-auto md:w-[450px]"
                 onSubmit={form.handleSubmit(variables =>
                     props.onSubmit(variables)
                 )}>
@@ -56,17 +56,12 @@ export function FormStep1(props: FormStep1Props) {
                                 {...field}
                                 autoFocus
                                 required
-                                options={[
-                                    { value: 'LOCATION', label: 'Appartement' },
-                                    {
-                                        value: 'SHARED_APPARTMENT',
-                                        label: 'Chambre en colocation'
-                                    },
-                                    {
-                                        value: 'SHORT_TERM',
-                                        label: 'Location court-séjour (meublée)'
-                                    }
-                                ]}
+                                options={Object.entries(RentTypes).map(
+                                    ([value, label]) => ({
+                                        value,
+                                        label
+                                    })
+                                )}
                                 errorText={errors.rentType?.message}
                             />
                         )}

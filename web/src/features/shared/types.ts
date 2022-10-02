@@ -1,3 +1,12 @@
+// rentType
+export type RentType = 'LOCATION' | 'SHARED_APPARTMENT' | 'SHORT_TERM';
+
+export const RentTypes: Record<RentType, string> = {
+    LOCATION: 'Appartement entier',
+    SHARED_APPARTMENT: 'Appartement en colocation',
+    SHORT_TERM: 'Location court-séjour (meublée)'
+};
+
 // rooms
 export type RoomType =
     | 'BEDROOM'
@@ -43,5 +52,5 @@ export const AmenityTypes: Record<AmenityType, string> = {
     RADIATOR: 'Climatisation',
     WIFI: 'Wi-fi ou Fibre Optique',
     TWIN_BED: 'Double lit ou Lit supperposé',
-    CABLE: 'TV Satellite (ex: Canal +)',
+    CABLE: 'TV Satellite (ex: Canal +)'
 } as const;
