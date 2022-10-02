@@ -23,6 +23,8 @@ import type { z } from 'zod';
 import type { NextPageWithLayout } from '@web/pages/_app';
 import { NextLinkButton } from '@web/components/next-link';
 import { ArrowCounterClockwise, CaretDoubleLeft } from 'phosphor-react';
+import type { inferProcedureInput, inferProcedureOutput } from '@trpc/server';
+import type { AppRouter } from '@web/server/trpc/router';
 
 export type CreatePropertyProps = {};
 
@@ -47,7 +49,24 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
         setStep(prev => prev + 1);
     }
 
-    const createPropertyMutation = t.owner.property.create.useMutation();
+    const utils = t.useContext();
+
+    // Mutation Result
+    const [createdProperty, setCreatedProperty] =
+        React.useState<
+            inferProcedureOutput<AppRouter['owner']['property']['create']>
+        >();
+    const [createdPropertyError, setCreatedPropertyError] =
+        React.useState<string>();
+    const createPropertyMutation = t.owner.property.create.useMutation({
+        onSuccess(result) {
+            setCreatedProperty(result);
+            utils.owner.property.getAll.invalidate();
+        },
+        onError(error) {
+            setCreatedPropertyError(error.message);
+        }
+    });
 
     return (
         <section className="relative flex h-full items-center justify-center">
@@ -206,7 +225,8 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                             <div className={`pt-48 md:m-auto md:w-[450px]`}>
                                 <div className="flex items-center gap-4">
                                     <LoadingIndicator className={`h-14 w-14`} />
-                                    <span className={`text-2xl font-semibold`}>
+                                    <span
+                                        className={`text-center text-2xl font-semibold`}>
                                         Création de votre propriété
                                     </span>
                                 </div>
@@ -232,7 +252,9 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                                 </div>
 
                                 <NextLinkButton
-                                    href={`/owner/listings/add`}
+                                    href={`/owner/properties/${
+                                        createdProperty!.id
+                                    }/listings/add`}
                                     variant={`secondary`}>
                                     Créer votre première annonce
                                 </NextLinkButton>
@@ -242,8 +264,8 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                                 <div
                                     className={`flex flex-col items-center gap-6 md:m-auto md:w-[450px]`}>
                                     <img
-                                        src="/success_illustration.svg"
-                                        alt="Image de succès"
+                                        src="/error_illustration.svg"
+                                        alt="Image d'erreur"
                                         className="h-[165px] w-[240px]"
                                     />
 
@@ -251,11 +273,14 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                                         Une erreur est survenue !
                                     </h1>
 
+                                    <em className="max-w-full overflow-scroll rounded-md border border-danger bg-danger-15 p-4 text-danger">
+                                        {createdPropertyError}
+                                    </em>
+
                                     <h2 className="text-center text-lg text-gray">
-                                        Veuillez cliquez sur le bouton&nbsp;
-                                        <strong>Recommencer</strong> pour
-                                        relancer ou modifier les informations de
-                                        votre logement en cliquant sur&nbsp;
+                                        Veuillez <strong>Recommencer</strong> ou
+                                        modifier les informations de votre
+                                        logement en cliquant sur&nbsp;
                                         <strong>Précédant</strong>
                                     </h2>
                                 </div>

@@ -1,17 +1,12 @@
+import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { env } from '@web/env/server.mjs';
+
 import { isOwner } from '@web/server/trpc/middleware/auth';
 import { t } from '@web/server/trpc/trpc-server-root';
-import { compareStrIgnoreAccent, jsonFetch, wait } from '@web/utils/functions';
-import { z } from 'zod';
+import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
+import { CreatePropertyController } from '@web/server/trpc/router/controllers/create-property.controller';
 
 import type { SupabaseStorageClient } from '@supabase/storage-js';
-
-// import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-// import { CreatePropertyController } from '@web/server/trpc/router/controllers/create-property.controller';
-
-import type { OSMResultData } from '@web/utils/types';
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
@@ -101,143 +96,23 @@ export const ownerRouter = t.router({
                 }
             });
         }),
-
-    getLocalityData: t.procedure
-        .input(
-            z.object({
-                localityId: z.string().uuid()
-            })
-        )
-        .query(async ({ ctx, input }) => {
-            const locality = await ctx.prisma.locality.findFirst({
-                where: {
-                    id: input.localityId
-                },
-                include: {
-                    municipality: {
-                        include: {
-                            city: true
-                        }
-                    }
-                }
-            });
-
-            if (!locality) {
-                throw new TRPCError({
-                    code: 'NOT_FOUND',
-                    message: "Ce quartier n'existe pas"
-                });
-            }
-
-            const res = await jsonFetch<Array<OSMResultData>>(
-                `${env.OSM_SEARCH_URL}/search.php?q=${encodeURIComponent(
-                    locality.name
-                )}&format=jsonv2&polygon_geojson=1&addressdetails=1`
-            );
-
-            console.dir({ res, locality }, { depth: null });
-
-            let localityRes =
-                res.filter(el => {
-                    const isOfCorrectType = [
-                        'district',
-                        'locality',
-                        'place',
-                        'neighbourhood',
-                        'quarter',
-                        'village',
-                        'hamlet',
-                        'residential',
-                        'industrial',
-                        'administrative',
-                        'island',
-                        'suburb'
-                    ].includes(el.type);
-
-                    const isInMunicipality = compareStrIgnoreAccent(
-                        el.address.municipality,
-                        locality.municipality.name
-                    );
-
-                    const isInCity = compareStrIgnoreAccent(
-                        el.address.city,
-                        locality.municipality.name
-                    );
-
-                    const isAnIndustrationPlace = compareStrIgnoreAccent(
-                        el.address.industrial,
-                        locality.name
-                    );
-
-                    const isAVillagePlace = compareStrIgnoreAccent(
-                        el.address.village,
-                        locality.name
-                    );
-                    const isANeighbourhoodPlace = compareStrIgnoreAccent(
-                        el.address.neighbourhood,
-                        locality.name
-                    );
-                    const isAResidentialPlace = compareStrIgnoreAccent(
-                        el.address.residential,
-                        locality.name
-                    );
-
-                    return (
-                        isOfCorrectType &&
-                        (isInCity ||
-                            isInMunicipality ||
-                            isAnIndustrationPlace ||
-                            isAVillagePlace ||
-                            isANeighbourhoodPlace ||
-                            isAResidentialPlace)
-                    );
-                })[0] ?? null;
-
-            // search by municipality when the locality has not been found
-            if (!localityRes) {
-                const res = await jsonFetch<Array<OSMResultData>>(
-                    `${env.OSM_SEARCH_URL}/search.php?q=${encodeURIComponent(
-                        locality.municipality.name
-                    )}&format=jsonv2&polygon_geojson=1`
-                );
-
-                localityRes = res.filter(el =>
-                    ['administrative'].includes(el.type)
-                )[0];
-            }
-
-            return {
-                ...localityRes,
-                // transform boundingbox values to the values that mapbox accepts
-                boundingbox: [
-                    Number(localityRes.boundingbox[2]),
-                    Number(localityRes.boundingbox[0]),
-                    Number(localityRes.boundingbox[3]),
-                    Number(localityRes.boundingbox[1])
-                ] as [number, number, number, number] // minLon,minLat,maxLon,maxLat
-            };
-        }),
     create: protectedProcedure
         .input(createPropertyRequestSchema)
         .mutation(async ({ ctx, input }) => {
-            // TODO
-            console.log({ input });
-            await wait(1500);
-            //         const res = await CreatePropertyController.handle({
-            //             ctx,
-            //             input: {
-            //                 ...input,
-            //                 ownerId: ctx.user.id
-            //             }
-            //         });
+            const res = await CreatePropertyController.handle({
+                ctx,
+                input: {
+                    ...input
+                }
+            });
 
-            //         if (res.errors) {
-            //             throw new TRPCError({
-            //                 code: 'BAD_REQUEST',
-            //                 cause: res.errors
-            //             });
-            //         }
+            if (res.error) {
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                    message: res.error
+                });
+            }
 
-            return { success: true };
+            return res.property;
         })
 });
