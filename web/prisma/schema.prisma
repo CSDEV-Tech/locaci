@@ -68,7 +68,6 @@ enum RoomType {
     KITCHEN
     BATHROOM
     LAUNDRY
-    TOILET
     ATTIC
     BASEMENT
     DINING_ROOM
@@ -76,6 +75,7 @@ enum RoomType {
     BALCONY
     VERANDA
     TERRACE
+    TOILET
 }
 
 enum AmenityType {
@@ -88,30 +88,34 @@ enum AmenityType {
 }
 
 model Amenity {
-    id   String      @id @default(uuid()) @db.Uuid
-    type AmenityType
-    name String?
+    id         String      @id @default(uuid()) @db.Uuid
+    type       AmenityType
+    name       String?
+    Property   Property?   @relation(fields: [propertyId], references: [id])
+    propertyId String?     @db.Uuid
 }
 
 model Property {
-    id          String   @id @default(uuid()) @db.Uuid
-    rentType    RentType @default(LOCATION)
-    userId      String   @db.Uuid
-    owner       User     @relation(fields: [userId], references: [id]) // A Property have one owner
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    archived    Boolean  @default(false)
+    id          String    @id @default(uuid()) @db.Uuid
+    rentType    RentType  @default(LOCATION)
+    userId      String    @db.Uuid
+    owner       User      @relation(fields: [userId], references: [id]) // A Property have one owner
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    archived    Boolean   @default(false)
     noOfRooms   Int
     rooms       Room[]
+    amenities   Amenity[]
     surfaceArea Int
 
-    images Json // A JSON Array of uris ([uri]) 
+    images Json // A JSON Array of uris + name ([{uri, name}]) 
 
     // localization
-    city         City         @relation(fields: [cityId], references: [id])
-    commune      Municipality @relation(fields: [municipalityId], references: [id])
-    locality     Locality?    @relation(fields: [localityId], references: [id])
-    localityName String
+    city                City         @relation(fields: [cityId], references: [id])
+    commune             Municipality @relation(fields: [municipalityId], references: [id])
+    locality            Locality?    @relation(fields: [localityId], references: [id])
+    localityName        String
+    addressInstructions String?
 
     // Position
     longitude String
