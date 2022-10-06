@@ -1,5 +1,5 @@
 import { env } from './src/env/server.mjs';
-import transpile from 'next-transpile-modules';
+// import transpile from 'next-transpile-modules';
 import analyze from '@next/bundle-analyzer';
 /**
  * Don't be scared of the generics here.
@@ -25,6 +25,6 @@ const withBundleAnalyzer = analyze({
     enabled: process.env.ANALYZE === 'true'
 });
 
-const withTM = transpile(['@locaci/ui', '@locaci/domain']);
+// const withTM = transpile(['@locaci/domain']);
 
-export default withBundleAnalyzer(withTM(nextConfig));
+export default withBundleAnalyzer(nextConfig);

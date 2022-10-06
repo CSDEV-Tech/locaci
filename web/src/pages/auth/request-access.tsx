@@ -1,24 +1,29 @@
+import * as React from 'react';
 // components
 import { Controller } from 'react-hook-form';
 import { At, Phone, User } from 'phosphor-react';
 import { Button, clsx, Select, TextInput } from '@locaci/ui';
-import { DefaultLayout } from '@web/features/shared';
-import { NextLink, NextLinkButton } from '@web/components/next-link';
+import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
+import {
+    NextLink,
+    NextLinkButton
+} from '@/features/shared/components/next-link';
 
 // utils
-import { t } from '@web/utils/trpc-rq-hooks';
-import { useZodForm } from '@web/features/shared/hooks/use-zod-form';
-import { requestOwnerAccessSchema } from '@web/server/trpc/validation/auth-schema';
+import { t } from '@/utils/trpc-rq-hooks';
+import { useZodForm } from '@/features/shared/hooks/use-zod-form';
+import { requestOwnerAccessSchema } from '@/server/trpc/validation/auth-schema';
 import dynamic from 'next/dynamic';
 
 // types
-import type { NextPageWithLayout } from '@web/pages/_app';
-// import { RequestAccessSuccessModal } from '@web/components/request-access-success-modal';
+import type { NextPageWithLayout } from '@/pages/_app';
+// import { RequestAccessSuccessModal } from '@/components/request-access-success-modal';
 
 const RequestAccessSuccessModal = dynamic(
-    () => import('@web/components/request-access-success-modal'),
+    () => import('@/features/auth/components/request-access-success-modal'),
     {
-        ssr: false
+        ssr: false,
+        suspense: true
     }
 );
 
@@ -33,7 +38,9 @@ const RequestPage: NextPageWithLayout<RequestPageProps> = props => {
 
     return (
         <>
-            <RequestAccessSuccessModal open={mutation.isSuccess} />
+            <React.Suspense fallback={<></>}>
+                <RequestAccessSuccessModal open={mutation.isSuccess} />
+            </React.Suspense>
             <section className="flex h-full items-center justify-center">
                 <div
                     className={clsx(

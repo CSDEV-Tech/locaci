@@ -3,7 +3,7 @@ import { httpBatchLink } from '@trpc/client';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import superjson from 'superjson';
 
-import type { AppRouter } from '../server/trpc/router';
+import type { AppRouter } from '@/server/trpc/router';
 
 export type TRPCHooksType = ReturnType<typeof createTRPCNext<AppRouter>>;
 

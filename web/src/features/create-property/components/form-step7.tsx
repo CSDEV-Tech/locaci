@@ -4,15 +4,16 @@ import { CaretDoubleLeft, Check } from 'phosphor-react';
 import { Button, DropZone, DropZoneFile } from '@locaci/ui';
 
 // utils
-import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { useUploadFileMutation, useZodForm } from '@web/features/shared';
-import { getFileExtension, isNativeDOMFile } from '@web/utils/functions';
-import { env } from '@web/env/client.mjs';
-import { t } from '@web/utils/trpc-rq-hooks';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
+import { useZodForm } from '@/features/shared/hooks/use-zod-form';
+import { useUploadFileMutation } from '@/features/shared/hooks/use-upload-file-mutation';
+import { getFileExtension, isNativeDOMFile } from '@/utils/functions';
+import { env } from '@/env/client.mjs';
+import { t } from '@/utils/trpc-rq-hooks';
 
 // types
+import type { z } from 'zod';
 export type Form7Values = Pick<
     z.TypeOf<typeof createPropertyRequestSchema>,
     'images'

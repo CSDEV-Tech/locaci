@@ -4,31 +4,21 @@ import * as React from 'react';
 import Head from 'next/head';
 import { Door, HouseSimple, List, PlusCircle, User } from 'phosphor-react';
 import { Avatar, Button, clsx, LoadingIndicator, SideNav } from '@locaci/ui';
-import { DefaultLayout } from '@web/features/shared/components/layouts/default-layout';
-import { NextBreadcrumb } from '@web/components/next-breadcrumb';
-import { NextLink } from '@web/components/next-link';
+import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
+import { NextBreadcrumb } from '@/features/shared/components/next-breadcrumb';
+import { NextLink } from '@/features/shared/components/next-link';
+import { AddListingModal } from '@/features/add-listing/components/add-listing-modal';
 
 // utils & others
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { t } from '@web/utils/trpc-rq-hooks';
-import { useOwnerCheck } from '@web/hooks/use-owner-check';
-import { useMediaQuery } from '@web/hooks/use-media-query';
+import { t } from '@/utils/trpc-rq-hooks';
+import { useOwnerCheck } from '@/features/shared/hooks/use-owner-check';
+import { useMediaQuery } from '@/features/shared/hooks/use-media-query';
+import { useListingModalStore } from '@/features/add-listing/hooks/use-listing-modal-store';
 
 // types
 import type { DefaultLayoutProps } from './default-layout';
 import type { BreadcrumbItem } from '@locaci/ui';
-import { useListingModalStore } from '@web/hooks/use-listing-modal-store';
-
-// lazy load the listing modal since it contains a chunky component (BottomSheet)
-const AddListingModal = dynamic(
-    () => import('@web/components/add-listing-modal'),
-    {
-        ssr: false,
-        // show nothing when loading the component
-        loading: () => <></>
-    }
-);
 
 export type OwnerLayoutProps = {
     children: React.ReactNode;

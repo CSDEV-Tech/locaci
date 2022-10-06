@@ -1,17 +1,17 @@
 import * as React from 'react';
 import type { GetStaticProps, NextPage } from 'next';
-import { t } from '@web/utils/trpc-rq-hooks';
+import { t } from '@/utils/trpc-rq-hooks';
 
 // All these imports are necessary SSG & SSR
-import { appRouter } from '@web/server/trpc/router';
-import type { AppRouter } from '@web/server/trpc/router';
+import { appRouter } from '@/server/trpc/router';
+import type { AppRouter } from '@/server/trpc/router';
 import { createProxySSGHelpers } from '@trpc/react/ssg';
-import { createContext } from '@web/server/trpc/context';
+import { createContext } from '@/server/trpc/context';
 import superjson from 'superjson';
 
 // type hint for layout
-import type { NextPageWithLayout } from '@web/pages/_app';
-import { DefaultLayout } from '@web/features/shared';
+import type { NextPageWithLayout } from '@/pages/_app';
+import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
 
 const Home: NextPageWithLayout = () => {
     const { data, isLoading, isError, error } =

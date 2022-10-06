@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Switch as Toggle } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
 
-export type ToggleProps = {
+export type SwitchProps = {
     checked?: boolean;
     onChange: (checked: boolean) => void;
     title?: string;
@@ -14,7 +14,7 @@ export function Switch({
     title,
     checked = false,
     variant = 'primary'
-}: ToggleProps) {
+}: SwitchProps) {
     return (
         <Toggle
             checked={checked}
@@ -28,8 +28,7 @@ export function Switch({
                     'bg-primary': checked && variant === 'primary',
                     'bg-secondary': checked && variant === 'secondary'
                 }
-            )}
-        >
+            )}>
             <span className="sr-only">{title}</span>
             <span
                 aria-hidden="true"

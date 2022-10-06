@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import { supabase } from '../utils/supabase-client';
-import { t } from '../utils/trpc-rq-hooks';
+import { supabase } from '../../../utils/supabase-client';
+import { t } from '../../../utils/trpc-rq-hooks';
 
 export function useOwnerCheck() {
     const router = useRouter();

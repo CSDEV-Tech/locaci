@@ -4,11 +4,12 @@ import { Controller } from 'react-hook-form';
 import { CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { RentTypes, useZodForm } from '@web/features/shared';
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { z } from 'zod';
+import { RentTypes } from '@/features/shared/types';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
+import { useZodForm } from '@/features/shared/hooks/use-zod-form';
 
 // types
+import type { z } from 'zod';
 export type Form1Values = Pick<
     z.TypeOf<typeof createPropertyRequestSchema>,
     'surfaceArea' | 'rentType'

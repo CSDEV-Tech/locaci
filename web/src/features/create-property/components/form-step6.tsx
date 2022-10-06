@@ -4,12 +4,12 @@ import { Button, Checkbox, CheckboxGroup, TextInput } from '@locaci/ui';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { z } from 'zod';
-import { AmenityTypes, useZodForm } from '@web/features/shared';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
+import { useZodForm } from '@/features/shared/hooks/use-zod-form';
 
 // types
-import type { AmenityType } from '@web/features/shared';
+import type { z } from 'zod';
+import { type AmenityType, AmenityTypes } from '@/features/shared/types';
 export type Form6Values = Pick<
     z.TypeOf<typeof createPropertyRequestSchema>,
     'amenities'

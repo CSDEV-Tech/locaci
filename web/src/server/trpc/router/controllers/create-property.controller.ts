@@ -1,7 +1,7 @@
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
 import { RoomType, AmenityType } from '@prisma/client';
 
-import type { Context } from '@web/server/trpc/context';
+import type { Context } from '@/server/trpc/context';
 import type { z } from 'zod';
 import type { User, Room, Amenity, RentType } from '@prisma/client';
 

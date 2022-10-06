@@ -1,11 +1,11 @@
 // components
-import { OwnerLayout } from '@web/features/shared';
+import { OwnerLayout } from '@/features/shared/components/layouts/owner-layout';
 
 // utils
 import { useRouter } from 'next/router';
 
 // types
-import type { NextPageWithLayout } from '@web/pages/_app';
+import type { NextPageWithLayout } from '@/pages/_app';
 
 export type PropertyDetailsPageProps = {};
 

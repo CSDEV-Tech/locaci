@@ -4,7 +4,6 @@ import {
     BottomSheetProps as ReactSpringBottomSheetProps,
     BottomSheetRef
 } from 'react-spring-bottom-sheet';
-import 'react-spring-bottom-sheet/dist/style.css';
 
 import { clsx } from '../../lib/functions';
 
@@ -40,3 +39,5 @@ export function BottomSheet({
         </div>
     );
 }
+
+export default BottomSheet;

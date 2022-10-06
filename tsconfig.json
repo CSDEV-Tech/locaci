@@ -2,9 +2,9 @@
     "compilerOptions": {
         "jsx": "react-jsx",
         "baseUrl": "./",
-        "target": "es5",
+        "target": "ES6",
         /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
-        "module": "commonjs",
+        "module": "ES6",
         /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
         "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
         /* Specify library files to be included in the compilation. */
@@ -16,18 +16,9 @@
         /* Skip type checking of declaration files. */
         "forceConsistentCasingInFileNames": true,
         "declaration": true,
-        "plugins": [
-            {
-                "transform": "ts-auto-mock/transformer",
-                "cacheBetweenTests": false,
-                "features": ["random"]
-            }
-        ],
         "paths": {
-            "@locaci/ui": ["ui/src"],
-            "@locaci/domain": ["domain/src"],
-            "@locaci/web": ["web/src"],
-            "@web/*": ["web/src/*"]
+            "@locaci/ui": ["ui/dist"],
+            "@/*": ["web/src/*"]
         }
     }
 }

@@ -5,11 +5,11 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 
 // utils
-import { z } from 'zod';
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { useZodForm } from '@web/features/shared';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
+import { useZodForm } from '@/features/shared/hooks/use-zod-form';
 
 // types
+import type { z } from 'zod';
 export type Form4Values = Pick<
     z.TypeOf<typeof createPropertyRequestSchema>,
     'addressInstructions'

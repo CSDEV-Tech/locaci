@@ -4,12 +4,12 @@ import { LoadingIndicator } from '@locaci/ui';
 import Head from 'next/head';
 
 // functions & others
-import { supabase } from '@web/utils/supabase-client';
-import { t } from '@web/utils/trpc-rq-hooks';
+import { supabase } from '@/utils/supabase-client';
+import { t } from '@/utils/trpc-rq-hooks';
 import { useRouter } from 'next/router';
 
 // types
-import type { NextPageWithLayout } from '@web/pages/_app';
+import type { NextPageWithLayout } from '@/pages/_app';
 
 export const CallbackPage: NextPageWithLayout = () => {
     const router = useRouter();
@@ -70,7 +70,8 @@ export const CallbackPage: NextPageWithLayout = () => {
 
             <section className="flex h-screen w-screen items-center justify-center">
                 <h1 className="flex items-center gap-4 text-4xl">
-                    <LoadingIndicator className="h-10" />{' '}
+                    <LoadingIndicator className="h-10" />
+                    &nbsp;
                     <span>CHARGEMENT...</span>
                 </h1>
             </section>

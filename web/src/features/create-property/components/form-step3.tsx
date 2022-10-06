@@ -6,11 +6,11 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
 import dynamic from 'next/dynamic';
-import { z } from 'zod';
-import { t } from '@web/utils/trpc-rq-hooks';
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
+import { t } from '@/utils/trpc-rq-hooks';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
 
 // types
+import type { z } from 'zod';
 export type Form3Values = Pick<
     z.TypeOf<typeof createPropertyRequestSchema>,
     'localityName' | 'localityUid' | 'longitude' | 'latitude' | 'geoJSON'
@@ -25,7 +25,7 @@ type FormStep3Props = {
 };
 
 // lazy load the map component
-const Map = dynamic(() => import('@web/features/shared/components/map'), {
+const Map = dynamic(() => import('@/features/shared/components/map'), {
     ssr: false,
     suspense: true
 });

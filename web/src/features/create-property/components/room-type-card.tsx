@@ -24,8 +24,7 @@ import { Button } from '@locaci/ui';
 import { clsx } from '@locaci/ui';
 
 // types
-import type { RoomType } from '@web/features/shared';
-import { RoomTypes } from '@web/features/shared';
+import { type RoomType, RoomTypes } from '@/features/shared/types';
 
 export type RoomTypeCardProps = {
     type: RoomType;

@@ -9,16 +9,16 @@
         "lint": "next lint",
         "postinstall": "prisma generate",
         "prisma": "prisma",
-        "seed": "node prisma/seed.js"
+        "seed": "node prisma/seed.js",
+        "check": "tsc --noEmit --skipLibCheck"
     },
     "prisma": {
         "seed": "node prisma/seed.js"
     },
+    "type": "module",
     "dependencies": {
         "@hookform/resolvers": "^2.9.7",
-        "@locaci/domain": "workspace:^1.0.0",
         "@locaci/ui": "workspace:^1.0.0",
-        "@next/bundle-analyzer": "^12.3.1",
         "@prisma/client": "^4.4.0",
         "@supabase/storage-js": "^1.7.3",
         "@supabase/supabase-js": "2.0.0-rc.3",
@@ -38,12 +38,14 @@
         "react-dom": "18.2.0",
         "react-hook-form": "^7.34.2",
         "react-hot-toast": "^2.3.0",
+        "short-uuid": "^4.2.0",
         "superjson": "^1.9.1",
         "uuid": "^8.3.2",
         "zod": "^3.17.3",
         "zustand": "^4.1.1"
     },
     "devDependencies": {
+        "@next/bundle-analyzer": "^12.3.1",
         "@types/formidable": "^2.0.5",
         "@types/js-yaml": "^4.0.5",
         "@types/jsonwebtoken": "^8.5.9",

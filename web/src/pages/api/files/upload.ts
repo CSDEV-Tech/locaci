@@ -2,7 +2,7 @@ import type { NextApiHandler } from 'next';
 import type { Files, Fields } from 'formidable';
 
 import formidable from 'formidable';
-import { supabaseAdmin } from '@web/utils/supabase-admin';
+import { supabaseAdmin } from '@/utils/supabase-admin';
 import { promises as fs } from 'node:fs';
 import { z } from 'zod';
 
@@ -96,12 +96,16 @@ const handler: NextApiHandler = async (req, res) => {
                 return res.status(200).json(supabaseStorageResult);
             } catch (e) {
                 console.log({ e });
-                return res.status(400).json({ path: null, bucket: null, error: e });
+                return res
+                    .status(400)
+                    .json({ path: null, bucket: null, error: e });
             }
         })
         .catch(err => {
             console.log({ err });
-            return res.status(400).json({ path: null, bucket: null, error: err });
+            return res
+                .status(400)
+                .json({ path: null, bucket: null, error: err });
         });
 };
 

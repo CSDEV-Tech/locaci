@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { debounce } from '@web/utils/functions';
+import { debounce } from '@/utils/functions';
 
 /**
  * Hook Wrapper around the debounce function,

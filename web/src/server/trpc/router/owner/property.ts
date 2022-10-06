@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 
-import { isOwner } from '@web/server/trpc/middleware/auth';
-import { t } from '@web/server/trpc/trpc-server-root';
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { CreatePropertyController } from '@web/server/trpc/router/controllers/create-property.controller';
+import { isOwner } from '@/server/trpc/middleware/auth';
+import { t } from '@/server/trpc/trpc-server-root';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
+import { CreatePropertyController } from '@/server/trpc/router/controllers/create-property.controller';
 
 import type { SupabaseStorageClient } from '@supabase/storage-js';
 

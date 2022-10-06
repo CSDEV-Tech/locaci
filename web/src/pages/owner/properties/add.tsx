@@ -2,7 +2,7 @@ import * as React from 'react';
 
 // components
 import { Button, LoadingIndicator, Progress } from '@locaci/ui';
-import { OwnerLayout } from '@web/features/shared';
+import { OwnerLayout } from '@/features/shared/components/layouts/owner-layout';
 import {
     FormStep1,
     FormStep2,
@@ -11,20 +11,21 @@ import {
     FormStep5,
     FormStep6,
     FormStep7
-} from '@web/features/create-property';
+} from '@/features/create-property';
+import { ArrowCounterClockwise, CaretDoubleLeft } from 'phosphor-react';
+import { NextLinkButton } from '@/features/shared/components/next-link';
+
 
 // utils
 import { clsx } from '@locaci/ui';
-import { createPropertyRequestSchema } from '@web/server/trpc/validation/property-schema';
-import { t } from '@web/utils/trpc-rq-hooks';
+import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
+import { t } from '@/utils/trpc-rq-hooks';
 
 // types
 import type { z } from 'zod';
-import type { NextPageWithLayout } from '@web/pages/_app';
-import { NextLinkButton } from '@web/components/next-link';
-import { ArrowCounterClockwise, CaretDoubleLeft } from 'phosphor-react';
-import type { inferProcedureInput, inferProcedureOutput } from '@trpc/server';
-import type { AppRouter } from '@web/server/trpc/router';
+import type { NextPageWithLayout } from '@/pages/_app';
+import type { inferProcedureOutput } from '@trpc/server';
+import type { AppRouter } from '@/server/trpc/router';
 
 export type CreatePropertyProps = {};
 

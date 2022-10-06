@@ -1,20 +1,24 @@
 import * as React from 'react';
 // components
 import { Button } from '@locaci/ui';
-import { DefaultLayout } from '@web/features/shared';
+import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
 
 // utils & functions
-import { t } from '@web/utils/trpc-rq-hooks';
-import { supabase } from '@web/utils/supabase-client';
+import { t } from '@/utils/trpc-rq-hooks';
+import { supabase } from '@/utils/supabase-client';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 // types
-import type { NextPageWithLayout } from '@web/pages/_app';
+import type { NextPageWithLayout } from '@/pages/_app';
 
-const FillInForm = dynamic(() => import('@web/features/profile/components/fill-in-form'), {
-    ssr: false
-});
+const FillInForm = dynamic(
+    () => import('@/features/profile/components/fill-in-form'),
+    {
+        ssr: false,
+        suspense: true
+    }
+);
 
 const ProfilePage: NextPageWithLayout = () => {
     const router = useRouter();
@@ -39,7 +43,9 @@ const ProfilePage: NextPageWithLayout = () => {
     return (
         <>
             {/* Show FillInForm if user's firstName or lastName are missing */}
-            <FillInForm />
+            <React.Suspense fallback={<></>}>
+                <FillInForm />
+            </React.Suspense>
             {/* FIXME: REMOVE THIS WHEN DOING PROFILE PAGE */}
             <div className="h-full w-full bg-dark text-white">
                 <h1 className="text-white">PROFILE</h1>

@@ -1,13 +1,14 @@
 import * as React from 'react';
 // components
-import { Button, Modal, TextInput } from '@locaci/ui';
-import { BottomSheet } from 'ui/src/components/atoms/bottom-sheet';
+import { Button, TextInput } from '@locaci/ui';
+import { LazyBottomSheet } from '@/features/shared/components/lazy-bottom-sheet';
+import { LazyModal } from '@/features/shared/components/lazy-modal';
 
 // utils & functions
-import { t } from '@web/utils/trpc-rq-hooks';
-import { useZodForm } from '@web/features/shared';
-import { updateNameAndProfileSchema } from '@web/server/trpc/validation/auth-schema';
-import useMediaQuery from '@web/hooks/use-media-query';
+import { t } from '@/utils/trpc-rq-hooks';
+import { useZodForm } from '@/features/shared/hooks/use-zod-form';
+import { updateNameAndProfileSchema } from '@/server/trpc/validation/auth-schema';
+import useMediaQuery from '@/features/shared/hooks/use-media-query';
 
 // types
 import type { z } from 'zod';
@@ -84,30 +85,34 @@ export default function FillInForm() {
         </>
     );
 
-    const showModal = useMediaQuery(`(min-width: 768px)`);
+    const canshowModal = useMediaQuery(`(min-width: 768px)`);
+    const canshowBottomSheet = useMediaQuery(`(max-width: 767px)`);
 
     return (
         <>
-            <BottomSheet
-                open={
-                    !!user &&
-                    (user.firstName === null || user.lastName === null)
-                }
-                expandOnContentDrag
-                className={`md:hidden`}
-                snapPoints={({ minHeight }) => [minHeight]}>
-                <FormContent />
-            </BottomSheet>
+            {canshowBottomSheet && (
+                <LazyBottomSheet
+                    open={
+                        !!user &&
+                        (user.firstName === null || user.lastName === null)
+                    }
+                    expandOnContentDrag
+                    className={`md:hidden`}
+                    snapPoints={({ minHeight }) => [minHeight]}>
+                    <FormContent />
+                </LazyBottomSheet>
+            )}
 
-            <Modal
-                title="Attention"
-                isOpen={
-                    !!user &&
-                    (user.firstName === null || user.lastName === null) &&
-                    showModal
-                }>
-                <FormContent />
-            </Modal>
+            {canshowModal && (
+                <LazyModal
+                    title="Attention"
+                    isOpen={
+                        !!user &&
+                        (user.firstName === null || user.lastName === null)
+                    }>
+                    <FormContent />
+                </LazyModal>
+            )}
         </>
     );
 }

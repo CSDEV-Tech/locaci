@@ -1,8 +1,8 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
-        "target": "es5",
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "target": "ESNext",
+        "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
         "allowJs": true,
         "skipLibCheck": true,
         "strict": true,
@@ -17,12 +17,6 @@
         "jsx": "preserve",
         "incremental": true
     },
-    "include": [
-        "next-env.d.ts",
-        "next-auth.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.js"
-    ],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],
     "exclude": ["node_modules"]
 }

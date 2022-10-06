@@ -1,17 +1,17 @@
 import * as React from 'react';
 // components
 import Head from 'next/head';
-import { NextLink, NextLinkButton } from '@web/components/next-link';
+import { NextLink, NextLinkButton } from '@/features/shared/components/next-link';
 import { Avatar, clsx, Footer, Header, SearchButton } from '@locaci/ui';
 // for react-hot-toast to work
 import { Toaster } from 'react-hot-toast';
 
 // functions & others
-import { t } from '@web/utils/trpc-rq-hooks';
-import { env } from '@web/env/client.mjs';
+import { t } from '@/utils/trpc-rq-hooks';
+import { env } from '@/env/client.mjs';
 
 // types
-import type { SeoData } from '@web/types';
+import type { SeoData } from '@/types';
 import type { ToastPosition } from 'react-hot-toast';
 
 export type DefaultLayoutProps = {

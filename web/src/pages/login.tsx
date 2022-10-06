@@ -1,24 +1,28 @@
 import * as React from 'react';
 // components
-import { DefaultLayout } from '@web/features/shared';
-import { NextLink, NextLinkButton } from '@web/components/next-link';
+import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
+import {
+    NextLink,
+    NextLinkButton
+} from '@/features/shared/components/next-link';
 import { Button, clsx, TextInput } from '@locaci/ui';
 
 // functions & others
-import { getHostWithScheme } from '@web/utils/functions';
-import { t } from '@web/utils/trpc-rq-hooks';
-import { sendEmailLinkSchema } from '@web/server/trpc/validation/auth-schema';
-import { useZodForm } from '@web/features/shared/hooks/use-zod-form';
-import { useOAuthMutation } from '@web/hooks/use-oauth-mutation';
+import { getHostWithScheme } from '@/utils/functions';
+import { t } from '@/utils/trpc-rq-hooks';
+import { sendEmailLinkSchema } from '@/server/trpc/validation/auth-schema';
+import { useZodForm } from '@/features/shared/hooks/use-zod-form';
+import { useOAuthMutation } from '@/features/shared/hooks/use-oauth-mutation';
 import dynamic from 'next/dynamic';
 
 // types
 import type { NextPageWithLayout } from './_app';
 
 const LoginSuccessModal = dynamic(
-    () => import('@web/components/login-success-modal'),
+    () => import('@/features/auth/components/login-success-modal'),
     {
-        ssr: false
+        ssr: false,
+        suspense: true
     }
 );
 
@@ -50,13 +54,16 @@ export const LoginPage: NextPageWithLayout = () => {
 
     return (
         <>
-            <LoginSuccessModal
-                onClose={loginWithEmailMutation.reset}
-                open={
-                    loginWithEmailMutation.isSuccess && receiverEmail !== null
-                }
-                email={receiverEmail}
-            />
+            <React.Suspense fallback={<></>}>
+                <LoginSuccessModal
+                    onClose={loginWithEmailMutation.reset}
+                    open={
+                        loginWithEmailMutation.isSuccess &&
+                        receiverEmail !== null
+                    }
+                    email={receiverEmail}
+                />
+            </React.Suspense>
 
             <section className="flex h-full items-center justify-center">
                 <div

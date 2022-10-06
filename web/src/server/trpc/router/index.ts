@@ -4,13 +4,13 @@ import { ownerRouter } from './owner/property';
 import { propertyRouter } from './property';
 
 import { TRPCError } from '@trpc/server';
-import { compareStrIgnoreAccent, jsonFetch } from '@web/utils/functions';
+import { compareStrIgnoreAccent, jsonFetch } from '@/utils/functions';
 
-import { env } from '@web/env/server.mjs';
+import { env } from '@/env/server.mjs';
 import { z } from 'zod';
 import { t } from '../trpc-server-root';
 
-import type { OSMResultData } from '@web/utils/types';
+import type { OSMResultData } from '@/utils/types';
 
 export const appRouter = t.router({
     property: propertyRouter,

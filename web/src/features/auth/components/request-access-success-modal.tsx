@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 // components
-import { Button, Modal } from '@locaci/ui';
-import { BottomSheet } from '@locaci/ui/src/components/atoms/bottom-sheet';
+import { Button } from '@locaci/ui';
 
 // functions & others
 import { useRouter } from 'next/router';
-import useMediaQuery from '@web/hooks/use-media-query';
+import useMediaQuery from '@/features/shared/hooks/use-media-query';
+import { LazyBottomSheet } from '@/features/shared/components/lazy-bottom-sheet';
+import { LazyModal } from '@/features/shared/components/lazy-modal';
 
 // types
 export type RequestAccessSuccessModalProps = {
@@ -63,25 +64,30 @@ export default function RequestAccessSuccessModal({
         </>
     );
 
-    const showModal = useMediaQuery(`(min-width: 768px)`);
+    const canShowModal = useMediaQuery(`(min-width: 768px)`);
+    const canShowBottomSheet = useMediaQuery(`(max-width: 767px)`);
 
     return (
         <>
-            <BottomSheet
-                open={open}
-                expandOnContentDrag
-                defaultSnap={({ minHeight }) => minHeight}
-                snapPoints={({ maxHeight, minHeight }) => [
-                    minHeight,
-                    maxHeight * 0.95
-                ]}
-                className={`md:hidden`}>
-                <ModalContent />
-            </BottomSheet>
+            {canShowBottomSheet && (
+                <LazyBottomSheet
+                    open={open}
+                    expandOnContentDrag
+                    defaultSnap={({ minHeight }) => minHeight}
+                    snapPoints={({ maxHeight, minHeight }) => [
+                        minHeight,
+                        maxHeight * 0.95
+                    ]}
+                    className={`md:hidden`}>
+                    <ModalContent />
+                </LazyBottomSheet>
+            )}
 
-            <Modal title="Merci" isOpen={open && showModal}>
-                <ModalContent />
-            </Modal>
+            {canShowModal && (
+                <LazyModal title="Merci" isOpen={open}>
+                    <ModalContent />
+                </LazyModal>
+            )}
         </>
     );
 }
