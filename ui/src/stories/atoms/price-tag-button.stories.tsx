@@ -17,5 +17,6 @@ const Template: ComponentStory<typeof PriceTagButton> = args => (
 
 export const Default = Template.bind({});
 Default.args = {
-    price: 50_000
+    price: 50_000,
+    selected: false
 } as PriceTagButtonProps;
