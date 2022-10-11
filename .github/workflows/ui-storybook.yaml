@@ -39,7 +39,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: FORCE_COLOR=true pnpm install --strict-peer-dependencies=false --filter=ui --filter=root
+        run: FORCE_COLOR=true pnpm install --strict-peer-dependencies=false --shamefully-hoist --filter=ui --filter=root
 
       - name: Build the package
         run: FORCE_COLOR=true pnpm turbo run build --filter=ui
