@@ -30,8 +30,7 @@ export function BottomSheet({
                 open={open}
                 ref={sheetRef}
                 className={clsx(className)}
-                {...props}
-            >
+                {...props}>
                 {typeof children === 'function'
                     ? children(sheetRef, props.onDismiss)
                     : children}

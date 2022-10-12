@@ -21,7 +21,6 @@ import {
     createCalendar,
     getLocalTimeZone,
     getWeeksInMonth,
-    isSameMonth,
     type DateValue
 } from '@internationalized/date';
 import { type AriaButtonProps, useButton, useCalendarGrid } from 'react-aria';
