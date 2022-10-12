@@ -1,5 +1,3 @@
-const { mergeConfig } = require('vite');
-
 module.exports = {
     stories: [
         '../src/**/*.stories.mdx',
@@ -21,15 +19,15 @@ module.exports = {
     ],
     framework: '@storybook/react',
     core: {
-        builder: '@storybook/builder-vite',
         disableTelemetry: true // 👈 Disables telemetry
     },
-    viteFinal: async config => {
-        return mergeConfig(config, {
+    webpackFinal: async config => {
+        config.module.rules.push({
             test: /\.mjs$/,
             include: /node_modules/,
             type: 'javascript/auto'
         });
+        return config;
     }
 };
 //  "jest-mock": "^28.1.0"
