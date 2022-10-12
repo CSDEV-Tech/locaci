@@ -39,10 +39,6 @@ function dataURLtoFile(dataurl: string, filename: string) {
     return new File([u8arr], filename, { type: mime });
 }
 
-console.log({
-    file: dataURLtoFile(mockImgBase64, 'mock-image.jpeg')
-});
-
 export const WithDefaultFiles = Template.bind({});
 WithDefaultFiles.args = {
     className: 'min-h-[400px]',

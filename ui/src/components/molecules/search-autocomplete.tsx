@@ -138,6 +138,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
                 <Popover
                     popoverRef={popoverRef}
                     isOpen={state.isOpen}
+                    className={'max-h-[300px] overflow-y-scroll'}
                     onClose={state.close}>
                     <ListBox
                         {...listBoxProps}

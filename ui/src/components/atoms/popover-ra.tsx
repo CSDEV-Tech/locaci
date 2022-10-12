@@ -7,6 +7,9 @@ interface PopoverProps {
     children: React.ReactNode;
     isOpen?: boolean;
     onClose: () => void;
+    className?: string;
+    overflowRight?: boolean;
+    overflowLeft?: boolean;
 }
 
 export function Popover(props: PopoverProps) {
@@ -33,9 +36,13 @@ export function Popover(props: PopoverProps) {
                 {...overlayProps}
                 ref={popoverRef}
                 className={clsx(
+                    props.className,
                     'flex flex-col rounded-md bg-white py-3 shadow-card',
-                    'absolute top-[calc(100%+0.5rem)] left-0 right-0 z-10',
-                    'max-h-[300px] overflow-y-scroll'
+                    'absolute top-[calc(100%+0.5rem)] z-10',
+                    {
+                        'left-0': !props.overflowLeft,
+                        'right-0': !props.overflowRight
+                    }
                 )}>
                 {children}
                 <DismissButton onDismiss={onClose} />

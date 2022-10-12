@@ -20,6 +20,7 @@ export type ButtonProps = {
     role?: string;
     loadingMessage?: string;
     square?: boolean;
+    circle?: boolean;
     className?: string;
     loading?: boolean;
     block?: boolean;
@@ -37,6 +38,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             type,
             loadingMessage = `Chargement, veuillez patientez...`,
             loading = false,
+            circle = false,
             disabled = false,
             square = false,
             block = false,
@@ -53,13 +55,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 className={clsx(
                     className,
                     `items-center justify-center gap-2`,
-                    `rounded-md border px-4 py-2`,
+                    `border py-2`,
                     `font-medium`,
                     {
-                        'focus:ring': !loading && !disabled,
+                        'focus:ring [&[aria-pressed=true]]:ring':
+                            !loading && !disabled,
                         flex: block,
                         'inline-flex': !block,
-                        '!px-2': square,
+                        'px-2': square || circle,
+                        'px-4': !square && !circle,
+                        'rounded-full': circle,
+                        'rounded-md': !circle,
                         'cursor-default': loading || disabled,
                         'bg-primary text-white ring-primary/50 focus:outline-none':
                             variant === 'primary',
@@ -81,7 +87,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         'border-transparent': variant !== 'outline',
                         'bg-dark text-white ring-dark/50': variant === 'dark',
                         'hover:bg-dark-75 active:bg-dark-75':
-                            variant === 'dark' && !loading && !disabled,
+                            variant === 'dark' && !loading && !disabled
                     }
                 )}
                 onClick={ev => !disabled && !loading && onClick?.(ev)}
