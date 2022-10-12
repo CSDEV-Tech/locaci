@@ -1,5 +1,7 @@
 // components
 import { OwnerLayout } from '@/features/shared/components/layouts/owner-layout';
+import { NextLinkButton } from '@/features/shared/components/next-link';
+import { PlusCircle } from 'phosphor-react';
 
 // utils
 import { useRouter } from 'next/router';
@@ -14,12 +16,26 @@ const PropertyDetailsPage: NextPageWithLayout<
 > = props => {
     const router = useRouter();
     const { id } = router.query;
+
     return (
-        <section className="flex flex-col gap-4 p-4">
-            <h1 className="text-center text-2xl font-bold">
-                Détail de la propriété
-            </h1>
-        </section>
+        <>
+            <section className="flex h-full flex-col gap-4 p-4">
+                <h1 className="text-center text-2xl font-bold">
+                    Détail de la propriété
+                </h1>
+            </section>
+            <div className="fixed bottom-10 w-full px-10">
+                <NextLinkButton
+                    href={`/owner/properties/${id}/listings/add`}
+                    className="w-full"
+                    variant="secondary"
+                    renderLeadingIcon={cls => (
+                        <PlusCircle className={cls} weight={'bold'} />
+                    )}>
+                    Ajouter une nouvelle annonce
+                </NextLinkButton>
+            </div>
+        </>
     );
 };
 
