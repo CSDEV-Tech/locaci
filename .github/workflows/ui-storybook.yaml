@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: FORCE_COLOR=true pnpm install --strict-peer-dependencies=false --shamefully-hoist --filter=ui --filter=root
 
-      - name: Build the package
+      - name: Build the Storybook assets
         run: FORCE_COLOR=true pnpm turbo run build-storybook --filter=ui
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
