@@ -1,0 +1,13 @@
+{
+    "watch": [
+        "src/index.ts",
+        "src/components",
+        "package.json",
+        "tsconfig.json",
+        "tailwind.config.cjs",
+        "postcss.config.cjs"
+    ],
+    "ext": "ts,tsx",
+    "ignore": ["node_modules", "dist", "stories"],
+    "exec": "pnpm run build"
+}
