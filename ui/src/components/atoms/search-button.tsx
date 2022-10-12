@@ -1,20 +1,27 @@
 import { MagnifyingGlass } from 'phosphor-react';
 import * as React from 'react';
 import { clsx } from '../../lib/functions';
+import { CustomLink, Link } from './link';
 
 export type SearchButtonProps = {
     className?: string;
     children?: React.ReactNode;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    href?: string;
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+    customLink?: React.ComponentType<CustomLink>;
 };
 
 export function SearchButton({
     className,
     children,
-    onClick
+    onClick,
+    customLink,
+    href = '#'
 }: SearchButtonProps) {
     return (
-        <button
+        <Link
+            href={href}
+            Custom={customLink}
             className={clsx(
                 className,
                 'rounded-md border-2 border-[#EDE8E9]',
@@ -22,8 +29,7 @@ export function SearchButton({
                 'max-w-[180px] text-sm font-semibold  text-gray',
                 'md:max-w-[300px] md:px-4 md:text-base'
             )}
-            onClick={onClick}
-        >
+            onClick={onClick}>
             <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
                 {children}
             </span>
@@ -34,6 +40,6 @@ export function SearchButton({
                     weight="bold"
                 />
             </div>
-        </button>
+        </Link>
     );
 }
