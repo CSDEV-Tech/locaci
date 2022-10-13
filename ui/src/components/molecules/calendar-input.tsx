@@ -22,9 +22,10 @@ import {
     getLocalTimeZone,
     type DateValue
 } from '@internationalized/date';
-import { CalendarBlank, Info } from 'phosphor-react';
-import { Button, type ButtonProps } from '../atoms/button';
+import { CalendarBlank } from 'phosphor-react';
+import { Button } from '../atoms/button';
 import { clsx } from '../../lib/functions';
+import type { ValidationState } from '@react-types/shared';
 
 export type CalendarInputProps = {
     label: string;
@@ -33,6 +34,8 @@ export type CalendarInputProps = {
     minValue?: Date;
     maxValue?: Date;
     onChange?: (newDate: Date) => void;
+    errorText?: string;
+    helpText?: string;
 } & Omit<
     DatePickerStateOptions,
     | 'createCalendar'
@@ -41,6 +44,9 @@ export type CalendarInputProps = {
     | 'maxValue'
     | 'onChange'
     | 'value'
+    | 'validationState'
+    | 'errorMessage'
+    | 'description'
 >;
 
 export function CalendarInput({
@@ -50,10 +56,13 @@ export function CalendarInput({
     minValue,
     maxValue,
     onChange,
+    helpText,
+    errorText,
     ...restProps
 }: CalendarInputProps) {
     const props = {
         ...restProps,
+        validationState: (!!errorText ? 'invalid' : 'valid') as ValidationState,
         value: dateToReactAriaDate(value ?? new Date()),
         minValue: dateToReactAriaDate(minValue ?? new Date()),
         maxValue: maxValue ? dateToReactAriaDate(maxValue) : undefined,
@@ -70,11 +79,13 @@ export function CalendarInput({
         fieldProps,
         buttonProps,
         dialogProps,
-        calendarProps
+        calendarProps,
+        errorMessageProps,
+        descriptionProps
     } = useDatePicker(props, state, ref);
 
     return (
-        <>
+        <div className="flex flex-col gap-2">
             <div
                 className={clsx(
                     className,
@@ -106,9 +117,6 @@ export function CalendarInput({
                             'relative flex items-center rounded-l-md pr-10'
                         )}>
                         <DateField {...fieldProps} />
-                        {state.validationState === 'invalid' && (
-                            <Info className="absolute right-1 h-6 w-6 text-red-500" />
-                        )}
                     </div>
 
                     <FieldButton {...buttonProps} isPressed={state.isOpen} />
@@ -131,7 +139,23 @@ export function CalendarInput({
                     </Popover>
                 )}
             </div>
-        </>
+
+            {errorText && (
+                <small
+                    {...errorMessageProps}
+                    aria-live={`assertive`}
+                    role={`alert`}
+                    className={`text-red-500`}>
+                    {errorText}
+                </small>
+            )}
+
+            {helpText && (
+                <small {...descriptionProps} className={`text-gray`}>
+                    {helpText}
+                </small>
+            )}
+        </div>
     );
 }
 

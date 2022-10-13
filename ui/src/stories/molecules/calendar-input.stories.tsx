@@ -21,3 +21,12 @@ Default.args = {
     value: new Date('2023-01-21'),
     className: 'w-80'
 } as CalendarInputProps;
+
+export const WithError = Template.bind({});
+WithError.args = {
+    label: 'Disponible à partir de',
+    value: new Date('2023-01-21'),
+    className: 'w-80',
+    errorText: 'Une erreur est survenue',
+    helpText: `Description`
+} as CalendarInputProps;
