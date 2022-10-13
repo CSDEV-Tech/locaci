@@ -163,3 +163,18 @@ export function isNativeDOMFile(
 ): fileObject is File {
     return fileObject instanceof File;
 }
+
+/**
+ * convert a given date to the begin of the day of the date, to ignore hours
+ *
+ * @example
+ *      convertDateToBeginOfDate(new Date('2022-10-12T22:31:43.293Z')) // => Date { '2022-10-12T00:00:00.000Z' }
+ *
+ * @param date
+ * @returns
+ */
+export function convertDateToBeginOfDate(date: Date) {
+    return new Date(
+        `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    );
+}

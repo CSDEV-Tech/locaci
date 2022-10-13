@@ -21,6 +21,45 @@ export const ownerRouter = t.router({
             }
         });
     }),
+    getSingle: protectedProcedure
+        .input(
+            z.object({
+                uid: z.string().uuid()
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    userId: ctx.user.id,
+                    id: input.uid
+                },
+                include: {
+                    rooms: true
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message: 'Désolé, cette propriété nexiste pas.'
+                });
+            }
+
+            return property;
+        }),
+    addListing: protectedProcedure
+        .input(
+            z.object({
+                field: z.string().uuid()
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            // TODO: Mutation code
+            throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Error'
+            });
+        }),
     deleteFile: protectedProcedure
         .input(
             z.object({
