@@ -1,5 +1,4 @@
 import { env } from './src/env/server.mjs';
-// import transpile from 'next-transpile-modules';
 import analyze from '@next/bundle-analyzer';
 /**
  * Don't be scared of the generics here.
@@ -15,16 +14,11 @@ function defineNextConfig(config) {
 
 const nextConfig = defineNextConfig({
     reactStrictMode: false,
-    swcMinify: true,
-    experimental: {
-        newNextLinkBehavior: true
-    }
+    swcMinify: true
 });
 
 const withBundleAnalyzer = analyze({
     enabled: process.env.ANALYZE === 'true'
 });
-
-// const withTM = transpile(['@locaci/domain']);
 
 export default withBundleAnalyzer(nextConfig);
