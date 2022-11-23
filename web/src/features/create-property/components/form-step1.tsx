@@ -4,9 +4,9 @@ import { Controller } from 'react-hook-form';
 import { CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { RentTypes } from '@/features/shared/types';
-import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
-import { useZodForm } from '@/features/shared/hooks/use-zod-form';
+import { RentTypes } from '~/features/shared/types';
+import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';

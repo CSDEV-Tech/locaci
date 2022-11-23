@@ -40,7 +40,7 @@ export function clsx(
     return classes.join(' ');
 }
 
-/*
+/**
  * Convertit un montant en centimes en un montant en euros et le formatter correctement
  * @param amount montant en centimes
  */

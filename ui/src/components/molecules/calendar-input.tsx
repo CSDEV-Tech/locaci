@@ -18,6 +18,7 @@ import {
 import { Calendar, dateToReactAriaDate } from '../atoms/calendar';
 import { Popover } from '../atoms/popover-ra';
 import {
+    CalendarDate,
     createCalendar,
     getLocalTimeZone,
     type DateValue
@@ -37,7 +38,7 @@ export type CalendarInputProps = {
     errorText?: string;
     helpText?: string;
 } & Omit<
-    DatePickerStateOptions,
+    DatePickerStateOptions<CalendarDate>,
     | 'createCalendar'
     | 'minValue'
     | 'defaultValue'

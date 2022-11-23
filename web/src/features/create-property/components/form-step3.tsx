@@ -6,8 +6,8 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
 import dynamic from 'next/dynamic';
-import { t } from '@/utils/trpc-rq-hooks';
-import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
+import { t } from '~/utils/trpc-rq-hooks';
+import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
 
 // types
 import type { z } from 'zod';
@@ -25,7 +25,7 @@ type FormStep3Props = {
 };
 
 // lazy load the map component
-const Map = dynamic(() => import('@/features/shared/components/map'), {
+const Map = dynamic(() => import('~/features/shared/components/map'), {
     ssr: false,
     suspense: true
 });

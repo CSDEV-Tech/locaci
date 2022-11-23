@@ -9,25 +9,25 @@ import {
     TextArea
 } from '@locaci/ui';
 import { Modal } from '@locaci/ui/dist/components/atoms/modal';
-import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
+import { DefaultLayout } from '~/features/shared/components/layouts/default-layout';
 import { ArrowsClockwise, Link, Prohibit } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
-import { NextLinkButton } from '@/features/shared/components/next-link';
+import { NextLinkButton } from '~/features/shared/components/next-link';
 
 // functions & others
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { useZodForm } from '@/features/shared/hooks/use-zod-form';
-import { t } from '@/utils/trpc-rq-hooks';
-import { supabase } from '@/utils/supabase-client';
-import { formatDate, getHostWithScheme } from '@/utils/functions';
-import { refuseOwnerAccessSchema } from '@/server/trpc/validation/auth-schema';
+import { useZodForm } from '~/features/shared/hooks/use-zod-form';
+import { t } from '~/utils/trpc-rq-hooks';
+import { supabase } from '~/utils/supabase-client';
+import { formatDate, getHostWithScheme } from '~/utils/functions';
+import { refuseOwnerAccessSchema } from '~/server/trpc/validation/auth-schema';
 
 // types
-import type { NextPageWithLayout } from '@/pages/_app';
-import type { AppRouter } from '@/server/trpc/router';
+import type { NextPageWithLayout } from '~/pages/_app';
+import type { AppRouter } from '~/server/trpc/router';
 import type { inferProcedureOutput } from '@trpc/server';
-import type { ArrayElement } from '@/utils/types';
+import type { ArrayElement } from '~/utils/types';
 
 export type DashBoardAdminPageProps = {};
 

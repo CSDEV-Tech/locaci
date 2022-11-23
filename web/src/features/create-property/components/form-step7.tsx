@@ -5,12 +5,12 @@ import { Button, DropZone, DropZoneFile } from '@locaci/ui';
 
 // utils
 import { v4 as uuidv4 } from 'uuid';
-import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
-import { useZodForm } from '@/features/shared/hooks/use-zod-form';
-import { useUploadFileMutation } from '@/features/shared/hooks/use-upload-file-mutation';
-import { getFileExtension, isNativeDOMFile } from '@/utils/functions';
-import { env } from '@/env/client.mjs';
-import { t } from '@/utils/trpc-rq-hooks';
+import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { useZodForm } from '~/features/shared/hooks/use-zod-form';
+import { useUploadFileMutation } from '~/features/shared/hooks/use-upload-file-mutation';
+import { getFileExtension, isNativeDOMFile } from '~/utils/functions';
+import { env } from '~/env/client.mjs';
+import { t } from '~/utils/trpc-rq-hooks';
 
 // types
 import type { z } from 'zod';
@@ -70,7 +70,7 @@ export function FormStep7(props: FormStep7Props) {
 
             const imgURI = `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${result.bucket}/${result.path}`;
             form.setValue('images', [
-                ...form.watch('images'),
+                ...form.getValues('images'),
                 {
                     uri: imgURI,
                     path: result.path

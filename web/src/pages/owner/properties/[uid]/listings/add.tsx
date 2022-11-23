@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 // components
-import { OwnerLayout } from '@/features/shared/components/layouts/owner-layout';
-import { AddListingForm } from '@/features/add-listing/components/add-listing-form';
+import { OwnerLayout } from '~/features/shared/components/layouts/owner-layout';
+import { AddListingForm } from '~/features/add-listing/components/add-listing-form';
 import { LoadingIndicator } from '@locaci/ui';
 import { ErrorBoundary } from 'react-error-boundary';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
@@ -11,8 +11,8 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 // types
-import type { NextPageWithLayout } from '@/pages/_app';
-import { NextLinkButton } from '@/features/shared/components/next-link';
+import type { NextPageWithLayout } from '~/pages/_app';
+import { NextLinkButton } from '~/features/shared/components/next-link';
 export type AddListingPageProps = {};
 
 const AddListingPage: NextPageWithLayout<AddListingPageProps> = props => {

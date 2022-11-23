@@ -4,12 +4,12 @@ import { LoadingIndicator } from '@locaci/ui';
 import Head from 'next/head';
 
 // functions & others
-import { supabase } from '@/utils/supabase-client';
-import { t } from '@/utils/trpc-rq-hooks';
+import { supabase } from '~/utils/supabase-client';
+import { t } from '~/utils/trpc-rq-hooks';
 import { useRouter } from 'next/router';
 
 // types
-import type { NextPageWithLayout } from '@/pages/_app';
+import type { NextPageWithLayout } from '~/pages/_app';
 
 export const CallbackPage: NextPageWithLayout = () => {
     const router = useRouter();

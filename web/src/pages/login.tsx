@@ -1,25 +1,25 @@
 import * as React from 'react';
 // components
-import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
+import { DefaultLayout } from '~/features/shared/components/layouts/default-layout';
 import {
     NextLink,
     NextLinkButton
-} from '@/features/shared/components/next-link';
+} from '~/features/shared/components/next-link';
 import { Button, clsx, TextInput } from '@locaci/ui';
 
 // functions & others
-import { getHostWithScheme } from '@/utils/functions';
-import { t } from '@/utils/trpc-rq-hooks';
-import { sendEmailLinkSchema } from '@/server/trpc/validation/auth-schema';
-import { useZodForm } from '@/features/shared/hooks/use-zod-form';
-import { useOAuthMutation } from '@/features/shared/hooks/use-oauth-mutation';
+import { getHostWithScheme } from '~/utils/functions';
+import { t } from '~/utils/trpc-rq-hooks';
+import { sendEmailLinkSchema } from '~/server/trpc/validation/auth-schema';
+import { useZodForm } from '~/features/shared/hooks/use-zod-form';
+import { useOAuthMutation } from '~/features/shared/hooks/use-oauth-mutation';
 import dynamic from 'next/dynamic';
 
 // types
 import type { NextPageWithLayout } from './_app';
 
 const LoginSuccessModal = dynamic(
-    () => import('@/features/auth/components/login-success-modal'),
+    () => import('~/features/auth/components/login-success-modal'),
     {
         ssr: false,
         suspense: true

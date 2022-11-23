@@ -5,9 +5,9 @@ import { Button } from '@locaci/ui';
 
 // functions & others
 import { useRouter } from 'next/router';
-import useMediaQuery from '@/features/shared/hooks/use-media-query';
-import { LazyBottomSheet } from '@/features/shared/components/lazy-bottom-sheet';
-import { LazyModal } from '@/features/shared/components/lazy-modal';
+import useMediaQuery from '~/features/shared/hooks/use-media-query';
+import { LazyBottomSheet } from '~/features/shared/components/lazy-bottom-sheet';
+import { LazyModal } from '~/features/shared/components/lazy-modal';
 
 // types
 export type RequestAccessSuccessModalProps = {

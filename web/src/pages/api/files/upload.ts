@@ -2,7 +2,7 @@ import type { NextApiHandler } from 'next';
 import type { Files, Fields } from 'formidable';
 
 import formidable from 'formidable';
-import { supabaseAdmin } from '@/utils/supabase-admin';
+import { supabaseAdmin } from '~/utils/supabase-admin';
 import { promises as fs } from 'node:fs';
 import { z } from 'zod';
 
@@ -24,7 +24,7 @@ const fileUploadSchema = z.object({
  * @param res
  */
 const handler: NextApiHandler = async (req, res) => {
-    if (!(req.method === 'POST')) {
+    if (req.method !== 'POST') {
         // Method not allowed
         return res.status(405);
     }

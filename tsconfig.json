@@ -18,7 +18,7 @@
         "declaration": true,
         "paths": {
             "@locaci/ui": ["ui/dist"],
-            "@/*": ["web/src/*"]
+            "~/*": ["web/src/*"]
         }
     }
 }

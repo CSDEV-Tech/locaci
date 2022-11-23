@@ -1,14 +1,14 @@
 import * as React from 'react';
 // components
 import { Button, TextInput } from '@locaci/ui';
-import { LazyBottomSheet } from '@/features/shared/components/lazy-bottom-sheet';
-import { LazyModal } from '@/features/shared/components/lazy-modal';
+import { LazyBottomSheet } from '~/features/shared/components/lazy-bottom-sheet';
+import { LazyModal } from '~/features/shared/components/lazy-modal';
 
 // utils & functions
-import { t } from '@/utils/trpc-rq-hooks';
-import { useZodForm } from '@/features/shared/hooks/use-zod-form';
-import { updateNameAndProfileSchema } from '@/server/trpc/validation/auth-schema';
-import useMediaQuery from '@/features/shared/hooks/use-media-query';
+import { t } from '~/utils/trpc-rq-hooks';
+import { useZodForm } from '~/features/shared/hooks/use-zod-form';
+import { updateNameAndProfileSchema } from '~/server/trpc/validation/auth-schema';
+import useMediaQuery from '~/features/shared/hooks/use-media-query';
 
 // types
 import type { z } from 'zod';

@@ -2,15 +2,15 @@ import * as React from 'react';
 
 // components
 import { LoadingIndicator } from '@locaci/ui';
-import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
+import { DefaultLayout } from '~/features/shared/components/layouts/default-layout';
 
 // utils
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { t } from '@/utils/trpc-rq-hooks';
+import { t } from '~/utils/trpc-rq-hooks';
 
 // types
-import type { NextPageWithLayout } from '@/pages/_app';
+import type { NextPageWithLayout } from '~/pages/_app';
 
 export type ConfirmAccessPageProps = {};
 

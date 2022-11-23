@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { t } from '../../trpc-server-root';
 import { TRPCError } from '@trpc/server';
-import { Uuid } from '@/utils/uuid';
+import { Uuid } from '~/utils/uuid';
 import {
     updateNameAndProfileSchema,
     sendEmailLinkSchema
@@ -10,7 +10,7 @@ import jwt from 'jsonwebtoken';
 
 import { ownerRouter } from './owner';
 import { isLoggedIn } from '../../middleware/auth';
-import { env } from '@/env/server.mjs';
+import { env } from '~/env/server.mjs';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 

@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Button } from '@locaci/ui';
 
 // utils & functions
-import useMediaQuery from '@/features/shared/hooks/use-media-query';
-import { LazyBottomSheet } from '@/features/shared/components/lazy-bottom-sheet';
-import { LazyModal } from '@/features/shared/components/lazy-modal';
+import useMediaQuery from '~/features/shared/hooks/use-media-query';
+import { LazyBottomSheet } from '~/features/shared/components/lazy-bottom-sheet';
+import { LazyModal } from '~/features/shared/components/lazy-modal';
 
 export type LoginSuccessModalProps = {
     open: boolean;

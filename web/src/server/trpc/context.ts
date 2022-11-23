@@ -1,15 +1,15 @@
 // src/server/router/context.ts
 import * as trpc from '@trpc/server';
 import jwt from 'jsonwebtoken';
-import { Uuid } from '@/utils/uuid';
-import { getCookie } from '@/utils/functions';
-import { prisma } from '@/server/db/client';
-import { env } from '@/env/server.mjs';
+import { Uuid } from '~/utils/uuid';
+import { getCookie } from '~/utils/functions';
+import { prisma } from '~/server/db/client';
+import { env } from '~/env/server.mjs';
 
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { User } from '@prisma/client';
 import type { JwtPayload } from 'jsonwebtoken';
-import { supabaseAdmin } from '@/utils/supabase-admin';
+import { supabaseAdmin } from '~/utils/supabase-admin';
 
 export const createContext = async (opts?: CreateNextContextOptions) => {
     const req = opts?.req;

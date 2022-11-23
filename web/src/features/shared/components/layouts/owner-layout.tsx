@@ -4,17 +4,17 @@ import * as React from 'react';
 import Head from 'next/head';
 import { Door, HouseSimple, List, PlusCircle, User } from 'phosphor-react';
 import { Avatar, Button, clsx, LoadingIndicator, SideNav } from '@locaci/ui';
-import { DefaultLayout } from '@/features/shared/components/layouts/default-layout';
-import { NextBreadcrumb } from '@/features/shared/components/next-breadcrumb';
-import { NextLink } from '@/features/shared/components/next-link';
-import { AddListingModal } from '@/features/add-listing/components/add-listing-modal';
+import { DefaultLayout } from '~/features/shared/components/layouts/default-layout';
+import { NextBreadcrumb } from '~/features/shared/components/next-breadcrumb';
+import { NextLink } from '~/features/shared/components/next-link';
+import { AddListingModal } from '~/features/add-listing/components/add-listing-modal';
 
 // utils & others
 import { useRouter } from 'next/router';
-import { t } from '@/utils/trpc-rq-hooks';
-import { useOwnerCheck } from '@/features/shared/hooks/use-owner-check';
-import { useMediaQuery } from '@/features/shared/hooks/use-media-query';
-import { useListingModalStore } from '@/features/add-listing/hooks/use-listing-modal-store';
+import { t } from '~/utils/trpc-rq-hooks';
+import { useOwnerCheck } from '~/features/shared/hooks/use-owner-check';
+import { useMediaQuery } from '~/features/shared/hooks/use-media-query';
+import { useListingModalStore } from '~/features/add-listing/hooks/use-listing-modal-store';
 
 // types
 import type { DefaultLayoutProps } from './default-layout';

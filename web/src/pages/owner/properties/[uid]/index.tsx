@@ -1,13 +1,13 @@
 // components
-import { OwnerLayout } from '@/features/shared/components/layouts/owner-layout';
-import { NextLinkButton } from '@/features/shared/components/next-link';
+import { OwnerLayout } from '~/features/shared/components/layouts/owner-layout';
+import { NextLinkButton } from '~/features/shared/components/next-link';
 import { PlusCircle } from 'phosphor-react';
 
 // utils
 import { useRouter } from 'next/router';
 
 // types
-import type { NextPageWithLayout } from '@/pages/_app';
+import type { NextPageWithLayout } from '~/pages/_app';
 
 export type PropertyDetailsPageProps = {};
 

@@ -1,4 +1,4 @@
-import { convertDateToBeginOfDate } from '@/utils/functions';
+import { convertDateToBeginOfDate } from '~/utils/functions';
 import { z } from 'zod';
 
 export const addListingSchema = z

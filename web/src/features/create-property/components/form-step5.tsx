@@ -2,15 +2,15 @@ import * as React from 'react';
 // components
 import { Button, clsx, Select } from '@locaci/ui';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
-import { RoomTypeCard } from '@/features/create-property';
+import { RoomTypeCard } from '~/features/create-property';
 
 // utils
-import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
-import { useZodForm } from '@/features/shared/hooks/use-zod-form';
+import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
-import { type RoomType, RoomTypes } from '@/features/shared/types';
+import { type RoomType, RoomTypes } from '~/features/shared/types';
 export type Form5Values = Pick<
     z.TypeOf<typeof createPropertyRequestSchema>,
     'additionalRooms'

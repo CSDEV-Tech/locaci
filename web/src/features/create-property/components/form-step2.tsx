@@ -5,9 +5,9 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Button, SearchAutocomplete, TextInput } from '@locaci/ui';
 
 // utils
-import { createPropertyRequestSchema } from '@/server/trpc/validation/property-schema';
-import { useZodForm } from '@/features/shared/hooks/use-zod-form';
-import { t } from '@/utils/trpc-rq-hooks';
+import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { useZodForm } from '~/features/shared/hooks/use-zod-form';
+import { t } from '~/utils/trpc-rq-hooks';
 
 // types
 import type { z } from 'zod';

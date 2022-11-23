@@ -4,12 +4,12 @@ import { LoadingIndicator, MapPin } from '@locaci/ui';
 import { House } from 'phosphor-react';
 
 // utils
-import { env } from '@/env/client.mjs';
+import { env } from '~/env/client.mjs';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // types
-import type { OSMResultData } from '@/utils/types';
+import type { OSMResultData } from '~/utils/types';
 
 export type MapProps = {
     localityData?: OSMResultData | null;

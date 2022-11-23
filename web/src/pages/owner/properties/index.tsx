@@ -1,18 +1,18 @@
 import * as React from 'react';
 // components
 import { PlusCircle } from 'phosphor-react';
-import { OwnerLayout } from '@/features/shared/components/layouts/owner-layout';
+import { OwnerLayout } from '~/features/shared/components/layouts/owner-layout';
 import {
     NextLink,
     NextLinkButton
-} from '@/features/shared/components/next-link';
+} from '~/features/shared/components/next-link';
 import { LoadingIndicator } from '@locaci/ui';
 
 // utils
-import { t } from '@/utils/trpc-rq-hooks';
+import { t } from '~/utils/trpc-rq-hooks';
 
 // types
-import type { NextPageWithLayout } from '@/pages/_app';
+import type { NextPageWithLayout } from '~/pages/_app';
 
 export type PropertiesListPageProps = {};
 

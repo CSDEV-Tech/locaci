@@ -2,13 +2,13 @@ import * as React from 'react';
 // components
 import { TextInput } from '@locaci/ui';
 import { MagnifyingGlass, PlusCircle } from 'phosphor-react';
-import { NextLinkButton } from '@/features/shared/components/next-link';
-import { LazyBottomSheet } from '@/features/shared/components/lazy-bottom-sheet';
-import { LazyModal } from '@/features/shared/components/lazy-modal';
+import { NextLinkButton } from '~/features/shared/components/next-link';
+import { LazyBottomSheet } from '~/features/shared/components/lazy-bottom-sheet';
+import { LazyModal } from '~/features/shared/components/lazy-modal';
 
 // utils
-import useMediaQuery from '@/features/shared/hooks/use-media-query';
-import { useListingModalStore } from '@/features/add-listing/hooks/use-listing-modal-store';
+import useMediaQuery from '~/features/shared/hooks/use-media-query';
+import { useListingModalStore } from '~/features/add-listing/hooks/use-listing-modal-store';
 
 // types
 export type AddListingModalProps = {};

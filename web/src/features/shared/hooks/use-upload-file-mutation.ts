@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { jsonFetch } from '@/utils/functions';
+import { jsonFetch } from '~/utils/functions';
 
 export function useUploadFileMutation(fileType: 'image' | 'document') {
     return useMutation(async (fileObject: { file: File; name: string }) => {

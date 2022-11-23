@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { t } from '../../trpc-server-root';
 import { TRPCError } from '@trpc/server';
 import jwt from 'jsonwebtoken';
-import { env } from '@/env/server.mjs';
-import { Uuid } from '@/utils/uuid';
+import { env } from '~/env/server.mjs';
+import { Uuid } from '~/utils/uuid';
 import { RequestStatus, Role } from '@prisma/client';
 import { requestOwnerAccessSchema } from '../../validation/auth-schema';
 
