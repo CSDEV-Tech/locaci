@@ -12,8 +12,15 @@ import {
     FormStep6,
     FormStep7
 } from '~/features/create-property';
-import { ArrowCounterClockwise, CaretDoubleLeft } from 'phosphor-react';
-import { NextLinkButton } from '~/features/shared/components/next-link';
+import {
+    ArrowCounterClockwise,
+    ArrowLeft,
+    CaretDoubleLeft
+} from 'phosphor-react';
+import {
+    NextLinkButton,
+    NextLink
+} from '~/features/shared/components/next-link';
 
 // utils
 import { clsx } from '@locaci/ui';
@@ -40,7 +47,9 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                 municipalityQuery: string;
             }
         >
-    >({});
+    >({
+        rentType: 'LOCATION'
+    });
 
     function goToPrevious() {
         setStep(prev => prev - 1);
@@ -317,6 +326,15 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
                             </>
                         )}
                     </div>
+                )}
+
+                {step !== 8 && (
+                    <NextLink
+                        href="/owner/properties"
+                        className="mx-4 flex items-center gap-3 self-center underline">
+                        <ArrowLeft className={'h-4'} />
+                        <span>Enregistrer et revenir plus tard</span>
+                    </NextLink>
                 )}
             </div>
         </section>

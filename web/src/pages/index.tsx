@@ -1,13 +1,5 @@
 import * as React from 'react';
-import type { GetStaticProps, NextPage } from 'next';
 import { t } from '~/utils/trpc-rq-hooks';
-
-// All these imports are necessary SSG & SSR
-import { appRouter } from '~/server/trpc/router';
-import type { AppRouter } from '~/server/trpc/router';
-import { createProxySSGHelpers } from '@trpc/react/ssg';
-import { createContext } from '~/server/trpc/context';
-import superjson from 'superjson';
 
 // type hint for layout
 import type { NextPageWithLayout } from '~/pages/_app';
@@ -52,20 +44,4 @@ export default Home;
 
 Home.getLayout = page => {
     return <DefaultLayout>{page}</DefaultLayout>;
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-    const ssg = createProxySSGHelpers<AppRouter>({
-        router: appRouter,
-        ctx: await createContext(),
-        transformer: superjson
-    });
-
-    await ssg.property.getLastThreeCreated.fetch();
-
-    return {
-        props: {
-            trpcState: ssg.dehydrate()
-        }
-    };
 };

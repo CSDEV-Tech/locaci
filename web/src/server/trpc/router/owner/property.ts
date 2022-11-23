@@ -6,8 +6,6 @@ import { t } from '~/server/trpc/trpc-server-root';
 import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
 import { CreatePropertyController } from '~/server/trpc/router/controllers/create-property.controller';
 
-import type { SupabaseStorageClient } from '@supabase/storage-js';
-
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
     getAll: protectedProcedure.query(async ({ ctx, input }) => {
@@ -70,10 +68,7 @@ export const ownerRouter = t.router({
         .mutation(async ({ ctx, input }) => {
             const bucket = input.type === 'image' ? 'images' : 'documents';
 
-            const { error } = await (
-                ctx.supabaseAdmin.storage as unknown as SupabaseStorageClient
-            ) // We convert the storage option to a type because TS gives an error
-                // and cannot determine the type of the mutation without explicitly typing it to supabase storage
+            const { error } = await ctx.supabaseAdmin.storage
                 .from(bucket)
                 .remove([input.path]);
 
@@ -98,7 +93,6 @@ export const ownerRouter = t.router({
                 }
             });
         }),
-
     searchCommuneByName: t.procedure
         .input(
             z.object({

@@ -145,6 +145,9 @@ export function FormStep7(props: FormStep7Props) {
     return (
         <>
             <div>
+                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                    7/7
+                </h2>
                 <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Ajoutez les images de votre logement
                 </h1>

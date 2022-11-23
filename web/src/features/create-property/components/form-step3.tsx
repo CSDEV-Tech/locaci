@@ -59,7 +59,11 @@ export function FormStep3(props: FormStep3Props) {
     return (
         <>
             <div className="flex flex-col gap-14 md:m-auto md:w-[800px] lg:w-[1000px]">
-                <div>
+                <div className="flex flex-col gap-2">
+                    <h2 className="text-center text-2xl font-extrabold text-secondary">
+                        3/7
+                    </h2>
+
                     <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                         Est-ce que le placement du point sur la carte est
                         correct ?

@@ -1,11 +1,11 @@
 import * as React from 'react';
 // components
 import Head from 'next/head';
+import { Avatar, clsx, Footer, Header, SearchButton } from '@locaci/ui';
 import {
     NextLink,
     NextLinkButton
 } from '~/features/shared/components/next-link';
-import { Avatar, clsx, Footer, Header, SearchButton } from '@locaci/ui';
 // for react-hot-toast to work
 import { Toaster } from 'react-hot-toast';
 

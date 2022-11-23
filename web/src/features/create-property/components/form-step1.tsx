@@ -35,6 +35,9 @@ export function FormStep1(props: FormStep1Props) {
     return (
         <>
             <div>
+                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                    1/7
+                </h2>
                 <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Quel type de logement voulez-vous ajouter ?
                 </h1>

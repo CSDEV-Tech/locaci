@@ -100,6 +100,9 @@ export function FormStep6(props: FormStep6Props) {
     return (
         <>
             <div>
+                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                    6/7
+                </h2>
                 <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Quels accessoires mettez-vous à disposition dans votre
                     logement meublé ?

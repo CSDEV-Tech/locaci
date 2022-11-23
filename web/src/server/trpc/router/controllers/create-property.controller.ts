@@ -1,5 +1,5 @@
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
 import { RoomType, AmenityType } from '@prisma/client';
+import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
 
 import type { Context } from '~/server/trpc/context';
 import type { z } from 'zod';
@@ -27,7 +27,6 @@ export class CreatePropertyController {
             cityId: input.cityUid,
             municipalityId: input.communeUid,
             rentType: input.rentType as RentType,
-            localityName: input.localityName,
             userId: ctx.user.id,
             addressInstructions: input.addressInstructions ?? null,
             images: input.images

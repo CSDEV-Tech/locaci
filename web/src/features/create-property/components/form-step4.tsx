@@ -34,6 +34,9 @@ export function FormStep4(props: FormStep4Props) {
     return (
         <>
             <div>
+                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                    4/7
+                </h2>
                 <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Précisions sur l'adresse
                 </h1>

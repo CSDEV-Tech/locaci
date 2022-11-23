@@ -88,6 +88,9 @@ export function FormStep5(props: FormStep5Props) {
     return (
         <>
             <div>
+                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                    5/7
+                </h2>
                 <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Indiquer les pièces de votre logement
                 </h1>

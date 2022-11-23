@@ -89,6 +89,9 @@ export function FormStep2(props: FormStep2Props) {
     return (
         <>
             <div>
+                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                    2/7
+                </h2>
                 <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Où se situe votre logement ?
                 </h1>
