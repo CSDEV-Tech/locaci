@@ -178,3 +178,16 @@ export function convertDateToBeginOfDate(date: Date) {
         `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
     );
 }
+
+/**
+ * Add a slash to the end of a link that does not contain one
+ *
+ * @example
+ *    linkWithSlash("/mon-lien") // => "/mon-lien/"
+ *    linkWithSlash("/mon-lien/") // => "/mon-lien/"
+ *
+ * @param link
+ */
+export function linkWithSlash(link: string): string | undefined {
+    return link !== undefined ? (link.endsWith('/') ? link : `${link}/`) : link;
+}

@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { Breadcrumb } from '@locaci/ui';
 import type { BreadcrumbItem } from '@locaci/ui';

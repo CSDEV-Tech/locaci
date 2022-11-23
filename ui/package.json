@@ -42,7 +42,11 @@
     "sideEffects": false,
     "type": "module",
     "files": [
-        "dist"
+        "dist",
+        "dist/lib/**/*.d.ts",
+        "dist/lib/**/*.js",
+        "dist/components/**/*.d.ts",
+        "dist/components/**/*.js"
     ],
     "scripts": {
         "storybook": "start-storybook -p 6006",

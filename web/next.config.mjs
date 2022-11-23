@@ -13,6 +13,9 @@ function defineNextConfig(config) {
 }
 
 const nextConfig = defineNextConfig({
+    experimental: {
+        appDir: true
+    },
     reactStrictMode: false,
     swcMinify: true
 });

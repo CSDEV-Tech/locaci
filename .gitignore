@@ -1,6 +1,6 @@
 node_modules/
 out/
-marketing/
+/marketing/
 .DS_Store
 .idea/
 dist/

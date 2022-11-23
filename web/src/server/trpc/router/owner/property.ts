@@ -5,6 +5,7 @@ import { isOwner } from '~/server/trpc/middleware/auth';
 import { t } from '~/server/trpc/trpc-server-root';
 import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
 import { CreatePropertyController } from '~/server/trpc/router/controllers/create-property.controller';
+import type { StorageClient } from '@supabase/storage-js';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
@@ -15,7 +16,8 @@ export const ownerRouter = t.router({
             },
             include: {
                 commune: true,
-                city: true
+                city: true,
+                locality: true
             }
         });
     }),
@@ -68,7 +70,9 @@ export const ownerRouter = t.router({
         .mutation(async ({ ctx, input }) => {
             const bucket = input.type === 'image' ? 'images' : 'documents';
 
-            const { error } = await ctx.supabaseAdmin.storage
+            const { error } = await (
+                ctx.supabaseAdmin.storage as unknown as StorageClient
+            )
                 .from(bucket)
                 .remove([input.path]);
 

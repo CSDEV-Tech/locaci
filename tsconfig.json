@@ -17,7 +17,7 @@
         "forceConsistentCasingInFileNames": true,
         "declaration": true,
         "paths": {
-            "@locaci/ui": ["ui/dist"],
+            "@locaci/ui/*": ["ui/dist/*"],
             "~/*": ["web/src/*"]
         }
     }

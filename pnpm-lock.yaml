@@ -104,6 +104,7 @@ importers:
       '@hookform/resolvers': ^2.9.10
       '@locaci/ui': workspace:^1.0.0
       '@next/bundle-analyzer': ^13.0.4
+      '@next/font': ^13.0.4
       '@prisma/client': ^4.6.1
       '@supabase/storage-js': 2.0.0
       '@supabase/supabase-js': 2.1.0
@@ -147,6 +148,7 @@ importers:
     dependencies:
       '@hookform/resolvers': 2.9.10_react-hook-form@7.39.5
       '@locaci/ui': link:../ui
+      '@next/font': 13.0.4
       '@prisma/client': 4.6.1_prisma@4.6.1
       '@supabase/storage-js': 2.0.0
       '@supabase/supabase-js': 2.1.0
@@ -2933,6 +2935,10 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
+
+  /@next/font/13.0.4:
+    resolution: {integrity: sha512-csZhVqe870p7XE03WfbDLzjVwdBAWxe6/lWGQosfqY/XN5tsmfDLpj442veicfCiiuF7/ydSnAAJxH8PQVBVWQ==}
+    dev: false
 
   /@next/swc-android-arm-eabi/13.0.4:
     resolution: {integrity: sha512-SD9H+/zuV3L0oHIhsDdFkDqFtg6pIHtqRUPlsrNdOsmWXgMlSzxBmwt2ta4kyrazS62BQu7XRUG++ZyODS7AWg==}

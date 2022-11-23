@@ -19,6 +19,7 @@
     "dependencies": {
         "@hookform/resolvers": "^2.9.10",
         "@locaci/ui": "workspace:^1.0.0",
+        "@next/font": "^13.0.4",
         "@prisma/client": "^4.6.1",
         "@supabase/storage-js": "2.0.0",
         "@supabase/supabase-js": "2.1.0",

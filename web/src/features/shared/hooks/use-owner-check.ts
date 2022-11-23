@@ -1,8 +1,14 @@
 import { useRouter } from 'next/router';
 import { supabase } from '../../../utils/supabase-client';
 import { t } from '../../../utils/trpc-rq-hooks';
+import type { User } from '@prisma/client';
 
-export function useOwnerCheck() {
+export function useOwnerCheck(): {
+    user: User | undefined;
+    isLoading: boolean;
+    router: ReturnType<typeof useRouter>;
+    logoutMutation: ReturnType<typeof t.auth.removeAuthCookie.useMutation>;
+} {
     const router = useRouter();
     const utils = t.useContext();
     const {

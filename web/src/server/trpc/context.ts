@@ -1,15 +1,13 @@
-// src/server/router/context.ts
+// utils
 import * as trpc from '@trpc/server';
-import jwt from 'jsonwebtoken';
-import { Uuid } from '~/utils/uuid';
+import { getUser } from '~/utils/ssr-helpers';
 import { getCookie } from '~/utils/functions';
 import { prisma } from '~/server/db/client';
-import { env } from '~/env/server.mjs';
+import { supabaseAdmin } from '~/utils/supabase-admin';
 
+// types
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { User } from '@prisma/client';
-import type { JwtPayload } from 'jsonwebtoken';
-import { supabaseAdmin } from '~/utils/supabase-admin';
 
 export const createContext = async (opts?: CreateNextContextOptions) => {
     const req = opts?.req;
@@ -21,23 +19,7 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
         const sessionToken = getCookie('__session', req?.headers.cookie);
 
         if (sessionToken) {
-            try {
-                // Verify the token
-                const decoded = jwt.verify(
-                    sessionToken,
-                    env.JWT_SECRET
-                ) as JwtPayload;
-
-                if (decoded.id) {
-                    user = await prisma.user.findFirst({
-                        where: {
-                            id: Uuid.fromShort(decoded.id).toString()
-                        }
-                    });
-                }
-            } catch (error) {
-                // do nothing... that means that the user is not authenticated
-            }
+            user = await getUser(sessionToken);
         }
     }
 

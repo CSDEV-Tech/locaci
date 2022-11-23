@@ -83,8 +83,8 @@ function PropertyList() {
                                                 'en colocation'}
                                             {p.rentType === 'LOCATION' &&
                                                 'Non meublé'}
-                                            -&nbsp;{p.localityName},&nbsp;
-                                            {p.commune.name}, {p.city.name}
+                                            -&nbsp;{p.locality?.name},&nbsp;
+                                            {p.commune?.name}, {p.city?.name}
                                         </span>
                                         <span>
                                             {p.noOfRooms} pièces -&nbsp;

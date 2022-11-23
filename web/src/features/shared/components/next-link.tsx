@@ -1,5 +1,11 @@
+'use client';
+
 import Link from 'next/link';
-import { CustomLink, LinkButton, LinkButtonProps } from '@locaci/ui';
+import type { CustomLink } from '@locaci/ui/components/atoms/link';
+import {
+    LinkButton,
+    type LinkButtonProps
+} from '@locaci/ui/components/atoms/link-button';
 
 export function NextLink(props: CustomLink) {
     return <Link {...props} />;
