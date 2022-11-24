@@ -1,4 +1,4 @@
-import { X } from 'phosphor-react';
+import { XIcon } from '../atoms/icons/x';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 
@@ -68,7 +68,7 @@ export function SideNav({
                         ref={cancelButtonRef}
                         onClick={onClose}
                         className="mr-4 mt-4 self-end"
-                        renderLeadingIcon={cls => <X className={cls} />}
+                        renderLeadingIcon={cls => <XIcon className={cls} />}
                     />
                     <div className="sr-only" id={id}>
                         Menu principal

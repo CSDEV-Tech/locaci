@@ -1,17 +1,16 @@
 import * as React from 'react';
-import {
-    Eye,
-    FileImage,
-    FilePdf,
-    UploadSimple,
-    WarningCircle,
-    X
-} from 'phosphor-react';
+
 import { clsx } from '../../lib/functions';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '../atoms/button';
 import { Modal } from '../atoms/modal';
 import { LoadingIndicator } from '../atoms/loading-indicator';
+import { UploadSimpleIcon } from '../atoms/icons/upload-simple';
+import { FileImageIcon } from '../atoms/icons/file-image';
+import { FilePdfIcon } from '../atoms/icons/file-pdf';
+import { XIcon } from '../atoms/icons/x';
+import { WarningCircleIcon } from '../atoms/icons/warning-circle';
+import { EyeIcon } from '../atoms/icons/eye';
 
 export const fileExtensionsTypes = {
     'image/*': ['.png', '.jpeg', '.jpg', '.webp'],
@@ -143,7 +142,7 @@ export function DropZone({
                     <Button
                         type={`button`}
                         renderLeadingIcon={cls => (
-                            <UploadSimple className={cls} />
+                            <UploadSimpleIcon className={cls} />
                         )}>
                         {buttonLabel}
                     </Button>
@@ -236,7 +235,7 @@ export function EnlargedFile({ file }: { file: DropZoneFile | null }) {
                             <div
                                 className={`flex h-full w-full items-center justify-center rounded-lg border border-gray`}>
                                 <div className="flex flex-col items-center gap-2">
-                                    <FileImage className={`h-10 w-10`} />
+                                    <FileImageIcon className={`h-10 w-10`} />
                                     <span>{file.name}</span>
                                 </div>
                             </div>
@@ -251,7 +250,7 @@ export function EnlargedFile({ file }: { file: DropZoneFile | null }) {
                         <div
                             className={`flex h-full w-full items-center justify-center rounded-lg border border-gray`}>
                             <div className="flex flex-col items-center gap-2">
-                                <FilePdf className={`h-10 w-10`} />
+                                <FilePdfIcon className={`h-10 w-10`} />
                                 <span>{file.name}</span>
                             </div>
                         </div>
@@ -316,7 +315,7 @@ export function FileElement({
                         e.stopPropagation();
                         onRemoveFile?.();
                     }}
-                    renderLeadingIcon={cls => <X className={cls} />}
+                    renderLeadingIcon={cls => <XIcon className={cls} />}
                 />
             )}
 
@@ -360,7 +359,7 @@ export function FileElement({
                         className={clsx(
                             `rounded-full bg-danger p-2 text-white opacity-100`
                         )}>
-                        <WarningCircle className={`h-5 w-5`} />
+                        <WarningCircleIcon className={`h-5 w-5`} />
                     </div>
 
                     <span className={`text-white`}>
@@ -389,7 +388,7 @@ export function FileElement({
                         className={clsx(
                             `rounded-full bg-lightgray p-2 opacity-100`
                         )}>
-                        <Eye className={`h-5 w-5`} />
+                        <EyeIcon className={`h-5 w-5`} />
                     </div>
                 </button>
             )}
@@ -408,7 +407,7 @@ export function FileElement({
                             <div
                                 className={`flex h-full w-full items-center justify-center rounded-lg border border-gray`}>
                                 <div className="flex flex-col items-center gap-2">
-                                    <FileImage
+                                    <FileImageIcon
                                         className={clsx(`h-10 w-10`, {
                                             hidden: file.state === 'UPLOADING'
                                         })}
@@ -423,7 +422,7 @@ export function FileElement({
                         <div
                             className={`flex h-full w-full items-center justify-center rounded-lg border border-gray`}>
                             <div className="flex flex-col items-center gap-2">
-                                <FilePdf
+                                <FilePdfIcon
                                     className={clsx(`h-10 w-10`, {
                                         hidden: file.state === 'UPLOADING'
                                     })}
@@ -448,7 +447,7 @@ export function FileElement({
                         <div
                             className={`flex h-full w-full items-center justify-center rounded-lg border border-gray`}>
                             <div className="flex flex-col items-center gap-2">
-                                <FilePdf
+                                <FilePdfIcon
                                     className={clsx(`h-10 w-10`, {
                                         hidden: file.state === 'UPLOADING'
                                     })}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { clsx } from '../../lib/functions';
-import { Check } from 'phosphor-react';
+import { CheckIcon } from './icons/check';
 
 export type CheckboxProps = {
     className?: string;
@@ -24,8 +24,7 @@ export function Checkbox({
             className={clsx(className, 'group flex items-start gap-2', {
                 'cursor-pointer': !disabled,
                 'cursor-not-allowed': disabled
-            })}
-        >
+            })}>
             <input
                 type="checkbox"
                 checked={checked}
@@ -53,9 +52,8 @@ export function Checkbox({
                         'bg-secondary':
                             !disabled && checked && variant === 'secondary'
                     }
-                )}
-            >
-                <Check
+                )}>
+                <CheckIcon
                     weight="bold"
                     className={clsx('text-white', {
                         hidden: !checked,
@@ -67,8 +65,7 @@ export function Checkbox({
                 className={clsx('font-medium', {
                     'text-dark': checked,
                     'text-gray': !checked || disabled
-                })}
-            >
+                })}>
                 {label}
             </span>
         </label>

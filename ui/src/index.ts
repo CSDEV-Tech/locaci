@@ -33,7 +33,34 @@ export { RadioGroup } from './components/molecules/radio-group';
 export { CalendarInput } from './components/molecules/calendar-input';
 export { Calendar } from './components/atoms/calendar';
 
+// icons
+export { CaretLeftIcon } from './components/atoms/icons/caret-left';
+export { CaretRightIcon } from './components/atoms/icons/caret-right';
+export { CaretUpIcon } from './components/atoms/icons/caret-up';
+export { CaretDownIcon } from './components/atoms/icons/caret-down';
+export { CheckIcon } from './components/atoms/icons/check';
+export { MinusCircleIcon } from './components/atoms/icons/minus-circle';
+export { PlusCircleIcon } from './components/atoms/icons/plus-circle';
+export { XCircleIcon } from './components/atoms/icons/x-circle';
+export { XIcon } from './components/atoms/icons/x';
+export { CheckCircleIcon } from './components/atoms/icons/check-circle';
+export { MagnifyIngGlassIcon } from './components/atoms/icons/magnifying-glass';
+export { CalendarBlankIcon } from './components/atoms/icons/calendar-blank';
+export { FacebookLogoIcon } from './components/atoms/icons/facebook-logo';
+export { LinkedinLogoIcon } from './components/atoms/icons/linkedin-logo';
+export { ArrowLeftIcon } from './components/atoms/icons/arrow-left';
+export { ArrowRightIcon } from './components/atoms/icons/arrow-right';
+export { UploadSimpleIcon } from './components/atoms/icons/upload-simple';
+export { FileImageIcon } from './components/atoms/icons/file-image';
+export { FilePdfIcon } from './components/atoms/icons/file-pdf';
+export { WarningCircleIcon } from './components/atoms/icons/warning-circle';
+export { EyeIcon } from './components/atoms/icons/eye';
+
 // types
+export type {
+    IconProps,
+    WeighedIconProps
+} from './components/atoms/icons/types';
 export type { TagProps } from './components/atoms/tag';
 export type { ButtonProps } from './components/atoms/button';
 export type { CardProps } from './components/atoms/card';

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ArrowLeft, ArrowRight } from 'phosphor-react';
+import { ArrowLeftIcon } from '../atoms/icons/arrow-left';
+import { ArrowRightIcon } from '../atoms/icons/arrow-right';
 import { getPageRange } from '../../lib/functions';
 import { LinkButton } from '../atoms/link-button';
 import { CustomLink } from '../atoms/link';
@@ -31,7 +32,9 @@ export function Pagination({
                     Custom={customLink}
                     aria-label={`Page précédente`}
                     href={getPageUrl(currentPage - 1)}
-                    renderLeadingIcon={cls => <ArrowLeft className={cls} />}>
+                    renderLeadingIcon={cls => (
+                        <ArrowLeftIcon className={cls} />
+                    )}>
                     Précédent
                 </LinkButton>
             )}
@@ -56,7 +59,9 @@ export function Pagination({
                     Custom={customLink}
                     aria-label={`Page suivante`}
                     href={getPageUrl(currentPage + 1)}
-                    renderTrailingIcon={cls => <ArrowRight className={cls} />}>
+                    renderTrailingIcon={cls => (
+                        <ArrowRightIcon className={cls} />
+                    )}>
                     Suivant
                 </LinkButton>
             )}

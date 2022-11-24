@@ -1,7 +1,7 @@
 // components
 import { Header } from '@locaci/ui/components/organisms/header';
-import { MarketingFooter } from '~/features/marketing/components/marketing-footer';
-import { SearchButtonMarketing } from '~/features/marketing/components/search-button';
+import { Footer } from '@locaci/ui/components/molecules/footer';
+import { SearchButton } from '@locaci/ui/components/atoms/search-button';
 import {
     NextLink,
     NextLinkButton
@@ -25,7 +25,14 @@ export default function MarketingLayout({ children }: LayoutProps) {
                 logoAltText="Logo LOCACI"
                 logoUrlDesktop="/logo.svg"
                 logoUrlMobile="/favicon.svg"
-                leadingElement={<SearchButtonMarketing />}
+                leadingElement={
+                    <SearchButton
+                        className="lg:hidden"
+                        href="/search"
+                        customLink={NextLink}>
+                        Rechercher un logement
+                    </SearchButton>
+                }
                 trailingElement={
                     <Suspense fallback={<>loading...</>}>
                         <UserDropdown />
@@ -33,7 +40,12 @@ export default function MarketingLayout({ children }: LayoutProps) {
                 }
             />
             <main>{children}</main>
-            <MarketingFooter />
+            <Footer
+                className="stiky bottom-0"
+                customLink={NextLink}
+                // TODO : Links
+                links={[]}
+            />
         </>
     );
 }

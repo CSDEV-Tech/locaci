@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CaretDown } from 'phosphor-react';
+import { CaretDownIcon } from '../atoms/icons/caret-down';
 import { useButton, useComboBox, useFilter } from 'react-aria';
 import { Item, useComboBoxState } from 'react-stately';
 import { clsx } from '../../lib/functions';
@@ -124,7 +124,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
                         {props.isLoading ? (
                             <LoadingIndicator className="h-5 w-5" />
                         ) : (
-                            <CaretDown
+                            <CaretDownIcon
                                 weight="bold"
                                 className={clsx('h-4 w-4', {
                                     'rotate-180': state.isOpen

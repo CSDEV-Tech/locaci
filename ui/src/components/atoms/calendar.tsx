@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import { Button, ButtonProps } from './button';
-import { CaretLeft, CaretRight } from 'phosphor-react';
+import { CaretLeftIcon } from './icons/caret-left';
+import { CaretRightIcon } from './icons/caret-right';
 
 import {
     useCalendarState,
@@ -85,11 +86,13 @@ export function Calendar({
                 <h2 className="ml-2 flex-1 text-xl font-bold">{title}</h2>
                 <CalendarButton
                     {...prevButtonProps}
-                    renderLeadingIcon={cls => <CaretLeft className={cls} />}
+                    renderLeadingIcon={cls => <CaretLeftIcon className={cls} />}
                 />
                 <CalendarButton
                     {...nextButtonProps}
-                    renderLeadingIcon={cls => <CaretRight className={cls} />}
+                    renderLeadingIcon={cls => (
+                        <CaretRightIcon className={cls} />
+                    )}
                 />
             </div>
             <CalendarGrid state={state} />
