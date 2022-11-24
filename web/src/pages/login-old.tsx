@@ -180,7 +180,8 @@ LoginPage.getLayout = page => {
                 <>
                     <NextLinkButton
                         href="/auth/request-access"
-                        variant="hollow">
+                        variant="hollow"
+                        className="whitespace-nowrap">
                         Vous êtes un bailleur ?
                     </NextLinkButton>
                 </>

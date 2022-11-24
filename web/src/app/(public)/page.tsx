@@ -1,7 +1,6 @@
 import { prisma } from '~/server/db/client';
-import type { PageProps } from '~/types';
 
-export default async function IndexPage(props: PageProps) {
+export default async function IndexPage() {
     const properties = await prisma.property.findMany({
         where: {
             archived: false
@@ -14,7 +13,7 @@ export default async function IndexPage(props: PageProps) {
 
     return (
         <>
-            <h1 className="text-2xl">Home page</h1>
+            <h1 className="text-2xl">Page d'accueil</h1>
 
             <pre className="w-full overflow-x-scroll bg-dark p-2 text-white">
                 {JSON.stringify(properties, null, 2)}

@@ -1,7 +1,6 @@
 import '~/styles/globals.css';
 // components
 import { TrpcClientProvider } from '~/app/trpc-client-provider';
-import { HotToaster } from '~/features/shared/components/hot-toaster';
 import { TailwindIndicator } from '~/features/shared/components/tailwind-indicator';
 
 // utils
@@ -24,7 +23,6 @@ export default function RootLayout({ children }: LayoutProps) {
             </head>
             <body>
                 <TrpcClientProvider>{children}</TrpcClientProvider>
-                <HotToaster position="top-center" />
                 <TailwindIndicator />
             </body>
         </html>

@@ -9,18 +9,12 @@ import type { ModalProps } from '@locaci/ui';
 
 const Modal = dynamic(
     // @ts-ignore
-    () => import(`@locaci/ui/dist/components/atoms/modal`),
+    () => import(`@locaci/ui/components/atoms/modal`),
     {
-        ssr: false,
-        suspense: true
+        ssr: false
     }
 );
 
 export function LazyModal(props: ModalProps) {
-    return (
-        <React.Suspense fallback={<></>}>
-            {/* @ts-ignore */}
-            <Modal {...props} />
-        </React.Suspense>
-    );
+    return <Modal {...props} />;
 }

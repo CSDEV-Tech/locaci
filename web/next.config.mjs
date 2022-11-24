@@ -14,7 +14,8 @@ function defineNextConfig(config) {
 
 const nextConfig = defineNextConfig({
     experimental: {
-        appDir: true
+        appDir: true,
+        enableUndici: true
     },
     reactStrictMode: false,
     swcMinify: true
