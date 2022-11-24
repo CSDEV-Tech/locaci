@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const sendEmailLinkSchema = z.object({
+export const sendOtpSchema = z.object({
     email: z
         .string({
             required_error: `Veuillez saisir une adresse email`
@@ -8,8 +8,17 @@ export const sendEmailLinkSchema = z.object({
         .email({
             message: `Veuillez saisir une adresse email invalide, ex: kouakou.kouadio@gmail.com`
         })
+        .trim()
+});
+
+export const verifyOtpSchema = z.object({
+    otp: z
+        .string({
+            required_error: `Veuillez saisir le code secret`
+        })
+        .regex(/\d{6}/, 'le code saisi est invalide')
         .trim(),
-    redirectTo: z.string().url()
+    email: z.string().email().trim()
 });
 
 export const updateNameAndProfileSchema = z.object({

@@ -11,7 +11,7 @@ export function wait(ms: number): Promise<void> {
 export async function jsonFetch<T>(
     url: string,
     options: RequestInit = {}
-): Promise<T> {
+): Promise<T & { httpStatus: number }> {
     // Set the default headers correctly
     const headers: HeadersInit = new Headers(options.headers);
     headers.set('Accept', 'application/json');
@@ -26,11 +26,26 @@ export async function jsonFetch<T>(
         ...options,
         headers,
         credentials: 'include'
-    })
-        .then(response => response.json())
-        .catch(error => {
-            console.error('There was an error ?', error);
-        });
+    }).then(async response => {
+        // check if data is JSON
+        const isJson =
+            response.headers
+                .get('content-type')
+                ?.includes('application/json') ?? false;
+
+        const data = isJson ? await response.json() : null;
+
+        if (!response.ok) {
+            console.error(
+                `[jsonFetch ${
+                    options.method ?? 'GET'
+                } ${url}] There was an error :`,
+                { data }
+            );
+        }
+
+        return { ...data, httpStatus: response.status };
+    });
 }
 
 /**

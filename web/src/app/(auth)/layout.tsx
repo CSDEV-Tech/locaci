@@ -4,7 +4,6 @@ import {
     NextLink,
     NextLinkButton
 } from '~/features/shared/components/next-link';
-import { HotToaster } from '~/features/shared/components/hot-toaster';
 
 // utils
 import { cookies } from 'next/headers';
@@ -17,7 +16,6 @@ import type { LayoutProps } from '~/types';
 
 export default async function AuthLayout({ children }: LayoutProps) {
     const session = cookies().get('__session')?.value;
-
     const user = session ? await getUser(session) : null;
 
     if (user) {
@@ -38,7 +36,6 @@ export default async function AuthLayout({ children }: LayoutProps) {
 
     return (
         <>
-            <HotToaster position="top-center" />
             <Header
                 logoHref={`/`}
                 customLink={NextLink}

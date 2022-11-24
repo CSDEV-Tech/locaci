@@ -15,6 +15,7 @@ model User {
     firstName      String?
     lastName       String?
     phoneNumber    String?
+    avatarURL      String?
     email          String   @unique
     role           Role     @default(HOUSING_APPLICANT)
     createdAt      DateTime @default(now())

@@ -10,7 +10,7 @@ import { Button, clsx, TextInput } from '@locaci/ui';
 // functions & others
 import { getHostWithScheme } from '~/utils/functions';
 import { t } from '~/utils/trpc-rq-hooks';
-import { sendEmailLinkSchema } from '~/server/trpc/validation/auth-schema';
+import { sendOtpSchema } from '~/server/trpc/validation/auth-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { useOAuthMutation } from '~/features/shared/hooks/use-oauth-mutation';
 import dynamic from 'next/dynamic';
@@ -28,7 +28,7 @@ const LoginSuccessModal = dynamic(
 
 export const LoginPage: NextPageWithLayout = () => {
     const form = useZodForm({
-        schema: sendEmailLinkSchema.omit({
+        schema: sendOtpSchema.omit({
             redirectTo: true
         }),
         defaultValues: {
@@ -36,7 +36,7 @@ export const LoginPage: NextPageWithLayout = () => {
         }
     });
 
-    const loginWithEmailMutation = t.auth.sendEmailLink.useMutation();
+    const loginWithEmailMutation = t.auth.sendOtpCode.useMutation();
     const loginWithOAuthMutation = useOAuthMutation();
     const [receiverEmail, setReceiverEmail] = React.useState<string>();
 

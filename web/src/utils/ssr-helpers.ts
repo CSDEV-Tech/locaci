@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '~/server/db/client';
 import { Uuid } from '~/utils/uuid';
 import { env } from '~/env/server.mjs';
-import { cache } from 'react';
 
 import type { User } from '@prisma/client';
 
@@ -29,5 +28,3 @@ export async function getUser(sessionToken: string) {
 
     return user;
 }
-
-export const getUserCached = cache(getUser);

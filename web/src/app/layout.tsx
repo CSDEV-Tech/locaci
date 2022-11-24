@@ -2,7 +2,7 @@ import '~/styles/globals.css';
 // components
 import { TrpcClientProvider } from '~/app/trpc-client-provider';
 import { TailwindIndicator } from '~/features/shared/components/tailwind-indicator';
-
+import { HotToaster } from '~/features/shared/components/hot-toaster';
 // utils
 import { Poppins } from '@next/font/google';
 
@@ -12,7 +12,8 @@ import type { LayoutProps } from '~/types';
 const poppins = Poppins({
     subsets: ['latin'],
     variable: '--font-poppins',
-    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+    weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
+    display: 'swap'
 });
 
 export default function RootLayout({ children }: LayoutProps) {
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps) {
             <body>
                 <TrpcClientProvider>{children}</TrpcClientProvider>
                 <TailwindIndicator />
+                <HotToaster position="top-center" />
             </body>
         </html>
     );

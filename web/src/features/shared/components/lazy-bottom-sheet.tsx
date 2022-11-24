@@ -5,10 +5,9 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 
 // types
-import type { BottomSheetProps } from '@locaci/ui';
+import type { BottomSheetProps } from '@locaci/ui/components/atoms/bottom-sheet';
 
 const BottomSheet = dynamic(
-    // @ts-ignore
     () => import(`@locaci/ui/components/atoms/bottom-sheet`),
     {
         ssr: false
