@@ -5,7 +5,7 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 
 // types
-import type { ModalProps } from '@locaci/ui';
+import type { ModalProps } from '@locaci/ui/components/atoms/modal';
 
 const Modal = dynamic(
     // @ts-ignore

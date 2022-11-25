@@ -2,15 +2,13 @@
 import { Header } from '@locaci/ui/components/organisms/header';
 import { Footer } from '@locaci/ui/components/molecules/footer';
 import { SearchButton } from '@locaci/ui/components/atoms/search-button';
-import {
-    NextLink,
-    NextLinkButton
-} from '~/features/shared/components/next-link';
+import { NextLink } from '~/features/shared/components/next-link';
+import { LoginButton } from '~/features/public/components/login-button';
 
 // types
 import type { LayoutProps } from '~/types';
 
-export default function MarketingLayout({ children }: LayoutProps) {
+export default function PublicLayout({ children }: LayoutProps) {
     return (
         <>
             <Header
@@ -27,11 +25,7 @@ export default function MarketingLayout({ children }: LayoutProps) {
                         Rechercher un logement
                     </SearchButton>
                 }
-                trailingElement={
-                    <NextLinkButton href="/auth/login" variant="hollow">
-                        Connexion
-                    </NextLinkButton>
-                }
+                trailingElement={<LoginButton />}
             />
             <main>{children}</main>
             <Footer

@@ -31,9 +31,8 @@ export async function getUser(sessionToken: string) {
 }
 
 // trpc object that can be called inside server components
-export const rsc = appRouter.createCaller({
-    prisma,
-    user: null,
-    req: undefined,
-    res: undefined
-});
+export const rsc = (user?: User | null) =>
+    appRouter.createCaller({
+        prisma,
+        user: user
+    });

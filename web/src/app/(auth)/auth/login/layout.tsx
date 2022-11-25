@@ -10,12 +10,13 @@ import { cookies } from 'next/headers';
 import { getUser } from '~/server/ssr-helpers';
 import { redirect } from 'next/navigation';
 import { clsx } from '@locaci/ui/lib/functions';
-import { getRoleURL } from '~/utils/functions';
+import { getRoleURL, wait } from '~/utils/functions';
 
 // types
 import type { LayoutProps } from '~/types';
 
 export default async function LoginLayout({ children }: LayoutProps) {
+    await wait(2000);
     const session = cookies().get('__session')?.value;
     const user = session ? await getUser(session) : null;
 

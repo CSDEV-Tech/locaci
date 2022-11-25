@@ -1,5 +1,4 @@
 // utils
-import * as trpc from '@trpc/server';
 import { getUser } from '~/server/ssr-helpers';
 import { getCookie } from '~/utils/functions';
 import { prisma } from '~/server/db/client';
@@ -7,6 +6,7 @@ import { prisma } from '~/server/db/client';
 // types
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { User } from '@prisma/client';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export const createContext = async (opts?: CreateNextContextOptions) => {
     const req = opts?.req;
@@ -30,4 +30,9 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
     };
 };
 
-export type Context = trpc.inferAsyncReturnType<typeof createContext>;
+export type Context = {
+    req?: NextApiRequest;
+    res?: NextApiResponse;
+    user?: User | null;
+    prisma: typeof prisma;
+};

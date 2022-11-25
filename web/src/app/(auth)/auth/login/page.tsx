@@ -4,7 +4,7 @@ import { LoginForm } from '~/features/auth/components/login-form';
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
 
-export default function LoginPage() {
+export default async function LoginPage() {
     return (
         <>
             <section className="flex h-full items-center justify-center">

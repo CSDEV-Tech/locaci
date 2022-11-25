@@ -1,7 +1,7 @@
 import { rsc } from '~/server/ssr-helpers';
 
 export default async function IndexPage() {
-    const properties = await rsc.property.getLastThreeCreated();
+    const properties = await rsc().property.getLastThreeCreated();
 
     return (
         <>
