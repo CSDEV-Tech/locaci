@@ -29,7 +29,7 @@ export function WarningCircleIcon({
                         r="96"
                         fill="none"
                         stroke="currentColor"
-                        stroke-miterlimit="10"
+                        strokeMiterlimit="10"
                         strokeWidth={
                             weight === 'regular' ? '16' : '24'
                         }></circle>

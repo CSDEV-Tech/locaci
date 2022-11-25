@@ -19,7 +19,7 @@ export function PlusCircleIcon({
                     r="96"
                     fill="none"
                     stroke="currentColor"
-                    stroke-miterlimit="10"
+                    strokeMiterlimit="10"
                     strokeWidth={weight === 'bold' ? '24' : '16'}></circle>
                 <line
                     x1="88"
