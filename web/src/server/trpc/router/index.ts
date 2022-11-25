@@ -1,10 +1,9 @@
-import { adminRouter } from './admin/index';
 import { authRouter } from './auth';
 import { ownerRouter } from './owner/property';
 import { propertyRouter } from './property';
 
 import { TRPCError } from '@trpc/server';
-import { compareStrIgnoreAccent, jsonFetch } from '~/utils/functions';
+import { compareStrIgnoreAccent, apiFetch } from '~/utils/functions';
 
 import { env } from '~/env/server.mjs';
 import { z } from 'zod';
@@ -15,7 +14,6 @@ import type { OSMResultData } from '~/utils/types';
 export const appRouter = t.router({
     property: propertyRouter,
     auth: authRouter,
-    admin: adminRouter,
     owner: t.router({
         property: ownerRouter
     }),
@@ -46,7 +44,7 @@ export const appRouter = t.router({
                 });
             }
 
-            const res = await jsonFetch<Array<OSMResultData>>(
+            const res = await apiFetch<Array<OSMResultData>>(
                 `${env.OSM_SEARCH_URL}/search.php?q=${encodeURIComponent(
                     locality.name
                 )}&format=jsonv2&polygon_geojson=1&addressdetails=1`
@@ -119,7 +117,7 @@ export const appRouter = t.router({
 
             // search by municipality when the locality has not been found
             if (!localityRes) {
-                const res = await jsonFetch<Array<OSMResultData>>(
+                const res = await apiFetch<Array<OSMResultData>>(
                     `${env.OSM_SEARCH_URL}/search.php?q=${encodeURIComponent(
                         locality.municipality.name
                     )}&format=jsonv2&polygon_geojson=1`

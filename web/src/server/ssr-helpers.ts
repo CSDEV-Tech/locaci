@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '~/server/db/client';
 import { Uuid } from '~/utils/uuid';
 import { env } from '~/env/server.mjs';
+import { appRouter } from './trpc/router';
 
 import type { User } from '@prisma/client';
 
@@ -22,9 +23,17 @@ export async function getUser(sessionToken: string) {
                 }
             });
         }
-    } catch (error) {
-        // do nothing... that means that the user is not authenticated
-    }
 
-    return user;
+        return user;
+    } catch (error) {
+        return null;
+    }
 }
+
+// trpc object that can be called inside server components
+export const rsc = appRouter.createCaller({
+    prisma,
+    user: null,
+    req: undefined,
+    res: undefined
+});

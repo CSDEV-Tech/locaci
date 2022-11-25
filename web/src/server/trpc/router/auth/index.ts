@@ -12,7 +12,7 @@ import jwt from 'jsonwebtoken';
 import { ownerRouter } from './owner';
 import { isLoggedIn } from '../../middleware/auth';
 import { env } from '~/env/server.mjs';
-import { jsonFetch } from '~/utils/functions';
+import { apiFetch } from '~/utils/functions';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 
@@ -27,6 +27,8 @@ interface Auth0TokenResult {
 
 interface Auth0UserInfoResult {
     email: string;
+    given_name?: string;
+    family_name?: string;
     picture?: string;
     error?: string;
     error_description?: string;
@@ -40,11 +42,10 @@ const MAXIMUM_ATTEMPT =
 
 export const authRouter = t.router({
     owner: ownerRouter,
-    // base routes
     sendOtpCode: t.procedure
         .input(sendOtpSchema)
         .mutation(async ({ input: { email } }) => {
-            const { httpStatus, error, error_description } = await jsonFetch<{
+            const { httpStatus, error, error_description } = await apiFetch<{
                 error?: string;
                 error_description?: string;
             }>(`${env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL}/passwordless/start`, {
@@ -77,7 +78,7 @@ export const authRouter = t.router({
         .mutation(async ({ ctx, input: { otp, email } }) => {
             // get access token
             const { access_token, error, error_description, httpStatus } =
-                await jsonFetch<Auth0TokenResult>(
+                await apiFetch<Auth0TokenResult>(
                     `${env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL}/oauth/token`,
                     {
                         method: 'POST',
@@ -116,7 +117,7 @@ export const authRouter = t.router({
             }
 
             // get userinfos
-            const userInfosResult = await jsonFetch<Auth0UserInfoResult>(
+            const userInfosResult = await apiFetch<Auth0UserInfoResult>(
                 `${env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL}/userinfo`,
                 {
                     headers: {
@@ -141,9 +142,14 @@ export const authRouter = t.router({
                 create: {
                     email: userInfosResult.email,
                     avatarURL: userInfosResult.picture,
+                    firstName: userInfosResult.given_name,
+                    lastName: userInfosResult.family_name,
                     email_verified: true
                 },
-                update: {}
+                update: {
+                    firstName: userInfosResult.given_name,
+                    lastName: userInfosResult.family_name
+                }
             });
 
             // Set cookie to authenticate user
@@ -169,52 +175,104 @@ export const authRouter = t.router({
 
             return { success: true };
         }),
-
-    // TODO : TO REMOVE
-    setDefaultCookie: t.procedure.mutation(async ({ input, ctx }) => {
-        // Stay connected for 30 days
-        const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() + 30);
-
-        const user = await ctx.prisma.user.findFirst({
-            where: {
-                role: 'PROPERTY_OWNER'
-            }
-        });
-
-        const token = jwt.sign(
-            {
-                id: new Uuid(user!.id).short()
-            },
-            env.JWT_SECRET,
-            {
-                expiresIn: `30d`, // 30 days
-                algorithm: 'HS256'
-            }
-        );
-
+    removeAuthCookie: t.procedure.mutation(async ({ ctx }) => {
         ctx.res?.setHeader(
             'set-cookie',
-            `__session=${token}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
+            `__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict; httponly;`
         );
         return { success: true };
     }),
-    // END TODO : TO REMOVE
 
-    setAuthCookie: t.procedure
+    verifyOAuthCode: t.procedure
         .input(
             z.object({
-                uid: z.string().uuid()
+                code: z.string(),
+                redirectTo: z.string().url()
             })
         )
-        .mutation(async ({ input: { uid }, ctx }) => {
+        .mutation(async ({ ctx, input: { code, redirectTo } }) => {
+            const oauthTokenQueryString = new URLSearchParams();
+            oauthTokenQueryString.append(`grant_type`, `authorization_code`);
+            oauthTokenQueryString.append(
+                `client_id`,
+                env.NEXT_PUBLIC_OAUTH_CLIENT_ID
+            );
+            oauthTokenQueryString.append(
+                `client_secret`,
+                env.OAUTH_CLIENT_SECRET
+            );
+            oauthTokenQueryString.append(`code`, code);
+            oauthTokenQueryString.append(`redirect_uri`, redirectTo);
+
+            console.log(oauthTokenQueryString.toString());
+
+            // get access token
+            const { access_token, error, error_description, httpStatus } =
+                await apiFetch<Auth0TokenResult>(
+                    `${env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL}/oauth/token`,
+
+                    {
+                        method: 'POST',
+                        body: oauthTokenQueryString.toString(),
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    }
+                );
+            if (httpStatus !== 200) {
+                throw new TRPCError({
+                    message: `Une erreur est survenue lors de la connexion, veuillez vous reconnecter`,
+                    code: 'UNAUTHORIZED',
+                    cause: `${error}: ${error_description}`
+                });
+            }
+
+            // get userinfos
+            const userInfosResult = await apiFetch<Auth0UserInfoResult>(
+                `${env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL}/userinfo`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`
+                    }
+                }
+            );
+
+            console.dir({ userInfosResult }, { depth: null });
+
+            if (userInfosResult.httpStatus !== 200) {
+                throw new TRPCError({
+                    message: `lien invalide, veuillez recommencer`,
+                    code: 'UNAUTHORIZED',
+                    cause: `${userInfosResult.error}: ${userInfosResult.error_description}`
+                });
+            }
+
+            // get or create user
+            const user = await ctx.prisma.user.upsert({
+                where: {
+                    email: userInfosResult.email
+                },
+                create: {
+                    email: userInfosResult.email,
+                    avatarURL: userInfosResult.picture,
+                    firstName: userInfosResult.given_name,
+                    lastName: userInfosResult.family_name,
+                    email_verified: true
+                },
+                update: {
+                    firstName: userInfosResult.given_name,
+                    lastName: userInfosResult.family_name
+                }
+            });
+
+            // Set cookie to authenticate user
             // Stay connected for 30 days
             const expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 30);
 
             const token = jwt.sign(
                 {
-                    id: new Uuid(uid).short()
+                    id: new Uuid(user.id).short()
                 },
                 env.JWT_SECRET,
                 {
@@ -227,69 +285,13 @@ export const authRouter = t.router({
                 'set-cookie',
                 `__session=${token}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
             );
-            return { success: true };
-        }),
-    removeAuthCookie: t.procedure.mutation(async ({ ctx }) => {
-        ctx.res?.setHeader(
-            'set-cookie',
-            `__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict; httponly;`
-        );
-        return { success: true };
-    }),
-    getOrCreateUser: t.procedure
-        .input(
-            z.object({
-                email: z.string().email(),
-                firstName: z.string().nullish(),
-                lastName: z.string().nullish(),
-                uid: z.string().uuid()
-            })
-        )
-        .mutation(async ({ ctx, input }) => {
-            const { data } = await ctx.supabaseAdmin.auth.admin.getUserById(
-                input.uid
-            );
 
-            if (!data.user) {
-                throw new TRPCError({
-                    message: 'This user does not exist',
-                    code: 'NOT_FOUND'
-                });
-            }
-
-            return await ctx.prisma.user.upsert({
-                where: {
-                    email: input.email
-                },
-                create: {
-                    id: input.uid,
-                    email: input.email,
-                    email_verified: true,
-                    lastName: input.lastName,
-                    firstName: input.firstName
-                },
-                update: {}
-            });
+            return user;
         }),
     getAuthenticatedUser: protectedProcedure.query(({ ctx }) => {
         return ctx.user;
     }),
     getUser: t.procedure.query(({ ctx }) => {
         return ctx.user;
-    }),
-    updateNameProfile: protectedProcedure
-        .input(updateNameAndProfileSchema)
-        .mutation(async ({ ctx, input: { firstName, lastName } }) => {
-            await ctx.prisma.user.update({
-                where: {
-                    id: ctx.user.id
-                },
-                data: {
-                    firstName,
-                    lastName
-                }
-            });
-
-            return { success: true };
-        })
+    })
 });

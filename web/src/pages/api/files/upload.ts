@@ -2,7 +2,6 @@ import type { NextApiHandler } from 'next';
 import type { Files, Fields } from 'formidable';
 
 import formidable from 'formidable';
-import { supabaseAdmin } from '~/utils/supabase-admin';
 import { promises as fs } from 'node:fs';
 import { z } from 'zod';
 
@@ -53,15 +52,15 @@ const handler: NextApiHandler = async (req, res) => {
                     parse.data.type === 'image' ? 'images' : 'documents';
                 const isPublic = parse.data.type === 'image'; // only the image bucket is public
 
-                const result = await supabaseAdmin.storage.getBucket(bucket);
-                // if the bucket does not exist, we create it
-                if (result.error) {
-                    await supabaseAdmin.storage.createBucket(bucket, {
-                        public: isPublic
-                    });
-                }
+                // const result = await supabaseAdmin.storage.getBucket(bucket);
+                // // if the bucket does not exist, we create it
+                // if (result.error) {
+                //     await supabaseAdmin.storage.createBucket(bucket, {
+                //         public: isPublic
+                //     });
+                // }
 
-                let supabaseStorageResult: {
+                let storageResult: {
                     path: string | null;
                     bucket: string | null;
                     error: any;
@@ -73,27 +72,27 @@ const handler: NextApiHandler = async (req, res) => {
 
                 const [fileKey, file] = Object.entries(files)[0];
 
-                if (!(file instanceof Array)) {
-                    // we read the file before uploading it
-                    const buffer = await fs.readFile(file.filepath);
+                // if (!(file instanceof Array)) {
+                //     // we read the file before uploading it
+                //     const buffer = await fs.readFile(file.filepath);
 
-                    // we upload the files
-                    const { data: fileEl, error } = await supabaseAdmin.storage
-                        .from(bucket)
-                        .upload(fileKey, buffer, {
-                            cacheControl: '84600', // 1 day
-                            upsert: false,
-                            contentType: file.mimetype!
-                        });
+                //     // we upload the files
+                //     const { data: fileEl, error } = await supabaseAdmin.storage
+                //         .from(bucket)
+                //         .upload(fileKey, buffer, {
+                //             cacheControl: '84600', // 1 day
+                //             upsert: false,
+                //             contentType: file.mimetype!
+                //         });
 
-                    supabaseStorageResult = {
-                        path: fileEl?.path ?? null,
-                        bucket,
-                        error
-                    };
-                }
+                //     supabaseStorageResult = {
+                //         path: fileEl?.path ?? null,
+                //         bucket,
+                //         error
+                //     };
+                // }
 
-                return res.status(200).json(supabaseStorageResult);
+                return res.status(200).json(storageResult);
             } catch (e) {
                 console.log({ e });
                 return res

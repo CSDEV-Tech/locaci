@@ -1,15 +1,7 @@
-import { prisma } from '~/server/db/client';
+import { rsc } from '~/server/ssr-helpers';
 
 export default async function IndexPage() {
-    const properties = await prisma.property.findMany({
-        where: {
-            archived: false
-        },
-        take: 3,
-        orderBy: {
-            createdAt: 'desc'
-        }
-    });
+    const properties = await rsc.property.getLastThreeCreated();
 
     return (
         <>

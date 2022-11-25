@@ -7,35 +7,24 @@ import {
 
 // utils
 import { cookies } from 'next/headers';
-import { getUser } from '~/utils/ssr-helpers';
+import { getUser } from '~/server/ssr-helpers';
 import { redirect } from 'next/navigation';
 import { clsx } from '@locaci/ui/lib/functions';
+import { getRoleURL } from '~/utils/functions';
 
 // types
 import type { LayoutProps } from '~/types';
 
-export default async function AuthLayout({ children }: LayoutProps) {
+export default async function LoginLayout({ children }: LayoutProps) {
     const session = cookies().get('__session')?.value;
     const user = session ? await getUser(session) : null;
 
     if (user) {
-        let href = '/profile';
-        switch (user?.role) {
-            case 'ADMIN':
-                href = `/admin`;
-                break;
-            case 'PROPERTY_OWNER':
-                href = `/owner/dashboard`;
-                break;
-            default:
-                break;
-        }
-
-        redirect(href);
+        redirect(getRoleURL(user.role));
     }
 
     return (
-        <>
+        <div className="min-h-screen">
             <Header
                 logoHref={`/`}
                 customLink={NextLink}
@@ -71,6 +60,6 @@ export default async function AuthLayout({ children }: LayoutProps) {
                     )}
                 />
             </section>
-        </>
+        </div>
     );
 }

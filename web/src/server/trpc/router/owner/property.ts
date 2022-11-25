@@ -5,7 +5,6 @@ import { isOwner } from '~/server/trpc/middleware/auth';
 import { t } from '~/server/trpc/trpc-server-root';
 import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
 import { CreatePropertyController } from '~/server/trpc/router/controllers/create-property.controller';
-import type { StorageClient } from '@supabase/storage-js';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
@@ -60,27 +59,27 @@ export const ownerRouter = t.router({
                 message: 'Error'
             });
         }),
-    deleteFile: protectedProcedure
-        .input(
-            z.object({
-                path: z.string(),
-                type: z.enum(['image', 'document'])
-            })
-        )
-        .mutation(async ({ ctx, input }) => {
-            const bucket = input.type === 'image' ? 'images' : 'documents';
+    // deleteFile: protectedProcedure
+    //     .input(
+    //         z.object({
+    //             path: z.string(),
+    //             type: z.enum(['image', 'document'])
+    //         })
+    //     )
+    //     .mutation(async ({ ctx, input }) => {
+    //         const bucket = input.type === 'image' ? 'images' : 'documents';
 
-            const { error } = await (
-                ctx.supabaseAdmin.storage as unknown as StorageClient
-            )
-                .from(bucket)
-                .remove([input.path]);
+    //         const { error } = await (
+    //             ctx.supabaseAdmin.storage as unknown as StorageClient
+    //         )
+    //             .from(bucket)
+    //             .remove([input.path]);
 
-            return {
-                error,
-                success: error === null
-            };
-        }),
+    //         return {
+    //             error,
+    //             success: error === null
+    //         };
+    //     }),
     searchCityByName: t.procedure
         .input(
             z.object({

@@ -10,7 +10,7 @@ export type PageProps<
     TSearchParams extends {} = {}
 > = {
     params: TParams;
-    searchParams: TSearchParams;
+    searchParams: Partial<TSearchParams>;
 };
 
 export type LayoutProps<
@@ -24,4 +24,9 @@ export type LayoutProps<
 
 export type HeadProps<TParams extends {} = {}> = {
     params: TParams;
+};
+
+export type ErrorBoundaryProps = {
+    error: Error;
+    reset: () => void;
 };

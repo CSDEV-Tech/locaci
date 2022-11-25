@@ -1,5 +1,5 @@
 // utils
-import { getUser } from '~/utils/ssr-helpers';
+import { getUser } from '~/server/ssr-helpers';
 import { cookies } from 'next/headers';
 
 // types

@@ -1,3 +1,5 @@
+import type { Role } from '@prisma/client';
+
 export function getHostWithScheme(url: string): string {
     const urlObject = new URL(url);
     return urlObject.protocol + '//' + urlObject.host;
@@ -8,14 +10,17 @@ export function wait(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function jsonFetch<T>(
+export async function apiFetch<T>(
     url: string,
     options: RequestInit = {}
 ): Promise<T & { httpStatus: number }> {
     // Set the default headers correctly
     const headers: HeadersInit = new Headers(options.headers);
     headers.set('Accept', 'application/json');
-    headers.set('Content-Type', 'application/json');
+    headers.set(
+        'Content-Type',
+        headers.get('Content-Type') ?? 'application/json'
+    );
 
     // only wait in development mode
     if (process.env.NODE_ENV === 'development') {
@@ -40,7 +45,7 @@ export async function jsonFetch<T>(
                 `[jsonFetch ${
                     options.method ?? 'GET'
                 } ${url}] There was an error :`,
-                { data }
+                { data, statusCode: response.status }
             );
         }
 
@@ -205,4 +210,15 @@ export function convertDateToBeginOfDate(date: Date) {
  */
 export function linkWithSlash(link: string): string | undefined {
     return link !== undefined ? (link.endsWith('/') ? link : `${link}/`) : link;
+}
+
+export function getRoleURL(role: Role) {
+    switch (role) {
+        case 'ADMIN':
+            return `/admin`;
+        case 'PROPERTY_OWNER':
+            return `/owner/dashboard`;
+        default:
+            return '/profile';
+    }
 }
