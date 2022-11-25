@@ -91,3 +91,23 @@ export function getPageRange(currentPage: number, nbPages: number) {
 
     return pages;
 }
+
+/**
+ * Get initials for a name formatted as "first last"
+ *
+ * @example
+ *      getInitials("John Doe") // => 'JD'
+ * @param fullName
+ */
+export function getInitials(fullName: string) {
+    const names = fullName.split(' ').filter(Boolean);
+    const initials: string[] = [];
+
+    for (const name of names) {
+        if (name.trim().length > 0) {
+            initials.push(name.charAt(0));
+        }
+    }
+
+    return initials.join('').toUpperCase();
+}
