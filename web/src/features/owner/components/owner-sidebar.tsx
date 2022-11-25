@@ -31,7 +31,7 @@ export function OwnerSidebar({ user }: OwnerSidebarProps) {
         {
             Icon: HouseSimple,
             label: 'Tableau de bord',
-            href: '/owner/dashboard'
+            href: '/owner'
         },
         {
             Icon: User,

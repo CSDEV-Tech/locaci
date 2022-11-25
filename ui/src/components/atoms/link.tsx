@@ -9,47 +9,61 @@ export type LinkProps = {
     'aria-label'?: string;
     rel?: string;
     'aria-current'?: React.AriaAttributes['aria-current'];
-    Custom?: React.ComponentType<CustomLink>;
+    Custom?:
+        | React.ComponentType<CustomLink>
+        | React.ForwardRefExoticComponent<
+              CustomLink & React.RefAttributes<HTMLAnchorElement>
+          >;
     onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
-};
+} & Omit<React.HTMLProps<HTMLAnchorElement>, 'ref'>;
 
 export type CustomLink = Omit<LinkProps, 'Custom'>;
 
-export function Link({
-    children,
-    className,
-    Custom,
-    href,
-    target,
-    onClick,
-    rel,
-    'aria-label': ariaLabel,
-    'aria-current': ariaCurrent
-}: LinkProps) {
-    if (Custom) {
+export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+    (
+        {
+            children,
+            className,
+            Custom,
+            href,
+            target,
+            onClick,
+            rel,
+            'aria-label': ariaLabel,
+            'aria-current': ariaCurrent,
+            ...restProps
+        },
+        ref
+    ) => {
+        if (Custom) {
+            return (
+                <Custom
+                    onClick={onClick}
+                    rel={rel}
+                    ref={ref}
+                    aria-current={ariaCurrent}
+                    aria-label={ariaLabel}
+                    children={children}
+                    className={clsx(className)}
+                    href={href}
+                    {...restProps}
+                />
+            );
+        }
+
         return (
-            <Custom
-                onClick={onClick}
+            <a
                 rel={rel}
-                aria-current={ariaCurrent}
+                ref={ref}
+                onClick={onClick}
                 aria-label={ariaLabel}
-                children={children}
+                aria-current={ariaCurrent}
                 className={clsx(className)}
                 href={href}
-            />
+                {...restProps}
+                target={target}>
+                {children}
+            </a>
         );
     }
-
-    return (
-        <a
-            rel={rel}
-            onClick={onClick}
-            aria-label={ariaLabel}
-            aria-current={ariaCurrent}
-            className={clsx(className)}
-            href={href}
-            target={target}>
-            {children}
-        </a>
-    );
-}
+);

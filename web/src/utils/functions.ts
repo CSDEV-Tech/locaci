@@ -217,7 +217,7 @@ export function getRoleURL(role: Role) {
         case 'ADMIN':
             return `/admin`;
         case 'PROPERTY_OWNER':
-            return `/owner/dashboard`;
+            return `/owner`;
         default:
             return '/profile';
     }

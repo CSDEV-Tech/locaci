@@ -70,7 +70,7 @@ function PropertyList({ user }: { user: User }) {
                         </p>
                         <NextLinkButton
                             variant="secondary"
-                            href="/owner/properties/add">
+                            href="/owner/add-listing">
                             Ajouter votre première annonce
                         </NextLinkButton>
                     </>
@@ -114,7 +114,7 @@ function PropertyList({ user }: { user: User }) {
 
                         <NextLinkButton
                             variant="secondary"
-                            href="/owner/properties/add">
+                            href="/owner/add-listing">
                             Ajouter une annonce
                         </NextLinkButton>
                     </>

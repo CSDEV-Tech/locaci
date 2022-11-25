@@ -1,15 +1,21 @@
 'use client';
+import * as React from 'react';
 
+// components
 import Link from 'next/link';
-import type { CustomLink } from '@locaci/ui/components/atoms/link';
 import {
     LinkButton,
     type LinkButtonProps
 } from '@locaci/ui/components/atoms/link-button';
 
-export function NextLink(props: CustomLink) {
-    return <Link {...props} />;
-}
+// types
+import type { CustomLink } from '@locaci/ui/components/atoms/link';
+
+export const NextLink = React.forwardRef<HTMLAnchorElement, CustomLink>(
+    (props, ref) => {
+        return <Link {...props} ref={ref} />;
+    }
+);
 
 export function NextLinkButton(props: Omit<LinkButtonProps, 'Custom'>) {
     return <LinkButton {...props} Custom={NextLink} />;
