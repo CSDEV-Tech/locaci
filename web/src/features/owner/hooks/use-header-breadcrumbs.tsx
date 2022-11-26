@@ -14,10 +14,10 @@ export function useHeaderBreadcrumbs(): BreadcrumbItem[] {
     ];
 
     switch (selectedSegment) {
-        case 'add-listing':
+        case 'properties':
             items.push({
-                href: `/owner/add-listing`,
-                label: `Nouvelle annonce`
+                href: `${path}#`,
+                label: `Modification annonce`
             });
             break;
     }

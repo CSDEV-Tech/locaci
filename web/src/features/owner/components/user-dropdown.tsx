@@ -53,12 +53,22 @@ export function UserDropdown({ user }: UserDropdownProps) {
                 items={[
                     {
                         text: 'Tableau de bord',
-                        Icon: SquaresFour,
+                        Icon: props => (
+                            <SquaresFour
+                                className={props.className}
+                                weight={'bold'}
+                            />
+                        ),
                         href: `/owner`
                     },
                     {
                         text: 'Déconnexion',
-                        Icon: SignOut,
+                        Icon: props => (
+                            <SignOut
+                                className={props.className}
+                                weight={'bold'}
+                            />
+                        ),
                         onClick() {
                             logoutMutation.mutate();
                         }

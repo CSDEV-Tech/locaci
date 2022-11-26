@@ -38,8 +38,6 @@ export type CreatePropertyProps = {};
 type CreatePropertyInput = z.TypeOf<typeof createPropertyRequestSchema>;
 
 const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
-    const [step, setStep] = React.useState(1);
-
     const [formValues, setFormValues] = React.useState<
         Partial<
             CreatePropertyInput & {
@@ -50,6 +48,8 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
     >({
         rentType: 'LOCATION'
     });
+
+    const [step, setStep] = React.useState(1);
 
     function goToPrevious() {
         setStep(prev => prev - 1);

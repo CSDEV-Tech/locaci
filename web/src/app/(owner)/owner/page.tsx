@@ -15,6 +15,7 @@ import { use } from 'react';
 
 // types
 import type { User } from '@prisma/client';
+import { AddButton } from '~/features/owner/components/add-button';
 
 export default async function OwnerDashboardPage() {
     const userSession = cookies().get(`__session`)?.value;
@@ -68,11 +69,7 @@ function PropertyList({ user }: { user: User }) {
                             Créer votre première annonce pour mettre en valeur
                             votre logement et attirer les futurs locataires.
                         </p>
-                        <NextLinkButton
-                            variant="secondary"
-                            href="/owner/add-listing">
-                            Ajouter votre première annonce
-                        </NextLinkButton>
+                        <AddButton>Ajouter votre première annonce</AddButton>
                     </>
                 ) : (
                     <>
@@ -85,9 +82,7 @@ function PropertyList({ user }: { user: User }) {
                                 <li
                                     key={p.id}
                                     className="rounded-md border p-2">
-                                    <NextLink
-                                        href={`/owner/properties/${p.id}`}
-                                        className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2">
                                         <span>
                                             {p.noOfRooms === 1
                                                 ? 'Studio'
@@ -107,16 +102,12 @@ function PropertyList({ user }: { user: User }) {
                                             {p.noOfRooms} pièces -&nbsp;
                                             {p.surfaceArea} m<sup>2</sup>
                                         </span>
-                                    </NextLink>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
 
-                        <NextLinkButton
-                            variant="secondary"
-                            href="/owner/add-listing">
-                            Ajouter une annonce
-                        </NextLinkButton>
+                        <AddButton> Ajouter une nouvelle annonce</AddButton>
                     </>
                 )}
             </section>

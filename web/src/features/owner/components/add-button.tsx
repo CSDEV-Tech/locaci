@@ -2,25 +2,33 @@
 import * as React from 'react';
 
 // components
-import { PlusCircleIcon } from '@locaci/ui/components/atoms/icons/plus-circle';
-import { NextLinkButton } from '~/features/shared/components/next-link';
+import { Button } from '@locaci/ui/components/atoms/button';
 
 // utils
-import { clsx } from '@locaci/ui/lib/functions';
+import { t } from '~/utils/trpc-rq-hooks';
+import { useRouter } from 'next/navigation';
 
-export function AddButton() {
+export function AddButton({ children }: { children: React.ReactNode }) {
+    const router = useRouter();
+    const [isNavigating, startTransition] = React.useTransition();
+
+    const createPropertyMutation = t.owner.property.create.useMutation({
+        onSuccess(data, variables, context) {
+            startTransition(() =>
+                router.push(`/owner/properties/${data.uuid}/edit`)
+            );
+        }
+    });
+
     return (
         <>
-            <NextLinkButton
-                href="/owner/properties/add"
+            <Button
                 className="whitespace-nowrap"
                 variant="secondary"
-                aria-label="Ajouter une annonce"
-                renderLeadingIcon={cls => (
-                    <PlusCircleIcon className={clsx(cls)} weight={`bold`} />
-                )}>
-                <span className="hidden md:inline">Nouvelle annonce</span>
-            </NextLinkButton>
+                onClick={() => createPropertyMutation.mutate()}
+                loading={createPropertyMutation.isLoading || isNavigating}>
+                {children}
+            </Button>
         </>
     );
 }

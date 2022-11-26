@@ -1,14 +1,14 @@
+import { updatePropertyStep1Schema } from '~/server/trpc/validation/property-schema';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-
 import { isOwner } from '~/server/trpc/middleware/auth';
 import { t } from '~/server/trpc/trpc-server-root';
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
-import { CreatePropertyController } from '~/server/trpc/router/controllers/create-property.controller';
+
+import type { RentType } from '@prisma/client';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
-    getAll: protectedProcedure.query(async ({ ctx, input }) => {
+    getAll: protectedProcedure.query(async ({ ctx }) => {
         return ctx.prisma.property.findMany({
             where: {
                 userId: ctx.user.id
@@ -37,50 +37,9 @@ export const ownerRouter = t.router({
                 }
             });
 
-            if (!property) {
-                throw new TRPCError({
-                    code: 'NOT_FOUND',
-                    message: 'Désolé, cette propriété nexiste pas.'
-                });
-            }
-
             return property;
         }),
-    addListing: protectedProcedure
-        .input(
-            z.object({
-                field: z.string().uuid()
-            })
-        )
-        .mutation(async ({ ctx, input }) => {
-            // TODO: Mutation code
-            throw new TRPCError({
-                code: 'NOT_FOUND',
-                message: 'Error'
-            });
-        }),
-    // deleteFile: protectedProcedure
-    //     .input(
-    //         z.object({
-    //             path: z.string(),
-    //             type: z.enum(['image', 'document'])
-    //         })
-    //     )
-    //     .mutation(async ({ ctx, input }) => {
-    //         const bucket = input.type === 'image' ? 'images' : 'documents';
-
-    //         const { error } = await (
-    //             ctx.supabaseAdmin.storage as unknown as StorageClient
-    //         )
-    //             .from(bucket)
-    //             .remove([input.path]);
-
-    //         return {
-    //             error,
-    //             success: error === null
-    //         };
-    //     }),
-    searchCityByName: t.procedure
+    searchCityByName: protectedProcedure
         .input(
             z.object({
                 name: z.string()
@@ -96,7 +55,7 @@ export const ownerRouter = t.router({
                 }
             });
         }),
-    searchCommuneByName: t.procedure
+    searchCommuneByName: protectedProcedure
         .input(
             z.object({
                 name: z.string()
@@ -115,7 +74,7 @@ export const ownerRouter = t.router({
                 }
             });
         }),
-    searchLocalityByName: t.procedure
+    searchLocalityByName: protectedProcedure
         .input(
             z.object({
                 name: z.string(),
@@ -136,23 +95,53 @@ export const ownerRouter = t.router({
                 }
             });
         }),
-    create: protectedProcedure
-        .input(createPropertyRequestSchema)
+
+    create: protectedProcedure.mutation(async ({ ctx, input }) => {
+        const property = await ctx.prisma.property.create({
+            data: {
+                userId: ctx.user.id,
+                rooms: {
+                    createMany: {
+                        data: [{ type: 'BEDROOM' }]
+                    }
+                }
+            }
+        });
+
+        return { uuid: property.id };
+    }),
+
+    updatePropertyStep1: protectedProcedure
+        .input(updatePropertyStep1Schema)
         .mutation(async ({ ctx, input }) => {
-            const res = await CreatePropertyController.handle({
-                ctx,
-                input: {
-                    ...input
+            await ctx.prisma.property.update({
+                where: {
+                    id: input.propertyUid
+                },
+                data: {
+                    surfaceArea: input.surfaceArea,
+                    rentType: input.rentType as RentType,
+                    userId: ctx.user.id
                 }
             });
-
-            if (res.error) {
-                throw new TRPCError({
-                    code: 'BAD_REQUEST',
-                    message: res.error
-                });
-            }
-
-            return res.property;
         })
+    // create: protectedProcedure
+    //     .input(createPropertyRequestSchema)
+    //     .mutation(async ({ ctx, input }) => {
+    //         const res = await CreatePropertyController.handle({
+    //             ctx,
+    //             input: {
+    //                 ...input
+    //             }
+    //         });
+
+    //         if (res.error) {
+    //             throw new TRPCError({
+    //                 code: 'BAD_REQUEST',
+    //                 message: res.error
+    //             });
+    //         }
+
+    //         return res.property;
+    //     })
 });

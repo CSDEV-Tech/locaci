@@ -15,7 +15,7 @@ export function LoadingScreen({
         <>
             <section
                 className={clsx(className, 'flex items-center justify-center')}>
-                <h1 className="flex items-center gap-4 text-4xl">
+                <h1 className="flex items-center gap-4 text-3xl md:text-4xl">
                     <LoadingIndicator className="h-10" />
                     <span>{title}</span>
                 </h1>

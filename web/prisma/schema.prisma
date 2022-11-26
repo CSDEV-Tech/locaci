@@ -105,7 +105,7 @@ model Property {
 
     // default values
     rentType    RentType @default(LOCATION)
-    surfaceArea Int
+    surfaceArea Int      @default(9)
 
     noOfRooms Int?
 
@@ -114,7 +114,7 @@ model Property {
     rooms     Room[]
     amenities Amenity[]
 
-    images Json // A JSON Array of uris + name ([{uri, name}]) 
+    images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
 
     // localization
     city                City?         @relation(fields: [cityId], references: [id])
@@ -131,6 +131,29 @@ model Property {
     cityId         String? @db.Uuid
     municipalityId String? @db.Uuid
     localityId     String? @db.Uuid
+
+    // form step
+    currentStep PropertyFormStep @default(RENT_TYPE)
+
+    // listing details
+    housingFee                  Int?
+    description                 String?
+    housingPeriod               Int?
+    cautionMonthsPaymentAdvance Int?
+    agencyMonthsPaymentAdvance  Int?
+    availableFrom               DateTime?
+    active                      Boolean   @default(false)
+}
+
+enum PropertyFormStep {
+    RENT_TYPE
+    ADDRESS
+    INSTRUCTIONS
+    ROOMS
+    AMENITIES
+    IMAGES
+    LISTING_DETAILS
+    COMPLETE
 }
 
 enum RentType {

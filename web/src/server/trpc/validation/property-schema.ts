@@ -1,18 +1,18 @@
 import { z } from 'zod';
 
 export const createPropertyRequestSchema = z.object({
-    surfaceArea: z
-        .number({
-            required_error: 'Veuillez saisir la surface de votre logement'
-        })
-        .min(
-            9,
-            'La surface de votre logement ne peut pas être plus petite que 9 m²'
-        ),
-    rentType: z.enum(['LOCATION', 'SHARED_APPARTMENT', 'SHORT_TERM'], {
-        invalid_type_error: 'Veuillez choisir le type de logement',
-        required_error: 'Veuillez choisir le type de logement'
-    }),
+    // surfaceArea: z
+    //     .number({
+    //         required_error: 'Veuillez saisir la surface de votre logement'
+    //     })
+    //     .min(
+    //         9,
+    //         'La surface de votre logement ne peut pas être plus petite que 9 m²'
+    //     ),
+    // rentType: z.enum(['LOCATION', 'SHARED_APPARTMENT', 'SHORT_TERM'], {
+    //     invalid_type_error: 'Veuillez choisir le type de logement',
+    //     required_error: 'Veuillez choisir le type de logement'
+    // }),
     communeUid: z
         .string({
             required_error:
@@ -109,7 +109,7 @@ export const createPropertyRequestSchema = z.object({
         .min(3, 'Vous devez ajouter au moins 3 images de votre logement')
 });
 
-export const createPropertyRequestSchemaStep1 = z.object({
+export const updatePropertyStep1Schema = z.object({
     surfaceArea: z
         .number({
             required_error: 'Veuillez saisir la surface de votre logement'
@@ -121,7 +121,8 @@ export const createPropertyRequestSchemaStep1 = z.object({
     rentType: z.enum(['LOCATION', 'SHARED_APPARTMENT', 'SHORT_TERM'], {
         invalid_type_error: 'Veuillez choisir le type de logement',
         required_error: 'Veuillez choisir le type de logement'
-    })
+    }),
+    propertyUid: z.string().uuid()
 });
 
 export const createPropertyRequestSchemaStep2 = z.object({

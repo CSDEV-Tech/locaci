@@ -39,7 +39,8 @@ export default function CallbackPage() {
         <>
             {verifyOAuthCodeMutation.isError ? (
                 <ErrorScreen
-                    error={`Une erreur est survenue lors de la connexion, veuillez vous reconnecter.`}>
+                    className="h-screen"
+                    errorDescription={`Une erreur est survenue lors de la connexion, veuillez vous reconnecter.`}>
                     <NextLinkButton href="/auth/login" variant="primary">
                         Connectez-vous
                     </NextLinkButton>

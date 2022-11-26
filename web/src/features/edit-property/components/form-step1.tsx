@@ -1,33 +1,36 @@
+'use client';
+
 // components
-import { Button, NumberInput, Select } from '@locaci/ui';
+import { Select } from '@locaci/ui/components/atoms/select';
+import { NumberInput } from '@locaci/ui/components/atoms/input';
+import { Button } from '@locaci/ui/components/atoms/button';
 import { Controller } from 'react-hook-form';
 import { CaretDoubleRight } from 'phosphor-react';
 
 // utils
 import { RentTypes } from '~/features/shared/types';
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { updatePropertyStep1Schema } from '~/server/trpc/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
-export type Form1Values = Pick<
-    z.TypeOf<typeof createPropertyRequestSchema>,
-    'surfaceArea' | 'rentType'
+export type Form1Values = Omit<
+    z.TypeOf<typeof updatePropertyStep1Schema>,
+    'propertyUid'
 >;
 
 type FormStep1Props = {
-    onSubmit: (values: Form1Values) => void;
-    defaultValues: Partial<Form1Values>;
+    onSubmit?: () => void;
+    defaultValues?: Partial<Form1Values>;
 };
 
 export function FormStep1(props: FormStep1Props) {
     const form = useZodForm({
-        schema: createPropertyRequestSchema.pick({
-            surfaceArea: true,
-            rentType: true
+        schema: updatePropertyStep1Schema.omit({
+            propertyUid: true
         }),
         defaultValues: {
-            ...props.defaultValues,
+            rentType: props.defaultValues?.rentType ?? 'LOCATION',
             surfaceArea: props.defaultValues?.surfaceArea ?? 9
         }
     });
@@ -36,7 +39,7 @@ export function FormStep1(props: FormStep1Props) {
         <>
             <div>
                 <h2 className="text-center text-2xl font-extrabold text-secondary">
-                    1/7
+                    1/8
                 </h2>
                 <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
                     Quel type de logement voulez-vous ajouter ?
@@ -44,9 +47,10 @@ export function FormStep1(props: FormStep1Props) {
             </div>
             <form
                 className="flex flex-col items-stretch gap-4 px-6 md:m-auto md:w-[450px]"
-                onSubmit={form.handleSubmit(variables =>
-                    props.onSubmit(variables)
-                )}>
+                onSubmit={form.handleSubmit(variables => {
+                    console.log({ variables });
+                    // props.onSubmit?.()
+                })}>
                 <div className="flex flex-col gap-4 text-lg">
                     <Controller
                         name="rentType"
