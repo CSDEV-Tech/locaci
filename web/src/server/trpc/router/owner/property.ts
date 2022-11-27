@@ -1,9 +1,11 @@
+import { TRPCError } from '@trpc/server';
 import { updatePropertyStep1Schema } from '~/server/trpc/validation/property-schema';
 import { z } from 'zod';
 import { isOwner } from '~/server/trpc/middleware/auth';
 import { t } from '~/server/trpc/trpc-server-root';
 
 import type { RentType } from '@prisma/client';
+import { PropertyFormStep } from '@prisma/client';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
@@ -127,18 +129,35 @@ export const ownerRouter = t.router({
         });
         return { uuid: property.id };
     }),
-
-    updatePropertyStep1: protectedProcedure
+    saveDraftStep1: protectedProcedure
         .input(updatePropertyStep1Schema)
         .mutation(async ({ ctx, input }) => {
-            await ctx.prisma.property.update({
+            const draft = await ctx.prisma.propertyFormDto.findUnique({
                 where: {
-                    id: input.propertyUid
+                    id: input.uid
+                }
+            });
+
+            if (!draft) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            return ctx.prisma.propertyFormDto.update({
+                where: {
+                    id: input.uid
                 },
                 data: {
                     surfaceArea: input.surfaceArea,
                     rentType: input.rentType as RentType,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    currentStep:
+                        draft.currentStep === PropertyFormStep.RENT_TYPE
+                            ? 'ADDRESS'
+                            : draft.currentStep
                 }
             });
         })

@@ -24,17 +24,23 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
             staleTime: Infinity
         }
     );
-    const [step, setStep] = React.useState(getStepNumber(draft?.currentStep));
+    const [step, goTo] = React.useState(getStepNumber(draft?.currentStep));
 
     if (!draft) return null;
 
     function goToNext() {
-        setStep(step => step + 1);
+        goTo(step => step + 1);
     }
 
     function goToPrevious() {
-        setStep(step => step - 1);
+        goTo(step => step - 1);
     }
+
+    const saveDraftMutation = t.owner.property.saveDraftStep1.useMutation({
+        onSuccess() {
+            goTo(2);
+        }
+    });
 
     return (
         <>
@@ -45,13 +51,25 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
                 className="!absolute top-0 left-0 right-0"
                 variant="secondary"
             />
+
             <div
                 className={clsx(
                     'flex h-full w-full flex-col',
                     'gap-14 pt-20 pb-10',
                     'md:m-auto md:h-auto'
                 )}>
-                {step === 1 && <FormStep1 onSubmit={goToNext} />}
+                {step === 1 && (
+                    <FormStep1
+                        onSubmit={values =>
+                            saveDraftMutation.mutate({
+                                ...values,
+                                uid: draft.id
+                            })
+                        }
+                        defaultValues={{ ...draft }}
+                        isSubmitting={saveDraftMutation.isLoading}
+                    />
+                )}
             </div>
         </>
     );

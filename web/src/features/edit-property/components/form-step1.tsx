@@ -14,24 +14,25 @@ import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
+
 export type Form1Values = Omit<
     z.TypeOf<typeof updatePropertyStep1Schema>,
-    'propertyUid'
+    'uid'
 >;
 
 type FormStep1Props = {
-    onSubmit?: () => void;
+    onSubmit?: (values: Form1Values) => void;
     defaultValues?: Partial<Form1Values>;
+    isSubmitting: boolean;
 };
 
 export function FormStep1(props: FormStep1Props) {
     const form = useZodForm({
         schema: updatePropertyStep1Schema.omit({
-            propertyUid: true
+            uid: true
         }),
         defaultValues: {
-            rentType: props.defaultValues?.rentType ?? 'LOCATION',
-            surfaceArea: props.defaultValues?.surfaceArea ?? 9
+            ...props.defaultValues
         }
     });
 
@@ -47,10 +48,9 @@ export function FormStep1(props: FormStep1Props) {
             </div>
             <form
                 className="flex flex-col items-stretch gap-4 px-6 md:m-auto md:w-[450px]"
-                onSubmit={form.handleSubmit(variables => {
-                    console.log({ variables });
-                    // props.onSubmit?.()
-                })}>
+                onSubmit={form.handleSubmit(variables =>
+                    props.onSubmit?.(variables)
+                )}>
                 <div className="flex flex-col gap-4 text-lg">
                     <Controller
                         name="rentType"
@@ -94,6 +94,7 @@ export function FormStep1(props: FormStep1Props) {
                     <Button
                         type="submit"
                         variant="dark"
+                        loading={props.isSubmitting}
                         renderTrailingIcon={cls => (
                             <CaretDoubleRight className={cls} />
                         )}>

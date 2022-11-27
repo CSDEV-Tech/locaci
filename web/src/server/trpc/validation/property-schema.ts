@@ -122,23 +122,18 @@ export const updatePropertyStep1Schema = z.object({
         invalid_type_error: 'Veuillez choisir le type de logement',
         required_error: 'Veuillez choisir le type de logement'
     }),
-    propertyUid: z.string().uuid()
+    uid: z.string().uuid()
 });
 
-export const createPropertyRequestSchemaStep2 = z.object({
-    communeUid: z
+export const updatePropertyStep2Schema = z.object({
+    uid: z.string().uuid(),
+    municipalityUid: z
         .string({
             required_error:
                 'Veuillez saisir la commune où est située votre logement',
             invalid_type_error: ''
         })
         .uuid('Veuillez saisir la commune où est située votre logement'),
-    localityName: z
-        .string({
-            required_error:
-                'Veuillez saisir le quartier où se trouve votre logement'
-        })
-        .min(1, 'Veuillez saisir le quartier où se trouve votre logement'),
     localityUid: z
         .string({
             required_error:
