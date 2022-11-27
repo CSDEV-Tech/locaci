@@ -40,6 +40,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
         <>
             <Dropdown
                 align="right"
+                className="z-20"
                 customLink={NextLink}
                 button={() => (
                     <button>
