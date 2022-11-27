@@ -1,50 +1,59 @@
+'use client';
 import * as React from 'react';
 
 // components
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
-import { Button, SearchAutocomplete, TextInput } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
+import { TextInput } from '@locaci/ui/components/atoms/input';
+import { SearchAutocomplete } from '@locaci/ui/components/molecules/search-autocomplete';
 
 // utils
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { updatePropertyStep2Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { t } from '~/utils/trpc-rq-hooks';
+import { z } from 'zod';
 
 // types
-import type { z } from 'zod';
 export type Form2Values = Pick<
-    z.TypeOf<typeof createPropertyRequestSchema>,
-    'cityUid' | 'communeUid' | 'localityName' | 'localityUid'
->;
+    z.TypeOf<typeof updatePropertyStep2Schema>,
+    'cityUid' | 'localityUid' | 'municipalityUid'
+> & {
+    localityQuery: string;
+    municipalityQuery: string;
+};
 
 type FormStep2Props = {
-    defaultValues: Partial<
-        Form2Values & { localityQuery: string; municipalityQuery: string }
-    >;
+    defaultValues: Partial<Form2Values>;
     onPreviousClick: () => void;
-    onSubmit: (
-        values: Form2Values & {
-            localityQuery: string;
-            municipalityQuery: string;
-        }
-    ) => void;
+    onSubmit: (values: Form2Values) => void;
 };
 
 export function FormStep2(props: FormStep2Props) {
     // form state
     const form = useZodForm({
-        schema: createPropertyRequestSchema.pick({
-            cityUid: true,
-            communeUid: true,
-            localityName: true,
-            localityUid: true
-        }),
+        schema: updatePropertyStep2Schema
+            .pick({
+                cityUid: true,
+                localityUid: true,
+                municipalityUid: true
+            })
+            .merge(
+                z.object({
+                    localityQuery: z.string(),
+                    municipalityQuery: z.string()
+                })
+            ),
         defaultValues: {
-            ...props.defaultValues
+            cityUid: props.defaultValues.cityUid,
+            localityUid: props.defaultValues.localityUid,
+            municipalityUid: props.defaultValues.municipalityUid,
+            localityQuery: props.defaultValues.localityQuery,
+            municipalityQuery: props.defaultValues.municipalityQuery
         }
     });
 
     // city
-    const abidjanCityQuery = t.owner.property.searchCityByName.useQuery({
+    const abidjanCityQuery = t.geo.searchCityByName.useQuery({
         name: 'Abidjan'
     });
 
@@ -59,7 +68,7 @@ export function FormStep2(props: FormStep2Props) {
     );
 
     const { data: municipalitiesList, isLoading: isSearchingMunicipalities } =
-        t.owner.property.searchCommuneByName.useQuery(
+        t.geo.searchCommuneByName.useQuery(
             {
                 name: municipalityQuery
             },
@@ -69,13 +78,13 @@ export function FormStep2(props: FormStep2Props) {
         );
 
     // locality
-    const watchMunicipalityUid = form.watch('communeUid');
+    const watchMunicipalityUid = form.watch('municipalityUid');
     const [localityQuery, setLocalityQuery] = React.useState(
         props.defaultValues.localityQuery ?? ''
     );
 
     const { data: localityList, isFetching: isSearchingLocalities } =
-        t.owner.property.searchLocalityByName.useQuery(
+        t.geo.searchLocalityByName.useQuery(
             {
                 name: localityQuery,
                 communeUid: watchMunicipalityUid ?? ''
@@ -89,10 +98,10 @@ export function FormStep2(props: FormStep2Props) {
     return (
         <>
             <div>
-                <h2 className="text-center text-2xl font-extrabold text-secondary">
-                    2/7
+                <h2 className="text-center text-2xl font-bold text-secondary">
+                    2/8
                 </h2>
-                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
                     Où se situe votre logement ?
                 </h1>
             </div>
@@ -110,11 +119,11 @@ export function FormStep2(props: FormStep2Props) {
 
                     <SearchAutocomplete
                         label="Commune"
-                        value={form.watch('communeUid')}
+                        value={form.watch('municipalityUid')}
                         onChange={(value, inputValue) => {
-                            form.setValue('communeUid', value);
+                            form.setValue('municipalityUid', value);
                             setMunicipalityQuery(inputValue);
-                            form.resetField('localityName');
+                            form.resetField('localityUid');
                         }}
                         onSearch={query => {
                             setMunicipalityQuery(query);
@@ -127,7 +136,9 @@ export function FormStep2(props: FormStep2Props) {
                             })) ?? []
                         }
                         isLoading={isSearchingMunicipalities}
-                        errorText={form.formState.errors.communeUid?.message}
+                        errorText={
+                            form.formState.errors.municipalityUid?.message
+                        }
                     />
 
                     <SearchAutocomplete
@@ -137,12 +148,6 @@ export function FormStep2(props: FormStep2Props) {
                         required
                         onChange={(newValue, inputValue) => {
                             setLocalityQuery(inputValue);
-
-                            form.setValue(
-                                'localityName',
-                                localityList?.find(l => l.id === newValue)
-                                    ?.name ?? ''
-                            );
                             form.setValue('localityUid', newValue);
                         }}
                         disabled={!watchMunicipalityUid}
@@ -158,7 +163,7 @@ export function FormStep2(props: FormStep2Props) {
                             })) ?? []
                         }
                         isLoading={isSearchingLocalities}
-                        errorText={form.formState.errors.localityName?.message}
+                        errorText={form.formState.errors.localityUid?.message}
                     />
 
                     <div className="flex items-center gap-4">

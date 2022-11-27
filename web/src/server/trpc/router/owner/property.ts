@@ -1,14 +1,16 @@
 import { TRPCError } from '@trpc/server';
-import { updatePropertyStep1Schema } from '~/server/trpc/validation/property-schema';
+import {
+    updatePropertyStep1Schema,
+    updatePropertyStep2Schema
+} from '~/validation/property-schema';
 import { z } from 'zod';
-import { isOwner } from '~/server/trpc/middleware/auth';
 import { t } from '~/server/trpc/trpc-server-root';
+import { isOwner } from '~/server/trpc/middleware/auth';
 
-import type { RentType } from '@prisma/client';
 import { PropertyFormStep } from '@prisma/client';
 
 const protectedProcedure = t.procedure.use(isOwner);
-export const ownerRouter = t.router({
+export const ownerPropertiesRouter = t.router({
     getAll: protectedProcedure.query(async ({ ctx }) => {
         const properties = await ctx.prisma.property.findMany({
             where: {
@@ -22,7 +24,7 @@ export const ownerRouter = t.router({
             }
         });
 
-        const drafts = await ctx.prisma.propertyFormDto.findMany({
+        const drafts = await ctx.prisma.draftProperty.findMany({
             where: {
                 userId: ctx.user.id
             }
@@ -56,72 +58,16 @@ export const ownerRouter = t.router({
             })
         )
         .query(async ({ ctx, input }) => {
-            return ctx.prisma.propertyFormDto.findFirst({
+            return ctx.prisma.draftProperty.findFirst({
                 where: {
                     userId: ctx.user.id,
                     id: input.uid
                 }
             });
         }),
-    searchCityByName: protectedProcedure
-        .input(
-            z.object({
-                name: z.string()
-            })
-        )
-        .query(async ({ ctx, input }) => {
-            return ctx.prisma.city.findFirst({
-                where: {
-                    name: {
-                        startsWith: input.name,
-                        mode: 'insensitive'
-                    }
-                }
-            });
-        }),
-    searchCommuneByName: protectedProcedure
-        .input(
-            z.object({
-                name: z.string()
-            })
-        )
-        .query(async ({ ctx, input }) => {
-            return ctx.prisma.municipality.findMany({
-                where: {
-                    name: {
-                        contains: input.name,
-                        mode: 'insensitive'
-                    }
-                },
-                orderBy: {
-                    name: 'asc'
-                }
-            });
-        }),
-    searchLocalityByName: protectedProcedure
-        .input(
-            z.object({
-                name: z.string(),
-                communeUid: z.string().uuid()
-            })
-        )
-        .query(async ({ ctx, input }) => {
-            return ctx.prisma.locality.findMany({
-                where: {
-                    name: {
-                        contains: input.name,
-                        mode: 'insensitive'
-                    },
-                    municipalityId: input.communeUid
-                },
-                orderBy: {
-                    name: 'asc'
-                }
-            });
-        }),
 
     newDraft: protectedProcedure.mutation(async ({ ctx }) => {
-        const property = await ctx.prisma.propertyFormDto.create({
+        const property = await ctx.prisma.draftProperty.create({
             data: {
                 userId: ctx.user.id,
                 rooms: [{ type: 'BEDROOM' }]
@@ -132,9 +78,10 @@ export const ownerRouter = t.router({
     saveDraftStep1: protectedProcedure
         .input(updatePropertyStep1Schema)
         .mutation(async ({ ctx, input }) => {
-            const draft = await ctx.prisma.propertyFormDto.findUnique({
+            const draft = await ctx.prisma.draftProperty.findFirst({
                 where: {
-                    id: input.uid
+                    id: input.uid,
+                    userId: ctx.user.id
                 }
             });
 
@@ -146,17 +93,75 @@ export const ownerRouter = t.router({
                 });
             }
 
-            return ctx.prisma.propertyFormDto.update({
+            return ctx.prisma.draftProperty.update({
                 where: {
                     id: input.uid
                 },
                 data: {
                     surfaceArea: input.surfaceArea,
-                    rentType: input.rentType as RentType,
-                    userId: ctx.user.id,
+                    rentType: input.rentType,
                     currentStep:
                         draft.currentStep === PropertyFormStep.RENT_TYPE
                             ? 'ADDRESS'
+                            : draft.currentStep
+                }
+            });
+        }),
+    saveDraftStep2: protectedProcedure
+        .input(updatePropertyStep2Schema)
+        .mutation(async ({ ctx, input }) => {
+            const draft = await ctx.prisma.draftProperty.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!draft) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            const locality = await ctx.prisma.locality.findUnique({
+                where: {
+                    id: input.localityUid
+                },
+                include: {
+                    municipality: {
+                        include: {
+                            city: true
+                        }
+                    }
+                }
+            });
+
+            if (!locality) {
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                    message: "Le quartier que vous avez indiqué n'existe pas."
+                });
+            }
+
+            return ctx.prisma.draftProperty.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    localityName: locality.name,
+                    municipalityName: locality.municipality.name,
+                    cityName: locality.municipality.city.name,
+                    localityId: input.localityUid,
+                    cityId: input.cityUid,
+                    municipalityId: input.municipalityUid,
+                    longitude: input.longitude,
+                    latitude: input.latitude,
+                    geoData: input.geoJSON,
+                    currentStep:
+                        draft.currentStep === PropertyFormStep.ADDRESS
+                            ? 'INSTRUCTIONS'
                             : draft.currentStep
                 }
             });

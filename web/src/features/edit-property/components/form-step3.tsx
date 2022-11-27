@@ -1,33 +1,33 @@
+'use client';
 import * as React from 'react';
 
 // components
-import { Button, LoadingIndicator } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
+import { LoadingIndicator } from '@locaci/ui/components/atoms/loading-indicator';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
 import dynamic from 'next/dynamic';
 import { t } from '~/utils/trpc-rq-hooks';
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { updatePropertyStep2Schema } from '~/validation/property-schema';
 
 // types
 import type { z } from 'zod';
 export type Form3Values = Pick<
-    z.TypeOf<typeof createPropertyRequestSchema>,
-    'localityName' | 'localityUid' | 'longitude' | 'latitude' | 'geoJSON'
+    z.TypeOf<typeof updatePropertyStep2Schema>,
+    'longitude' | 'latitude' | 'geoJSON'
 >;
 
 type FormStep3Props = {
-    defaultValues: Partial<Form3Values>;
+    defaultValues: { localityUid: string };
     onPreviousClick: () => void;
-    onSubmit: (
-        values: Omit<Form3Values, 'localityUid' | 'localityName'>
-    ) => void;
+    onSubmit: (values: Form3Values) => void;
+    isSubmitting: boolean;
 };
 
 // lazy load the map component
 const Map = dynamic(() => import('~/features/shared/components/map'), {
-    ssr: false,
-    suspense: true
+    suspense: false
 });
 
 /**
@@ -36,9 +36,10 @@ const Map = dynamic(() => import('~/features/shared/components/map'), {
  * @returns
  */
 function MapLoader(props: { localityUid: string }) {
-    const { data, isLoading } = t.getLocalityData.useQuery({
+    const { data, isLoading } = t.geo.getLocalityData.useQuery({
         localityId: props.localityUid
     });
+
     return isLoading ? (
         <div className="relative h-[25rem] bg-primary-15 md:h-[32rem]">
             <div className="absolute top-1/2 left-1/2 inline-flex -translate-y-1/2 -translate-x-1/2 items-center gap-2">
@@ -47,12 +48,14 @@ function MapLoader(props: { localityUid: string }) {
             </div>
         </div>
     ) : (
-        <Map localityData={data} />
+        <>
+            <Map localityData={data} />
+        </>
     );
 }
 
 export function FormStep3(props: FormStep3Props) {
-    const { data, isLoading } = t.getLocalityData.useQuery({
+    const { data, isLoading } = t.geo.getLocalityData.useQuery({
         localityId: props.defaultValues.localityUid!
     });
 
@@ -61,7 +64,7 @@ export function FormStep3(props: FormStep3Props) {
             <div className="flex flex-col gap-14 md:m-auto md:w-[800px] lg:w-[1000px]">
                 <div className="flex flex-col gap-2">
                     <h2 className="text-center text-2xl font-extrabold text-secondary">
-                        3/7
+                        3/8
                     </h2>
 
                     <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
@@ -101,7 +104,7 @@ export function FormStep3(props: FormStep3Props) {
 
                     <Button
                         type="button"
-                        loading={isLoading}
+                        loading={isLoading || props.isSubmitting}
                         loadingMessage={`Veuillez attendre le chargement de la carte avant de passer à la suite`}
                         onClick={() =>
                             props.onSubmit({

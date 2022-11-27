@@ -3,14 +3,18 @@ import * as React from 'react';
 
 // components
 import { Progress } from '@locaci/ui/components/atoms/progress';
-import { FormStep1 } from '~/features/edit-property/components/form-step1';
+import { FormStep1 } from './form-step1';
+import { FormStep2 } from './form-step2';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
 import { t } from '~/utils/trpc-rq-hooks';
-import type { PropertyFormStep } from '@prisma/client';
+import { FormStep3 } from './form-step3';
 
 // types
+import type { PropertyFormStep } from '@prisma/client';
+import type { Form2Values } from './form-step2';
+
 type EditPropertyFormProps = {
     propertyDraftUid: string;
 };
@@ -25,22 +29,31 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
         }
     );
     const [step, goTo] = React.useState(getStepNumber(draft?.currentStep));
+    const utils = t.useContext();
 
-    if (!draft) return null;
-
-    function goToNext() {
-        goTo(step => step + 1);
-    }
-
-    function goToPrevious() {
-        goTo(step => step - 1);
-    }
-
-    const saveDraftMutation = t.owner.property.saveDraftStep1.useMutation({
-        onSuccess() {
+    const saveDraftStep1 = t.owner.property.saveDraftStep1.useMutation({
+        onSuccess: async () => {
+            await utils.owner.property.getSingleDraft.invalidate();
             goTo(2);
         }
     });
+
+    const saveDraftStep2 = t.owner.property.saveDraftStep2.useMutation({
+        onSuccess: async () => {
+            await utils.owner.property.getSingleDraft.invalidate();
+            goTo(4);
+        }
+    });
+
+    const [valuesForm2, setValuesForm2] = React.useState<Partial<Form2Values>>({
+        localityUid: draft?.localityId ?? '',
+        municipalityUid: draft?.municipalityId ?? '',
+        cityUid: draft?.cityId ?? '',
+        localityQuery: draft?.localityName ?? '',
+        municipalityQuery: draft?.municipalityName ?? ''
+    });
+
+    if (!draft) return null;
 
     return (
         <>
@@ -60,14 +73,48 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
                 )}>
                 {step === 1 && (
                     <FormStep1
-                        onSubmit={values =>
-                            saveDraftMutation.mutate({
+                        onSubmit={values => {
+                            console.log({ step1: values });
+                            saveDraftStep1.mutate({
                                 ...values,
                                 uid: draft.id
-                            })
-                        }
-                        defaultValues={{ ...draft }}
-                        isSubmitting={saveDraftMutation.isLoading}
+                            });
+                        }}
+                        defaultValues={{
+                            surfaceArea: draft.surfaceArea,
+                            rentType: draft.rentType
+                        }}
+                        isSubmitting={saveDraftStep1.isLoading}
+                    />
+                )}
+                {step === 2 && (
+                    <FormStep2
+                        onSubmit={values => {
+                            console.log({ step2: values });
+                            setValuesForm2(values);
+                            goTo(3);
+                        }}
+                        onPreviousClick={() => goTo(1)}
+                        defaultValues={valuesForm2}
+                    />
+                )}
+                {step === 3 && (
+                    <FormStep3
+                        onSubmit={values => {
+                            console.log({ step3: values });
+                            saveDraftStep2.mutate({
+                                ...values,
+                                uid: draft.id,
+                                cityUid: valuesForm2.cityUid!,
+                                localityUid: valuesForm2.localityUid!,
+                                municipalityUid: valuesForm2.municipalityUid!
+                            });
+                        }}
+                        onPreviousClick={() => goTo(2)}
+                        defaultValues={{
+                            localityUid: valuesForm2.localityUid!
+                        }}
+                        isSubmitting={saveDraftStep2.isLoading}
                     />
                 )}
             </div>

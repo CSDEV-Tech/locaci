@@ -22,6 +22,7 @@ export type OSMResultData = {
     display_name: string;
     geojson: GeoJSON;
     address: {
+        town: string;
         municipality: string;
         neighbourhood: string;
         residential: string;

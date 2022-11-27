@@ -9,7 +9,7 @@ import { CaretDoubleRight } from 'phosphor-react';
 
 // utils
 import { RentTypes } from '~/features/shared/types';
-import { updatePropertyStep1Schema } from '~/server/trpc/validation/property-schema';
+import { updatePropertyStep1Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
@@ -32,17 +32,18 @@ export function FormStep1(props: FormStep1Props) {
             uid: true
         }),
         defaultValues: {
-            ...props.defaultValues
+            rentType: props.defaultValues?.rentType,
+            surfaceArea: props.defaultValues?.surfaceArea
         }
     });
 
     return (
         <>
             <div>
-                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                <h2 className="text-center text-2xl font-bold text-secondary">
                     1/8
                 </h2>
-                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
                     Quel type de logement voulez-vous ajouter ?
                 </h1>
             </div>
