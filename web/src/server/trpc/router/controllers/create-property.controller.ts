@@ -1,5 +1,5 @@
 import { RoomType, AmenityType } from '@prisma/client';
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { createPropertyRequestSchema } from '~/validation/property-schema';
 
 import type { Context } from '~/server/trpc/context';
 import type { z } from 'zod';

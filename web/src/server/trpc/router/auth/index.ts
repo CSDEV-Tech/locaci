@@ -1,16 +1,12 @@
-import { verifyOtpSchema } from './../../validation/auth-schema';
+import { verifyOtpSchema } from '~/validation/auth-schema';
 import { z } from 'zod';
-import { t } from '../../trpc-server-root';
+import { t } from '~/server/trpc/trpc-server-root';
 import { TRPCError } from '@trpc/server';
 import { Uuid } from '~/utils/uuid';
-import {
-    updateNameAndProfileSchema,
-    sendOtpSchema
-} from '../../validation/auth-schema';
+import { sendOtpSchema } from '~/validation/auth-schema';
 import jwt from 'jsonwebtoken';
 
-import { ownerRouter } from './owner';
-import { isLoggedIn } from '../../middleware/auth';
+import { isLoggedIn } from '~/server/trpc/middleware/auth';
 import { env } from '~/env/server.mjs';
 import { apiFetch } from '~/utils/functions';
 
@@ -41,7 +37,6 @@ const MAXIMUM_ATTEMPT =
     "You've reached the maximum number of attempts. Please try to login again.";
 
 export const authRouter = t.router({
-    owner: ownerRouter,
     sendOtpCode: t.procedure
         .input(sendOtpSchema)
         .mutation(async ({ input: { email } }) => {

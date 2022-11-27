@@ -24,7 +24,7 @@ import {
 
 // utils
 import { clsx } from '@locaci/ui';
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { createPropertyRequestSchema } from '~/validation/property-schema';
 import { t } from '~/utils/trpc-rq-hooks';
 
 // types

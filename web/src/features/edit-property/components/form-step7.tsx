@@ -5,7 +5,7 @@ import { Button, DropZone, DropZoneFile } from '@locaci/ui';
 
 // utils
 import { v4 as uuidv4 } from 'uuid';
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { createPropertyRequestSchema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { useUploadFileMutation } from '~/features/shared/hooks/use-upload-file-mutation';
 import { getFileExtension, isNativeDOMFile } from '~/utils/functions';

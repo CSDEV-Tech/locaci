@@ -8,6 +8,7 @@ import { AddButton } from '~/features/owner/components/add-button';
 // utils
 import { rsc } from '~/server/trpc/rsc';
 import { use } from 'react';
+import { NextLink } from '~/features/shared/components/next-link';
 
 export default async function OwnerDashboardPage() {
     return (
@@ -71,7 +72,9 @@ function PropertyList() {
                                 <li
                                     key={p.id}
                                     className="rounded-md border p-2">
-                                    <div className="flex flex-col gap-2">
+                                    <NextLink
+                                        href={`/owner/properties/${p.id}/draft`}
+                                        className="flex flex-col gap-2">
                                         <span>
                                             (brouillon)
                                             {p.noOfRooms === 1
@@ -92,7 +95,7 @@ function PropertyList() {
                                             {p.noOfRooms} pièces -&nbsp;
                                             {p.surfaceArea} m<sup>2</sup>
                                         </span>
-                                    </div>
+                                    </NextLink>
                                 </li>
                             ))}
 
@@ -100,7 +103,9 @@ function PropertyList() {
                                 <li
                                     key={p.id}
                                     className="rounded-md border p-2">
-                                    <div className="flex flex-col gap-2">
+                                    <NextLink
+                                        href={`/owner/properties/${p.id}/edit`}
+                                        className="flex flex-col gap-2">
                                         <span>
                                             {p.noOfRooms === 1
                                                 ? 'Studio'
@@ -120,7 +125,7 @@ function PropertyList() {
                                             {p.noOfRooms} pièces -&nbsp;
                                             {p.surfaceArea} m<sup>2</sup>
                                         </span>
-                                    </div>
+                                    </NextLink>
                                 </li>
                             ))}
                         </ul>

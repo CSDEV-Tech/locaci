@@ -4,7 +4,7 @@ import { Button, Checkbox, CheckboxGroup, TextInput } from '@locaci/ui';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { createPropertyRequestSchema } from '~/server/trpc/validation/property-schema';
+import { createPropertyRequestSchema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types

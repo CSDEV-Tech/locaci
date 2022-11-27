@@ -15,7 +15,7 @@ export function AddButton({ children }: { children: React.ReactNode }) {
     const createPropertyMutation = t.owner.property.newDraft.useMutation({
         onSuccess(data) {
             startTransition(() =>
-                router.push(`/owner/properties/${data.uuid}/edit`)
+                router.push(`/owner/properties/${data.uuid}/draft`)
             );
         }
     });

@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 // components
 import { Button } from '@locaci/ui/components/atoms/button';

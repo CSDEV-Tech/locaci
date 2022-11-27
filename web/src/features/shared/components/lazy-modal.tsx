@@ -7,13 +7,9 @@ import dynamic from 'next/dynamic';
 // types
 import type { ModalProps } from '@locaci/ui/components/atoms/modal';
 
-const Modal = dynamic(
-    // @ts-ignore
-    () => import(`@locaci/ui/components/atoms/modal`),
-    {
-        ssr: false
-    }
-);
+const Modal = dynamic(() => import(`@locaci/ui/components/atoms/modal`), {
+    ssr: false
+});
 
 export function LazyModal(props: ModalProps) {
     return <Modal {...props} />;
