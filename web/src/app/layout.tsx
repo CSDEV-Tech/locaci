@@ -1,8 +1,17 @@
 import '~/styles/globals.css';
+/**
+ * We import mapbox css in the root layout because when you import a css in a file
+ * nextjs try to hoist it on the <head/> tag, with suspense and SSR it can cause problems
+ * if imported at a random component in the tree.
+ */
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 // components
 import { TrpcClientProvider } from '~/app/trpc-client-provider';
 import { TailwindIndicator } from '~/features/shared/components/tailwind-indicator';
 import { HotToaster } from '~/features/shared/components/hot-toaster';
+import { RASSRProvider } from '~/features/shared/components/react-aria-ssr-provider';
+
 // utils
 import { Poppins } from '@next/font/google';
 
@@ -12,7 +21,7 @@ import type { LayoutProps } from '~/types';
 const poppins = Poppins({
     subsets: ['latin'],
     variable: '--font-poppins',
-    weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
+    weight: ['300', '400', '500', '600', '700'],
     display: 'swap'
 });
 
@@ -23,7 +32,9 @@ export default function RootLayout({ children }: LayoutProps) {
                 <link rel="icon" href="/public/favicon.svg" />
             </head>
             <body>
-                <TrpcClientProvider>{children}</TrpcClientProvider>
+                <RASSRProvider>
+                    <TrpcClientProvider>{children}</TrpcClientProvider>
+                </RASSRProvider>
                 <TailwindIndicator />
                 <HotToaster position="top-center" />
             </body>

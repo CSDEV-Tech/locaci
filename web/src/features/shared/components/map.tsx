@@ -2,13 +2,12 @@
 
 import * as React from 'react';
 // components
-import { LoadingIndicator, MapPin } from '@locaci/ui';
+import { MapPin } from '@locaci/ui/components/molecules/map-pin';
 import { House } from 'phosphor-react';
 
 // utils
 import { env } from '~/env/client.mjs';
 import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 
 // types
 import type { OSMResultData } from '~/utils/types';
@@ -33,10 +32,8 @@ export default function Map({ localityData: data }: MapProps) {
                 style: 'mapbox://styles/mapbox/streets-v11',
                 bounds: data.boundingbox
             });
-
             // Add navigation control (the +/- zoom buttons)
             map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
             map.on('load', () => {
                 // add map polygon
                 map.addSource('maine', {
@@ -47,7 +44,6 @@ export default function Map({ localityData: data }: MapProps) {
                         geometry: data.geojson
                     }
                 });
-
                 // Add a new layer to visualize the polygon.
                 map.addLayer({
                     id: 'maine',
@@ -59,7 +55,6 @@ export default function Map({ localityData: data }: MapProps) {
                         'fill-opacity': 0.3
                     }
                 });
-
                 // Add a black outline around the polygon.
                 map.addLayer({
                     id: 'outline',
@@ -71,7 +66,6 @@ export default function Map({ localityData: data }: MapProps) {
                         'line-width': 1
                     }
                 });
-
                 new mapboxgl.Marker(markerRef.current!)
                     .setLngLat([Number(data.lon), Number(data.lat)])
                     .addTo(map);
