@@ -63,11 +63,11 @@ const CreatePropertyPage: NextPageWithLayout<CreatePropertyProps> = () => {
     // Mutation Result
     const [createdProperty, setCreatedProperty] =
         React.useState<
-            inferProcedureOutput<AppRouter['owner']['property']['create']>
+            inferProcedureOutput<AppRouter['owner']['property']['newDraft']>
         >();
     const [createdPropertyError, setCreatedPropertyError] =
         React.useState<string>();
-    const createPropertyMutation = t.owner.property.create.useMutation({
+    const createPropertyMutation = t.owner.property.newDraft.useMutation({
         onSuccess(result) {
             setCreatedProperty(result);
             utils.owner.property.getAll.invalidate();

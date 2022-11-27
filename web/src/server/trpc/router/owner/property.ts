@@ -1,6 +1,5 @@
 import { updatePropertyStep1Schema } from '~/server/trpc/validation/property-schema';
 import { z } from 'zod';
-import { TRPCError } from '@trpc/server';
 import { isOwner } from '~/server/trpc/middleware/auth';
 import { t } from '~/server/trpc/trpc-server-root';
 
@@ -9,16 +8,25 @@ import type { RentType } from '@prisma/client';
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerRouter = t.router({
     getAll: protectedProcedure.query(async ({ ctx }) => {
-        return ctx.prisma.property.findMany({
+        const properties = await ctx.prisma.property.findMany({
             where: {
-                userId: ctx.user.id
+                userId: ctx.user.id,
+                archived: false
             },
             include: {
-                commune: true,
+                municipality: true,
                 city: true,
                 locality: true
             }
         });
+
+        const drafts = await ctx.prisma.propertyFormDto.findMany({
+            where: {
+                userId: ctx.user.id
+            }
+        });
+
+        return { properties, drafts };
     }),
     getSingle: protectedProcedure
         .input(
@@ -38,6 +46,20 @@ export const ownerRouter = t.router({
             });
 
             return property;
+        }),
+    getSingleDraft: protectedProcedure
+        .input(
+            z.object({
+                uid: z.string().uuid()
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            return ctx.prisma.propertyFormDto.findFirst({
+                where: {
+                    userId: ctx.user.id,
+                    id: input.uid
+                }
+            });
         }),
     searchCityByName: protectedProcedure
         .input(
@@ -96,18 +118,13 @@ export const ownerRouter = t.router({
             });
         }),
 
-    create: protectedProcedure.mutation(async ({ ctx, input }) => {
-        const property = await ctx.prisma.property.create({
+    newDraft: protectedProcedure.mutation(async ({ ctx }) => {
+        const property = await ctx.prisma.propertyFormDto.create({
             data: {
                 userId: ctx.user.id,
-                rooms: {
-                    createMany: {
-                        data: [{ type: 'BEDROOM' }]
-                    }
-                }
+                rooms: [{ type: 'BEDROOM' }]
             }
         });
-
         return { uuid: property.id };
     }),
 
@@ -125,23 +142,4 @@ export const ownerRouter = t.router({
                 }
             });
         })
-    // create: protectedProcedure
-    //     .input(createPropertyRequestSchema)
-    //     .mutation(async ({ ctx, input }) => {
-    //         const res = await CreatePropertyController.handle({
-    //             ctx,
-    //             input: {
-    //                 ...input
-    //             }
-    //         });
-
-    //         if (res.error) {
-    //             throw new TRPCError({
-    //                 code: 'BAD_REQUEST',
-    //                 message: res.error
-    //             });
-    //         }
-
-    //         return res.property;
-    //     })
 });

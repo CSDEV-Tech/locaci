@@ -3,24 +3,13 @@ import * as React from 'react';
 // components
 import { LoadingIndicator } from '@locaci/ui/components/atoms/loading-indicator';
 import { DashboardTabs } from '~/features/owner/components/dashboard-tabs';
-import {
-    NextLink,
-    NextLinkButton
-} from '~/features/shared/components/next-link';
-
-// utils
-import { getUser, rsc } from '~/server/ssr-helpers';
-import { cookies } from 'next/headers';
-import { use } from 'react';
-
-// types
-import type { User } from '@prisma/client';
 import { AddButton } from '~/features/owner/components/add-button';
 
-export default async function OwnerDashboardPage() {
-    const userSession = cookies().get(`__session`)?.value;
-    const user = await getUser(userSession!);
+// utils
+import { rsc } from '~/server/trpc/rsc';
+import { use } from 'react';
 
+export default async function OwnerDashboardPage() {
     return (
         <>
             <div className="px-4 pt-10">
@@ -37,7 +26,7 @@ export default async function OwnerDashboardPage() {
                                     </h1>
                                 </section>
                             }>
-                            <PropertyList user={user!} />
+                            <PropertyList />
                         </React.Suspense>
                     }
                     notifications={<></>}
@@ -47,13 +36,13 @@ export default async function OwnerDashboardPage() {
     );
 }
 
-function PropertyList({ user }: { user: User }) {
-    const properties = use(rsc(user).owner.property.getAll());
+function PropertyList() {
+    const { properties, drafts } = use(rsc.owner.property.getAll.fetch());
 
     return (
         <>
             <section className="flex flex-col items-center gap-4 px-4 py-10">
-                {properties?.length === 0 ? (
+                {properties?.length === 0 && drafts.length === 0 ? (
                     <>
                         <img
                             src="/listing_not_found.svg"
@@ -78,6 +67,35 @@ function PropertyList({ user }: { user: User }) {
                         </h1>
 
                         <ul className="flex flex-col gap-4">
+                            {drafts?.map(p => (
+                                <li
+                                    key={p.id}
+                                    className="rounded-md border p-2">
+                                    <div className="flex flex-col gap-2">
+                                        <span>
+                                            (brouillon)
+                                            {p.noOfRooms === 1
+                                                ? 'Studio'
+                                                : 'Appartement'}
+                                            &nbsp;
+                                            {p.rentType === 'SHORT_TERM' &&
+                                                'meublé'}
+                                            {p.rentType ===
+                                                'SHARED_APPARTMENT' &&
+                                                'en colocation'}
+                                            {p.rentType === 'LOCATION' &&
+                                                'Non meublé'}
+                                            -&nbsp;{p.localityName},&nbsp;
+                                            {p.municipalityName}, {p.cityName}
+                                        </span>
+                                        <span>
+                                            {p.noOfRooms} pièces -&nbsp;
+                                            {p.surfaceArea} m<sup>2</sup>
+                                        </span>
+                                    </div>
+                                </li>
+                            ))}
+
                             {properties?.map(p => (
                                 <li
                                     key={p.id}
@@ -95,8 +113,8 @@ function PropertyList({ user }: { user: User }) {
                                                 'en colocation'}
                                             {p.rentType === 'LOCATION' &&
                                                 'Non meublé'}
-                                            -&nbsp;{p.locality?.name},&nbsp;
-                                            {p.commune?.name}, {p.city?.name}
+                                            {/* -&nbsp;{p.locality?.name},&nbsp;
+                                            {p.commune?.name}, {p.city?.name} */}
                                         </span>
                                         <span>
                                             {p.noOfRooms} pièces -&nbsp;

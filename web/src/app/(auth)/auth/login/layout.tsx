@@ -7,7 +7,7 @@ import {
 
 // utils
 import { cookies } from 'next/headers';
-import { getUser } from '~/server/ssr-helpers';
+import { getUserFromSessionToken } from '~/server/ssr-helpers';
 import { redirect } from 'next/navigation';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getRoleURL, wait } from '~/utils/functions';
@@ -18,7 +18,7 @@ import type { LayoutProps } from '~/types';
 export default async function LoginLayout({ children }: LayoutProps) {
     await wait(2000);
     const session = cookies().get('__session')?.value;
-    const user = session ? await getUser(session) : null;
+    const user = session ? await getUserFromSessionToken(session) : null;
 
     if (user) {
         redirect(getRoleURL(user.role));

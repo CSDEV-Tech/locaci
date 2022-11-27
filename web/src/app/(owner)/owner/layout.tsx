@@ -4,7 +4,7 @@ import { NextLink } from '~/features/shared/components/next-link';
 import { HeaderBreadCrumb } from '~/features/owner/components/header-breadcrumb';
 
 // utils
-import { getUser } from '~/server/ssr-helpers';
+import { getUserFromSessionToken } from '~/server/ssr-helpers';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -14,7 +14,7 @@ import { UserDropdown } from '~/features/owner/components/user-dropdown';
 
 export default async function OwnerLayout(props: LayoutProps) {
     const session = cookies().get('__session')?.value;
-    const user = session ? await getUser(session) : null;
+    const user = session ? await getUserFromSessionToken(session) : null;
 
     if (user?.role !== 'PROPERTY_OWNER') {
         redirect(`/auth/login`);

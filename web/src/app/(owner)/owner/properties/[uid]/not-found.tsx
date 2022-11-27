@@ -7,7 +7,7 @@ export default function NotFound() {
             errorTitle="Erreur 404"
             className="h-[80vh]"
             errorDescription={`La propriété que vous recherchez n'existe pas`}>
-            <NextLinkButton href="/owner">
+            <NextLinkButton href="/owner" variant="secondary">
                 Retour au tableau de bord
             </NextLinkButton>
         </ErrorScreen>

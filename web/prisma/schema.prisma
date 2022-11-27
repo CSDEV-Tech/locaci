@@ -10,6 +10,17 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum Civility {
+    MR
+    MME
+}
+
+enum Role {
+    HOUSING_APPLICANT
+    PROPERTY_OWNER
+    ADMIN
+}
+
 model User {
     id             String   @id @default(uuid()) @db.Uuid
     firstName      String?
@@ -23,37 +34,7 @@ model User {
     email_verified Boolean  @default(false)
     civicTitle     Civility @default(MR)
 
-    properties       Property[] // A user can have many properties
-    RequestOwnerRole RequestOwnerRole?
-}
-
-enum Role {
-    HOUSING_APPLICANT
-    PROPERTY_OWNER
-    ADMIN
-}
-
-enum Civility {
-    MR
-    MME
-}
-
-model RequestOwnerRole {
-    id                String        @id @default(uuid()) @db.Uuid
-    validatedAt       DateTime?
-    status            RequestStatus @default(WAITING)
-    createdAt         DateTime      @default(now())
-    updatedAt         DateTime      @updatedAt
-    reasonForRefusing String?
-
-    user   User   @relation(fields: [userId], references: [id])
-    userId String @unique @db.Uuid
-}
-
-enum RequestStatus {
-    WAITING
-    GRANTED
-    REFUSED
+    properties Property[] // A user can have many properties
 }
 
 model Room {
@@ -96,6 +77,12 @@ model Amenity {
     propertyId String?     @db.Uuid
 }
 
+enum RentType {
+    LOCATION
+    SHARED_APPARTMENT
+    SHORT_TERM
+}
+
 model Property {
     id        String   @id @default(uuid()) @db.Uuid
     userId    String   @db.Uuid
@@ -107,7 +94,7 @@ model Property {
     rentType    RentType @default(LOCATION)
     surfaceArea Int      @default(9)
 
-    noOfRooms Int?
+    noOfRooms Int
 
     archived  Boolean   @default(false)
     complete  Boolean   @default(false)
@@ -116,24 +103,60 @@ model Property {
 
     images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
 
-    // localization
-    city                City?         @relation(fields: [cityId], references: [id])
-    commune             Municipality? @relation(fields: [municipalityId], references: [id])
-    locality            Locality?     @relation(fields: [localityId], references: [id])
+    // Position
+    geoData   Json
+    longitude String
+    latitude  String
+
+    // Address
+    city                City         @relation(fields: [cityId], references: [id])
+    locality            Locality     @relation(fields: [localityId], references: [id])
+    municipality        Municipality @relation(fields: [municipalityId], references: [id])
+    cityId              String       @db.Uuid
+    municipalityId      String       @db.Uuid
+    localityId          String       @db.Uuid
+    addressInstructions String?
+
+    // listing details
+    housingFee                  Int
+    description                 String
+    housingPeriod               Int
+    cautionMonthsPaymentAdvance Int
+    agencyMonthsPaymentAdvance  Int
+    availableFrom               DateTime
+    active                      Boolean  @default(false)
+}
+
+model PropertyFormDto {
+    id        String   @id @default(uuid()) @db.Uuid
+    userId    String   @db.Uuid
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // default values
+    rentType    RentType @default(LOCATION)
+    surfaceArea Int      @default(9)
+
+    images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
+
+    // address
+    cityName            String?
+    municipalityName    String?
+    localityName        String?
+    cityId              String? @db.Uuid
+    municipalityId      String? @db.Uuid
+    localityId          String? @db.Uuid
     addressInstructions String?
 
     // Position
+    geoData   Json?
     longitude String?
     latitude  String?
 
-    // position limits
-    geoData        Json?
-    cityId         String? @db.Uuid
-    municipalityId String? @db.Uuid
-    localityId     String? @db.Uuid
-
-    // form step
-    currentStep PropertyFormStep @default(RENT_TYPE)
+    // rooms & amenities
+    noOfRooms Int?
+    rooms     Json @default("[]") // A JSON Array of ids ([{type}]) 
+    amenities Json @default("[]") // A JSON Array of ids ([{type, name}]) 
 
     // listing details
     housingFee                  Int?
@@ -142,7 +165,9 @@ model Property {
     cautionMonthsPaymentAdvance Int?
     agencyMonthsPaymentAdvance  Int?
     availableFrom               DateTime?
-    active                      Boolean   @default(false)
+
+    // form step
+    currentStep PropertyFormStep @default(RENT_TYPE)
 }
 
 enum PropertyFormStep {
@@ -154,12 +179,6 @@ enum PropertyFormStep {
     IMAGES
     LISTING_DETAILS
     COMPLETE
-}
-
-enum RentType {
-    LOCATION
-    SHARED_APPARTMENT
-    SHORT_TERM
 }
 
 model City {

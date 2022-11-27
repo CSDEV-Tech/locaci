@@ -2,11 +2,10 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '~/server/db/client';
 import { Uuid } from '~/utils/uuid';
 import { env } from '~/env/server.mjs';
-import { appRouter } from './trpc/router';
 
 import type { User } from '@prisma/client';
 
-export async function getUser(sessionToken: string) {
+export async function getUserFromSessionToken(sessionToken: string) {
     // get user from cookie
     let user: User | null = null;
 
@@ -29,10 +28,3 @@ export async function getUser(sessionToken: string) {
         return null;
     }
 }
-
-// trpc object that can be called inside server components
-export const rsc = (user?: User | null) =>
-    appRouter.createCaller({
-        prisma,
-        user: user
-    });

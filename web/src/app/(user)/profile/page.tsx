@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 import type { PageProps } from '~/types';
-import { getUser } from '~/server/ssr-helpers';
+import { getUserFromSessionToken } from '~/server/ssr-helpers';
 
 export default async function ProfilePage(props: PageProps) {
     const session = cookies().get('__session')?.value;
-    const user = session ? await getUser(session) : null;
+    const user = session ? await getUserFromSessionToken(session) : null;
 
     return (
         <>

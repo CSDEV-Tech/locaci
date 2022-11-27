@@ -6,5 +6,10 @@ import { createContext } from '~/server/trpc/context';
 // export API handler
 export default createNextApiHandler({
     router: appRouter,
-    createContext: createContext
+    createContext(opts) {
+        return createContext({
+            type: 'api',
+            ...opts
+        });
+    }
 });

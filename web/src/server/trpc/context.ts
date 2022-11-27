@@ -1,14 +1,30 @@
 // utils
-import { getUser } from '~/server/ssr-helpers';
+import { getUserFromSessionToken } from '~/server/ssr-helpers';
 import { getCookie } from '~/utils/functions';
 import { prisma } from '~/server/db/client';
 
 // types
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { User } from '@prisma/client';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type * as trpc from '@trpc/server';
 
-export const createContext = async (opts?: CreateNextContextOptions) => {
+export const createContext = async (
+    opts:
+        | {
+              type: 'rsc';
+              getUser: () => Promise<User | null>;
+          }
+        | (CreateNextContextOptions & { type: 'api' })
+) => {
+    if (opts.type === 'rsc') {
+        // RSC
+        return {
+            type: opts.type,
+            prisma,
+            user: await opts.getUser()
+        };
+    }
+
     const req = opts?.req;
     const res = opts?.res;
 
@@ -18,7 +34,7 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
         const sessionToken = getCookie('__session', req?.headers.cookie);
 
         if (sessionToken) {
-            user = await getUser(sessionToken);
+            user = await getUserFromSessionToken(sessionToken);
         }
     }
 
@@ -30,9 +46,4 @@ export const createContext = async (opts?: CreateNextContextOptions) => {
     };
 };
 
-export type Context = {
-    req?: NextApiRequest;
-    res?: NextApiResponse;
-    user?: User | null;
-    prisma: typeof prisma;
-};
+export type Context = trpc.inferAsyncReturnType<typeof createContext>;
