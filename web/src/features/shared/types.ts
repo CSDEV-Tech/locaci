@@ -49,7 +49,7 @@ export type AmenityType =
 
 export const AmenityTypes: Record<AmenityType, string> = {
     HOT_WATER: 'Eau chaude',
-    RADIATOR: 'Climatisation',
+    RADIATOR: 'Climatisation ou Radiateur',
     WIFI: 'Wi-fi ou Fibre Optique',
     TWIN_BED: 'Double lit ou Lit supperposé',
     CABLE: 'TV Satellite (ex: Canal +)'

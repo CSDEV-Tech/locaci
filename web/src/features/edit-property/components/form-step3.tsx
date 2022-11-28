@@ -36,18 +36,16 @@ const Map = dynamic(() => import('~/features/shared/components/map'), {
  * @returns
  */
 function MapLoader(props: { localityUid: string }) {
-    const { data, isLoading } = t.geo.getLocalityData.useQuery({
-        localityId: props.localityUid
-    });
+    const { data } = t.geo.getLocalityData.useQuery(
+        {
+            localityId: props.localityUid
+        },
+        {
+            suspense: true
+        }
+    );
 
-    return isLoading ? (
-        <div className="relative h-[25rem] bg-primary-15 md:h-[32rem]">
-            <div className="absolute top-1/2 left-1/2 inline-flex -translate-y-1/2 -translate-x-1/2 items-center gap-2">
-                <LoadingIndicator className="h-4 w-4" />
-                <span>Chargement de la carte</span>
-            </div>
-        </div>
-    ) : (
+    return (
         <>
             <Map localityData={data} />
         </>
@@ -63,11 +61,11 @@ export function FormStep3(props: FormStep3Props) {
         <>
             <div className="flex flex-col gap-14 md:m-auto md:w-[800px] lg:w-[1000px]">
                 <div className="flex flex-col gap-2">
-                    <h2 className="text-center text-2xl font-extrabold text-secondary">
+                    <h2 className="text-center text-2xl font-bold text-secondary">
                         3/8
                     </h2>
 
-                    <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                    <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
                         Est-ce que le placement du point sur la carte est
                         correct ?
                     </h1>

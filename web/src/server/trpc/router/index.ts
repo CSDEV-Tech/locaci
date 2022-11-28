@@ -2,6 +2,7 @@ import { authRouter } from './auth';
 import { ownerPropertiesRouter } from './owner/property';
 import { propertyRouter } from './property';
 import { geoRouter } from './geo';
+import { ownerStorageRouter } from './owner/storage';
 import { t } from '../trpc-server-root';
 
 export const appRouter = t.router({
@@ -9,7 +10,8 @@ export const appRouter = t.router({
     auth: authRouter,
     geo: geoRouter,
     owner: t.router({
-        property: ownerPropertiesRouter
+        property: ownerPropertiesRouter,
+        storage: ownerStorageRouter
     })
 });
 

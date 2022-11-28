@@ -10,7 +10,11 @@ export const serverSchema = z.object({
     DATABASE_URL: z.string().url(),
     OSM_SEARCH_URL: z.string().url(),
     JWT_SECRET: z.string().min(32).max(32),
-    OAUTH_CLIENT_SECRET: z.string()
+    OAUTH_CLIENT_SECRET: z.string(),
+    CF_ACCOUNT_ID: z.string().min(1),
+    CF_ACCESS_KEY_ID: z.string().min(1),
+    CF_ACCESS_KEY_SECRET: z.string().min(1),
+    CF_IMAGES_BUCKET_NAME: z.string().min(1)
 });
 
 /**
@@ -22,7 +26,8 @@ export const clientSchema = z.object({
     NEXT_PUBLIC_MAPBOX_KEY: z.string(),
     NEXT_PUBLIC_SITE_URL: z.string().url(),
     NEXT_PUBLIC_OAUTH_CLIENT_ID: z.string(),
-    NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL: z.string().url()
+    NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL: z.string().url(),
+    NEXT_PUBLIC_CF_IMAGES_URL: z.string().url()
 });
 
 /**
@@ -34,6 +39,7 @@ export const clientSchema = z.object({
 export const clientEnv = {
     NEXT_PUBLIC_MAPBOX_KEY: process.env.NEXT_PUBLIC_MAPBOX_KEY,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_CF_IMAGES_URL: process.env.NEXT_PUBLIC_CF_IMAGES_URL,
     NEXT_PUBLIC_OAUTH_CLIENT_ID: process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID,
     NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL:
         process.env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL

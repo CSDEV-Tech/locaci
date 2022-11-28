@@ -1,37 +1,42 @@
+'use client';
 import * as React from 'react';
 // components
 import { CaretDoubleLeft, Check } from 'phosphor-react';
-import { Button, DropZone, DropZoneFile } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
+import {
+    DropZone,
+    type DropZoneFile
+} from '@locaci/ui/components/organisms/drop-zone';
 
 // utils
-import { v4 as uuidv4 } from 'uuid';
-import { createPropertyRequestSchema } from '~/validation/property-schema';
+import { updatePropertyStep6Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
-import { useUploadFileMutation } from '~/features/shared/hooks/use-upload-file-mutation';
+import { useUploadFileMutation } from '~/features/shared/hooks/use-upload-image-mutation';
 import { getFileExtension, isNativeDOMFile } from '~/utils/functions';
 import { env } from '~/env/client.mjs';
 import { t } from '~/utils/trpc-rq-hooks';
+import { Uuid } from '~/utils/uuid';
 
 // types
 import type { z } from 'zod';
-export type Form7Values = Pick<
-    z.TypeOf<typeof createPropertyRequestSchema>,
-    'images'
+export type Form7Values = Omit<
+    z.TypeOf<typeof updatePropertyStep6Schema>,
+    'uid'
 >;
 export type FormStep7Props = {
     onPreviousClick: () => void;
     onSubmit: (values: Form7Values) => void;
     defaultValues: Partial<Form7Values>;
+    isSubmitting: boolean;
 };
 
 export function FormStep7(props: FormStep7Props) {
     const form = useZodForm({
-        schema: createPropertyRequestSchema.pick({
-            images: true
+        schema: updatePropertyStep6Schema.omit({
+            uid: true
         }),
         defaultValues: {
-            images: [],
-            ...props.defaultValues
+            images: props.defaultValues.images ?? []
         }
     });
 
@@ -49,8 +54,10 @@ export function FormStep7(props: FormStep7Props) {
     const isUploadingImages = files.some(f => f.state === 'UPLOADING');
 
     // mutations
-    const uploadMutation = useUploadFileMutation('image');
-    const deleteMutation = t.owner.property.deleteFile.useMutation();
+    const uploadMutation = useUploadFileMutation();
+    const deleteMutation = t.owner.storage.deleteImage.useMutation();
+
+    const utils = t.useContext();
 
     async function uploadFile(file: { name: string; fileObject: File }) {
         setFiles(oldFiles => {
@@ -63,17 +70,22 @@ export function FormStep7(props: FormStep7Props) {
         });
         try {
             // upload file to api route
-            const result = await uploadMutation.mutateAsync({
-                name: file.name,
-                file: file.fileObject
+            const { url: presignedURL } =
+                await utils.owner.storage.generatePresignedURLForImage.fetch({
+                    name: file.name
+                });
+            await uploadMutation.mutateAsync({
+                file: file.fileObject,
+                uploadURL: presignedURL,
+                extension: getFileExtension(file.name)
             });
 
-            const imgURI = `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${result.bucket}/${result.path}`;
+            const imgURI = `${env.NEXT_PUBLIC_CF_IMAGES_URL}/${file.name}`;
             form.setValue('images', [
                 ...form.getValues('images'),
                 {
                     uri: imgURI,
-                    path: result.path
+                    path: file.name
                 }
             ]);
 
@@ -105,10 +117,10 @@ export function FormStep7(props: FormStep7Props) {
 
     function handleFileUpload(files: File[]) {
         const filesToAdd = files.map(f => ({
-            name: `${uuidv4()}.${getFileExtension(f.name)}`,
+            name: `${new Uuid().short()}.${getFileExtension(f.name)}`,
             fileObject: f,
             state: 'UPLOADING' as const // this is necessary for typescript ...
-            // => to infer the state attribute as "UPLOADING" instead of string
+            // => to infer the state attribute as "UPLOADING" instead of just string
         }));
 
         setFiles(oldFiles => [...oldFiles, ...filesToAdd]);
@@ -135,8 +147,7 @@ export function FormStep7(props: FormStep7Props) {
                 );
 
                 await deleteMutation.mutateAsync({
-                    path: image.path,
-                    type: fileObject.fileType
+                    path: image.path
                 });
             }
         }
@@ -145,10 +156,10 @@ export function FormStep7(props: FormStep7Props) {
     return (
         <>
             <div>
-                <h2 className="text-center text-2xl font-extrabold text-secondary">
-                    7/7
+                <h2 className="text-center text-2xl font-bold text-secondary">
+                    7/8
                 </h2>
-                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
                     Ajoutez les images de votre logement
                 </h1>
             </div>
@@ -192,7 +203,7 @@ export function FormStep7(props: FormStep7Props) {
                     </Button>
 
                     <Button
-                        loading={isUploadingImages}
+                        loading={isUploadingImages || props.isSubmitting}
                         loadingMessage={`Veuillez attendre l'envoi des images avant de passer à la suite`}
                         type="submit"
                         variant="secondary"

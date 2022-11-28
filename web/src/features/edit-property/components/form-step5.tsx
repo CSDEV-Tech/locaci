@@ -1,35 +1,38 @@
+'use client';
 import * as React from 'react';
 // components
-import { Button, clsx, Select } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
+import { Select } from '@locaci/ui/components/atoms/select';
+import { clsx } from '@locaci/ui/lib/functions';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
-import { RoomTypeCard } from '~/features/create-property';
+import { RoomTypeCard } from './room-type-card';
 
 // utils
-import { createPropertyRequestSchema } from '~/validation/property-schema';
+import { updatePropertyStep4Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
 import { type RoomType, RoomTypes } from '~/features/shared/types';
-export type Form5Values = Pick<
-    z.TypeOf<typeof createPropertyRequestSchema>,
-    'additionalRooms'
+export type Form5Values = Omit<
+    z.TypeOf<typeof updatePropertyStep4Schema>,
+    'uid'
 >;
 
 export type FormStep5Props = {
     onPreviousClick: () => void;
     onSubmit: (values: Form5Values) => void;
     defaultValues: Partial<Form5Values>;
+    isSubmitting: boolean;
 };
 
 export function FormStep5(props: FormStep5Props) {
     const form = useZodForm({
-        schema: createPropertyRequestSchema.pick({
-            additionalRooms: true
+        schema: updatePropertyStep4Schema.omit({
+            uid: true
         }),
         defaultValues: {
-            additionalRooms: [],
-            ...props.defaultValues
+            additionalRooms: props.defaultValues.additionalRooms ?? []
         }
     });
 
@@ -59,7 +62,7 @@ export function FormStep5(props: FormStep5Props) {
 
     const noOfBedRooms = rooms.find(r => r.type === 'BEDROOM')?.count ?? 0;
 
-    function handleAddRoom(type: RoomType) {
+    function addRoom(type: RoomType) {
         form.setValue('additionalRooms', [
             ...roomsAdded,
             {
@@ -68,7 +71,7 @@ export function FormStep5(props: FormStep5Props) {
         ]);
     }
 
-    function handleRemoveRoom(type: RoomType) {
+    function removeRoom(type: RoomType) {
         const newRooms = [...roomsAdded];
 
         const elementIndex = newRooms.findIndex(rt => rt.type === type);
@@ -79,7 +82,7 @@ export function FormStep5(props: FormStep5Props) {
         form.setValue('additionalRooms', newRooms);
     }
 
-    function handleDeleteRoom(type: RoomType) {
+    function deleteRoom(type: RoomType) {
         const newRooms = [...roomsAdded].filter(rt => rt.type !== type);
 
         form.setValue('additionalRooms', newRooms);
@@ -88,10 +91,10 @@ export function FormStep5(props: FormStep5Props) {
     return (
         <>
             <div>
-                <h2 className="text-center text-2xl font-extrabold text-secondary">
-                    5/7
+                <h2 className="text-center text-2xl font-bold text-secondary">
+                    5/8
                 </h2>
-                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
                     Indiquer les pièces de votre logement
                 </h1>
             </div>
@@ -108,9 +111,9 @@ export function FormStep5(props: FormStep5Props) {
                         )}>
                         <RoomTypeCard
                             type={'BEDROOM'}
-                            count={noOfBedRooms + 1}
-                            onIncrease={() => handleAddRoom('BEDROOM')}
-                            onDecrease={() => handleRemoveRoom('BEDROOM')}
+                            count={noOfBedRooms}
+                            onIncrease={() => addRoom('BEDROOM')}
+                            onDecrease={() => removeRoom('BEDROOM')}
                         />
                     </li>
                     {rooms
@@ -124,16 +127,16 @@ export function FormStep5(props: FormStep5Props) {
                                 <RoomTypeCard
                                     type={type}
                                     count={count}
-                                    onIncrease={() => handleAddRoom(type)}
-                                    onDecrease={() => handleRemoveRoom(type)}
-                                    onDelete={() => handleDeleteRoom(type)}
+                                    onIncrease={() => addRoom(type)}
+                                    onDecrease={() => removeRoom(type)}
+                                    onDelete={() => deleteRoom(type)}
                                 />
                             </li>
                         ))}
                 </ul>
 
                 <div className="my-12 flex flex-col items-stretch gap-4">
-                    <h2 className="text-left text-lg text-gray">
+                    <h2 className="text-left font-semibold text-dark">
                         Ajouter une nouvelle pièce
                     </h2>
                     <Select
@@ -152,9 +155,7 @@ export function FormStep5(props: FormStep5Props) {
                         block
                         type={`button`}
                         variant={`hollow`}
-                        onClick={() =>
-                            roomTypeToAdd && handleAddRoom(roomTypeToAdd)
-                        }>
+                        onClick={() => roomTypeToAdd && addRoom(roomTypeToAdd)}>
                         Ajouter une pièce
                     </Button>
                 </div>
@@ -175,6 +176,7 @@ export function FormStep5(props: FormStep5Props) {
                         type="submit"
                         variant="dark"
                         className="w-full"
+                        loading={props.isSubmitting}
                         renderTrailingIcon={cls => (
                             <CaretDoubleRight className={cls} />
                         )}>

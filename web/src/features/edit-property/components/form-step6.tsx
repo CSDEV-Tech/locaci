@@ -1,34 +1,37 @@
 import * as React from 'react';
 // components
-import { Button, Checkbox, CheckboxGroup, TextInput } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
+import { Checkbox } from '@locaci/ui/components/atoms/checkbox';
+import { CheckboxGroup } from '@locaci/ui/components/molecules/checkbox-group';
+import { TextInput } from '@locaci/ui/components/atoms/input';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { createPropertyRequestSchema } from '~/validation/property-schema';
+import { updatePropertyStep5Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
 import { type AmenityType, AmenityTypes } from '~/features/shared/types';
-export type Form6Values = Pick<
-    z.TypeOf<typeof createPropertyRequestSchema>,
-    'amenities'
+export type Form6Values = Omit<
+    z.TypeOf<typeof updatePropertyStep5Schema>,
+    'uid'
 >;
 
 export type FormStep6Props = {
     onPreviousClick: () => void;
     onSubmit: (values: Form6Values) => void;
     defaultValues: Partial<Form6Values>;
+    isSubmitting: boolean;
 };
 
 export function FormStep6(props: FormStep6Props) {
     const form = useZodForm({
-        schema: createPropertyRequestSchema.pick({
-            amenities: true
+        schema: updatePropertyStep5Schema.omit({
+            uid: true
         }),
         defaultValues: {
-            amenities: [],
-            ...props.defaultValues
+            amenities: props.defaultValues.amenities ?? []
         }
     });
 
@@ -37,16 +40,17 @@ export function FormStep6(props: FormStep6Props) {
     const predefinedAmenities = React.useMemo(() => {
         return (
             amenities
-                .filter(at => at.hasOwnProperty('type'))
+                .filter(amenityType => amenityType.hasOwnProperty('type'))
                 // @ts-ignore
-                .map(a => a.type) as AmenityType[]
+                .map(amenity => amenity.type) as AmenityType[]
         );
     }, [amenities]);
 
     const customAmenities = React.useMemo(() => {
         return (
             amenities
-                .filter(at => at.hasOwnProperty('name'))
+                // @ts-ignore
+                .filter(at => at.type === 'OTHER')
                 // @ts-ignore
                 .map(a => a.name) as string[]
         );
@@ -54,7 +58,12 @@ export function FormStep6(props: FormStep6Props) {
 
     const [newCustomAmenityName, setNewCustomAmenityName] = React.useState('');
 
-    function handleSetPredefinedAmenities(types: AmenityType[]) {
+    const inputAddAmenityRef = React.useRef<HTMLInputElement>(null);
+
+    /**
+     * Handlers
+     */
+    function setPredefinedAmenities(types: AmenityType[]) {
         const nameAmenities = amenities.filter(at =>
             at.hasOwnProperty('name')
         ) as { name: string }[];
@@ -64,9 +73,11 @@ export function FormStep6(props: FormStep6Props) {
         ]);
     }
 
-    function handleAddCustomAmenity(name: string) {
-        const predefinedAmenities = amenities.filter(at =>
-            at.hasOwnProperty('type')
+    function addCustomAmenity(name: string) {
+        if (name.trim().length === 0) return;
+
+        const predefinedAmenities = amenities.filter(amenity =>
+            amenity.hasOwnProperty('type')
         ) as { type: AmenityType }[];
 
         if (!customAmenities.includes(name)) {
@@ -79,10 +90,11 @@ export function FormStep6(props: FormStep6Props) {
             ]);
         }
 
+        inputAddAmenityRef.current?.focus();
         setNewCustomAmenityName('');
     }
 
-    function handleRemoveCustomAmenity(name: string) {
+    function removeCustomAmenity(name: string) {
         const predefinedAmenities = amenities.filter(at =>
             at.hasOwnProperty('type')
         ) as { type: AmenityType }[];
@@ -100,10 +112,10 @@ export function FormStep6(props: FormStep6Props) {
     return (
         <>
             <div>
-                <h2 className="text-center text-2xl font-extrabold text-secondary">
-                    6/7
+                <h2 className="text-center text-2xl font-bold text-secondary">
+                    6/8
                 </h2>
-                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
                     Quels accessoires mettez-vous à disposition dans votre
                     logement meublé ?
                 </h1>
@@ -116,7 +128,7 @@ export function FormStep6(props: FormStep6Props) {
                 )}>
                 <CheckboxGroup
                     onChange={values => {
-                        handleSetPredefinedAmenities(values as AmenityType[]);
+                        setPredefinedAmenities(values as AmenityType[]);
                     }}
                     options={Object.entries(AmenityTypes).map(
                         ([key, value]) => ({
@@ -130,8 +142,8 @@ export function FormStep6(props: FormStep6Props) {
                 />
 
                 <div className="mt-4 mb-12 flex flex-col items-stretch gap-4">
-                    <h2 className="text-left text-lg text-gray">
-                        Ajouter un autre accessoire
+                    <h2 className="text-left font-semibold text-dark">
+                        Autres accessoires
                     </h2>
 
                     {customAmenities.map(name => (
@@ -141,12 +153,13 @@ export function FormStep6(props: FormStep6Props) {
                             label={name}
                             checked
                             onChange={() => {
-                                handleRemoveCustomAmenity(name);
+                                removeCustomAmenity(name);
                             }}
                         />
                     ))}
 
                     <TextInput
+                        ref={inputAddAmenityRef}
                         label={`Nom de l'accessoire`}
                         onChangeValue={setNewCustomAmenityName}
                         value={newCustomAmenityName}
@@ -157,9 +170,9 @@ export function FormStep6(props: FormStep6Props) {
                         type={`button`}
                         variant={`hollow`}
                         onClick={() => {
-                            handleAddCustomAmenity(newCustomAmenityName);
+                            addCustomAmenity(newCustomAmenityName);
                         }}>
-                        Ajouter une pièce
+                        Ajouter l'accessoire
                     </Button>
                 </div>
                 <div className="flex items-center gap-4">
@@ -178,6 +191,7 @@ export function FormStep6(props: FormStep6Props) {
                         type="submit"
                         variant="dark"
                         className="w-full"
+                        loading={props.isSubmitting}
                         renderTrailingIcon={cls => (
                             <CaretDoubleRight className={cls} />
                         )}>

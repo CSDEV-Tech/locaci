@@ -18,10 +18,10 @@ import {
     Trash,
     UmbrellaSimple
 } from 'phosphor-react';
-import { Button } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
 
 // utils
-import { clsx } from '@locaci/ui';
+import { clsx } from '@locaci/ui/lib/functions';
 
 // types
 import { type RoomType, RoomTypes } from '~/features/shared/types';

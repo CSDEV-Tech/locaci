@@ -4,7 +4,7 @@ export default function Loading() {
     return (
         <LoadingScreen
             title="Chargement de votre propriété..."
-            className="h-[80vh] w-full"
+            className="h-[80vh] w-full px-4"
         />
     );
 }

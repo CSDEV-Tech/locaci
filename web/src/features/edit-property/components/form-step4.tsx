@@ -1,43 +1,49 @@
+'use client';
 import * as React from 'react';
 // components
-import { Button, TextArea } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
+import { TextArea } from '@locaci/ui/components/atoms/textarea';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 
 // utils
-import { createPropertyRequestSchema } from '~/validation/property-schema';
+import {
+    createPropertyRequestSchema,
+    updatePropertyStep3Schema
+} from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
-export type Form4Values = Pick<
-    z.TypeOf<typeof createPropertyRequestSchema>,
-    'addressInstructions'
+export type Form4Values = Omit<
+    z.TypeOf<typeof updatePropertyStep3Schema>,
+    'uid'
 >;
 
 export type FormStep4Props = {
     onPreviousClick: () => void;
     onSubmit: (values: Form4Values) => void;
     defaultValues: Partial<Form4Values>;
+    isSubmitting: boolean;
 };
 
 export function FormStep4(props: FormStep4Props) {
     const form = useZodForm({
-        schema: createPropertyRequestSchema.pick({
-            addressInstructions: true
+        schema: updatePropertyStep3Schema.omit({
+            uid: true
         }),
         defaultValues: {
-            ...props.defaultValues
+            addressInstructions: props.defaultValues.addressInstructions
         }
     });
 
     return (
         <>
             <div>
-                <h2 className="text-center text-2xl font-extrabold text-secondary">
+                <h2 className="text-center text-2xl font-bold text-secondary">
                     4/7
                 </h2>
-                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
                     Précisions sur l'adresse
                 </h1>
 
@@ -84,6 +90,7 @@ export function FormStep4(props: FormStep4Props) {
                         type="submit"
                         variant="dark"
                         className="w-full"
+                        loading={props.isSubmitting}
                         renderTrailingIcon={cls => (
                             <CaretDoubleRight className={cls} />
                         )}>

@@ -1,13 +1,17 @@
 import { TRPCError } from '@trpc/server';
 import {
     updatePropertyStep1Schema,
-    updatePropertyStep2Schema
+    updatePropertyStep2Schema,
+    updatePropertyStep3Schema,
+    updatePropertyStep4Schema,
+    updatePropertyStep5Schema,
+    updatePropertyStep6Schema
 } from '~/validation/property-schema';
 import { z } from 'zod';
 import { t } from '~/server/trpc/trpc-server-root';
 import { isOwner } from '~/server/trpc/middleware/auth';
 
-import { PropertyFormStep } from '@prisma/client';
+import { Amenity, AmenityType, PropertyFormStep } from '@prisma/client';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerPropertiesRouter = t.router({
@@ -165,5 +169,160 @@ export const ownerPropertiesRouter = t.router({
                             : draft.currentStep
                 }
             });
+        }),
+    saveDraftStep3: protectedProcedure
+        .input(updatePropertyStep3Schema)
+        .mutation(async ({ ctx, input }) => {
+            const draft = await ctx.prisma.draftProperty.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!draft) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            return ctx.prisma.draftProperty.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    addressInstructions: input.addressInstructions,
+                    currentStep:
+                        draft.currentStep === PropertyFormStep.INSTRUCTIONS
+                            ? 'ROOMS'
+                            : draft.currentStep
+                }
+            });
+        }),
+    saveDraftStep4: protectedProcedure
+        .input(updatePropertyStep4Schema)
+        .mutation(async ({ ctx, input }) => {
+            const draft = await ctx.prisma.draftProperty.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!draft) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+            return ctx.prisma.draftProperty.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    rooms: input.additionalRooms,
+                    currentStep:
+                        draft.currentStep === PropertyFormStep.ROOMS
+                            ? draft.rentType === 'SHORT_TERM'
+                                ? 'AMENITIES'
+                                : 'IMAGES'
+                            : draft.currentStep
+                }
+            });
+        }),
+    saveDraftStep5: protectedProcedure
+        .input(updatePropertyStep5Schema)
+        .mutation(async ({ ctx, input }) => {
+            const draft = await ctx.prisma.draftProperty.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!draft) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            const amenities: Array<Pick<Amenity, 'name' | 'type'>> = [];
+
+            if (draft.rentType === 'SHORT_TERM') {
+                for (const amenity of input.amenities) {
+                    if (isCustomAmenity(amenity)) {
+                        amenities.push({
+                            name: amenity.name,
+                            type: 'OTHER'
+                        });
+                    } else {
+                        amenities.push({
+                            name: null,
+                            type: amenity.type
+                        });
+                    }
+                }
+            }
+
+            return ctx.prisma.draftProperty.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    amenities: amenities,
+                    currentStep:
+                        draft.currentStep === PropertyFormStep.AMENITIES
+                            ? 'IMAGES'
+                            : draft.currentStep
+                }
+            });
+        }),
+    saveDraftStep6: protectedProcedure
+        .input(updatePropertyStep6Schema)
+        .mutation(async ({ ctx, input }) => {
+            const draft = await ctx.prisma.draftProperty.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!draft) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            return ctx.prisma.draftProperty.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    images: input.images,
+                    currentStep:
+                        draft.currentStep === PropertyFormStep.IMAGES
+                            ? 'LISTING_DETAILS'
+                            : draft.currentStep
+                }
+            });
         })
 });
+
+export function isCustomAmenity(
+    amenity:
+        | {
+              type: AmenityType;
+          }
+        | {
+              name: string;
+          }
+): amenity is { name: string } {
+    return amenity.hasOwnProperty('name');
+}
