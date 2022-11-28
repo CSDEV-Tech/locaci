@@ -199,7 +199,7 @@ export function DropZone({
 export function isNativeFile(
     fileObject: File | { uri: string; fileType: 'image' | 'document' }
 ): fileObject is File {
-    return fileObject instanceof File;
+    return typeof File === 'function' && fileObject instanceof File;
 }
 
 export function EnlargedFile({ file }: { file: DropZoneFile | null }) {
