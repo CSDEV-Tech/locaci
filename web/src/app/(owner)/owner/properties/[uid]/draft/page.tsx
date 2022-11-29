@@ -11,11 +11,9 @@ import { rsc } from '~/server/trpc/rsc';
 // types
 import type { PageProps } from '~/types';
 
-export default async function AddListingPage({
-    params: { uid }
-}: PageProps<{ uid: string }>) {
+export default async function AddListingPage({ params }: PageProps) {
     const propertyDraft = await rsc.owner.draft.getSingleDraft.fetch({
-        uid
+        uid: params.uid
     });
 
     if (!propertyDraft) {
@@ -25,7 +23,7 @@ export default async function AddListingPage({
     return (
         <HydrateClient state={await rsc.dehydrate()}>
             <section className="relative flex h-full items-center justify-center">
-                <EditDraftPropertyForm propertyDraftUid={uid} />
+                <EditDraftPropertyForm propertyDraftUid={propertyDraft.id} />
             </section>
         </HydrateClient>
     );

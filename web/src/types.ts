@@ -5,25 +5,19 @@ export type SeoData = {
     pathname?: string;
 };
 
-export type PageProps<
-    TParams extends {} = {},
-    TSearchParams extends {} = {}
-> = {
-    params: TParams;
-    searchParams: Partial<TSearchParams>;
+type PageParams = Record<string, string>;
+export type PageProps = {
+    params: PageParams;
+    searchParams?: any;
 };
 
-export type LayoutProps<
-    TParams extends {} = {},
-    TSearchParams extends {} = {}
-> = {
+export type LayoutProps = {
     children: React.ReactNode;
-    params?: TParams;
-    searchParams?: TSearchParams;
+    params: PageParams;
 };
 
-export type HeadProps<TParams extends {} = {}> = {
-    params: TParams;
+export type HeadProps = {
+    params: PageParams;
 };
 
 export type ErrorBoundaryProps = {

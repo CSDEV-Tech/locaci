@@ -10,11 +10,9 @@ import { rsc } from '~/server/trpc/rsc';
 // types
 import type { PageProps } from '~/types';
 
-export default async function AddListingPage({
-    params: { uid }
-}: PageProps<{ uid: string }>) {
+export default async function AddListingPage({ params }: PageProps) {
     const property = await rsc.owner.property.getSingle.fetch({
-        uid
+        uid: params.uid
     });
 
     if (!property) {
