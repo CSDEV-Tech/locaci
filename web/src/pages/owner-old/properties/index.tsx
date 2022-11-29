@@ -35,7 +35,7 @@ const PropertiesListPage: NextPageWithLayout<
 };
 
 function PropertyList() {
-    const { data: properties } = t.owner.property.getAll.useQuery(undefined, {
+    const { data: properties } = t.owner.draft.getAll.useQuery(undefined, {
         suspense: true
     });
 

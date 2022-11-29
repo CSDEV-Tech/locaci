@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { convertDateToBeginOfDate } from '~/utils/functions';
 
 export const updatePropertyStep1Schema = z.object({
     surfaceArea: z
@@ -101,9 +102,11 @@ export const updatePropertyStep5Schema = z.object({
                     'WIFI',
                     'TWIN_BED',
                     'RADIATOR'
-                ])
+                ]),
+                name: z.string().nullish()
             }),
             z.object({
+                type: z.literal('OTHER'),
                 name: z.string().min(1, "Veuillez saisir un nom d'accessoire")
             })
         ])
@@ -121,4 +124,36 @@ export const updatePropertyStep6Schema = z.object({
         )
         .min(3, 'Vous devez ajouter au moins 3 images de votre logement'),
     uid: z.string().uuid()
+});
+
+export const updatePropertyStep7Schema = z.object({
+    uid: z.string().uuid(),
+    description: z
+        .string({
+            required_error:
+                'Veuillez saisir une description pour votre logement'
+        })
+        .min(15, 'La description doit avoir au moins 15 caractères'),
+    availableFrom: z
+        .date()
+        .refine(
+            date =>
+                convertDateToBeginOfDate(date) >=
+                convertDateToBeginOfDate(new Date()),
+            'La date de disponibilité doit être dans le futur'
+        ),
+    housingFee: z
+        .number({
+            required_error: 'Veuillez saisir un prix du logement'
+        })
+        .min(1, "Le prix d'un logement doit être supérieur à 0 FCFA"),
+    housingPeriod: z
+        .number()
+        .min(1, 'La période de facturation doit être 1 jour ou plus'),
+    cautionMonthsPaymentAdvance: z
+        .number()
+        .min(0, 'Le nombre de mois de caution doit être positif'),
+    agencyMonthsPaymentAdvance: z
+        .number()
+        .min(0, "Le nombre de mois d'agence doit être positif")
 });

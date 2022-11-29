@@ -38,7 +38,7 @@ export default async function OwnerDashboardPage() {
 }
 
 function PropertyList() {
-    const { properties, drafts } = use(rsc.owner.property.getAll.fetch());
+    const { properties, drafts } = use(rsc.owner.draft.getAll.fetch());
 
     return (
         <>

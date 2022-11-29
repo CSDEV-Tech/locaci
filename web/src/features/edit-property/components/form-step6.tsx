@@ -12,7 +12,10 @@ import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
-import { type AmenityType, AmenityTypes } from '~/features/shared/types';
+import {
+    AmenityTypes,
+    type PredefinedAmenityTypes
+} from '~/features/shared/types';
 export type Form6Values = Omit<
     z.TypeOf<typeof updatePropertyStep5Schema>,
     'uid'
@@ -38,22 +41,21 @@ export function FormStep6(props: FormStep6Props) {
     const amenities = form.watch('amenities');
 
     const predefinedAmenities = React.useMemo(() => {
-        return (
-            amenities
-                .filter(amenityType => amenityType.hasOwnProperty('type'))
-                // @ts-ignore
-                .map(amenity => amenity.type) as AmenityType[]
-        );
+        return amenities
+            .filter(amenity => amenity.type !== 'OTHER')
+            .map(amenity => amenity.type);
     }, [amenities]);
 
     const customAmenities = React.useMemo(() => {
-        return (
-            amenities
-                // @ts-ignore
-                .filter(at => at.type === 'OTHER')
-                // @ts-ignore
-                .map(a => a.name) as string[]
-        );
+        return amenities
+            .filter(amenity => amenity.type === 'OTHER')
+            .map(amenity => ({
+                name: amenity.name as string,
+                type: 'OTHER'
+            })) as {
+            name: string;
+            type: 'OTHER';
+        }[];
     }, [amenities]);
 
     const [newCustomAmenityName, setNewCustomAmenityName] = React.useState('');
@@ -63,10 +65,12 @@ export function FormStep6(props: FormStep6Props) {
     /**
      * Handlers
      */
-    function setPredefinedAmenities(types: AmenityType[]) {
-        const nameAmenities = amenities.filter(at =>
-            at.hasOwnProperty('name')
-        ) as { name: string }[];
+    function setPredefinedAmenities(types: PredefinedAmenityTypes[]) {
+        const nameAmenities = amenities.filter(at => at.type === 'OTHER') as {
+            name: string;
+            type: 'OTHER';
+        }[];
+
         form.setValue('amenities', [
             ...nameAmenities,
             ...types.map(type => ({ type }))
@@ -76,16 +80,19 @@ export function FormStep6(props: FormStep6Props) {
     function addCustomAmenity(name: string) {
         if (name.trim().length === 0) return;
 
-        const predefinedAmenities = amenities.filter(amenity =>
-            amenity.hasOwnProperty('type')
-        ) as { type: AmenityType }[];
+        const predefinedAmenities = amenities.filter(
+            amenity => amenity.type !== 'OTHER'
+        ) as { type: PredefinedAmenityTypes }[];
 
-        if (!customAmenities.includes(name)) {
+        if (
+            customAmenities.find(amenity => amenity.name === name) === undefined
+        ) {
             form.setValue('amenities', [
                 ...predefinedAmenities,
-                ...customAmenities.map(name => ({ name })),
+                ...customAmenities,
                 {
-                    name
+                    name,
+                    type: 'OTHER'
                 }
             ]);
         }
@@ -95,16 +102,16 @@ export function FormStep6(props: FormStep6Props) {
     }
 
     function removeCustomAmenity(name: string) {
-        const predefinedAmenities = amenities.filter(at =>
-            at.hasOwnProperty('type')
-        ) as { type: AmenityType }[];
+        const predefinedAmenities = amenities.filter(
+            amenity => amenity.type !== 'OTHER'
+        ) as { type: PredefinedAmenityTypes }[];
 
-        if (customAmenities.includes(name)) {
+        if (
+            customAmenities.find(amenity => amenity.name === name) !== undefined
+        ) {
             form.setValue('amenities', [
                 ...predefinedAmenities,
-                ...customAmenities
-                    .filter(a => a !== name)
-                    .map(name => ({ name }))
+                ...customAmenities.filter(a => a.name !== name)
             ]);
         }
     }
@@ -128,7 +135,9 @@ export function FormStep6(props: FormStep6Props) {
                 )}>
                 <CheckboxGroup
                     onChange={values => {
-                        setPredefinedAmenities(values as AmenityType[]);
+                        setPredefinedAmenities(
+                            values as PredefinedAmenityTypes[]
+                        );
                     }}
                     options={Object.entries(AmenityTypes).map(
                         ([key, value]) => ({
@@ -146,7 +155,7 @@ export function FormStep6(props: FormStep6Props) {
                         Autres accessoires
                     </h2>
 
-                    {customAmenities.map(name => (
+                    {customAmenities.map(({ name }) => (
                         <Checkbox
                             variant={'secondary'}
                             key={name}
@@ -192,6 +201,12 @@ export function FormStep6(props: FormStep6Props) {
                         variant="dark"
                         className="w-full"
                         loading={props.isSubmitting}
+                        onClick={() => {
+                            console.log({
+                                state: form.getValues(),
+                                errors: form.formState.errors
+                            });
+                        }}
                         renderTrailingIcon={cls => (
                             <CaretDoubleRight className={cls} />
                         )}>

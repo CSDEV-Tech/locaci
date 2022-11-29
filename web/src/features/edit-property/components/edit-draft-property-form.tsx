@@ -3,11 +3,15 @@ import * as React from 'react';
 
 // components
 import { Progress } from '@locaci/ui/components/atoms/progress';
+import { DraftSuccessModal } from './draft-success-modal';
 import { FormStep1 } from './form-step1';
 import { FormStep2 } from './form-step2';
 import { FormStep4 } from './form-step4';
 import { FormStep5 } from './form-step5';
 import { FormStep3 } from './form-step3';
+import { FormStep6 } from './form-step6';
+import { FormStep7 } from './form-step7';
+import { FormStep8 } from './form-step8';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
@@ -17,20 +21,21 @@ import {
     updatePropertyStep5Schema,
     updatePropertyStep6Schema
 } from '~/validation/property-schema';
+import { useRouter } from 'next/navigation';
 
 // types
 import type { z } from 'zod';
 import type { PropertyFormStep } from '@prisma/client';
 import type { Form2Values } from './form-step2';
-import { FormStep6 } from './form-step6';
-import { FormStep7 } from './form-step7';
 
-type EditPropertyFormProps = {
+type EditDraftPropertyFormProps = {
     propertyDraftUid: string;
 };
 
-export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
-    const { data: draft } = t.owner.property.getSingleDraft.useQuery(
+export function EditDraftPropertyForm({
+    propertyDraftUid
+}: EditDraftPropertyFormProps) {
+    const { data: draft } = t.owner.draft.getSingleDraft.useQuery(
         {
             uid: propertyDraftUid
         },
@@ -39,8 +44,14 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
         }
     );
     const utils = t.useContext();
+    const router = useRouter();
+    const [isSaving, startTransition] = React.useTransition();
+
     // states
     const [step, goTo] = React.useState(getStepNumber(draft?.currentStep));
+    const [isSuccessModalOpen, setSuccessModalOpen] = React.useState(false);
+    const [propertyUid, setPropertyUid] = React.useState<string | null>(null);
+
     const [valuesForm2, setValuesForm2] = React.useState<Partial<Form2Values>>({
         localityUid: draft?.localityId ?? '',
         municipalityUid: draft?.municipalityId ?? '',
@@ -50,30 +61,30 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
     });
 
     // mutations
-    const saveDraftStep1 = t.owner.property.saveDraftStep1.useMutation({
+    const saveDraftStep1 = t.owner.draft.saveDraftStep1.useMutation({
         onSuccess: async () => {
-            await utils.owner.property.getSingleDraft.invalidate();
+            await utils.owner.draft.getSingleDraft.invalidate();
             goTo(2);
         }
     });
 
-    const saveDraftStep2 = t.owner.property.saveDraftStep2.useMutation({
+    const saveDraftStep2 = t.owner.draft.saveDraftStep2.useMutation({
         onSuccess: async () => {
-            await utils.owner.property.getSingleDraft.invalidate();
+            await utils.owner.draft.getSingleDraft.invalidate();
             goTo(4);
         }
     });
 
-    const saveDraftStep3 = t.owner.property.saveDraftStep3.useMutation({
+    const saveDraftStep3 = t.owner.draft.saveDraftStep3.useMutation({
         onSuccess: async () => {
-            await utils.owner.property.getSingleDraft.invalidate();
+            await utils.owner.draft.getSingleDraft.invalidate();
             goTo(5);
         }
     });
 
-    const saveDraftStep4 = t.owner.property.saveDraftStep4.useMutation({
+    const saveDraftStep4 = t.owner.draft.saveDraftStep4.useMutation({
         onSuccess: async data => {
-            await utils.owner.property.getSingleDraft.invalidate();
+            await utils.owner.draft.getSingleDraft.invalidate();
 
             if (data.rentType === 'SHORT_TERM') {
                 goTo(6);
@@ -83,17 +94,27 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
         }
     });
 
-    const saveDraftStep5 = t.owner.property.saveDraftStep5.useMutation({
-        onSuccess: async data => {
-            await utils.owner.property.getSingleDraft.invalidate();
+    const saveDraftStep5 = t.owner.draft.saveDraftStep5.useMutation({
+        onSuccess: async () => {
+            await utils.owner.draft.getSingleDraft.invalidate();
             goTo(7);
         }
     });
 
-    const saveDraftStep6 = t.owner.property.saveDraftStep6.useMutation({
-        onSuccess: async data => {
-            await utils.owner.property.getSingleDraft.invalidate();
+    const saveDraftStep6 = t.owner.draft.saveDraftStep6.useMutation({
+        onSuccess: async () => {
+            await utils.owner.draft.getSingleDraft.invalidate();
             goTo(8);
+        }
+    });
+
+    const saveDraftStep7 = t.owner.draft.saveDraftStep7.useMutation({
+        onSuccess: async data => {
+            startTransition(() => {
+                router.refresh();
+                setPropertyUid(data.propertyUid);
+                setSuccessModalOpen(true);
+            });
         }
     });
 
@@ -101,6 +122,16 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
 
     return (
         <>
+            {propertyUid && (
+                <DraftSuccessModal
+                    propertyUid={propertyUid}
+                    open={isSuccessModalOpen}
+                    onClose={() => {
+                        router.push(`/owner`);
+                    }}
+                />
+            )}
+
             <Progress
                 value={(step / 9) * 100}
                 min={0}
@@ -242,6 +273,31 @@ export function EditPropertyForm({ propertyDraftUid }: EditPropertyFormProps) {
                                 >['images']) ?? []
                         }}
                         isSubmitting={saveDraftStep6.isLoading}
+                    />
+                )}
+
+                {step === 8 && (
+                    <FormStep8
+                        onSubmit={values => {
+                            console.log({ step8: values });
+                            saveDraftStep7.mutate({
+                                ...values,
+                                uid: draft.id
+                            });
+                        }}
+                        onPreviousClick={() => goTo(7)}
+                        defaultValues={{
+                            rentType: draft.rentType,
+                            agencyMonthsPaymentAdvance:
+                                draft.agencyMonthsPaymentAdvance ?? 0,
+                            cautionMonthsPaymentAdvance:
+                                draft.cautionMonthsPaymentAdvance ?? 0,
+                            housingFee: draft.housingFee ?? 20_000,
+                            availableFrom: draft.availableFrom ?? new Date(),
+                            description: draft.description ?? '',
+                            housingPeriod: draft.housingPeriod ?? 1
+                        }}
+                        isSubmitting={saveDraftStep7.isLoading || isSaving}
                     />
                 )}
             </div>

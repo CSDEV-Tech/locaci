@@ -59,16 +59,18 @@ export const ownerStorageRouter = t.router({
                 url
             };
         }),
-    deleteImage: protectedProcedure
+    deleteImages: protectedProcedure
         .input(
             z.object({
-                path: z.string()
+                paths: z.array(z.string())
             })
         )
         .mutation(async ({ input }) => {
             const { $response } = await r2
-                .deleteObject({
-                    Key: input.path,
+                .deleteObjects({
+                    Delete: {
+                        Objects: input.paths.map(path => ({ Key: path }))
+                    },
                     Bucket: env.CF_IMAGES_BUCKET_NAME
                 })
                 .promise();

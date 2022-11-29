@@ -12,7 +12,7 @@ export function AddButton({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const [isNavigating, startTransition] = React.useTransition();
 
-    const createPropertyMutation = t.owner.property.newDraft.useMutation({
+    const createPropertyMutation = t.owner.draft.newDraft.useMutation({
         onSuccess(data) {
             startTransition(() =>
                 router.push(`/owner/properties/${data.uuid}/draft`)

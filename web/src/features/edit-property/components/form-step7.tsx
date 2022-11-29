@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 // components
-import { CaretDoubleLeft, Check } from 'phosphor-react';
+import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Button } from '@locaci/ui/components/atoms/button';
 import {
     DropZone,
@@ -55,7 +55,6 @@ export function FormStep7(props: FormStep7Props) {
 
     // mutations
     const uploadMutation = useUploadFileMutation();
-    const deleteMutation = t.owner.storage.deleteImage.useMutation();
 
     const utils = t.useContext();
 
@@ -145,10 +144,6 @@ export function FormStep7(props: FormStep7Props) {
                         .watch('images')
                         .filter(img => img.uri !== fileObject.uri)
                 );
-
-                await deleteMutation.mutateAsync({
-                    path: image.path
-                });
             }
         }
     }
@@ -206,10 +201,12 @@ export function FormStep7(props: FormStep7Props) {
                         loading={isUploadingImages || props.isSubmitting}
                         loadingMessage={`Veuillez attendre l'envoi des images avant de passer à la suite`}
                         type="submit"
-                        variant="secondary"
+                        variant="dark"
                         className="w-full"
-                        renderTrailingIcon={cls => <Check className={cls} />}>
-                        Terminer
+                        renderTrailingIcon={cls => (
+                            <CaretDoubleRight className={cls} />
+                        )}>
+                        Suivant
                     </Button>
                 </div>
             </form>

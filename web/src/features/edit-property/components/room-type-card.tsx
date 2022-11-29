@@ -162,7 +162,7 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
                     renderTrailingIcon={cls => <PlusCircle className={cls} />}
                 />
 
-                {!!props.onDelete && (
+                {typeof props.onDelete === 'function' && (
                     <Button
                         type={`button`}
                         variant={`danger`}
