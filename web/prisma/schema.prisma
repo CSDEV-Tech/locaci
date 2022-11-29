@@ -116,8 +116,13 @@ model Property {
     municipalityId      String       @db.Uuid
     localityId          String       @db.Uuid
     addressInstructions String?
+    Listing             Listing[]
+}
 
-    // listing details
+model Listing {
+    id                          String   @id @default(uuid()) @db.Uuid
+    property                    Property @relation(fields: [propertyId], references: [id])
+    propertyId                  String   @db.Uuid
     housingFee                  Int
     description                 String
     housingPeriod               Int
