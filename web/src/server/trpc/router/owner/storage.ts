@@ -35,7 +35,10 @@ export const ownerStorageRouter = t.router({
                                     'https://locaci.fredkiss.dev',
                                     'https://locaci.net'
                                 ],
-                                AllowedHeaders: ['content-type']
+                                AllowedHeaders: [
+                                    'content-type',
+                                    'cache-control'
+                                ]
                             }
                         ]
                     }

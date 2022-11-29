@@ -12,7 +12,8 @@ export function useUploadFileMutation() {
                 body: fileObject.file,
                 mode: 'cors',
                 headers: {
-                    'Content-Type': `image/${fileObject.extension}`
+                    'Content-Type': `image/${fileObject.extension}`,
+                    'Cache-Control': 'public, max-age=31536000, immutable'
                 }
             });
         }
