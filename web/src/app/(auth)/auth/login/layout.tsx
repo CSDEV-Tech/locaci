@@ -6,19 +6,16 @@ import {
 } from '~/features/shared/components/next-link';
 
 // utils
-import { cookies } from 'next/headers';
-import { getUserFromSessionToken } from '~/server/ssr-helpers';
 import { redirect } from 'next/navigation';
 import { clsx } from '@locaci/ui/lib/functions';
-import { getRoleURL, wait } from '~/utils/functions';
+import { getRoleURL } from '~/utils/functions';
 
 // types
 import type { LayoutProps } from '~/types';
+import { getUser } from '~/server/trpc/rsc/getUser';
 
 export default async function LoginLayout({ children }: LayoutProps) {
-    await wait(2000);
-    const session = cookies().get('__session')?.value;
-    const user = session ? await getUserFromSessionToken(session) : null;
+    const user = await getUser();
 
     if (user) {
         redirect(getRoleURL(user.role));
@@ -57,7 +54,7 @@ export default async function LoginLayout({ children }: LayoutProps) {
                     className={clsx(
                         'w-52 object-contain object-center',
                         'lg:w-64',
-                        'xl:w-7'
+                        'xl:w-72'
                     )}
                 />
             </section>
