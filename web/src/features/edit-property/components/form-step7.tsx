@@ -9,7 +9,7 @@ import {
 } from '@locaci/ui/components/organisms/drop-zone';
 
 // utils
-import { updatePropertyStep6Schema } from '~/validation/property-schema';
+import { updatePropertyStep7Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { useUploadFileMutation } from '~/features/shared/hooks/use-upload-image-mutation';
 import { getFileExtension, isNativeDOMFile } from '~/utils/functions';
@@ -20,7 +20,7 @@ import { Uuid } from '~/utils/uuid';
 // types
 import type { z } from 'zod';
 export type Form7Values = Omit<
-    z.TypeOf<typeof updatePropertyStep6Schema>,
+    z.TypeOf<typeof updatePropertyStep7Schema>,
     'uid'
 >;
 export type FormStep7Props = {
@@ -32,7 +32,7 @@ export type FormStep7Props = {
 
 export function FormStep7(props: FormStep7Props) {
     const form = useZodForm({
-        schema: updatePropertyStep6Schema.omit({
+        schema: updatePropertyStep7Schema.omit({
             uid: true
         }),
         defaultValues: {

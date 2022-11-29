@@ -64,12 +64,12 @@ export const updatePropertyStep2Schema = z.object({
     )
 });
 
-export const updatePropertyStep3Schema = z.object({
+export const updatePropertyStep4Schema = z.object({
     addressInstructions: z.string().optional(),
     uid: z.string().uuid()
 });
 
-export const updatePropertyStep4Schema = z.object({
+export const updatePropertyStep5Schema = z.object({
     additionalRooms: z.array(
         z.object({
             type: z.enum([
@@ -92,7 +92,7 @@ export const updatePropertyStep4Schema = z.object({
     uid: z.string().uuid()
 });
 
-export const updatePropertyStep5Schema = z.object({
+export const updatePropertyStep6Schema = z.object({
     amenities: z.array(
         z.union([
             z.object({
@@ -114,7 +114,7 @@ export const updatePropertyStep5Schema = z.object({
     uid: z.string().uuid()
 });
 
-export const updatePropertyStep6Schema = z.object({
+export const updatePropertyStep7Schema = z.object({
     images: z
         .array(
             z.object({
@@ -126,7 +126,7 @@ export const updatePropertyStep6Schema = z.object({
     uid: z.string().uuid()
 });
 
-export const updatePropertyStep7Schema = z.object({
+export const updatePropertyStep8Schema = z.object({
     uid: z.string().uuid(),
     description: z
         .string({

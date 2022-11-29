@@ -2,17 +2,23 @@ import { TRPCError } from '@trpc/server';
 import {
     updatePropertyStep1Schema,
     updatePropertyStep2Schema,
-    updatePropertyStep3Schema,
     updatePropertyStep4Schema,
     updatePropertyStep5Schema,
     updatePropertyStep6Schema,
-    updatePropertyStep7Schema
+    updatePropertyStep7Schema,
+    updatePropertyStep8Schema
 } from '~/validation/property-schema';
 import { z } from 'zod';
 import { t } from '~/server/trpc/trpc-server-root';
 import { isOwner } from '~/server/trpc/middleware/auth';
 
-import { Amenity, AmenityType, PropertyFormStep } from '@prisma/client';
+import {
+    Amenity,
+    AmenityType,
+    PropertyFormStep,
+    Room,
+    RoomType
+} from '@prisma/client';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerDraftRouter = t.router({
@@ -151,8 +157,8 @@ export const ownerDraftRouter = t.router({
                 }
             });
         }),
-    saveDraftStep3: protectedProcedure
-        .input(updatePropertyStep3Schema)
+    saveDraftStep4: protectedProcedure
+        .input(updatePropertyStep4Schema)
         .mutation(async ({ ctx, input }) => {
             const draft = await ctx.prisma.draftProperty.findFirst({
                 where: {
@@ -182,8 +188,8 @@ export const ownerDraftRouter = t.router({
                 }
             });
         }),
-    saveDraftStep4: protectedProcedure
-        .input(updatePropertyStep4Schema)
+    saveDraftStep5: protectedProcedure
+        .input(updatePropertyStep5Schema)
         .mutation(async ({ ctx, input }) => {
             const draft = await ctx.prisma.draftProperty.findFirst({
                 where: {
@@ -214,8 +220,8 @@ export const ownerDraftRouter = t.router({
                 }
             });
         }),
-    saveDraftStep5: protectedProcedure
-        .input(updatePropertyStep5Schema)
+    saveDraftStep6: protectedProcedure
+        .input(updatePropertyStep6Schema)
         .mutation(async ({ ctx, input }) => {
             const draft = await ctx.prisma.draftProperty.findFirst({
                 where: {
@@ -263,8 +269,8 @@ export const ownerDraftRouter = t.router({
                 }
             });
         }),
-    saveDraftStep6: protectedProcedure
-        .input(updatePropertyStep6Schema)
+    saveDraftStep7: protectedProcedure
+        .input(updatePropertyStep7Schema)
         .mutation(async ({ ctx, input }) => {
             const draft = await ctx.prisma.draftProperty.findFirst({
                 where: {
@@ -294,37 +300,119 @@ export const ownerDraftRouter = t.router({
                 }
             });
         }),
-    saveDraftStep7: protectedProcedure
-        .input(updatePropertyStep7Schema)
+    saveDraftStep8: protectedProcedure
+        .input(updatePropertyStep8Schema)
         .mutation(async ({ ctx, input }) => {
-            // TODO
-            // const draft = await ctx.prisma.draftProperty.findFirst({
-            //     where: {
-            //         id: input.uid,
-            //         userId: ctx.user.id
-            //     }
-            // });
-            // if (!draft) {
-            //     throw new TRPCError({
-            //         code: 'NOT_FOUND',
-            //         message:
-            //             "L'annonce que vous essayez de modifier n'existe pas"
-            //     });
-            // }
-            // return ctx.prisma.draftProperty.update({
-            //     where: {
-            //         id: input.uid
-            //     },
-            //     data: {
-            //         images: input.images,
-            //         currentStep:
-            //             draft.currentStep === PropertyFormStep.IMAGES
-            //                 ? 'LISTING_DETAILS'
-            //                 : draft.currentStep
-            //     }
-            // });
+            let draft = await ctx.prisma.draftProperty.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!draft) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            draft = await ctx.prisma.draftProperty.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    currentStep: 'COMPLETE'
+                }
+            });
+
+            /**
+             * Create Property based on the draft
+             **/
+            // base object for creating a property
+            const propertyCreated = {
+                archived: false,
+                noOfRooms: 0,
+                userId: ctx.user.id,
+                surfaceArea: draft.surfaceArea,
+                rentType: draft.rentType,
+                addressInstructions: draft.addressInstructions,
+                latitude: draft.latitude!,
+                longitude: draft.longitude!,
+                geoData: draft.geoData!,
+                localityId: draft.localityId!,
+                cityId: draft.cityId!,
+                municipalityId: draft.municipalityId!,
+                images: draft.images!
+            };
+
+            /**
+             * Count the number of Rooms to the property
+             */
+            type DraftPropertyRoom = Pick<Room, 'type'>;
+
+            const propertyRooms = draft.rooms as Array<DraftPropertyRoom>;
+
+            for (const room of propertyRooms) {
+                // the rooms that are counted in the display of the total number of rooms
+                const roomCountedInDisplayOfTotal = [
+                    RoomType.BEDROOM,
+                    RoomType.LIVING_ROOM,
+                    RoomType.KITCHEN
+                ] as Array<RoomType>;
+
+                if (roomCountedInDisplayOfTotal.includes(room.type)) {
+                    propertyCreated.noOfRooms = propertyCreated.noOfRooms + 1;
+                }
+            }
+
+            /**
+             * ADD Amenities to the property
+             * This is only possible if the property is a short term property
+             */
+            type DraftPropertyAmenity = Pick<Amenity, 'type' | 'name'>;
+            const amenities =
+                draft.rentType === 'SHORT_TERM'
+                    ? (draft.amenities as DraftPropertyAmenity[])
+                    : [];
+
+            /**
+             * Create the property in the DB
+             */
+            const property = await ctx.prisma.property.create({
+                data: {
+                    ...propertyCreated,
+                    rooms: {
+                        createMany: {
+                            data: propertyRooms
+                        }
+                    },
+                    amenities: {
+                        createMany: {
+                            data: amenities
+                        }
+                    }
+                }
+            });
+
+            const listing = await ctx.prisma.listing.create({
+                data: {
+                    propertyId: property.id,
+                    agencyMonthsPaymentAdvance:
+                        input.agencyMonthsPaymentAdvance,
+                    cautionMonthsPaymentAdvance:
+                        input.cautionMonthsPaymentAdvance,
+                    availableFrom: input.availableFrom,
+                    description: input.description,
+                    housingFee: input.housingFee,
+                    housingPeriod: input.housingPeriod,
+                    active: true
+                }
+            });
+
             return {
-                propertyUid: ''
+                listingUid: listing.id
             };
         })
 });

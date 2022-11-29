@@ -2,19 +2,17 @@
 import { Header } from '@locaci/ui/components/organisms/header';
 import { NextLink } from '~/features/shared/components/next-link';
 import { HeaderBreadCrumb } from '~/features/owner/components/header-breadcrumb';
+import { UserDropdown } from '~/features/owner/components/user-dropdown';
 
 // utils
-import { getUserFromSessionToken } from '~/server/ssr-helpers';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getUser } from '~/server/trpc/rsc/getUser';
 
 // types
 import type { LayoutProps } from '~/types';
-import { UserDropdown } from '~/features/owner/components/user-dropdown';
 
 export default async function OwnerLayout(props: LayoutProps) {
-    const session = cookies().get('__session')?.value;
-    const user = session ? await getUserFromSessionToken(session) : null;
+    const user = await getUser();
 
     if (user?.role !== 'PROPERTY_OWNER') {
         redirect(`/auth/login`);
@@ -28,11 +26,7 @@ export default async function OwnerLayout(props: LayoutProps) {
                 logoAltText="Logo LOCACI"
                 logoUrlDesktop="/logo.svg"
                 logoUrlMobile="/favicon.svg"
-                leadingElement={
-                    <>
-                        <HeaderBreadCrumb />
-                    </>
-                }
+                leadingElement={<HeaderBreadCrumb />}
                 trailingElement={
                     <UserDropdown
                         user={{

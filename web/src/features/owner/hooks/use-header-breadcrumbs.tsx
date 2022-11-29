@@ -1,5 +1,4 @@
 import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
-
 import type { BreadcrumbItem } from '@locaci/ui/components/molecules/breadcrumb';
 
 export function useHeaderBreadcrumbs(): BreadcrumbItem[] {
@@ -17,7 +16,7 @@ export function useHeaderBreadcrumbs(): BreadcrumbItem[] {
         case 'properties':
             items.push({
                 href: `${path}#`,
-                label: `Modification annonce`
+                label: `Modification logement`
             });
             break;
     }

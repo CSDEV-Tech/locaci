@@ -2,11 +2,11 @@ import { TRPCError } from '@trpc/server';
 import {
     updatePropertyStep1Schema,
     updatePropertyStep2Schema,
-    updatePropertyStep3Schema,
     updatePropertyStep4Schema,
     updatePropertyStep5Schema,
     updatePropertyStep6Schema,
-    updatePropertyStep7Schema
+    updatePropertyStep7Schema,
+    updatePropertyStep8Schema
 } from '~/validation/property-schema';
 import { z } from 'zod';
 import { t } from '~/server/trpc/trpc-server-root';

@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build": "turbo run build",
-        "dev": "turbo run dev storybook --parallel",
+        "dev": "turbo run dev --parallel",
         "test": "turbo run test",
         "format": "prettier --write ./web/src ./ui/src ./domain/src ./domain/tests",
         "deploy-ui-lib": "netlify deploy --prod",

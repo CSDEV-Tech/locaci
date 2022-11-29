@@ -14,14 +14,14 @@ import { CaretDoubleLeft, Check } from 'phosphor-react';
 // utils
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { convertDateToBeginOfDate } from '~/utils/functions';
-import { updatePropertyStep7Schema } from '~/validation/property-schema';
+import { updatePropertyStep8Schema } from '~/validation/property-schema';
 
 // types
 import type { z } from 'zod';
 import type { RentType } from '@prisma/client';
 
 export type FormStep8Values = Omit<
-    z.TypeOf<typeof updatePropertyStep7Schema>,
+    z.TypeOf<typeof updatePropertyStep8Schema>,
     'uid'
 >;
 
@@ -30,12 +30,13 @@ export type FormStep8Props = {
     onSubmit: (values: FormStep8Values) => void;
     defaultValues: Partial<FormStep8Values> & { rentType: RentType };
     isSubmitting: boolean;
+    intent: 'draft' | 'edit';
 };
 
 export function FormStep8(props: FormStep8Props) {
     // form state
     const form = useZodForm({
-        schema: updatePropertyStep7Schema.omit({
+        schema: updatePropertyStep8Schema.omit({
             uid: true
         }),
         defaultValues: {
@@ -62,14 +63,21 @@ export function FormStep8(props: FormStep8Props) {
                     8/8
                 </h2>
                 <h1 className="px-6 text-center text-2xl font-bold leading-normal md:text-3xl">
-                    Finalisez la création de votre logement
+                    {props.intent === 'draft' ? (
+                        <>Ajouter une annonce pour votre logement</>
+                    ) : (
+                        <>
+                            Modifier les détails de l'annonce pour votre
+                            logement
+                        </>
+                    )}
                 </h1>
             </div>
 
             <form
                 className="flex flex-col items-stretch gap-4 px-6 md:m-auto md:w-[500px]"
                 onSubmit={form.handleSubmit(values => {
-                    console.log({ values });
+                    props.onSubmit(values);
                 })}>
                 {props.defaultValues.rentType === 'SHORT_TERM' && (
                     <Controller

@@ -23,7 +23,7 @@ export function DraftSuccessModal({
     const ModalContent = () => (
         <>
             <div
-                className={`flex flex-col items-center gap-6 md:m-auto md:w-[450px]`}>
+                className={`flex flex-col items-center gap-6 py-5 md:m-auto md:w-[450px]`}>
                 <img
                     src="/success_illustration.svg"
                     alt="Image de succès"
@@ -43,11 +43,11 @@ export function DraftSuccessModal({
                         En cliquant sur ce lien
                     </NextLink>
                 </h2>
-            </div>
 
-            <Button variant={`dark`} onClick={onClose}>
-                Revenir au tableau de bord
-            </Button>
+                <Button variant={`dark`} onClick={onClose}>
+                    Revenir au tableau de bord
+                </Button>
+            </div>
         </>
     );
 

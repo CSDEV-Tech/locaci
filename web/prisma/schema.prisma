@@ -100,6 +100,7 @@ model Property {
     complete  Boolean   @default(false)
     rooms     Room[]
     amenities Amenity[]
+    listings  Listing[]
 
     images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
 
@@ -116,20 +117,21 @@ model Property {
     municipalityId      String       @db.Uuid
     localityId          String       @db.Uuid
     addressInstructions String?
-    Listing             Listing[]
 }
 
 model Listing {
-    id                          String   @id @default(uuid()) @db.Uuid
-    property                    Property @relation(fields: [propertyId], references: [id])
-    propertyId                  String   @db.Uuid
+    id         String   @id @default(uuid()) @db.Uuid
+    property   Property @relation(fields: [propertyId], references: [id])
+    propertyId String   @db.Uuid
+
     housingFee                  Int
     description                 String
     housingPeriod               Int
     cautionMonthsPaymentAdvance Int
     agencyMonthsPaymentAdvance  Int
     availableFrom               DateTime
-    active                      Boolean  @default(false)
+
+    active Boolean @default(false)
 }
 
 model DraftProperty {
@@ -162,14 +164,6 @@ model DraftProperty {
     noOfRooms Int?
     rooms     Json @default("[]") // A JSON Array of ids ([{type}]) 
     amenities Json @default("[]") // A JSON Array of ids ([{type, name}]) 
-
-    // listing details
-    housingFee                  Int?
-    description                 String?
-    housingPeriod               Int?
-    cautionMonthsPaymentAdvance Int?
-    agencyMonthsPaymentAdvance  Int?
-    availableFrom               DateTime?
 
     // form step
     currentStep PropertyFormStep @default(RENT_TYPE)

@@ -8,14 +8,14 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { RoomTypeCard } from './room-type-card';
 
 // utils
-import { updatePropertyStep4Schema } from '~/validation/property-schema';
+import { updatePropertyStep5Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
 import { type RoomType, RoomTypes } from '~/features/shared/types';
 export type Form5Values = Omit<
-    z.TypeOf<typeof updatePropertyStep4Schema>,
+    z.TypeOf<typeof updatePropertyStep5Schema>,
     'uid'
 >;
 
@@ -28,7 +28,7 @@ export type FormStep5Props = {
 
 export function FormStep5(props: FormStep5Props) {
     const form = useZodForm({
-        schema: updatePropertyStep4Schema.omit({
+        schema: updatePropertyStep5Schema.omit({
             uid: true
         }),
         defaultValues: {

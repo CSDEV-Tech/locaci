@@ -7,7 +7,7 @@ import { TextInput } from '@locaci/ui/components/atoms/input';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { updatePropertyStep5Schema } from '~/validation/property-schema';
+import { updatePropertyStep6Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
@@ -17,7 +17,7 @@ import {
     type PredefinedAmenityTypes
 } from '~/features/shared/types';
 export type Form6Values = Omit<
-    z.TypeOf<typeof updatePropertyStep5Schema>,
+    z.TypeOf<typeof updatePropertyStep6Schema>,
     'uid'
 >;
 
@@ -30,7 +30,7 @@ export type FormStep6Props = {
 
 export function FormStep6(props: FormStep6Props) {
     const form = useZodForm({
-        schema: updatePropertyStep5Schema.omit({
+        schema: updatePropertyStep6Schema.omit({
             uid: true
         }),
         defaultValues: {

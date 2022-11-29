@@ -7,16 +7,13 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 
 // utils
-import {
-    createPropertyRequestSchema,
-    updatePropertyStep3Schema
-} from '~/validation/property-schema';
+import { updatePropertyStep4Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types
 import type { z } from 'zod';
 export type Form4Values = Omit<
-    z.TypeOf<typeof updatePropertyStep3Schema>,
+    z.TypeOf<typeof updatePropertyStep4Schema>,
     'uid'
 >;
 
@@ -29,7 +26,7 @@ export type FormStep4Props = {
 
 export function FormStep4(props: FormStep4Props) {
     const form = useZodForm({
-        schema: updatePropertyStep3Schema.omit({
+        schema: updatePropertyStep4Schema.omit({
             uid: true
         }),
         defaultValues: {
