@@ -1,9 +1,9 @@
 import { rsc } from '~/server/trpc/rsc';
 import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 
-// this page should be static
-export const dynamic = 'auto',
-    revalidate = 86_400; // 1 day
+// this page should be static and only be revalidated each day
+export const dynamic = 'force-static',
+    revalidate = 86400; // 1 day
 
 export default async function IndexPage() {
     const properties = await rsc.property.getLastThreeCreated.fetch();
