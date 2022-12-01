@@ -7,7 +7,6 @@ import { AddButton } from '~/features/owner/components/add-button';
 
 // utils
 import { rsc } from '~/server/trpc/rsc';
-import { use } from 'react';
 import { NextLink } from '~/features/shared/components/next-link';
 
 export default async function OwnerDashboardPage() {
@@ -27,6 +26,7 @@ export default async function OwnerDashboardPage() {
                                     </h1>
                                 </section>
                             }>
+                            {/* @ts-ignore */}
                             <PropertyList />
                         </React.Suspense>
                     }
@@ -37,8 +37,8 @@ export default async function OwnerDashboardPage() {
     );
 }
 
-function PropertyList() {
-    const { properties, drafts } = use(rsc.owner.draft.getAll.fetch());
+async function PropertyList() {
+    const { properties, drafts } = await rsc.owner.draft.getAll.fetch();
 
     return (
         <>

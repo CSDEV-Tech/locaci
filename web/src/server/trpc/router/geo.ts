@@ -97,7 +97,8 @@ export const geoRouter = t.router({
                     'telecom',
                     'water',
                     'waterway',
-                    'junction'
+                    'junction',
+                    'boundary'
                 ]);
 
                 const isOfIgnoredCorrectCategory =
