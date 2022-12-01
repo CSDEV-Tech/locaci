@@ -110,12 +110,13 @@ model Property {
     latitude  String
 
     // Address
+    localityName        String
+    locality_osm_id     String
+    locality_bbox       Json
     city                City         @relation(fields: [cityId], references: [id])
-    locality            Locality     @relation(fields: [localityId], references: [id])
     municipality        Municipality @relation(fields: [municipalityId], references: [id])
     cityId              String       @db.Uuid
     municipalityId      String       @db.Uuid
-    localityId          String       @db.Uuid
     addressInstructions String?
 }
 
@@ -152,7 +153,8 @@ model DraftProperty {
     localityName        String?
     cityId              String? @db.Uuid
     municipalityId      String? @db.Uuid
-    localityId          String? @db.Uuid
+    locality_osm_id     String?
+    locality_bbox       Json? // A JSON Array of coordinates ([minLat, maxLat, minLong, maxLong]) 
     addressInstructions String?
 
     // Position
@@ -189,19 +191,9 @@ model City {
 
 // Commune
 model Municipality {
-    id         String     @id @default(uuid()) @db.Uuid
-    name       String
-    city       City       @relation(fields: [cityId], references: [id])
-    cityId     String     @db.Uuid
-    localities Locality[]
-    Property   Property[]
-}
-
-// Quartier
-model Locality {
-    id             String       @id @default(uuid()) @db.Uuid
-    name           String
-    municipality   Municipality @relation(fields: [municipalityId], references: [id])
-    municipalityId String       @db.Uuid
-    Property       Property[]
+    id       String     @id @default(uuid()) @db.Uuid
+    name     String
+    city     City       @relation(fields: [cityId], references: [id])
+    cityId   String     @db.Uuid
+    Property Property[]
 }

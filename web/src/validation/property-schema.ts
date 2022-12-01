@@ -26,7 +26,19 @@ export const updatePropertyStep2Schema = z.object({
             invalid_type_error: ''
         })
         .uuid('Veuillez saisir la commune où est située votre logement'),
-    localityUid: z
+    localityName: z
+        .string({
+            required_error:
+                'Veuillez saisir le quartier où se trouve votre logement'
+        })
+        .min(1, 'Veuillez saisir le quartier où se trouve votre logement'),
+    municipalityName: z
+        .string({
+            required_error:
+                'Veuillez saisir le quartier où se trouve votre logement'
+        })
+        .min(1, 'Veuillez saisir le quartier où se trouve votre logement'),
+    localityOSMID: z
         .string({
             required_error:
                 'Veuillez saisir le quartier où se trouve votre logement'
@@ -61,7 +73,8 @@ export const updatePropertyStep2Schema = z.object({
         {
             required_error: 'La position est requise'
         }
-    )
+    ),
+    boundingBox: z.tuple([z.number(), z.number(), z.number(), z.number()])
 });
 
 export const updatePropertyStep4Schema = z.object({

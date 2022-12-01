@@ -27,6 +27,7 @@ import {
 } from '~/validation/property-schema';
 import type { PropertyFormStep } from '@prisma/client';
 import type { Form2Values } from './form-step2';
+import type { BoundingBox } from '~/utils/types';
 
 type EditDraftPropertyFormProps = {
     propertyDraftUid: string;
@@ -52,12 +53,15 @@ export function EditDraftPropertyForm({
     const [isSuccessModalOpen, setSuccessModalOpen] = React.useState(false);
     const [listingUid, setListingUid] = React.useState<string | null>(null);
 
-    const [valuesForm2, setValuesForm2] = React.useState<Partial<Form2Values>>({
-        localityUid: draft?.localityId ?? '',
+    const [valuesForm2, setValuesForm2] = React.useState<
+        Partial<Form2Values & { boundingbox?: BoundingBox }>
+    >({
+        localityName: draft?.localityName ?? '',
+        localityOSMID: draft?.locality_osm_id ?? '',
         municipalityUid: draft?.municipalityId ?? '',
         cityUid: draft?.cityId ?? '',
-        localityQuery: draft?.localityName ?? '',
-        municipalityQuery: draft?.municipalityName ?? ''
+        municipalityQuery: draft?.municipalityName ?? '',
+        boundingBox: draft?.locality_bbox as BoundingBox | undefined
     });
 
     // mutations
@@ -124,7 +128,7 @@ export function EditDraftPropertyForm({
         <>
             {listingUid && (
                 <DraftSuccessModal
-                    propertyUid={listingUid}
+                    listingUid={listingUid}
                     open={isSuccessModalOpen}
                     onClose={() => {
                         router.push(`/owner`);
@@ -143,7 +147,7 @@ export function EditDraftPropertyForm({
             <div
                 className={clsx(
                     'flex h-full w-full flex-col',
-                    'gap-14 pt-20 pb-10',
+                    'gap-14 pb-44 pt-20',
                     'md:m-auto md:h-auto'
                 )}>
                 {step === 1 && (
@@ -181,13 +185,16 @@ export function EditDraftPropertyForm({
                                 ...values,
                                 uid: draft.id,
                                 cityUid: valuesForm2.cityUid!,
-                                localityUid: valuesForm2.localityUid!,
-                                municipalityUid: valuesForm2.municipalityUid!
+                                localityName: valuesForm2.localityName!,
+                                municipalityUid: valuesForm2.municipalityUid!,
+                                boundingBox: valuesForm2.boundingBox!,
+                                municipalityName: valuesForm2.municipalityQuery!
                             });
                         }}
                         onPreviousClick={() => goTo(2)}
                         defaultValues={{
-                            localityUid: valuesForm2.localityUid!
+                            localityOSMID: valuesForm2.localityOSMID!,
+                            boundingbox: valuesForm2.boundingBox!
                         }}
                         isSubmitting={saveDraftStep2.isLoading}
                     />

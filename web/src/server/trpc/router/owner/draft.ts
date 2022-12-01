@@ -30,8 +30,7 @@ export const ownerDraftRouter = t.router({
             },
             include: {
                 municipality: true,
-                city: true,
-                locality: true
+                city: true
             }
         });
 
@@ -116,20 +115,16 @@ export const ownerDraftRouter = t.router({
                 });
             }
 
-            const locality = await ctx.prisma.locality.findUnique({
+            const municipality = await ctx.prisma.municipality.findUnique({
                 where: {
-                    id: input.localityUid
+                    id: input.municipalityUid
                 },
                 include: {
-                    municipality: {
-                        include: {
-                            city: true
-                        }
-                    }
+                    city: true
                 }
             });
 
-            if (!locality) {
+            if (!municipality) {
                 throw new TRPCError({
                     code: 'BAD_REQUEST',
                     message: "Le quartier que vous avez indiqué n'existe pas."
@@ -141,10 +136,11 @@ export const ownerDraftRouter = t.router({
                     id: input.uid
                 },
                 data: {
-                    localityName: locality.name,
-                    municipalityName: locality.municipality.name,
-                    cityName: locality.municipality.city.name,
-                    localityId: input.localityUid,
+                    localityName: input.localityName,
+                    municipalityName: input.municipalityName,
+                    cityName: municipality.city.name,
+                    locality_osm_id: input.localityOSMID,
+                    locality_bbox: input.boundingBox,
                     cityId: input.cityUid,
                     municipalityId: input.municipalityUid,
                     longitude: input.longitude,
@@ -341,10 +337,12 @@ export const ownerDraftRouter = t.router({
                 latitude: draft.latitude!,
                 longitude: draft.longitude!,
                 geoData: draft.geoData!,
-                localityId: draft.localityId!,
+                locality_osm_id: draft.locality_osm_id!,
+                localityName: draft.localityName!,
                 cityId: draft.cityId!,
                 municipalityId: draft.municipalityId!,
-                images: draft.images!
+                images: draft.images!,
+                locality_bbox: draft.locality_bbox!
             };
 
             /**

@@ -1,10 +1,3 @@
-export type SeoData = {
-    title?: string;
-    description?: string;
-    imageURL?: string;
-    pathname?: string;
-};
-
 type PageParams = Record<string, string>;
 export type PageProps = {
     params: PageParams;

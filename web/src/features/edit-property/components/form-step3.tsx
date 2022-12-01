@@ -13,13 +13,17 @@ import { updatePropertyStep2Schema } from '~/validation/property-schema';
 
 // types
 import type { z } from 'zod';
+import type { BoundingBox } from '~/utils/types';
 export type Form3Values = Pick<
     z.TypeOf<typeof updatePropertyStep2Schema>,
-    'longitude' | 'latitude' | 'geoJSON'
+    'longitude' | 'latitude' | 'geoJSON' | 'localityOSMID' | 'localityName'
 >;
 
 type FormStep3Props = {
-    defaultValues: { localityUid: string };
+    defaultValues: {
+        localityOSMID: string;
+        boundingbox: BoundingBox;
+    };
     onPreviousClick: () => void;
     onSubmit: (values: Form3Values) => void;
     isSubmitting: boolean;
@@ -27,7 +31,7 @@ type FormStep3Props = {
 
 // lazy load the map component
 const Map = dynamic(() => import('~/features/shared/components/map'), {
-    suspense: false
+    suspense: true
 });
 
 /**
@@ -35,10 +39,10 @@ const Map = dynamic(() => import('~/features/shared/components/map'), {
  * @param props
  * @returns
  */
-function MapLoader(props: { localityUid: string }) {
-    const { data } = t.geo.getLocalityData.useQuery(
+function MapLoader(props: { localityOSMID: string; boundingbox: BoundingBox }) {
+    const { data } = t.geo.getLocalityByOSMID.useQuery(
         {
-            localityId: props.localityUid
+            osm_place_id: props.localityOSMID
         },
         {
             suspense: true
@@ -47,14 +51,14 @@ function MapLoader(props: { localityUid: string }) {
 
     return (
         <>
-            <Map localityData={data} />
+            <Map localityData={data} boundingbox={props.boundingbox} />
         </>
     );
 }
 
 export function FormStep3(props: FormStep3Props) {
-    const { data, isLoading } = t.geo.getLocalityData.useQuery({
-        localityId: props.defaultValues.localityUid!
+    const { data, isLoading } = t.geo.getLocalityByOSMID.useQuery({
+        osm_place_id: props.defaultValues.localityOSMID
     });
 
     return (
@@ -85,7 +89,10 @@ export function FormStep3(props: FormStep3Props) {
                             </div>
                         </div>
                     }>
-                    <MapLoader localityUid={props.defaultValues.localityUid!} />
+                    <MapLoader
+                        localityOSMID={props.defaultValues.localityOSMID}
+                        boundingbox={props.defaultValues.boundingbox}
+                    />
                 </React.Suspense>
 
                 <div className="flex items-center gap-4 px-6 md:mx-auto md:w-[450px]">
@@ -106,9 +113,13 @@ export function FormStep3(props: FormStep3Props) {
                         loadingMessage={`Veuillez attendre le chargement de la carte avant de passer à la suite`}
                         onClick={() =>
                             props.onSubmit({
-                                longitude: data!.lon,
-                                latitude: data!.lat,
-                                geoJSON: data!.geojson
+                                localityName: data!.localname,
+                                localityOSMID: data!.place_id.toString(),
+                                longitude:
+                                    data!.centroid.coordinates[0].toString(),
+                                latitude:
+                                    data!.centroid.coordinates[1].toString(),
+                                geoJSON: data!.geometry
                             })
                         }
                         variant="dark"

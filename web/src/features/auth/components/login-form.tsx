@@ -40,7 +40,7 @@ export function LoginForm() {
     const [receiverEmail, setReceiverEmail] = React.useState<string>();
 
     const router = useRouter();
-    const [isRefreshing, startRefresh] = React.useTransition();
+    const [isRefreshing, startRefreshTransition] = React.useTransition();
 
     // mutations
     const sendOtpMutation = t.auth.sendOtpCode.useMutation({
@@ -55,7 +55,7 @@ export function LoginForm() {
         onSuccess() {
             // refresh to redirect to login
             toast.success(`Connexion effectuée avec succès`);
-            startRefresh(() => router.refresh());
+            startRefreshTransition(() => router.refresh());
         }
     });
 

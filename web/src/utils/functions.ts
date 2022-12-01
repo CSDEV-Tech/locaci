@@ -22,11 +22,6 @@ export async function apiFetch<T>(
         headers.get('Content-Type') ?? 'application/json'
     );
 
-    // only wait in development mode
-    if (process.env.NODE_ENV === 'development') {
-        await wait(1500);
-    }
-
     return fetch(url, {
         ...options,
         headers,

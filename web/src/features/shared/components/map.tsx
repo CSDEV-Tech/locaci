@@ -10,18 +10,21 @@ import { env } from '~/env/client.mjs';
 import mapboxgl from 'mapbox-gl';
 
 // types
-import type { OSMResultData } from '~/utils/types';
+import type { BoundingBox, OSMDetailResultData } from '~/utils/types';
 
 export type MapProps = {
-    localityData?: OSMResultData | null;
+    localityData?: OSMDetailResultData | null;
+    boundingbox: BoundingBox;
 };
 
 // set mapbox token
 mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_KEY;
 
-export default function Map({ localityData: data }: MapProps) {
+export default function Map({ localityData: data, boundingbox }: MapProps) {
     const mapRef = React.useRef<HTMLDivElement>(null);
     const markerRef = React.useRef<HTMLDivElement>(null);
+
+    console.log({ boundingbox });
 
     // Initialize map object when component mounts
     React.useEffect(() => {
@@ -30,7 +33,7 @@ export default function Map({ localityData: data }: MapProps) {
             map = new mapboxgl.Map({
                 container: mapRef.current!,
                 style: 'mapbox://styles/mapbox/streets-v11',
-                bounds: data.boundingbox
+                bounds: boundingbox
             });
             // Add navigation control (the +/- zoom buttons)
             map.addControl(new mapboxgl.NavigationControl(), 'top-right');
@@ -41,7 +44,7 @@ export default function Map({ localityData: data }: MapProps) {
                     data: {
                         properties: [],
                         type: 'Feature',
-                        geometry: data.geojson
+                        geometry: data.geometry
                     }
                 });
                 // Add a new layer to visualize the polygon.
@@ -67,13 +70,21 @@ export default function Map({ localityData: data }: MapProps) {
                     }
                 });
                 new mapboxgl.Marker(markerRef.current!)
-                    .setLngLat([Number(data.lon), Number(data.lat)])
+                    .setLngLat([
+                        Number(data.centroid.coordinates[0]),
+                        Number(data.centroid.coordinates[1])
+                    ])
                     .addTo(map);
             });
         }
         // Clean up on unmount
         return () => map?.remove();
-    }, [data?.lon, data?.lat, data?.geojson, data?.boundingbox]);
+    }, [
+        data?.centroid.coordinates[0],
+        data?.centroid.coordinates[1],
+        data?.geometry,
+        boundingbox
+    ]);
 
     return (
         <>

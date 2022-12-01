@@ -281,7 +281,9 @@ export const authRouter = t.router({
                 `__session=${token}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
             );
 
-            return user;
+            return {
+                role: user.role
+            };
         }),
     getAuthenticatedUser: protectedProcedure.query(({ ctx }) => {
         return ctx.user;

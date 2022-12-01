@@ -12,13 +12,13 @@ import useMediaQuery from '~/features/shared/hooks/use-media-query';
 export type DraftSuccessModalProps = {
     open: boolean;
     onClose: () => void;
-    propertyUid: string;
+    listingUid: string;
 };
 
 export function DraftSuccessModal({
     onClose,
     open,
-    propertyUid
+    listingUid
 }: DraftSuccessModalProps) {
     const ModalContent = () => (
         <>
@@ -38,7 +38,7 @@ export function DraftSuccessModal({
                     L'annonce de votre logement a été mise en ligne, vous pouvez
                     inspecter le résultat :&nbsp;
                     <NextLink
-                        href={`/properties/${propertyUid}`}
+                        href={`/properties/${listingUid}`}
                         className={`underline`}>
                         En cliquant sur ce lien
                     </NextLink>

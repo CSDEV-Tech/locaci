@@ -3,7 +3,7 @@ export type ArrayElement<ArrayType extends readonly unknown[]> =
 
 export type PointGeoJSON = {
     type: 'Point';
-    coordinates: [number, number];
+    coordinates: [number, number]; // longitude, latitude
 };
 
 export type PolygonGeoJSON = {
@@ -15,8 +15,11 @@ export type GeoJSON = PointGeoJSON | PolygonGeoJSON;
 
 export type OSMResultData = {
     osm_id: number;
+    place_id: number;
     type: string;
-    boundingbox: [number, number, number, number]; // min lat, max lat, min long, max long
+    category: string;
+    class: string;
+    boundingbox: BoundingBox;
     lat: string;
     lon: string;
     display_name: string;
@@ -33,3 +36,14 @@ export type OSMResultData = {
         state: string; // state (ex: Abidjan)
     };
 };
+
+export type OSMDetailResultData = Omit<
+    OSMResultData,
+    'geojson' | 'lat' | 'lon' | 'display_name' | 'boundingbox'
+> & {
+    localname: string;
+    geometry: GeoJSON;
+    centroid: PointGeoJSON;
+};
+
+export type BoundingBox = [number, number, number, number]; // minLat, maxLat, minLong, maxLong
