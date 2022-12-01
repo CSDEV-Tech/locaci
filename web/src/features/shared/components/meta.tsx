@@ -1,8 +1,14 @@
 import { env } from '~/env/server.mjs';
-import { SeoData } from '~/types';
 import { linkWithSlash } from '~/utils/functions';
 
-export function Meta(props: SeoData) {
+export type MetaProps = {
+    title?: string;
+    description?: string;
+    imageURL?: string;
+    pathname?: string;
+};
+
+export function Meta(props: MetaProps) {
     const title =
         props.title ?? 'Trouvez votre prochain Logement en quelques clics';
     const description =
@@ -20,10 +26,10 @@ export function Meta(props: SeoData) {
         <>
             {/* General */}
             <title>{`${title} | LOCACI`}</title>
-            <link rel="icon" href={`${env.NEXT_PUBLIC_SITE_URL}/favicon.svg`} />
             <meta name="charset" content={'utf-8'} />
             <link rel="canonical" href={url} />
             <meta name="description" content={description} />
+            <meta name="viewport" content="width=device-width" />
 
             {/*Open Graph / Facebook */}
             <meta property="og:type" content="website" />
