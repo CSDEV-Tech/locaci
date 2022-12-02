@@ -1,5 +1,5 @@
-import { XCircle } from 'phosphor-react';
 import * as React from 'react';
+import { XCircleIcon } from './icons/x-circle';
 import { clsx } from '../../lib/functions';
 
 export type TextAreaProps = {
@@ -107,9 +107,9 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
                             <span
                                 className={`absolute right-2 top-2 font-normal text-gray group-focus-within:text-dark`}>
                                 {errorText && (
-                                    <XCircle
+                                    <XCircleIcon
                                         weight="fill"
-                                        className="text-red-400"
+                                        className="h-5 w-5 text-red-400"
                                     />
                                 )}
                             </span>

@@ -45,11 +45,14 @@ export type AmenityType =
     | 'CABLE'
     | 'WIFI'
     | 'TWIN_BED'
+    | 'OTHER'
     | 'RADIATOR';
 
-export const AmenityTypes: Record<AmenityType, string> = {
+export type PredefinedAmenityTypes = Exclude<AmenityType, 'OTHER'>;
+
+export const AmenityTypes: Record<PredefinedAmenityTypes, string> = {
     HOT_WATER: 'Eau chaude',
-    RADIATOR: 'Climatisation',
+    RADIATOR: 'Climatisation ou Radiateur',
     WIFI: 'Wi-fi ou Fibre Optique',
     TWIN_BED: 'Double lit ou Lit supperposé',
     CABLE: 'TV Satellite (ex: Canal +)'

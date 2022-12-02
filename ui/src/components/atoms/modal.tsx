@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { X } from 'phosphor-react';
+import { XIcon } from './icons/x';
 import * as React from 'react';
 import { clsx } from '../../lib/functions';
 import { Button } from './button';
@@ -73,7 +73,7 @@ export function Modal({
                                                 square
                                                 onClick={onClose}
                                                 renderLeadingIcon={cls => (
-                                                    <X className={cls} />
+                                                    <XIcon className={cls} />
                                                 )}
                                             />
                                         )}

@@ -28,12 +28,12 @@ async function main() {
                     municipalities: {
                         create: city.municipalities.map(m => {
                             return {
-                                name: m.name.toLowerCase(),
-                                localities: {
-                                    create: m.localities.map(l => ({
-                                        name: l.name.toLowerCase()
-                                    }))
-                                }
+                                name: m.name.toLowerCase()
+                                // localities: {
+                                //     create: m.localities.map(l => ({
+                                //         name: l.name.toLowerCase()
+                                //     }))
+                                // }
                             };
                         })
                     }

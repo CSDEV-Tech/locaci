@@ -10,20 +10,9 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model User {
-    id             String   @id @default(uuid()) @db.Uuid
-    firstName      String?
-    lastName       String?
-    phoneNumber    String?
-    email          String   @unique
-    role           Role     @default(HOUSING_APPLICANT)
-    createdAt      DateTime @default(now())
-    updatedAt      DateTime @updatedAt
-    email_verified Boolean  @default(false)
-    civicTitle     Civility @default(MR)
-
-    properties       Property[] // A user can have many properties
-    RequestOwnerRole RequestOwnerRole?
+enum Civility {
+    MR
+    MME
 }
 
 enum Role {
@@ -32,27 +21,20 @@ enum Role {
     ADMIN
 }
 
-enum Civility {
-    MR
-    MME
-}
+model User {
+    id             String   @id @default(uuid()) @db.Uuid
+    firstName      String?
+    lastName       String?
+    phoneNumber    String?
+    avatarURL      String?
+    email          String   @unique
+    role           Role     @default(HOUSING_APPLICANT)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    email_verified Boolean  @default(false)
+    civicTitle     Civility @default(MR)
 
-model RequestOwnerRole {
-    id                String        @id @default(uuid()) @db.Uuid
-    validatedAt       DateTime?
-    status            RequestStatus @default(WAITING)
-    createdAt         DateTime      @default(now())
-    updatedAt         DateTime      @updatedAt
-    reasonForRefusing String?
-
-    user   User   @relation(fields: [userId], references: [id])
-    userId String @unique @db.Uuid
-}
-
-enum RequestStatus {
-    WAITING
-    GRANTED
-    REFUSED
+    properties Property[] // A user can have many properties
 }
 
 model Room {
@@ -95,43 +77,109 @@ model Amenity {
     propertyId String?     @db.Uuid
 }
 
-model Property {
-    id          String    @id @default(uuid()) @db.Uuid
-    rentType    RentType  @default(LOCATION)
-    userId      String    @db.Uuid
-    owner       User      @relation(fields: [userId], references: [id]) // A Property have one owner
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
-    archived    Boolean   @default(false)
-    noOfRooms   Int
-    rooms       Room[]
-    amenities   Amenity[]
-    surfaceArea Int
-
-    images Json // A JSON Array of uris + name ([{uri, name}]) 
-
-    // localization
-    city                City         @relation(fields: [cityId], references: [id])
-    commune             Municipality @relation(fields: [municipalityId], references: [id])
-    locality            Locality?    @relation(fields: [localityId], references: [id])
-    localityName        String
-    addressInstructions String?
-
-    // Position
-    longitude String
-    latitude  String
-
-    // position limits
-    geoData        Json
-    cityId         String  @db.Uuid
-    municipalityId String  @db.Uuid
-    localityId     String? @db.Uuid
-}
-
 enum RentType {
     LOCATION
     SHARED_APPARTMENT
     SHORT_TERM
+}
+
+model Property {
+    id        String   @id @default(uuid()) @db.Uuid
+    userId    String   @db.Uuid
+    owner     User     @relation(fields: [userId], references: [id]) // A Property have one owner
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // default values
+    rentType    RentType @default(LOCATION)
+    surfaceArea Int      @default(9)
+
+    noOfRooms Int
+
+    archived  Boolean   @default(false)
+    complete  Boolean   @default(false)
+    rooms     Room[]
+    amenities Amenity[]
+    listings  Listing[]
+
+    images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
+
+    // Position
+    geoData   Json
+    longitude String
+    latitude  String
+
+    // Address
+    localityName        String
+    locality_osm_id     String
+    locality_bbox       Json
+    city                City         @relation(fields: [cityId], references: [id])
+    municipality        Municipality @relation(fields: [municipalityId], references: [id])
+    cityId              String       @db.Uuid
+    municipalityId      String       @db.Uuid
+    addressInstructions String?
+}
+
+model Listing {
+    id         String   @id @default(uuid()) @db.Uuid
+    property   Property @relation(fields: [propertyId], references: [id])
+    propertyId String   @db.Uuid
+
+    housingFee                  Int
+    description                 String
+    housingPeriod               Int
+    cautionMonthsPaymentAdvance Int
+    agencyMonthsPaymentAdvance  Int
+    availableFrom               DateTime
+
+    active Boolean @default(false)
+}
+
+model DraftProperty {
+    id        String   @id @default(uuid()) @db.Uuid
+    userId    String   @db.Uuid
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // default values
+    rentType    RentType @default(LOCATION)
+    surfaceArea Int      @default(9)
+
+    images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
+
+    // address
+    cityName            String?
+    municipalityName    String?
+    localityName        String?
+    cityId              String? @db.Uuid
+    municipalityId      String? @db.Uuid
+    locality_osm_id     String?
+    locality_bbox       Json? // A JSON Array of coordinates ([minLat, maxLat, minLong, maxLong]) 
+    addressInstructions String?
+
+    // Position
+    geoData   Json?
+    longitude String?
+    latitude  String?
+
+    // rooms & amenities
+    noOfRooms Int?
+    rooms     Json @default("[]") // A JSON Array of ids ([{type}]) 
+    amenities Json @default("[]") // A JSON Array of ids ([{type, name}]) 
+
+    // form step
+    currentStep PropertyFormStep @default(RENT_TYPE)
+}
+
+enum PropertyFormStep {
+    RENT_TYPE
+    ADDRESS
+    INSTRUCTIONS
+    ROOMS
+    AMENITIES
+    IMAGES
+    LISTING_DETAILS
+    COMPLETE
 }
 
 model City {
@@ -143,19 +191,9 @@ model City {
 
 // Commune
 model Municipality {
-    id         String     @id @default(uuid()) @db.Uuid
-    name       String
-    city       City       @relation(fields: [cityId], references: [id])
-    cityId     String     @db.Uuid
-    localities Locality[]
-    Property   Property[]
-}
-
-// Quartier
-model Locality {
-    id             String       @id @default(uuid()) @db.Uuid
-    name           String
-    municipality   Municipality @relation(fields: [municipalityId], references: [id])
-    municipalityId String       @db.Uuid
-    Property       Property[]
+    id       String     @id @default(uuid()) @db.Uuid
+    name     String
+    city     City       @relation(fields: [cityId], references: [id])
+    cityId   String     @db.Uuid
+    Property Property[]
 }

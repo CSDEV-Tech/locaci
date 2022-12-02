@@ -3,7 +3,8 @@ import * as React from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
 import { TextInput, TextInputProps } from '../atoms/input';
-import { CaretDown, CheckCircle } from 'phosphor-react';
+import { CaretDownIcon } from '../atoms/icons/caret-down';
+import { CheckCircleIcon } from '../atoms/icons/check-circle';
 import { LoadingIndicator } from '../atoms/loading-indicator';
 
 export type ComboBoxProps = {
@@ -150,7 +151,7 @@ export function ComboBox({
                                                 </span>
 
                                                 {selected && (
-                                                    <CheckCircle
+                                                    <CheckCircleIcon
                                                         className={clsx(
                                                             'min-w-4 h-4',
                                                             {
@@ -192,7 +193,7 @@ const CustomComboboxInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                 appendix={
                     <Combobox.Button aria-label="Ouvrir le menu">
                         {({ open }) => (
-                            <CaretDown
+                            <CaretDownIcon
                                 weight="bold"
                                 className={clsx('h-4 w-4', {
                                     'rotate-180': open

@@ -24,7 +24,6 @@
         "esbuild": "^0.15.10",
         "jest-mock": "^28.1.0",
         "nodemon": "^2.0.15",
-        "phosphor-react": "^1.4.1",
         "postcss": "^8.4.14",
         "react": "18.2.0",
         "react-dom": "18.2.0",
@@ -32,7 +31,6 @@
         "typescript": "4.7.4"
     },
     "peerDependencies": {
-        "phosphor-react": "^1.4.1",
         "react": "18.2.0",
         "react-dom": "18.2.0"
     },
@@ -42,12 +40,16 @@
     "sideEffects": false,
     "type": "module",
     "files": [
-        "dist"
+        "dist",
+        "dist/lib/**/*.d.ts",
+        "dist/lib/**/*.js",
+        "dist/components/**/*.d.ts",
+        "dist/components/**/*.js"
     ],
     "scripts": {
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "build": "esbuild ./src/index.ts ./src/**/*.ts ./src/components/**/*.tsx --outdir=./dist --format=esm --tree-shaking=true && tsc --emitDeclarationOnly",
+        "build": "esbuild ./src/**/*.ts ./src/components/**/*.tsx  ./src/components/**/icons/*.tsx  --outdir=./dist --format=esm --tree-shaking=true && tsc --emitDeclarationOnly",
         "dev": "nodemon"
     },
     "dependencies": {

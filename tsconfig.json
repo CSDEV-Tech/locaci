@@ -15,9 +15,10 @@
         "skipLibCheck": true,
         /* Skip type checking of declaration files. */
         "forceConsistentCasingInFileNames": true,
+        "noErrorTruncation": true,
         "declaration": true,
         "paths": {
-            "@locaci/ui": ["ui/dist"],
+            "@locaci/ui/*": ["ui/dist/*"],
             "~/*": ["web/src/*"]
         }
     }

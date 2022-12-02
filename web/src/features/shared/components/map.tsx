@@ -1,26 +1,30 @@
+'use client';
+
 import * as React from 'react';
 // components
-import { LoadingIndicator, MapPin } from '@locaci/ui';
+import { MapPin } from '@locaci/ui/components/molecules/map-pin';
 import { House } from 'phosphor-react';
 
 // utils
 import { env } from '~/env/client.mjs';
 import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 
 // types
-import type { OSMResultData } from '~/utils/types';
+import type { BoundingBox, OSMDetailResultData } from '~/utils/types';
 
 export type MapProps = {
-    localityData?: OSMResultData | null;
+    localityData?: OSMDetailResultData | null;
+    boundingbox: BoundingBox;
 };
 
 // set mapbox token
 mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_KEY;
 
-export default function Map({ localityData: data }: MapProps) {
+export default function Map({ localityData: data, boundingbox }: MapProps) {
     const mapRef = React.useRef<HTMLDivElement>(null);
     const markerRef = React.useRef<HTMLDivElement>(null);
+
+    console.log({ boundingbox });
 
     // Initialize map object when component mounts
     React.useEffect(() => {
@@ -29,12 +33,10 @@ export default function Map({ localityData: data }: MapProps) {
             map = new mapboxgl.Map({
                 container: mapRef.current!,
                 style: 'mapbox://styles/mapbox/streets-v11',
-                bounds: data.boundingbox
+                bounds: boundingbox
             });
-
             // Add navigation control (the +/- zoom buttons)
             map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
             map.on('load', () => {
                 // add map polygon
                 map.addSource('maine', {
@@ -42,10 +44,9 @@ export default function Map({ localityData: data }: MapProps) {
                     data: {
                         properties: [],
                         type: 'Feature',
-                        geometry: data.geojson
+                        geometry: data.geometry
                     }
                 });
-
                 // Add a new layer to visualize the polygon.
                 map.addLayer({
                     id: 'maine',
@@ -57,7 +58,6 @@ export default function Map({ localityData: data }: MapProps) {
                         'fill-opacity': 0.3
                     }
                 });
-
                 // Add a black outline around the polygon.
                 map.addLayer({
                     id: 'outline',
@@ -69,15 +69,22 @@ export default function Map({ localityData: data }: MapProps) {
                         'line-width': 1
                     }
                 });
-
                 new mapboxgl.Marker(markerRef.current!)
-                    .setLngLat([Number(data.lon), Number(data.lat)])
+                    .setLngLat([
+                        Number(data.centroid.coordinates[0]),
+                        Number(data.centroid.coordinates[1])
+                    ])
                     .addTo(map);
             });
         }
         // Clean up on unmount
         return () => map?.remove();
-    }, [data?.lon, data?.lat, data?.geojson, data?.boundingbox]);
+    }, [
+        data?.centroid.coordinates[0],
+        data?.centroid.coordinates[1],
+        data?.geometry,
+        boundingbox
+    ]);
 
     return (
         <>

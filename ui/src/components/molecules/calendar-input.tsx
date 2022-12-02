@@ -23,7 +23,7 @@ import {
     getLocalTimeZone,
     type DateValue
 } from '@internationalized/date';
-import { CalendarBlank } from 'phosphor-react';
+import { CalendarBlankIcon } from '../atoms/icons/calendar-blank';
 import { Button } from '../atoms/button';
 import { clsx } from '../../lib/functions';
 import type { ValidationState } from '@react-types/shared';
@@ -173,7 +173,7 @@ function FieldButton({
             ref={ref}
             aria-pressed={isPressed || props.isPressed}
             renderLeadingIcon={cls => (
-                <CalendarBlank weight="bold" className={cls} />
+                <CalendarBlankIcon weight="bold" className={cls} />
             )}
         />
     );

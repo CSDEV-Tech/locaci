@@ -1,6 +1,8 @@
-import * as React from 'react';
-import { Breadcrumb } from '@locaci/ui';
-import type { BreadcrumbItem } from '@locaci/ui';
+'use client';
+import {
+    Breadcrumb,
+    type BreadcrumbItem
+} from '@locaci/ui/components/molecules/breadcrumb';
 import { NextLink } from '~/features/shared/components/next-link';
 
 export type NextBreadcrumbProps = {

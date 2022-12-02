@@ -25,7 +25,7 @@ export function LinkButton({
             className={clsx(
                 className,
                 `items-center justify-center gap-2 rounded-md px-4 py-2 focus:outline-none`,
-                `font-bold focus:ring`,
+                `font-medium focus:ring`,
                 {
                     flex: block,
                     'inline-flex': !block,

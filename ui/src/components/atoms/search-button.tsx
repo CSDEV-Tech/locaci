@@ -1,5 +1,6 @@
-import { MagnifyingGlass } from 'phosphor-react';
+import { MagnifyIngGlassIcon } from '../atoms/icons/magnifying-glass';
 import * as React from 'react';
+
 import { clsx } from '../../lib/functions';
 import { CustomLink, Link } from './link';
 
@@ -35,7 +36,7 @@ export function SearchButton({
             </span>
 
             <div>
-                <MagnifyingGlass
+                <MagnifyIngGlassIcon
                     className="h-4 w-4 text-primary"
                     weight="bold"
                 />

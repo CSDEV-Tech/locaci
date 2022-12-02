@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { clsx } from '../../lib/functions';
-import { CaretDown, CheckCircle } from 'phosphor-react';
+import { CaretDownIcon } from './icons/caret-down';
+import { CheckCircleIcon } from './icons/check-circle';
 
 export type SelectProps = {
     value?: string;
@@ -75,9 +76,9 @@ export function Select({
                                 <span>
                                     {selected?.label ?? 'Choisissez une option'}
                                 </span>
-                                <CaretDown
+                                <CaretDownIcon
                                     weight="bold"
-                                    className={clsx({
+                                    className={clsx('h-5 w-5', {
                                         'rotate-180': open
                                     })}
                                 />
@@ -133,7 +134,7 @@ export function Select({
                                                     </span>
 
                                                     {selected && (
-                                                        <CheckCircle
+                                                        <CheckCircleIcon
                                                             className={clsx(
                                                                 'min-w-4 h-4',
                                                                 {

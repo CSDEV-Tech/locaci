@@ -1,6 +1,7 @@
+'use client';
 import * as React from 'react';
 // components
-import { Button } from '@locaci/ui';
+import { Button } from '@locaci/ui/components/atoms/button';
 
 // utils & functions
 import useMediaQuery from '~/features/shared/hooks/use-media-query';
@@ -34,19 +35,18 @@ export default function LoginSuccessModal({
                     aria-live="assertive"
                     className="flex flex-col gap-4 text-left text-gray">
                     <p>
-                        Nous avons envoyé un email de vérification à
+                        Nous avons envoyé un code de vérification à
                         l'adresse&nbsp;
-                        <strong className="font-bold">{email}</strong>.
+                        <strong className="font-semibold">{email}</strong>.
                     </p>
                     <p>
-                        Vous n'avez qu'à cliquer sur le lien dans cet email pour
-                        vous connecter. Si vous ne le trouvez pas, veuillez
-                        vérifier dans vos SPAMS.
+                        Saisissez ce code pour vous connecter. Si vous ne le
+                        trouvez pas, veuillez vérifier dans vos SPAMS.
                     </p>
                 </section>
 
                 <Button variant="hollow" onClick={onClose}>
-                    Fermer ce message.
+                    J'ai compris.
                 </Button>
             </div>
         </>

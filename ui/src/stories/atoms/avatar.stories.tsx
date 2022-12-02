@@ -15,3 +15,9 @@ Default.args = {
     src: 'https://i.pravatar.cc/300',
     name: "N'Goran germaine"
 } as AvatarProps;
+
+export const WithEmptySrc = Template.bind({});
+WithEmptySrc.args = {
+    name: "N'Goran germaine",
+    className: 'bg-secondary'
+} as AvatarProps;

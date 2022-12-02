@@ -1,3 +1,5 @@
+import type { Role } from '@prisma/client';
+
 export function getHostWithScheme(url: string): string {
     const urlObject = new URL(url);
     return urlObject.protocol + '//' + urlObject.host;
@@ -8,29 +10,42 @@ export function wait(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function jsonFetch<T>(
+export async function apiFetch<T>(
     url: string,
     options: RequestInit = {}
-): Promise<T> {
+): Promise<T & { httpStatus: number }> {
     // Set the default headers correctly
     const headers: HeadersInit = new Headers(options.headers);
     headers.set('Accept', 'application/json');
-    headers.set('Content-Type', 'application/json');
-
-    // only wait in development mode
-    if (process.env.NODE_ENV === 'development') {
-        await wait(1500);
-    }
+    headers.set(
+        'Content-Type',
+        headers.get('Content-Type') ?? 'application/json'
+    );
 
     return fetch(url, {
         ...options,
         headers,
         credentials: 'include'
-    })
-        .then(response => response.json())
-        .catch(error => {
-            console.error('There was an error ?', error);
-        });
+    }).then(async response => {
+        // check if data is JSON
+        const isJson =
+            response.headers
+                .get('content-type')
+                ?.includes('application/json') ?? false;
+
+        const data = isJson ? await response.json() : null;
+
+        if (!response.ok) {
+            console.error(
+                `[jsonFetch ${
+                    options.method ?? 'GET'
+                } ${url}] There was an error :`,
+                { data, statusCode: response.status }
+            );
+        }
+
+        return { ...data, httpStatus: response.status };
+    });
 }
 
 /**
@@ -177,4 +192,28 @@ export function convertDateToBeginOfDate(date: Date) {
     return new Date(
         `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
     );
+}
+
+/**
+ * Add a slash to the end of a link that does not contain one
+ *
+ * @example
+ *    linkWithSlash("/mon-lien") // => "/mon-lien/"
+ *    linkWithSlash("/mon-lien/") // => "/mon-lien/"
+ *
+ * @param link
+ */
+export function linkWithSlash(link: string): string | undefined {
+    return link !== undefined ? (link.endsWith('/') ? link : `${link}/`) : link;
+}
+
+export function getRoleURL(role: Role) {
+    switch (role) {
+        case 'ADMIN':
+            return `/admin`;
+        case 'PROPERTY_OWNER':
+            return `/owner`;
+        default:
+            return '/profile';
+    }
 }

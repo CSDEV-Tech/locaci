@@ -1,24 +1,19 @@
+'use client';
 import * as React from 'react';
 
 // utils
 import dynamic from 'next/dynamic';
 
 // types
-import type { BottomSheetProps } from '@locaci/ui';
+import type { BottomSheetProps } from '@locaci/ui/components/atoms/bottom-sheet';
 
 const BottomSheet = dynamic(
-    // @ts-ignore
-    () => import(`@locaci/ui/dist/components/atoms/bottom-sheet`),
+    () => import(`@locaci/ui/components/atoms/bottom-sheet`),
     {
-        ssr: false,
-        suspense: true
+        ssr: false
     }
 );
 
 export function LazyBottomSheet(props: BottomSheetProps) {
-    return (
-        <React.Suspense fallback={<></>}>
-            <BottomSheet {...props} />
-        </React.Suspense>
-    );
+    return <BottomSheet {...props} />;
 }

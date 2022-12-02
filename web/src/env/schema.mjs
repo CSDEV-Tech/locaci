@@ -8,9 +8,13 @@ import { z } from 'zod';
 export const serverSchema = z.object({
     NODE_ENV: z.enum(['development', 'test', 'production']),
     DATABASE_URL: z.string().url(),
-    SUPABASE_ADMIN_KEY: z.string(),
     OSM_SEARCH_URL: z.string().url(),
-    JWT_SECRET: z.string().min(32).max(32)
+    JWT_SECRET: z.string().min(32).max(32),
+    OAUTH_CLIENT_SECRET: z.string(),
+    CF_ACCOUNT_ID: z.string().min(1),
+    CF_ACCESS_KEY_ID: z.string().min(1),
+    CF_ACCESS_KEY_SECRET: z.string().min(1),
+    CF_IMAGES_BUCKET_NAME: z.string().min(1)
 });
 
 /**
@@ -19,10 +23,11 @@ export const serverSchema = z.object({
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
-    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
     NEXT_PUBLIC_MAPBOX_KEY: z.string(),
-    NEXT_PUBLIC_SUPABASE_KEY: z.string(),
-    NEXT_PUBLIC_SITE_URL: z.string().url().optional()
+    NEXT_PUBLIC_SITE_URL: z.string().url(),
+    NEXT_PUBLIC_OAUTH_CLIENT_ID: z.string(),
+    NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL: z.string().url(),
+    NEXT_PUBLIC_CF_IMAGES_URL: z.string().url()
 });
 
 /**
@@ -32,8 +37,10 @@ export const clientSchema = z.object({
  * @type {{ [k in keyof z.infer<typeof clientSchema>]: z.infer<typeof clientSchema>[k] | undefined }}
  */
 export const clientEnv = {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_MAPBOX_KEY: process.env.NEXT_PUBLIC_MAPBOX_KEY,
-    NEXT_PUBLIC_SUPABASE_KEY: process.env.NEXT_PUBLIC_SUPABASE_KEY,
-    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_CF_IMAGES_URL: process.env.NEXT_PUBLIC_CF_IMAGES_URL,
+    NEXT_PUBLIC_OAUTH_CLIENT_ID: process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID,
+    NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL:
+        process.env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL
 };

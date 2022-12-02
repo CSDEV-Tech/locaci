@@ -6,7 +6,6 @@
     :root {
         font-size: 14px;
         color: theme('colors.dark.DEFAULT');
-        font-family: 'Poppins', sans-serif;
     }
 }
 
@@ -221,6 +220,10 @@
     [data-rsbs-state='closing'] {
         /* Allows interactions on the rest of the page before the close transition is finished */
         pointer-events: none;
+    }
+
+    [data-nextjs-scroll-focus-boundary] {
+        height: 100%;
     }
 }
 

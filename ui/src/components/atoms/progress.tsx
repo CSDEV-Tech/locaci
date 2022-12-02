@@ -26,20 +26,19 @@ export function Progress({
 
     return (
         <div
-            className={clsx(
-                className,
-                'relative h-2 w-full rounded-md bg-gray',
-                {
-                    'bg-primary-15': variant === 'primary',
-                    'bg-secondary-15': variant === 'secondary'
-                }
-            )}
-        >
+            className={clsx(className, 'relative h-2 w-full rounded-md', {
+                'bg-primary-15': variant === 'primary',
+                'bg-secondary-15': variant === 'secondary'
+            })}>
             <div
-                className={clsx('absolute left-0 h-full rounded-md', {
-                    'bg-primary': variant === 'primary',
-                    'bg-secondary': variant === 'secondary'
-                })}
+                className={clsx(
+                    'absolute left-0 h-full rounded-md',
+                    'transition-all duration-300',
+                    {
+                        'bg-primary': variant === 'primary',
+                        'bg-secondary': variant === 'secondary'
+                    }
+                )}
                 style={{
                     width: `${widthPercent}%`
                 }}

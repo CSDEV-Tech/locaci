@@ -4,7 +4,7 @@ import type { AriaListBoxOptions } from '@react-aria/listbox';
 import type { ListState } from 'react-stately';
 import type { Node } from '@react-types/shared';
 import { useListBox, useListBoxSection, useOption } from 'react-aria';
-import { CheckCircle } from 'phosphor-react';
+import { CheckCircleIcon } from './icons/check-circle';
 import { ListBoxOption } from '../molecules/search-autocomplete';
 import { clsx } from '../../lib/functions';
 
@@ -106,7 +106,7 @@ function Option({ item, state, variant = 'primary' }: OptionProps) {
             })}>
             {item.rendered}
             {isSelected && (
-                <CheckCircle
+                <CheckCircleIcon
                     aria-hidden="true"
                     className={clsx('min-w-4 h-4', {
                         'text-primary': !isFocused && variant === 'primary',

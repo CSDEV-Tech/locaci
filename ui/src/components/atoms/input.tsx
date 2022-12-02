@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useId } from 'react';
-import { MinusCircle, PlusCircle, XCircle } from 'phosphor-react';
+import { PlusCircleIcon } from './icons/plus-circle';
+import { MinusCircleIcon } from './icons/minus-circle';
+import { XCircleIcon } from './icons/x-circle';
 import { clsx } from '../../lib/functions';
 import { Button } from './button';
 
@@ -141,9 +143,9 @@ export const TextInput = React.forwardRef<
                             <span
                                 className={`font-normal text-gray group-focus-within:text-dark`}>
                                 {!!errorText ? (
-                                    <XCircle
+                                    <XCircleIcon
                                         weight="fill"
-                                        className="text-red-400"
+                                        className="h-[1em] w-[1em] text-red-400"
                                     />
                                 ) : (
                                     appendix
@@ -314,9 +316,9 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                                 <span
                                     className={`font-normal text-gray group-focus-within:text-dark`}>
                                     {!!errorText ? (
-                                        <XCircle
+                                        <XCircleIcon
                                             weight="fill"
-                                            className="text-red-400"
+                                            className="h-[1em] w-[1em] text-red-400"
                                         />
                                     ) : (
                                         appendix
@@ -334,7 +336,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                                         'pointer-events-none': disabled
                                     })}
                                     renderTrailingIcon={cls => (
-                                        <MinusCircle className={cls} />
+                                        <MinusCircleIcon className={cls} />
                                     )}
                                     onClick={decrement}
                                 />
@@ -346,7 +348,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                                         'pointer-events-none': disabled
                                     })}
                                     renderTrailingIcon={cls => (
-                                        <PlusCircle className={cls} />
+                                        <PlusCircleIcon className={cls} />
                                     )}
                                     onClick={increment}
                                 />
