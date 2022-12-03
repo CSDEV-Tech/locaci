@@ -16,10 +16,9 @@ Default.args = {
     className: `font-bold p-8`
 };
 
-export const Link = Template.bind({});
-Link.args = {
-    href: `#`,
-    children: `LinkCard`,
+export const Animated = Template.bind({});
+Animated.args = {
+    children: `Animated Card`,
     animated: true,
     className: `font-bold p-8`
 };
