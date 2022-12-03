@@ -17,3 +17,8 @@ export type ErrorBoundaryProps = {
     error: Error;
     reset: () => void;
 };
+
+export type ListingImage = {
+    uri: string;
+    name: string;
+};

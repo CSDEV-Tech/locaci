@@ -4,10 +4,15 @@ import * as React from 'react';
 import { LoadingIndicator } from '@locaci/ui/components/atoms/loading-indicator';
 import { DashboardTabs } from '~/features/owner/components/dashboard-tabs';
 import { AddButton } from '~/features/owner/components/add-button';
+import { NextLink } from '~/features/shared/components/next-link';
+import { ListingCard } from '~/features/owner/components/listing-card';
 
 // utils
 import { rsc } from '~/server/trpc/rsc';
-import { NextLink } from '~/features/shared/components/next-link';
+
+// types
+import type { ListingImage } from '~/types';
+import type { DraftProperty, Property } from '@prisma/client';
 
 export default async function OwnerDashboardPage() {
     return (
@@ -40,6 +45,19 @@ export default async function OwnerDashboardPage() {
 async function PropertyList() {
     const { properties, drafts } = await rsc.owner.draft.getAll.fetch();
 
+    function getTitle(item: DraftProperty | Property) {
+        const type = item.noOfRooms === 1 ? 'Studio' : 'Appartement';
+
+        const label =
+            item.rentType === 'SHORT_TERM'
+                ? 'meublé'
+                : item.rentType === 'SHARED_APPARTMENT'
+                ? 'en colocation'
+                : 'Non meublé';
+
+        return `${type} ${label}`;
+    }
+
     return (
         <>
             <section className="flex flex-col items-center gap-4 px-4 py-10">
@@ -64,73 +82,53 @@ async function PropertyList() {
                 ) : (
                     <>
                         <h1 className="text-center text-2xl font-bold">
-                            Liste de vos propriétés
+                            Liste de vos Logements
                         </h1>
 
-                        <ul className="flex flex-col gap-4">
-                            {drafts?.map(p => (
-                                <li
-                                    key={p.id}
-                                    className="rounded-md border p-2">
-                                    <NextLink
-                                        href={`/owner/properties/${p.id}/draft`}
-                                        className="flex flex-col gap-2">
-                                        <span>
-                                            (brouillon)
-                                            {p.noOfRooms === 1
-                                                ? 'Studio'
-                                                : 'Appartement'}
-                                            &nbsp;
-                                            {p.rentType === 'SHORT_TERM' &&
-                                                'meublé'}
-                                            {p.rentType ===
-                                                'SHARED_APPARTMENT' &&
-                                                'en colocation'}
-                                            {p.rentType === 'LOCATION' &&
-                                                'Non meublé'}
-                                            -&nbsp;{p.localityName},&nbsp;
-                                            {p.municipalityName}, {p.cityName}
-                                        </span>
-                                        <span>
-                                            {p.noOfRooms} pièces -&nbsp;
-                                            {p.surfaceArea} m<sup>2</sup>
-                                        </span>
-                                    </NextLink>
+                        <AddButton>Ajouter une nouvelle annonce</AddButton>
+
+                        <ul className="grid gap-4">
+                            {drafts?.map(draft => (
+                                <li key={draft.id}>
+                                    <ListingCard
+                                        coverURL={
+                                            draft.images
+                                                ? (
+                                                      draft.images as Array<ListingImage>
+                                                  )[0]?.uri
+                                                : ''
+                                        }
+                                        href={`/owner/properties/${draft.id}/draft`}
+                                        isDraft
+                                        id={draft.id}
+                                        address={draft.localityName ?? ''}
+                                        numberOfRooms={draft.noOfRooms ?? 0}
+                                        surfaceArea={draft.surfaceArea}
+                                        title={getTitle(draft)}
+                                    />
                                 </li>
                             ))}
 
-                            {properties?.map(p => (
-                                <li
-                                    key={p.id}
-                                    className="rounded-md border p-2">
-                                    <NextLink
-                                        href={`/owner/properties/${p.id}/edit`}
-                                        className="flex flex-col gap-2">
-                                        <span>
-                                            {p.noOfRooms === 1
-                                                ? 'Studio'
-                                                : 'Appartement'}
-                                            &nbsp;
-                                            {p.rentType === 'SHORT_TERM' &&
-                                                'meublé'}
-                                            {p.rentType ===
-                                                'SHARED_APPARTMENT' &&
-                                                'en colocation'}
-                                            {p.rentType === 'LOCATION' &&
-                                                'Non meublé'}
-                                            -&nbsp;{p.localityName},&nbsp;
-                                            {p.municipality.name}, {p.city.name}
-                                        </span>
-                                        <span>
-                                            {p.noOfRooms} pièces -&nbsp;
-                                            {p.surfaceArea} m<sup>2</sup>
-                                        </span>
-                                    </NextLink>
+                            {properties?.map(property => (
+                                <li key={property.id}>
+                                    <ListingCard
+                                        coverURL={
+                                            property.images
+                                                ? (
+                                                      property.images as Array<ListingImage>
+                                                  )[0]?.uri
+                                                : ''
+                                        }
+                                        href={`/owner/properties/${property.id}/edit`}
+                                        id={property.id}
+                                        address={property.localityName ?? ''}
+                                        numberOfRooms={property.noOfRooms ?? 0}
+                                        surfaceArea={property.surfaceArea}
+                                        title={getTitle(property)}
+                                    />
                                 </li>
                             ))}
                         </ul>
-
-                        <AddButton> Ajouter une nouvelle annonce</AddButton>
                     </>
                 )}
             </section>

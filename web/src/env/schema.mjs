@@ -14,7 +14,8 @@ export const serverSchema = z.object({
     CF_ACCOUNT_ID: z.string().min(1),
     CF_ACCESS_KEY_ID: z.string().min(1),
     CF_ACCESS_KEY_SECRET: z.string().min(1),
-    CF_IMAGES_BUCKET_NAME: z.string().min(1)
+    CF_IMAGES_BUCKET_NAME: z.string().min(1),
+    CF_IMAGES_DOMAIN: z.string().min(1)
 });
 
 /**

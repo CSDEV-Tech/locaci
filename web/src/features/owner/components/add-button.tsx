@@ -7,8 +7,15 @@ import { Button } from '@locaci/ui/components/atoms/button';
 // utils
 import { t } from '~/utils/trpc-rq-hooks';
 import { useRouter } from 'next/navigation';
+import { clsx } from '@locaci/ui/lib/functions';
 
-export function AddButton({ children }: { children: React.ReactNode }) {
+export function AddButton({
+    children,
+    className
+}: {
+    children: React.ReactNode;
+    className?: string;
+}) {
     const router = useRouter();
     const [isNavigating, startTransition] = React.useTransition();
 
@@ -23,7 +30,7 @@ export function AddButton({ children }: { children: React.ReactNode }) {
     return (
         <>
             <Button
-                className="whitespace-nowrap"
+                className={clsx(className, 'whitespace-nowrap')}
                 variant="secondary"
                 onClick={() => createPropertyMutation.mutate()}
                 loading={createPropertyMutation.isLoading || isNavigating}>
