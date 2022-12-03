@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { clsx } from '../../lib/functions';
 
+export type CustomLinkComponentType =
+    | React.ComponentType<CustomLink>
+    | React.ForwardRefExoticComponent<
+          CustomLink & React.RefAttributes<HTMLAnchorElement>
+      >;
+
 export type LinkProps = {
     href: string;
     className?: string;
@@ -9,11 +15,7 @@ export type LinkProps = {
     'aria-label'?: string;
     rel?: string;
     'aria-current'?: React.AriaAttributes['aria-current'];
-    Custom?:
-        | React.ComponentType<CustomLink>
-        | React.ForwardRefExoticComponent<
-              CustomLink & React.RefAttributes<HTMLAnchorElement>
-          >;
+    Custom?: CustomLinkComponentType;
     onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 } & Omit<React.HTMLProps<HTMLAnchorElement>, 'ref'>;
 

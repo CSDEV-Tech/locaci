@@ -21,6 +21,11 @@ import { FileImageIcon } from '../../components/atoms/icons/file-image';
 import { FilePdfIcon } from '../../components/atoms/icons/file-pdf';
 import { WarningCircleIcon } from '../../components/atoms/icons/warning-circle';
 import { EyeIcon } from '../../components/atoms/icons/eye';
+import { ImageIcon } from '../../components/atoms/icons/image';
+import { TrashIcon } from '../../components/atoms/icons/trash';
+import { BedIcon } from '../../components/atoms/icons/bed';
+import { RulerIcon } from '../../components/atoms/icons/ruler';
+import { MapPinIcon } from '../../components/atoms/icons/map-pin';
 
 // types
 import type {
@@ -130,6 +135,30 @@ const Template: ComponentStory<IconComponent> = args => (
         <div className="flex flex-col items-center gap-2">
             <EyeIcon className="h-10 w-10 " />
             <span>EyeIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <ImageIcon className="h-10 w-10 " />
+            <span>ImageIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <TrashIcon className="h-10 w-10 " />
+            <span>TrashIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <TrashIcon weight="fill" className="h-10 w-10 " />
+            <span>TrashIcon (filled) </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <BedIcon className="h-10 w-10 " />
+            <span>BedIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <RulerIcon className="h-10 w-10 " />
+            <span>RulerIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <MapPinIcon className="h-10 w-10 " />
+            <span>MapPinIcon </span>
         </div>
     </div>
 );
