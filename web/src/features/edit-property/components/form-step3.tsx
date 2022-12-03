@@ -25,7 +25,7 @@ type FormStep3Props = {
         boundingbox: BoundingBox;
     };
     onPreviousClick: () => void;
-    onSubmit: (values: Form3Values) => void;
+    onSubmit: (values: Omit<Form3Values, 'localityName'>) => void;
     isSubmitting: boolean;
 };
 
@@ -113,7 +113,6 @@ export function FormStep3(props: FormStep3Props) {
                         loadingMessage={`Veuillez attendre le chargement de la carte avant de passer à la suite`}
                         onClick={() =>
                             props.onSubmit({
-                                localityName: data!.localname,
                                 localityOSMID: data!.place_id.toString(),
                                 longitude:
                                     data!.centroid.coordinates[0].toString(),

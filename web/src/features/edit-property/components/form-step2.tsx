@@ -130,10 +130,12 @@ export function FormStep2(props: FormStep2Props) {
                         label="Commune"
                         value={form.watch('municipalityUid')}
                         onChange={(value, inputValue) => {
-                            form.setValue('municipalityUid', value);
                             setMunicipalityQuery(inputValue);
-                            form.resetField('localityName');
-                            form.resetField('localityOSMID');
+                            setLocalityQuery('');
+
+                            form.setValue('municipalityUid', value);
+                            form.setValue('localityName', '');
+                            form.setValue('localityOSMID', '');
                         }}
                         onSearch={query => {
                             setMunicipalityQuery(query);
