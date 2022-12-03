@@ -36,7 +36,10 @@ export const ownerDraftRouter = t.router({
 
         const drafts = await ctx.prisma.draftProperty.findMany({
             where: {
-                userId: ctx.user.id
+                userId: ctx.user.id,
+                currentStep: {
+                    not: 'COMPLETE'
+                }
             }
         });
 
