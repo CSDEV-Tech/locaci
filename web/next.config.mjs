@@ -18,7 +18,15 @@ const nextConfig = defineNextConfig({
         enableUndici: true
     },
     reactStrictMode: false,
-    swcMinify: true
+    swcMinify: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: env.CF_IMAGES_DOMAIN
+            }
+        ]
+    }
 });
 
 const withBundleAnalyzer = analyze({
