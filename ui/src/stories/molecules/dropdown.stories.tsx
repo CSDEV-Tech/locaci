@@ -5,7 +5,7 @@ import { Avatar } from '../../components/atoms/avatar';
 import { SquaresFour, SignOut } from 'phosphor-react';
 
 export default {
-    title: 'Composants/Dropdown',
+    title: 'Composants/Molecules/Dropdown',
     component: Dropdown,
     argTypes: {
         align: { control: 'select' }
@@ -19,6 +19,7 @@ const Template: ComponentStory<typeof Dropdown> = args => (
 
 export const Default = Template.bind({});
 Default.args = {
+    align: 'left',
     button: () => (
         <button>
             <Avatar name="John Doe" className="bg-secondary" />

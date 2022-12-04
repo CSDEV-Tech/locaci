@@ -53,14 +53,14 @@ export function PresentationListingCard({
             className={clsx(
                 className,
                 'inline-flex flex-col',
-                'relative max-w-[345px]'
+                'relative w-full max-w-[345px]'
             )}>
             {isDraft && (
                 <>
                     <div
                         className={clsx(
                             'absolute left-0 right-0 rounded-t-lg bg-dark opacity-60',
-                            'h-[175px] w-[345px]',
+                            'h-[175px] w-full max-w-[345px]',
                             {
                                 'opactity-30': !coverURL
                             }
@@ -78,14 +78,14 @@ export function PresentationListingCard({
                     height={175}
                     alt={title}
                     src={coverURL}
-                    className="h-[175px] w-[345px] rounded-t-lg object-cover object-center"
+                    className="h-[175px] w-full max-w-[345px] rounded-t-lg object-cover object-center"
                 />
             ) : (
-                <div className="flex h-[175px] w-[345px] items-center justify-center rounded-t-md bg-gray/20">
+                <div className="flex h-[175px] w-full max-w-[345px] flex-shrink-0 items-center justify-center rounded-t-md bg-gray/20">
                     <ImageIcon className="h-16 w-16 text-gray" />
                 </div>
             )}
-            <div className="flex flex-col gap-4 p-4">
+            <div className="flex h-full flex-col justify-between gap-4 p-4">
                 <Link
                     href={href}
                     Custom={customLink}
@@ -103,9 +103,7 @@ export function PresentationListingCard({
                         <MapPinIcon className="h-6 w-6 flex-shrink-0" />
                         &nbsp;
                         <span className="text-sm">
-                            {address?.trim().length !== 0
-                                ? address
-                                : 'Non défini'}
+                            {Boolean(address?.trim()) ? address : 'Non défini'}
                         </span>
                     </div>
 
