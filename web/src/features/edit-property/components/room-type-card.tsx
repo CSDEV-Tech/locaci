@@ -38,7 +38,10 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
     const elements: Record<RoomType, React.FC> = {
         BEDROOM: () => (
             <div className={`flex items-center gap-4`}>
-                <Bed className={`h-6 w-6 text-gray`} weight={`duotone`} />
+                <Bed
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
+                    weight={`duotone`}
+                />
                 <span className={`font-semibold`}>
                     {RoomTypes['BEDROOM']}
                     <span
@@ -52,7 +55,7 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         KITCHEN: () => (
             <div className={`flex items-center gap-4`}>
                 <CookingPot
-                    className={`h-6 w-6 text-gray`}
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
                     weight={`duotone`}
                 />
                 <span className={`font-semibold`}>{RoomTypes['KITCHEN']}</span>
@@ -60,7 +63,10 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         ),
         LIVING_ROOM: () => (
             <div className={`flex items-center gap-4`}>
-                <Armchair className={`h-6 w-6 text-gray`} weight={`duotone`} />
+                <Armchair
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
+                    weight={`duotone`}
+                />
                 <span className={`font-semibold`}>
                     {RoomTypes['LIVING_ROOM']}
                 </span>
@@ -68,13 +74,19 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         ),
         BATHROOM: () => (
             <div className={`flex items-center gap-4`}>
-                <Bathtub className={`h-6 w-6 text-gray`} weight={`duotone`} />
+                <Bathtub
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
+                    weight={`duotone`}
+                />
                 <span className={`font-semibold`}>{RoomTypes['BATHROOM']}</span>
             </div>
         ),
         DINING_ROOM: () => (
             <div className={`flex items-center gap-4`}>
-                <ForkKnife className={`h-6 w-6 text-gray`} weight={`duotone`} />
+                <ForkKnife
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
+                    weight={`duotone`}
+                />
                 <span className={`font-semibold`}>
                     {RoomTypes['DINING_ROOM']}
                 </span>
@@ -82,14 +94,14 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         ),
         ATTIC: () => (
             <div className={`flex items-center gap-4`}>
-                <HouseSimple className={`h-6 w-6 text-gray`} />
+                <HouseSimple className={`h-6 w-6 flex-shrink-0 text-gray`} />
                 <span className={`font-semibold`}>{RoomTypes['ATTIC']}</span>
             </div>
         ),
         BASEMENT: () => (
             <div className={`flex items-center gap-4`}>
                 <LadderSimple
-                    className={`h-6 w-6 text-gray`}
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
                     weight={`duotone`}
                 />
                 <span className={`font-semibold`}>{RoomTypes['BASEMENT']}</span>
@@ -97,14 +109,17 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         ),
         GARAGE: () => (
             <div className={`flex items-center gap-4`}>
-                <Car className={`h-6 w-6 text-gray`} weight={`duotone`} />
+                <Car
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
+                    weight={`duotone`}
+                />
                 <span className={`font-semibold`}>{RoomTypes['GARAGE']}</span>
             </div>
         ),
         BALCONY: () => (
             <div className={`flex items-center gap-4`}>
                 <SquaresFour
-                    className={`h-6 w-6 text-gray`}
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
                     weight={`duotone`}
                 />
                 <span className={`font-semibold`}>{RoomTypes['BALCONY']}</span>
@@ -113,7 +128,7 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         VERANDA: () => (
             <div className={`flex items-center gap-4`}>
                 <Storefront
-                    className={`h-6 w-6 text-gray`}
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
                     weight={`duotone`}
                 />
                 <span className={`font-semibold`}>{RoomTypes['VERANDA']}</span>
@@ -122,7 +137,7 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         TERRACE: () => (
             <div className={`flex items-center gap-4`}>
                 <UmbrellaSimple
-                    className={`h-6 w-6 text-gray`}
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
                     weight={`duotone`}
                 />
                 <span className={`font-semibold`}>{RoomTypes['TERRACE']}</span>
@@ -130,13 +145,19 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
         ),
         LAUNDRY: () => (
             <div className={`flex items-center gap-4`}>
-                <Drop className={`h-6 w-6 text-gray`} weight={`duotone`} />
+                <Drop
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
+                    weight={`duotone`}
+                />
                 <span className={`font-semibold`}>{RoomTypes['LAUNDRY']}</span>
             </div>
         ),
         TOILET: () => (
             <div className={`flex items-center gap-4`}>
-                <Toilet className={`h-6 w-6 text-gray`} weight={`duotone`} />
+                <Toilet
+                    className={`h-6 w-6 flex-shrink-0 text-gray`}
+                    weight={`duotone`}
+                />
                 <span className={`font-semibold`}>{RoomTypes['TOILET']}</span>
             </div>
         )
@@ -144,7 +165,10 @@ export function RoomTypeCard(props: RoomTypeCardProps) {
     const DisplayElement = elements[props.type];
 
     return (
-        <div className={clsx(`flex items-center justify-between gap-4`)}>
+        <div
+            className={clsx(
+                `flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-center`
+            )}>
             <DisplayElement />
             <div className={`flex items-center gap-4`}>
                 <Button
