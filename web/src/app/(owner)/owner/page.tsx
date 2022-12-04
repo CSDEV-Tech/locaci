@@ -89,7 +89,7 @@ async function PropertyList() {
                             Ajouter un nouveau logement
                         </AddButton>
 
-                        <ul className="grid gap-4 sm:grid-cols-2">
+                        <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-1">
                             {drafts?.map(draft => (
                                 <li key={draft.id} className="h-full">
                                     <ListingCard

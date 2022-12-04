@@ -30,6 +30,7 @@ export type PresentationListingCardProps = {
     customImage?: CustomImageComponentType;
     className?: string;
     isDraft?: boolean;
+    direction?: 'vertical' | 'horizontal';
 };
 
 export function PresentationListingCard({
