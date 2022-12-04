@@ -77,20 +77,23 @@ async function PropertyList() {
                             Créer votre première annonce pour mettre en valeur
                             votre logement et attirer les futurs locataires.
                         </p>
-                        <AddButton>Ajouter votre première annonce</AddButton>
+                        <AddButton>Ajouter votre premièr logement</AddButton>
                     </>
                 ) : (
                     <>
-                        <h1 className="text-center text-2xl font-bold">
+                        <h1 className="text-center text-2xl font-bold sm:self-start">
                             Liste de vos Logements
                         </h1>
 
-                        <AddButton>Ajouter une nouvelle annonce</AddButton>
+                        <AddButton className="sm:self-start">
+                            Ajouter un nouveau logement
+                        </AddButton>
 
-                        <ul className="grid gap-4">
+                        <ul className="grid gap-4 sm:grid-cols-2">
                             {drafts?.map(draft => (
-                                <li key={draft.id}>
+                                <li key={draft.id} className="h-full">
                                     <ListingCard
+                                        className="h-full"
                                         coverURL={
                                             draft.images
                                                 ? (
@@ -110,8 +113,9 @@ async function PropertyList() {
                             ))}
 
                             {properties?.map(property => (
-                                <li key={property.id}>
+                                <li key={property.id} className="h-full">
                                     <ListingCard
+                                        className="h-full"
                                         coverURL={
                                             property.images
                                                 ? (
