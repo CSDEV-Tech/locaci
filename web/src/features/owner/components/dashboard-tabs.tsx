@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import { Tabs } from '@locaci/ui/components/molecules/tabs';
-import { Button } from '@locaci/ui/components/atoms/button';
 
 export type DashboardTabsProps = {
     properties: React.ReactNode;
@@ -16,7 +15,7 @@ export function DashboardTabs({
         <>
             <Tabs className="md:hidden">
                 <Tabs.Header>
-                    <Tabs.HeaderItem>Annonces</Tabs.HeaderItem>
+                    <Tabs.HeaderItem>Logements</Tabs.HeaderItem>
                     <Tabs.HeaderItem>Notifications</Tabs.HeaderItem>
                 </Tabs.Header>
                 <Tabs.Body>
