@@ -14,7 +14,6 @@ import { RASSRProvider } from '~/features/shared/components/react-aria-ssr-provi
 
 // utils
 import { Poppins } from '@next/font/google';
-import { env } from '~/env/client.mjs';
 
 // types
 import type { LayoutProps } from '~/types';
@@ -30,10 +29,8 @@ export default function RootLayout({ children }: LayoutProps) {
     return (
         <html lang="fr" className={poppins.className}>
             <head>
-                <link
-                    rel="icon"
-                    href={`${env.NEXT_PUBLIC_SITE_URL}/favicon.svg`}
-                />
+                <link rel="icon" href={`/favicon.svg`} />
+                <meta name="viewport" content="width=device-width" />
             </head>
             <body>
                 <RASSRProvider>

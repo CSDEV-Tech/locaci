@@ -29,7 +29,6 @@ export function Meta(props: MetaProps) {
             <meta name="charset" content={'utf-8'} />
             <link rel="canonical" href={url} />
             <meta name="description" content={description} />
-            <meta name="viewport" content="width=device-width" />
 
             {/*Open Graph / Facebook */}
             <meta property="og:type" content="website" />
