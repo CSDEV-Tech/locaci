@@ -31,6 +31,7 @@ export default function RootLayout({ children }: LayoutProps) {
             <head>
                 <link rel="icon" href={`/favicon.svg`} />
                 <meta name="viewport" content="width=device-width" />
+                <meta name="charset" content="utf-8" />
             </head>
             <body>
                 <RASSRProvider>

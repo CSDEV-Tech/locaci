@@ -26,7 +26,6 @@ export function Meta(props: MetaProps) {
         <>
             {/* General */}
             <title>{`${title} | LOCACI`}</title>
-            <meta name="charset" content={'utf-8'} />
             <link rel="canonical" href={url} />
             <meta name="description" content={description} />
 
