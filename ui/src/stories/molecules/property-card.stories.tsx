@@ -64,3 +64,31 @@ Draft.args = {
         </div>
     )
 } as PropertyCardProps;
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    title: `Studio meublé`,
+    href: `#`,
+    coverURL: `https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80`,
+    numberOfRooms: 1,
+    surfaceArea: 9,
+    isDraft: true,
+    disabled: true,
+    actionBar: (
+        <div className="flex items-center justify-between gap-4">
+            <div className="flex gap-4">
+                <Button variant="dark" disabled>
+                    Modifier
+                </Button>
+            </div>
+            <Button
+                disabled
+                square
+                variant="danger"
+                aria-label="Supprimer"
+                renderLeadingIcon={cls => (
+                    <TrashIcon className={cls} />
+                )}></Button>
+        </div>
+    )
+} as PropertyCardProps;

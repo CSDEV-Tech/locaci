@@ -31,6 +31,7 @@ export type HorizontalPropertyCardProps = {
     className?: string;
     isDraft?: boolean;
     actions: DropdownItem[];
+    disabled?: boolean;
 };
 
 export function HorizontalPropertyCard({
@@ -44,7 +45,8 @@ export function HorizontalPropertyCard({
     customImage: CustomImage,
     className,
     isDraft = false,
-    actions = []
+    actions = [],
+    disabled = false
 }: HorizontalPropertyCardProps) {
     const Img = CustomImage ?? 'img';
 
@@ -54,7 +56,10 @@ export function HorizontalPropertyCard({
                 className={clsx(
                     className,
                     'inline-flex flex-row gap-4 pr-4',
-                    'relative h-32 w-full'
+                    'relative h-32 w-full',
+                    {
+                        'animate-pulse cursor-not-allowed': disabled
+                    }
                 )}>
                 <div className="flex h-full w-48 flex-shrink-0 items-center justify-center rounded-l-lg bg-gray/40">
                     {coverURL ? (
@@ -72,12 +77,16 @@ export function HorizontalPropertyCard({
 
                 <div className="inline-flex min-w-0 flex-grow flex-col gap-2 py-2">
                     <Link
+                        disabled={disabled}
                         href={href}
                         Custom={customLink}
                         className={clsx(
                             `whitespace-nowrap text-xl font-semibold`,
-                            `after:absolute after:inset-0`,
-                            `min-w-0 flex-shrink overflow-hidden text-ellipsis`
+                            `min-w-0 flex-shrink overflow-hidden text-ellipsis`,
+                            {
+                                'after:absolute after:inset-0': !disabled,
+                                'pointer-events-none': disabled
+                            }
                         )}>
                         {title}&nbsp;
                         {isDraft && (
@@ -125,6 +134,7 @@ export function HorizontalPropertyCard({
                         className="z-40"
                         button={() => (
                             <Button
+                                disabled={disabled}
                                 square
                                 renderLeadingIcon={cls => (
                                     <HorizontalDotsIcon className={cls} />
