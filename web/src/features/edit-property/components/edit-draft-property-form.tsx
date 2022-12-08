@@ -68,6 +68,7 @@ export function EditDraftPropertyForm({
     const saveDraftStep1 = t.owner.draft.saveDraftStep1.useMutation({
         onSuccess: async () => {
             await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.draft.getAll.invalidate();
             goTo(2);
         }
     });
@@ -75,6 +76,7 @@ export function EditDraftPropertyForm({
     const saveDraftStep2 = t.owner.draft.saveDraftStep2.useMutation({
         onSuccess: async () => {
             await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.draft.getAll.invalidate();
             goTo(4);
         }
     });
@@ -82,6 +84,7 @@ export function EditDraftPropertyForm({
     const saveDraftStep4 = t.owner.draft.saveDraftStep4.useMutation({
         onSuccess: async () => {
             await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.draft.getAll.invalidate();
             goTo(5);
         }
     });
@@ -89,6 +92,7 @@ export function EditDraftPropertyForm({
     const saveDraftStep5 = t.owner.draft.saveDraftStep5.useMutation({
         onSuccess: async data => {
             await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.draft.getAll.invalidate();
 
             if (data.rentType === 'SHORT_TERM') {
                 goTo(6);
@@ -101,6 +105,7 @@ export function EditDraftPropertyForm({
     const saveDraftStep6 = t.owner.draft.saveDraftStep6.useMutation({
         onSuccess: async () => {
             await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.draft.getAll.invalidate();
             goTo(7);
         }
     });
@@ -108,6 +113,7 @@ export function EditDraftPropertyForm({
     const saveDraftStep7 = t.owner.draft.saveDraftStep7.useMutation({
         onSuccess: async () => {
             await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.draft.getAll.invalidate();
             goTo(8);
         }
     });
