@@ -1,25 +1,25 @@
 import * as React from 'react';
 import type { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
-    PresentationListingCard,
-    PresentationListingCardProps
-} from '../../components/molecules/presentation-listing-card';
+    PropertyCard,
+    PropertyCardProps
+} from '../../components/molecules/property-card';
 import { Button } from '../../components/atoms/button';
 import { TrashIcon } from '../../components/atoms/icons/trash';
 
 export default {
-    title: 'Composants/Molecules/PresentationListingCard',
-    component: PresentationListingCard
-} as ComponentMeta<typeof PresentationListingCard>;
+    title: 'Composants/Molecules/PropertyCard',
+    component: PropertyCard
+} as ComponentMeta<typeof PropertyCard>;
 
 // 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof PresentationListingCard> = args => (
-    <PresentationListingCard {...args} />
+const Template: ComponentStory<typeof PropertyCard> = args => (
+    <PropertyCard {...args} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
-    coverURL: `https://pub-60aa47e513094a29a0dd9ff300c7ff35.r2.dev/g5nVVq1UhZtEsZwqAZTjcZ.jpeg`,
+    coverURL: `https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80`,
     title: `Studio en colocation`,
     href: `#`,
     numberOfRooms: 1,
@@ -40,7 +40,7 @@ Default.args = {
                 )}></Button>
         </div>
     )
-} as PresentationListingCardProps;
+} as PropertyCardProps;
 
 export const Draft = Template.bind({});
 Draft.args = {
@@ -63,4 +63,4 @@ Draft.args = {
                 )}></Button>
         </div>
     )
-} as PresentationListingCardProps;
+} as PropertyCardProps;

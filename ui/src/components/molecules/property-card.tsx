@@ -18,7 +18,7 @@ export type CustomImageProps = {
 };
 export type CustomImageComponentType = React.ComponentType<CustomImageProps>;
 
-export type PresentationListingCardProps = {
+export type PropertyCardProps = {
     href: string;
     title: string;
     surfaceArea: number;
@@ -30,10 +30,9 @@ export type PresentationListingCardProps = {
     customImage?: CustomImageComponentType;
     className?: string;
     isDraft?: boolean;
-    direction?: 'vertical' | 'horizontal';
 };
 
-export function PresentationListingCard({
+export function PropertyCard({
     coverURL,
     actionBar,
     address,
@@ -45,7 +44,7 @@ export function PresentationListingCard({
     customImage: CustomImage,
     className,
     isDraft = false
-}: PresentationListingCardProps) {
+}: PropertyCardProps) {
     const Img = CustomImage ?? 'img';
 
     return (
@@ -73,19 +72,19 @@ export function PresentationListingCard({
                 </>
             )}
 
-            {coverURL ? (
-                <Img
-                    width={345}
-                    height={175}
-                    alt={title}
-                    src={coverURL}
-                    className="h-[175px] w-full max-w-[345px] rounded-t-lg object-cover object-center"
-                />
-            ) : (
-                <div className="flex h-[175px] w-full max-w-[345px] flex-shrink-0 items-center justify-center rounded-t-md bg-gray/20">
+            <div className="flex h-[175px] w-full max-w-[345px] flex-shrink-0 items-center justify-center rounded-t-lg bg-gray/20">
+                {coverURL ? (
+                    <Img
+                        width={345}
+                        height={175}
+                        alt={title}
+                        src={coverURL}
+                        className="h-full w-full rounded-t-lg object-cover object-center"
+                    />
+                ) : (
                     <ImageIcon className="h-16 w-16 text-gray" />
-                </div>
-            )}
+                )}
+            </div>
             <div className="flex h-full flex-col justify-between gap-4 p-4">
                 <Link
                     href={href}
@@ -101,7 +100,10 @@ export function PresentationListingCard({
                                 !address || address?.trim().length === 0,
                             'text-dark': address?.trim().length !== 0
                         })}>
-                        <MapPinIcon className="h-6 w-6 flex-shrink-0" />
+                        <MapPinIcon
+                            aria-label="Addresse :"
+                            className="h-6 w-6 flex-shrink-0"
+                        />
                         &nbsp;
                         <span className="text-sm">
                             {Boolean(address?.trim()) ? address : 'Non défini'}
@@ -125,7 +127,7 @@ export function PresentationListingCard({
                     </div>
                 </div>
 
-                <div className="relative z-20">{actionBar}</div>
+                {actionBar && <div className="relative z-20">{actionBar}</div>}
             </div>
         </Card>
     );

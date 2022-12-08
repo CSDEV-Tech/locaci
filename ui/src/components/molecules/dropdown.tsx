@@ -6,15 +6,17 @@ import { Menu, Transition } from '@headlessui/react';
 export type DropdownLink = {
     id?: string;
     text: string;
-    Icon: React.ComponentType<{ className?: string }>;
+    Icon: React.ComponentType<{ className?: string; active: boolean }>;
     href: string;
+    clsx?: (state: { active: boolean }) => string;
 };
 
 export type DropdownButton = {
     id?: string;
     text: string;
-    Icon: React.ComponentType<{ className?: string }>;
+    Icon: React.ComponentType<{ className?: string; active: boolean }>;
     onClick: () => void;
+    clsx?: (state: { active: boolean }) => string;
 };
 
 export type DropdownItem = DropdownLink | DropdownButton;
@@ -71,6 +73,7 @@ export const Dropdown = ({
                                             return (
                                                 <button
                                                     className={clsx(
+                                                        item.clsx?.({ active }),
                                                         `flex w-full min-w-max flex-1 items-center gap-2`,
                                                         `cursor-pointer rounded-md py-2 px-2 font-medium`,
                                                         {
@@ -80,7 +83,10 @@ export const Dropdown = ({
                                                     )}
                                                     onClick={item.onClick}>
                                                     <div>
-                                                        <item.Icon className="icon" />
+                                                        <item.Icon
+                                                            className="icon"
+                                                            active={active}
+                                                        />
                                                     </div>
                                                     <span className="whitespace-nowrap">
                                                         {item.text}
@@ -93,6 +99,7 @@ export const Dropdown = ({
                                                     Custom={customLink}
                                                     href={`${item.href}`}
                                                     className={clsx(
+                                                        item.clsx?.({ active }),
                                                         `flex w-full min-w-max flex-1 items-center gap-2`,
                                                         `cursor-pointer rounded-md py-2 px-2 font-medium`,
                                                         {
@@ -101,7 +108,10 @@ export const Dropdown = ({
                                                         }
                                                     )}>
                                                     <div>
-                                                        <item.Icon className="icon" />
+                                                        <item.Icon
+                                                            className="icon"
+                                                            active={active}
+                                                        />
                                                     </div>
                                                     <span className="whitespace-nowrap">
                                                         {item.text}
