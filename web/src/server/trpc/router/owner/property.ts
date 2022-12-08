@@ -11,6 +11,7 @@ import {
 import { z } from 'zod';
 import { t } from '~/server/trpc/trpc-server-root';
 import { isOwner } from '~/server/trpc/middleware/auth';
+import { Prisma } from '@prisma/client';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerPropertiesRouter = t.router({
@@ -32,5 +33,36 @@ export const ownerPropertiesRouter = t.router({
             });
 
             return property;
+        }),
+    deleteProperty: protectedProcedure
+        .input(
+            z.object({
+                uid: z.string().uuid()
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.property.delete({
+                    where: {
+                        id: input.uid
+                    }
+                });
+            } catch (error) {
+                if (
+                    error instanceof Prisma.PrismaClientKnownRequestError &&
+                    error.code === 'P2025'
+                ) {
+                    throw new TRPCError({
+                        code: 'NOT_FOUND',
+                        message:
+                            "Le logement que vous essayez de supprimer n'existe pas."
+                    });
+                } else {
+                    throw new TRPCError({
+                        code: 'BAD_REQUEST',
+                        message: (error as Error).message
+                    });
+                }
+            }
         })
 });

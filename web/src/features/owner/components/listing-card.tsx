@@ -13,10 +13,16 @@ import { TrashIcon } from '@locaci/ui/components/atoms/icons/trash';
 import Image from 'next/image';
 import { Copy, PencilSimple, TrashSimple } from 'phosphor-react';
 
+// utils
+import { clsx } from '@locaci/ui/lib/functions';
+import { t } from '~/utils/trpc-rq-hooks';
+import { useRouter } from 'next/navigation';
+
 // types
 import type { PropertyCardProps } from '@locaci/ui/components/molecules/property-card';
 import type { DropdownItem } from '@locaci/ui/components/molecules/dropdown';
-import { clsx } from '@locaci/ui/lib/functions';
+import { DeleteConfirmationModal } from './delete-confirmation-modal';
+
 export type ListingCardProps = Omit<
     PropertyCardProps,
     'customLink' | 'customImage' | 'actionBar'
@@ -31,6 +37,40 @@ export function ListingCard({
     title,
     ...props
 }: ListingCardProps) {
+    // state
+    const router = useRouter();
+    const [deletedPropertiesIds, setDeletedPropertiesIds] = React.useState<
+        string[]
+    >([]);
+    const [_, startTransition] = React.useTransition();
+    const [isModalConfirmationOpen, setModalConfirmationOpenState] =
+        React.useState(false);
+
+    // mutations
+    const deleteDraftMutation = t.owner.draft.deleteDraft.useMutation({
+        onSuccess() {
+            startTransition(() => router.refresh());
+        }
+    });
+
+    const deletePropertyMutation = t.owner.property.deleteProperty.useMutation({
+        onSuccess() {
+            startTransition(() => router.refresh());
+        }
+    });
+
+    async function handleDelete() {
+        if (isDraft) {
+            deleteDraftMutation.mutate({ uid: id });
+        } else {
+            deletePropertyMutation.mutate({ uid: id });
+        }
+
+        setDeletedPropertiesIds(oldIds => {
+            return [...oldIds, id];
+        });
+    }
+
     const actions: DropdownItem[] = [
         {
             href,
@@ -54,9 +94,7 @@ export function ListingCard({
 
     // we should add delete only at the end
     actions.push({
-        onClick() {
-            console.log('Suppression ?');
-        },
+        onClick: () => setModalConfirmationOpenState(true),
         text: 'Supprimer',
         Icon: props => (
             <TrashSimple className={clsx(props.className)} weight="fill" />
@@ -66,6 +104,13 @@ export function ListingCard({
 
     return (
         <>
+            <DeleteConfirmationModal
+                title={title.trim()}
+                isOpen={isModalConfirmationOpen}
+                onClose={() => setModalConfirmationOpenState(false)}
+                onConfirm={handleDelete}
+            />
+
             <PropertyCard
                 isDraft={isDraft}
                 href={href}
@@ -85,6 +130,7 @@ export function ListingCard({
                             square
                             variant="danger"
                             aria-label="Archiver"
+                            onClick={() => setModalConfirmationOpenState(true)}
                             renderLeadingIcon={cls => (
                                 <TrashIcon className={cls} />
                             )}
@@ -93,10 +139,12 @@ export function ListingCard({
                 }
                 {...props}
                 className="h-full w-full lg:hidden"
+                disabled={deletedPropertiesIds.includes(id)}
             />
 
             <HorizontalPropertyCard
                 {...props}
+                disabled={deletedPropertiesIds.includes(id)}
                 className={`hidden lg:flex`}
                 isDraft={isDraft}
                 customLink={NextLink}

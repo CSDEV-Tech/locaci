@@ -13,12 +13,13 @@ import { t } from '~/server/trpc/trpc-server-root';
 import { isOwner } from '~/server/trpc/middleware/auth';
 
 import {
-    Amenity,
     AmenityType,
+    Prisma,
     PropertyFormStep,
-    Room,
     RoomType
 } from '@prisma/client';
+
+import type { Amenity, Room } from '@prisma/client';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerDraftRouter = t.router({
@@ -58,6 +59,38 @@ export const ownerDraftRouter = t.router({
                     id: input.uid
                 }
             });
+        }),
+
+    deleteDraft: protectedProcedure
+        .input(
+            z.object({
+                uid: z.string().uuid()
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            try {
+                await ctx.prisma.draftProperty.delete({
+                    where: {
+                        id: input.uid
+                    }
+                });
+            } catch (error) {
+                if (
+                    error instanceof Prisma.PrismaClientKnownRequestError &&
+                    error.code === 'P2025'
+                ) {
+                    throw new TRPCError({
+                        code: 'NOT_FOUND',
+                        message:
+                            "Le logement que vous essayez de supprimer n'existe pas."
+                    });
+                } else {
+                    throw new TRPCError({
+                        code: 'BAD_REQUEST',
+                        message: (error as Error).message
+                    });
+                }
+            }
         }),
     newDraft: protectedProcedure.mutation(async ({ ctx }) => {
         const property = await ctx.prisma.draftProperty.create({

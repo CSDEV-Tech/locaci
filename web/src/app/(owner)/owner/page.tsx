@@ -9,8 +9,7 @@ import { PropertyList } from '~/features/owner/components/property-list';
 import { rsc } from '~/server/trpc/rsc';
 
 // types
-import type { ListingImage } from '~/types';
-import type { DraftProperty, Property } from '@prisma/client';
+import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 
 export default async function OwnerDashboardPage() {
     return (
@@ -41,11 +40,11 @@ export default async function OwnerDashboardPage() {
 }
 
 async function DraftList() {
-    const { properties, drafts } = await rsc.owner.draft.getAll.fetch();
+    await rsc.owner.draft.getAll.fetch();
 
     return (
-        <>
-            <PropertyList properties={properties} drafts={drafts} />
-        </>
+        <HydrateClient state={await rsc.dehydrate()}>
+            <PropertyList />
+        </HydrateClient>
     );
 }

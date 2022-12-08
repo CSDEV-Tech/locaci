@@ -21,9 +21,10 @@ export function AddButton({
 
     const createPropertyMutation = t.owner.draft.newDraft.useMutation({
         onSuccess(data) {
-            startTransition(() =>
-                router.push(`/owner/properties/${data.uuid}/draft`)
-            );
+            startTransition(() => {
+                router.refresh();
+                router.push(`/owner/properties/${data.uuid}/draft`);
+            });
         }
     });
 
