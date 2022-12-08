@@ -55,9 +55,17 @@ export default function LoginSuccessModal({
     const canShowModal = useMediaQuery(`(min-width: 768px)`);
     const canShowBottomSheet = useMediaQuery(`(max-width: 767px)`);
 
+    // This is a hack to not get matches instantly and avoid hydration issues
+    const [hasHydrationFinished, setHasHydrationFinished] =
+        React.useState(false);
+
+    React.useEffect(() => {
+        setHasHydrationFinished(true);
+    }, []);
+
     return (
         <>
-            {canShowBottomSheet && (
+            {hasHydrationFinished && canShowBottomSheet && (
                 <LazyBottomSheet
                     open={open}
                     expandOnContentDrag
@@ -72,7 +80,7 @@ export default function LoginSuccessModal({
                 </LazyBottomSheet>
             )}
 
-            {canShowModal && (
+            {hasHydrationFinished && canShowModal && (
                 <LazyModal title="Merci" isOpen={open} onClose={onClose}>
                     <ModalContent />
                 </LazyModal>

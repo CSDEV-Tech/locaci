@@ -22,7 +22,6 @@ export function useMediaQuery(query: string): boolean {
         handleChange();
 
         // Listen matchMedia
-
         matchMedia.addEventListener('change', handleChange);
 
         return () => {

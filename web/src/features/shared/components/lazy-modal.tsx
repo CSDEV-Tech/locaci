@@ -8,9 +8,15 @@ import dynamic from 'next/dynamic';
 import type { ModalProps } from '@locaci/ui/components/atoms/modal';
 
 const Modal = dynamic(() => import(`@locaci/ui/components/atoms/modal`), {
-    ssr: false
+    // FIXME : this should be fixed by the next release of nextjs
+    // ssr: false,
+    loading: () => <></>
 });
 
 export function LazyModal(props: ModalProps) {
+    console.log({
+        Lazy: props
+    });
+
     return <Modal {...props} />;
 }

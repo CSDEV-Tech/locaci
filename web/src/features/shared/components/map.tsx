@@ -24,8 +24,6 @@ export default function Map({ localityData: data, boundingbox }: MapProps) {
     const mapRef = React.useRef<HTMLDivElement>(null);
     const markerRef = React.useRef<HTMLDivElement>(null);
 
-    console.log({ boundingbox });
-
     // Initialize map object when component mounts
     React.useEffect(() => {
         let map: mapboxgl.Map;

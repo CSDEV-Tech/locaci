@@ -12,7 +12,10 @@ export default function Error(props: ErrorBoundaryProps) {
         console.log(props.error);
     }, []);
     return (
-        <ErrorScreen errorDescription={props.error.message}>
+        <ErrorScreen
+            errorDescription={props.error.message}
+            errorTitle={`OOPS ! Une erreur est survenue`}
+            className={`h-screen w-screen`}>
             <Button onClick={props.reset}>Recharger la page</Button>
         </ErrorScreen>
     );
