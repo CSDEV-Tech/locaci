@@ -54,7 +54,7 @@
     [data-rsbs-overlay],
     [data-rsbs-backdrop],
     [data-rsbs-root]:after {
-        z-index: 3;
+        z-index: 100;
         -ms-scroll-chaining: none;
         overscroll-behavior: none;
         touch-action: none;
@@ -234,6 +234,11 @@
     **/
     .text-dark {
         -webkit-text-fill-color: theme('colors.dark.DEFAULT');
+        opacity: 1;
+    }
+
+    .text-danger {
+        -webkit-text-fill-color: theme('colors.danger.DEFAULT');
         opacity: 1;
     }
 
