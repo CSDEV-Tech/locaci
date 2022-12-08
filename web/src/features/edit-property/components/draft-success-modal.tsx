@@ -1,12 +1,12 @@
+'use client';
 import * as React from 'react';
+
 // components
 import { Button } from '@locaci/ui/components/atoms/button';
-import { LazyBottomSheet } from '~/features/shared/components/lazy-bottom-sheet';
-import { LazyModal } from '~/features/shared/components/lazy-modal';
 import { NextLink } from '~/features/shared/components/next-link';
 
 // utils
-import useMediaQuery from '~/features/shared/hooks/use-media-query';
+import { ResponsiveModal } from '~/features/shared/components/responsive-modal';
 
 // type
 export type DraftSuccessModalProps = {
@@ -20,61 +20,36 @@ export function DraftSuccessModal({
     open,
     listingUid
 }: DraftSuccessModalProps) {
-    const ModalContent = () => (
-        <>
-            <div
-                className={`flex flex-col items-center gap-6 py-10 px-6 md:m-auto md:w-[450px]`}>
-                <img
-                    src="/success_illustration.svg"
-                    alt="Image de succès"
-                    className="h-[165px] w-[240px]"
-                />
-
-                <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
-                    Votre logement a été créé
-                </h1>
-
-                <h2 className="text-center text-lg text-gray">
-                    L'annonce de votre logement a été mise en ligne, vous pouvez
-                    inspecter le résultat :&nbsp;
-                    <NextLink
-                        href={`/properties/${listingUid}`}
-                        className={`underline`}>
-                        En cliquant sur ce lien
-                    </NextLink>
-                </h2>
-
-                <Button variant={`dark`} onClick={onClose}>
-                    Revenir au tableau de bord
-                </Button>
-            </div>
-        </>
-    );
-
-    const canShowModal = useMediaQuery(`(min-width: 768px)`);
-    const canShowBottomSheet = useMediaQuery(`(max-width: 767px)`);
     return (
         <>
-            {canShowBottomSheet && (
-                <LazyBottomSheet
-                    open={open}
-                    expandOnContentDrag
-                    onDismiss={onClose}
-                    defaultSnap={({ minHeight }) => minHeight}
-                    snapPoints={({ maxHeight, minHeight }) => [
-                        minHeight,
-                        maxHeight * 0.95
-                    ]}
-                    className={`md:hidden`}>
-                    <ModalContent />
-                </LazyBottomSheet>
-            )}
+            <ResponsiveModal title="Succès" isOpen={open} onClose={onClose}>
+                <div
+                    className={`flex flex-col items-center gap-6 py-10 px-6 md:m-auto md:w-[450px]`}>
+                    <img
+                        src="/success_illustration.svg"
+                        alt="Image de succès"
+                        className="h-[165px] w-[240px]"
+                    />
 
-            {canShowModal && (
-                <LazyModal title="Succès" isOpen={open} onClose={onClose}>
-                    <ModalContent />
-                </LazyModal>
-            )}
+                    <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
+                        Votre logement a été créé
+                    </h1>
+
+                    <h2 className="text-center text-lg text-gray">
+                        L'annonce de votre logement a été mise en ligne, vous
+                        pouvez inspecter le résultat :&nbsp;
+                        <NextLink
+                            href={`/properties/${listingUid}`}
+                            className={`underline`}>
+                            En cliquant sur ce lien
+                        </NextLink>
+                    </h2>
+
+                    <Button variant={`dark`} onClick={onClose}>
+                        Revenir au tableau de bord
+                    </Button>
+                </div>
+            </ResponsiveModal>
         </>
     );
 }

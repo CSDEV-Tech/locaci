@@ -14,9 +14,5 @@ const Modal = dynamic(() => import(`@locaci/ui/components/atoms/modal`), {
 });
 
 export function LazyModal(props: ModalProps) {
-    console.log({
-        Lazy: props
-    });
-
     return <Modal {...props} />;
 }
