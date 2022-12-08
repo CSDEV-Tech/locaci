@@ -36,3 +36,13 @@ Draft.args = {
     numberOfRooms: 1,
     surfaceArea: 9
 } as HorizontalPropertyCardProps;
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    isDraft: true,
+    disabled: true,
+    title: `Studio en colocation`,
+    href: `#`,
+    numberOfRooms: 1,
+    surfaceArea: 9
+} as HorizontalPropertyCardProps;

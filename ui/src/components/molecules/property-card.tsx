@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link } from '../atoms/link';
-import type { LinkProps } from '../atoms/link';
 import { ImageIcon } from '../atoms/icons/image';
 import { clsx } from '../../lib/functions';
 import { BedIcon } from '../atoms/icons/bed';
@@ -9,6 +8,7 @@ import { MapPinIcon } from '../atoms/icons/map-pin';
 import { Card } from '../atoms/card';
 import { Tag } from '../atoms/tag';
 
+import type { LinkProps } from '../atoms/link';
 export type CustomImageProps = {
     className?: string | null;
     src?: string;
@@ -30,6 +30,7 @@ export type PropertyCardProps = {
     customImage?: CustomImageComponentType;
     className?: string;
     isDraft?: boolean;
+    disabled?: boolean;
 };
 
 export function PropertyCard({
@@ -43,17 +44,21 @@ export function PropertyCard({
     href,
     customImage: CustomImage,
     className,
-    isDraft = false
+    isDraft = false,
+    disabled = false
 }: PropertyCardProps) {
     const Img = CustomImage ?? 'img';
 
     return (
         <Card
-            animated
+            animated={!disabled}
             className={clsx(
                 className,
                 'inline-flex flex-col',
-                'relative w-full max-w-[345px]'
+                'relative w-full max-w-[345px]',
+                {
+                    'animate-pulse cursor-not-allowed': disabled
+                }
             )}>
             {isDraft && (
                 <>
@@ -87,9 +92,13 @@ export function PropertyCard({
             </div>
             <div className="flex h-full flex-col justify-between gap-4 p-4">
                 <Link
+                    disabled={disabled}
                     href={href}
                     Custom={customLink}
-                    className={`text-xl font-semibold after:absolute after:inset-0`}>
+                    className={clsx(`text-xl font-semibold`, {
+                        'after:absolute after:inset-0': !disabled,
+                        'pointer-events-none': disabled
+                    })}>
                     {title}
                 </Link>
 
