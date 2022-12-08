@@ -1,12 +1,9 @@
 'use client';
 import * as React from 'react';
+
 // components
 import { Button } from '@locaci/ui/components/atoms/button';
-
-// utils & functions
-import useMediaQuery from '~/features/shared/hooks/use-media-query';
-import { LazyBottomSheet } from '~/features/shared/components/lazy-bottom-sheet';
-import { LazyModal } from '~/features/shared/components/lazy-modal';
+import { ResponsiveModal } from '~/features/shared/components/responsive-modal';
 
 export type LoginSuccessModalProps = {
     open: boolean;
@@ -19,8 +16,8 @@ export default function LoginSuccessModal({
     onClose,
     open
 }: LoginSuccessModalProps) {
-    const ModalContent = () => (
-        <>
+    return (
+        <ResponsiveModal title="Terminé" onClose={onClose} isOpen={open}>
             <div className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10">
                 <img
                     src="/success_illustration.svg"
@@ -49,42 +46,6 @@ export default function LoginSuccessModal({
                     J'ai compris.
                 </Button>
             </div>
-        </>
-    );
-
-    const canShowModal = useMediaQuery(`(min-width: 768px)`);
-    const canShowBottomSheet = useMediaQuery(`(max-width: 767px)`);
-
-    // This is a hack to not get matches instantly and avoid hydration issues
-    const [hasHydrationFinished, setHasHydrationFinished] =
-        React.useState(false);
-
-    React.useEffect(() => {
-        setHasHydrationFinished(true);
-    }, []);
-
-    return (
-        <>
-            {hasHydrationFinished && canShowBottomSheet && (
-                <LazyBottomSheet
-                    open={open}
-                    expandOnContentDrag
-                    onDismiss={onClose}
-                    defaultSnap={({ minHeight }) => minHeight}
-                    snapPoints={({ maxHeight, minHeight }) => [
-                        minHeight,
-                        maxHeight * 0.95
-                    ]}
-                    className={`md:hidden`}>
-                    <ModalContent />
-                </LazyBottomSheet>
-            )}
-
-            {hasHydrationFinished && canShowModal && (
-                <LazyModal title="Merci" isOpen={open} onClose={onClose}>
-                    <ModalContent />
-                </LazyModal>
-            )}
-        </>
+        </ResponsiveModal>
     );
 }
