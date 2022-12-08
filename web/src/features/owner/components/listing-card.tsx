@@ -2,7 +2,8 @@
 import * as React from 'react';
 
 // components
-import { PresentationListingCard } from '@locaci/ui/components/molecules/presentation-listing-card';
+import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
+import { HorizontalPropertyCard } from '@locaci/ui/components/molecules/horizontal-property-card';
 import {
     NextLink,
     NextLinkButton
@@ -10,12 +11,14 @@ import {
 import { Button } from '@locaci/ui/components/atoms/button';
 import { TrashIcon } from '@locaci/ui/components/atoms/icons/trash';
 import Image from 'next/image';
+import { Copy, PencilSimple, TrashSimple } from 'phosphor-react';
 
 // types
-import type { PresentationListingCardProps } from '@locaci/ui/components/molecules/presentation-listing-card';
-
+import type { PropertyCardProps } from '@locaci/ui/components/molecules/property-card';
+import type { DropdownItem } from '@locaci/ui/components/molecules/dropdown';
+import { clsx } from '@locaci/ui/lib/functions';
 export type ListingCardProps = Omit<
-    PresentationListingCardProps,
+    PropertyCardProps,
     'customLink' | 'customImage' | 'actionBar'
 > & {
     id: string;
@@ -28,9 +31,42 @@ export function ListingCard({
     title,
     ...props
 }: ListingCardProps) {
+    const actions: DropdownItem[] = [
+        {
+            href,
+            text: 'Modifier',
+            Icon: props => (
+                <PencilSimple className={props.className} weight="bold" />
+            )
+        }
+    ];
+
+    // Only non draft can be duplicated
+    if (!isDraft) {
+        actions.push({
+            onClick() {
+                console.log('Duppliquer ?');
+            },
+            text: 'Dupliquer',
+            Icon: props => <Copy className={props.className} weight="bold" />
+        });
+    }
+
+    // we should add delete only at the end
+    actions.push({
+        onClick() {
+            console.log('Suppression ?');
+        },
+        text: 'Supprimer',
+        Icon: props => (
+            <TrashSimple className={clsx(props.className)} weight="fill" />
+        ),
+        clsx: ({ active }) => (active ? 'text-white' : 'text-danger')
+    });
+
     return (
         <>
-            <PresentationListingCard
+            <PropertyCard
                 isDraft={isDraft}
                 href={href}
                 title={title.trim()}
@@ -56,6 +92,17 @@ export function ListingCard({
                     </div>
                 }
                 {...props}
+                className="h-full w-full lg:hidden"
+            />
+
+            <HorizontalPropertyCard
+                {...props}
+                className={`hidden lg:flex`}
+                isDraft={isDraft}
+                customLink={NextLink}
+                actions={actions}
+                href={href}
+                title={title.trim()}
             />
         </>
     );
