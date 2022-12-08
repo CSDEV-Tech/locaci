@@ -3,7 +3,7 @@ import * as React from 'react';
 import { clsx } from '../../lib/functions';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '../atoms/button';
-import { Modal } from '../atoms/modal';
+import Modal from '../atoms/modal';
 import { LoadingIndicator } from '../atoms/loading-indicator';
 import { UploadSimpleIcon } from '../atoms/icons/upload-simple';
 import { FileImageIcon } from '../atoms/icons/file-image';

@@ -26,6 +26,8 @@ import { TrashIcon } from '../../components/atoms/icons/trash';
 import { BedIcon } from '../../components/atoms/icons/bed';
 import { RulerIcon } from '../../components/atoms/icons/ruler';
 import { MapPinIcon } from '../../components/atoms/icons/map-pin';
+import { RefreshIcon } from '../../components/atoms/icons/refresh';
+import { HorizontalDotsIcon } from '../../components/atoms/icons/horizontal-dots';
 
 // types
 import type {
@@ -159,6 +161,14 @@ const Template: ComponentStory<IconComponent> = args => (
         <div className="flex flex-col items-center gap-2">
             <MapPinIcon className="h-10 w-10 " />
             <span>MapPinIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <RefreshIcon className="h-10 w-10 " />
+            <span>RefreshIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <HorizontalDotsIcon className="h-10 w-10 " />
+            <span>HorizontalDotsIcon </span>
         </div>
     </div>
 );

@@ -15,15 +15,15 @@ export type ModalProps = {
     className?: string;
 };
 
-export function Modal({
+export default function Modal({
     children,
     title,
     footer,
     onClose,
     cancelButtonRef,
-    isOpen,
     footerClassName,
-    className
+    className,
+    isOpen = false
 }: ModalProps) {
     return (
         <>
@@ -97,5 +97,3 @@ export function Modal({
         </>
     );
 }
-
-export default Modal;

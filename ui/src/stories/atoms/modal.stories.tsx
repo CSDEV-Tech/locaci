@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Modal, ModalProps } from '../../components/atoms/modal';
+import Modal, { ModalProps } from '../../components/atoms/modal';
 import { TextInput } from '../../components/atoms/input';
 import { Checkbox } from '../../components/atoms/checkbox';
 import { Button } from '../../components/atoms/button';
@@ -84,8 +84,7 @@ Complex.args = {
                     variant="outline"
                     renderLeadingIcon={cls => (
                         <img src={GoogleLogoSVG} className={cls} />
-                    )}
-                >
+                    )}>
                     Connectez-vous avec google
                 </Button>
             </div>
