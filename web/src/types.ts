@@ -1,12 +1,15 @@
 type PageParams = Record<string, string>;
-export type PageProps = {
-    params: PageParams;
-    searchParams?: any;
+export type PageProps<
+    TParams extends PageParams = {},
+    TSearchParams extends any = any
+> = {
+    params: TParams;
+    searchParams?: TSearchParams;
 };
 
-export type LayoutProps = {
+export type LayoutProps<TParams extends PageParams = {}> = {
     children: React.ReactNode;
-    params: PageParams;
+    params: TParams;
 };
 
 export type HeadProps = {
