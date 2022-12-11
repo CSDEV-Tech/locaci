@@ -8,12 +8,14 @@ ARG TURBO_TOKEN
 ENV TURBO_TEAM=$TURBO_TEAM
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
-# Install packages
 WORKDIR /app
 
+# Install pnpm 
 RUN apk add --update curl && rm -rf /var/cache/apk/*
-RUN curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION=7.1.0 sh -
+RUN wget https://get.pnpm.io/install.sh 
+RUN env PNPM_VERSION=7.1.0 sh -
 
+# Install packages
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY ui/package.json ./ui/package.json
 COPY web/package.json ./web/package.json
