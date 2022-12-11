@@ -9,7 +9,8 @@
         "test": "turbo run test",
         "format": "prettier --write ./web/src ./ui/src ./domain/src ./domain/tests",
         "deploy-ui-lib": "netlify deploy --prod",
-        "turbo": "turbo"
+        "turbo": "turbo",
+        "start:web": "pnpm run --filter=web start"
     },
     "author": "Adrien KISSIE <fredkiss3@gmail.com>",
     "license": "ISC",

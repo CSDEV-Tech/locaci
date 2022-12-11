@@ -1,0 +1,63 @@
+# syntax = docker/dockerfile:1.3
+# Build and compile the webapp
+FROM node:16-alpine
+
+# Env from args 
+ARG NEXT_PUBLIC_SITE_URL
+ARG TURBO_TEAM
+ARG NEXT_PUBLIC_OAUTH_CLIENT_ID
+ARG NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL
+ARG NEXT_PUBLIC_MAPBOX_KEY
+ARG NEXT_PUBLIC_CF_IMAGES_URL
+
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV TURBO_TEAM=$TURBO_TEAM
+ENV NEXT_PUBLIC_OAUTH_CLIENT_ID=$NEXT_PUBLIC_OAUTH_CLIENT_ID
+ENV NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=$NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL
+ENV NEXT_PUBLIC_MAPBOX_KEY=$NEXT_PUBLIC_MAPBOX_KEY
+ENV NEXT_PUBLIC_CF_IMAGES_URL=$NEXT_PUBLIC_CF_IMAGES_URL
+
+# Install packages
+WORKDIR /app
+
+RUN apk add --update curl && rm -rf /var/cache/apk/*
+RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@6
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY ui/package.json ./ui/package.json
+COPY web/package.json ./web/package.json
+
+RUN pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
+
+COPY ./* ./
+COPY ./web ./web
+COPY ./ui ./ui
+
+# Disable telemetry
+RUN pnpm run --filter=web telemetry:disable 
+
+# Run build with secrets
+RUN --mount=type=secret,id=TURBO_TOKEN TURBO_TOKEN=$(cat /run/secrets/TURBO_TOKEN) \
+  --mount=type=secret,id=DATABASE_URL DATABASE_URL=$(cat /run/secrets/DATABASE_URL) \
+  --mount=type=secret,id=OAUTH_CLIENT_SECRET OAUTH_CLIENT_SECRET=$(cat /run/secrets/OAUTH_CLIENT_SECRET) \
+  --mount=type=secret,id=CF_IMAGES_DOMAIN CF_IMAGES_DOMAIN=$(cat /run/secrets/CF_IMAGES_DOMAIN) \
+  --mount=type=secret,id=CF_ACCOUNT_ID CF_ACCOUNT_ID=$(cat /run/secrets/CF_ACCOUNT_ID) \
+  --mount=type=secret,id=CF_ACCESS_KEY_ID CF_ACCESS_KEY_ID=$(cat /run/secrets/CF_ACCESS_KEY_ID) \
+  --mount=type=secret,id=CF_ACCESS_KEY_SECRET CF_ACCESS_KEY_SECRET=$(cat /run/secrets/CF_ACCESS_KEY_SECRET) \
+  --mount=type=secret,id=CF_IMAGES_BUCKET_NAME CF_IMAGES_BUCKET_NAME=$(cat /run/secrets/CF_IMAGES_BUCKET_NAME) \
+  && export TURBO_TOKEN \
+  && export TURBO_TOKEN \
+  && export DATABASE_URL \
+  && export OAUTH_CLIENT_SECRET \
+  && export CF_IMAGES_DOMAIN \
+  && export CF_ACCOUNT_ID \
+  && export CF_ACCESS_KEY_ID \
+  && export CF_ACCESS_KEY_SECRET \
+  && export CF_IMAGES_BUCKET_NAME \
+  && export OSM_SEARCH_URL="http://host.docker.internal:8090" \
+  && pnpm run --filter=web generate \
+  && pnpm run --filter=web db push \
+  && pnpm run --filter=web seed \
+  && pnpm run build
+
+CMD ["./copy-env.sh && pnpm", "run", "start:web"]

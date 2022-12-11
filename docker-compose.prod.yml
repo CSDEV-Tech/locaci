@@ -1,0 +1,74 @@
+version: '3.1'
+
+services:
+    db:
+        image: postgres:12-alpine
+        volumes:
+            - posgres_db_data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER_FILE=/run/secrets/postgres_user
+            - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+            - POSTGRES_DB=locaci_db
+        ports:
+            - '127.0.0.1:5434:5432'
+        secrets:
+            - postgres_user
+            - postgres_password
+
+    osm-search:
+        image: mediagis/nominatim:4.1
+        restart: always
+        ports:
+            - '127.0.0.1:8090:8080'
+        environment:
+            # To restrict search data to ivory coast
+            PBF_URL: https://download.geofabrik.de/africa/ivory-coast-latest.osm.pbf
+            NOMINATIM_PASSWORD: password
+        volumes:
+            - osm_search_data:/var/lib/postgresql/14/main
+        shm_size: 500mb
+
+    # web:
+    #     image: dcr.fredkiss.dev/locaci.net@latest
+    #     restart: always
+    #     ports:
+    #         - '127.0.0.1:8889:3000'
+    #     secrets:
+    #         - locaci_cf_access_key_id
+    #         - locaci_cf_access_key_secret
+    #         - locaci_cf_account_id
+    #         - locaci_cf_images_bucket_name
+    #         - locaci_cf_images_domain
+    #         - locaci_jwt_secret
+    #         - locaci_oauth_cliend_secret
+    #         - locaci_postgres_password
+    #         - locaci_postgres_user
+    #     volumes:
+    #         - ./copy-env.sh:/app/copy-env.sh
+    #     deploy:
+    #         replicas: 2
+    #         placement:
+    #             constraints:
+    #                 - node.role==manager
+secrets:
+    locaci_cf_access_key_id:
+        external: true
+    locaci_cf_access_key_secret:
+        external: true
+    locaci_cf_account_id:
+        external: true
+    locaci_cf_images_bucket_name:
+        external: true
+    locaci_cf_images_domain:
+        external: true
+    locaci_jwt_secret:
+        external: true
+    locaci_oauth_cliend_secret:
+        external: true
+    locaci_postgres_password:
+        external: true
+    locaci_postgres_user:
+        external: true
+volumes:
+    osm_search_data:
+    posgres_db_data:
