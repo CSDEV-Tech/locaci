@@ -42,19 +42,19 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN '
-            set -e -o 
-            echo "Logging in..."
+          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
+            # Exit on error
+            set -e -o errexit
+            echo Logging in...
             echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
-            echo "Logged in ✅"
+            echo Logged in ✅
 
             cd $DEPLOY_DIR
-            echo "Building image..."
+            echo Building image...
             # export vars to be used inside build
             export DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@host.docker.internal:5434/locaci_db?schema=public"
             # Build 
-            DOCKER_BUILDKIT=1 docker build -f Dockerfile.web \ 
-              --secret id=TURBO_TOKEN \ 
+            DOCKER_BUILDKIT=1 docker build -f Dockerfile.web --secret id=TURBO_TOKEN \ 
               --secret id=DATABASE_URL \
               --secret id=OAUTH_CLIENT_SECRET \
               --secret id=CF_IMAGES_DOMAIN \
@@ -68,14 +68,14 @@ jobs:
               --build-arg NEXT_PUBLIC_MAPBOX_KEY=$NEXT_PUBLIC_MAPBOX_KEY \
               --build-arg NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=$NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL \
               -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest . 
-            echo "Image built ✅"
-            echo "pushing image..."
+            echo Image built ✅
+            echo pushing image...
             docker image push --all-tags dcr.fredkiss.dev/locaci.net
-            echo "Image pushed ✅"
-            echo "deploying to docker swam..."
+            echo Image pushed ✅
+            echo deploying to docker swam...
             docker stack deploy  -c ./docker-compose.prod.yml locaci
-            echo "Deployed successfully ✅"
-            '
+            echo Deployed successfully ✅
+            "
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
           DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
