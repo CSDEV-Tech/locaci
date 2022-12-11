@@ -34,6 +34,11 @@ jobs:
         run: |
           scp -P $DEPLOY_PORT ./Dockerfile.web $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR
           scp -P $DEPLOY_PORT ./docker-compose.prod.yml $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR
+        env:
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
+          DEPLOY_DOMAIN: ${{ secrets.DEPLOY_DOMAIN }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
 
       - name: Deploy to Server
         run: |
