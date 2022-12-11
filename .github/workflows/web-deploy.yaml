@@ -43,7 +43,9 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN '
+            echo "Logging in..."
             echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
+            echo "Logged in ✅"
             set -e # ignore errors
             cd $DEPLOY_DIR
             # export vars to be used inside build
