@@ -42,6 +42,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          ls -l
           echo Logging in...
           echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
           echo Logged in ✅
@@ -62,13 +63,13 @@ jobs:
               --secret id=CF_ACCESS_KEY_ID \
               --secret id=CF_ACCESS_KEY_SECRET \
               --secret id=CF_IMAGES_BUCKET_NAME \
-              -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest . \
               --build-arg NEXT_PUBLIC_SITE_URL="https://locaci.fredkiss.dev" \
               --build-arg TURBO_TEAM=${{ secrets.TURBO_TEAM }} \
               --build-arg NEXT_PUBLIC_OAUTH_CLIENT_ID=$NEXT_PUBLIC_OAUTH_CLIENT_ID \
               --build-arg NEXT_PUBLIC_MAPBOX_KEY=$NEXT_PUBLIC_MAPBOX_KEY \
               --build-arg NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=$NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL \
-              --build-arg OSM_SEARCH_URL=$DEPLOY_DOMAIN:$DEPLOY_DOMAIN:8090 
+              --build-arg OSM_SEARCH_URL=$DEPLOY_DOMAIN:$DEPLOY_DOMAIN:8090 \
+              -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest ./
           echo Image built ✅
 
           echo pushing image...
