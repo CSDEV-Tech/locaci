@@ -30,11 +30,17 @@ jobs:
           name: id_rsa # optional
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
+      - name: Copy docker files
+        run: |
+          scp -P $DEPLOY_PORT ./Dockerfile.web $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR
+          scp -P $DEPLOY_PORT ./docker-compose.prod.yml $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR
+
       - name: Deploy to Server
         run: |
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN '
-            echo $DCR_PASSWD | docker login  --username=$DCR_USER --password-stdin dcr.fredkiss.dev
+            echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
             set -e # ignore errors
+            cd $DEPLOY_DIR
             # export vars to be used inside build
             export DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@host.docker.internal:5434/locaci_db?schema=public"
             # Build 
@@ -54,9 +60,11 @@ jobs:
               --build-arg NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=$NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL \
               -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest . 
             docker image push --all-tags dcr.fredkiss.dev/locaci.net
+            docker stack deploy locaci
             '
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
           DEPLOY_DOMAIN: ${{ secrets.DEPLOY_DOMAIN }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DCR_PASSWD: ${{ secrets.DCR_PASSWD }}
