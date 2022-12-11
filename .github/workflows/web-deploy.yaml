@@ -46,8 +46,9 @@ jobs:
             echo "Logging in..."
             echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
             echo "Logged in ✅"
-            set -e # ignore errors
+
             cd $DEPLOY_DIR
+            echo "Building image..."
             # export vars to be used inside build
             export DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@host.docker.internal:5434/locaci_db?schema=public"
             # Build 
@@ -66,8 +67,13 @@ jobs:
               --build-arg NEXT_PUBLIC_MAPBOX_KEY=$NEXT_PUBLIC_MAPBOX_KEY \
               --build-arg NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=$NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL \
               -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest . 
+            echo "Image built ✅"
+            echo "pushing image..."
             docker image push --all-tags dcr.fredkiss.dev/locaci.net
+            echo "Image pushed ✅"
+            echo "deploying to docker swam..."
             docker stack deploy locaci
+            echo "Deployed successfully ✅"
             '
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
