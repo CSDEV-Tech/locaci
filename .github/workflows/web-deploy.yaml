@@ -42,29 +42,18 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
-            # Exit on error
-            set -e -o errexit
-            echo Logging in...
-            echo $DCR_USER
-            echo $DCR_PASSWD
-            echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
-            echo Logged in ✅
+          echo Logging in...
+          echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
+          echo Logged in ✅
 
-            cd $DEPLOY_DIR
-            echo Building image...
-            # export vars to be used inside build
-            export DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@host.docker.internal:5434/locaci_db?schema=public"
-            export TURBO_TOKEN=$TURBO_TOKEN
-            export DATABASE_URL=$DATABASE_URL
-            export OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET
-            export CF_IMAGES_DOMAIN=$CF_IMAGES_DOMAIN
-            export CF_ACCOUNT_ID=$CF_ACCOUNT_ID
-            export CF_ACCESS_KEY_ID=$CF_ACCESS_KEY_ID
-            export CF_ACCESS_KEY_SECRET=$CF_ACCESS_KEY_SECRET
-            export CF_IMAGES_BUCKET_NAME=$CF_IMAGES_BUCKET_NAME
-            # Build 
-            DOCKER_BUILDKIT=1 docker build -f Dockerfile.web --secret id=TURBO_TOKEN \ 
+          echo Building image...
+          # export vars to be used inside build
+          export DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@$DEPLOY_DOMAIN:5434/locaci_db?schema=public"
+
+          # Pull image to have access to build cache
+          docker pull dcr.fredkiss.dev/locaci.net:latest || true
+          # Build
+          DOCKER_BUILDKIT=1 docker build -f Dockerfile.web --secret id=TURBO_TOKEN \ 
               --secret id=DATABASE_URL \
               --secret id=OAUTH_CLIENT_SECRET \
               --secret id=CF_IMAGES_DOMAIN \
@@ -77,11 +66,19 @@ jobs:
               --build-arg NEXT_PUBLIC_OAUTH_CLIENT_ID=$NEXT_PUBLIC_OAUTH_CLIENT_ID \
               --build-arg NEXT_PUBLIC_MAPBOX_KEY=$NEXT_PUBLIC_MAPBOX_KEY \
               --build-arg NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=$NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL \
-              -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest . 
-            echo Image built ✅
-            echo pushing image...
-            docker image push --all-tags dcr.fredkiss.dev/locaci.net
-            echo Image pushed ✅
+              --build-arg OSM_SEARCH_URL=$DEPLOY_DOMAIN:$DEPLOY_DOMAIN:8090 \
+              -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest .
+          echo Image built ✅
+
+          echo pushing image...
+          docker image push --all-tags dcr.fredkiss.dev/locaci.net
+          echo Image pushed ✅
+
+
+          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
+            # Exit on error
+            set -e -o errexit
+            cd $DEPLOY_DIR
             echo deploying to docker swam...
             docker stack deploy  -c ./docker-compose.prod.yml locaci
             echo Deployed successfully ✅
