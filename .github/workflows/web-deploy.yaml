@@ -46,6 +46,8 @@ jobs:
             # Exit on error
             set -e -o errexit
             echo Logging in...
+            echo $DCR_USER
+            echo $DCR_PASSWD
             echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
             echo Logged in ✅
 
@@ -53,6 +55,14 @@ jobs:
             echo Building image...
             # export vars to be used inside build
             export DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@host.docker.internal:5434/locaci_db?schema=public"
+            export TURBO_TOKEN=$TURBO_TOKEN
+            export DATABASE_URL=$DATABASE_URL
+            export OAUTH_CLIENT_SECRET=$OAUTH_CLIENT_SECRET
+            export CF_IMAGES_DOMAIN=$CF_IMAGES_DOMAIN
+            export CF_ACCOUNT_ID=$CF_ACCOUNT_ID
+            export CF_ACCESS_KEY_ID=$CF_ACCESS_KEY_ID
+            export CF_ACCESS_KEY_SECRET=$CF_ACCESS_KEY_SECRET
+            export CF_IMAGES_BUCKET_NAME=$CF_IMAGES_BUCKET_NAME
             # Build 
             DOCKER_BUILDKIT=1 docker build -f Dockerfile.web --secret id=TURBO_TOKEN \ 
               --secret id=DATABASE_URL \
