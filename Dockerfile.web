@@ -15,15 +15,15 @@ RUN apk add --update curl && rm -rf /var/cache/apk/*
 RUN npm install -g pnpm@7.1
 
 # Install packages
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY ui/package.json ./ui/package.json
-COPY web/package.json ./web/package.json
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app
+COPY ui/package.json /app/ui/package.json
+COPY web/package.json /app/web/package.json
 
 RUN pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
 
-COPY ./* ./
-COPY ./web ./web
-COPY ./ui ./ui
+COPY ./* /app
+COPY ./web /app/web
+COPY ./ui /app/ui
 
 # Disable telemetry
 RUN pnpm run --filter=web telemetry:disable 
