@@ -50,13 +50,21 @@ export const geoRouter = t.router({
         )
         .query(async ({ ctx, input }) => {
             // Search for municipality
-            console.log({ env });
-            const { httpStatus: statusCode, ...osmCommuneApiresult } =
-                await apiFetch<Record<string, OSMResultData>>(
+            let osmCommuneApiresult: Record<string, OSMResultData> = {};
+            try {
+                let { httpStatus: statusCode, ...rest } = await apiFetch<
+                    Record<string, OSMResultData>
+                >(
                     `${env.OSM_SEARCH_URL}/search.php?q=${encodeURIComponent(
                         input.municipality
                     )}&format=jsonv2&polygon_geojson=1&addressdetails=1&accept-language=fr-FR`
                 );
+                osmCommuneApiresult = rest;
+            } catch (error) {
+                console.error((error as Error).message);
+                console.error((error as Error).stack);
+                return [];
+            }
 
             const municipalities = Object.values(osmCommuneApiresult);
             const municipality = municipalities.find(m => {
