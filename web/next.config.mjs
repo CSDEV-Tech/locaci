@@ -13,6 +13,20 @@ function defineNextConfig(config) {
 }
 
 const nextConfig = defineNextConfig({
+    async headers() {
+        return [
+            {
+                source: '/:all*(svg|jpg|png|js)',
+                locale: false,
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, maxage=31536000, s-maxage=31536000, immutable'
+                    }
+                ]
+            }
+        ];
+    },
     experimental: {
         appDir: true,
         enableUndici: true
