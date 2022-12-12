@@ -1,3 +1,4 @@
+// @ts-check
 import { PrismaClient } from '@prisma/client';
 import yaml from 'js-yaml';
 import { promises as fs } from 'node:fs';
@@ -21,6 +22,25 @@ async function main() {
         console.log(`Start seeding ...`);
         console.log(`Empting cities table ...`);
         await prisma.municipality.deleteMany();
+
+        try {
+            await prisma.user.delete({
+                where: {
+                    email: 'fredkiss3@gmail.com'
+                }
+            });
+
+            await prisma.user.create({
+                data: {
+                    email: 'fredkiss3@gmail.com',
+                    email_verified: true,
+                    role: 'PROPERTY_OWNER',
+                    avatarURL:
+                        'https://avatars.githubusercontent.com/u/38298743?v=4'
+                }
+            });
+        } catch (error) {}
+
         await prisma.city.deleteMany();
 
         console.log(`Recreating cities table ...`);
