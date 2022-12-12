@@ -12,8 +12,8 @@ services:
         ports:
             - '5434:5432'
         secrets:
-            - postgres_user
-            - postgres_password
+            - locaci_postgres_user
+            - locaci_postgres_password
 
     osm-search:
         image: mediagis/nominatim:4.1

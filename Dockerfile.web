@@ -29,8 +29,8 @@ COPY ./ui ./ui
 RUN pnpm run --filter=web telemetry:disable 
 
 # Run build with secrets
-RUN --mount=type=secret,id=_env,dst=/app/.env pnpm run --filter=web db push \
-  && pnpm run --filter=web seed \
-  && pnpm run build
+RUN --mount=type=secret,id=_env,dst=/app/.env FORCE_COLOR=true pnpm run --filter=web db push \
+  && FORCE_COLOR=true pnpm run --filter=web seed \
+  && FORCE_COLOR=true pnpm turbo run build
 
 CMD ["./copy-env.sh && pnpm", "run", "start:web"]
