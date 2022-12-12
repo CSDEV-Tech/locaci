@@ -62,6 +62,8 @@ jobs:
           git pull origin develop # to change when using main branch
 
           echo Building packages...
+          export TURBO_TEAM=$TURBO_TEAM
+          export TURBO_TOKEN=$TURBO_TOKEN
           FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
           FORCE_COLOR=true pnpm run --filter=web telemetry:disable
           FORCE_COLOR=true pnpm run --filter=web prepare-db
