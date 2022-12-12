@@ -1,9 +1,13 @@
-const { PrismaClient } = require('@prisma/client');
-const yaml = require('js-yaml');
-const { promises: fs } = require('node:fs');
-const path = require('node:path');
+import { PrismaClient } from '@prisma/client';
+import yaml from 'js-yaml';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const prisma = new PrismaClient();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 async function main() {
     try {

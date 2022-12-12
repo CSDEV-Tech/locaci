@@ -18,3 +18,5 @@ storybook-static/
 docker-compose.yml
 netlify.toml
 stack.txt
+uml/
+.vscode/

@@ -9,8 +9,9 @@
         "lint": "next lint",
         "postinstall": "prisma generate",
         "prisma": "prisma",
-        "seed": "node prisma/seed.js",
-        "check": "tsc --noEmit --skipLibCheck"
+        "seed": "node prisma/seed.mjs",
+        "prepare-db": "prisma db push && node prisma/seed.mjs",
+        "telemetry:disable": "next telemetry disable"
     },
     "prisma": {
         "seed": "node prisma/seed.js"
