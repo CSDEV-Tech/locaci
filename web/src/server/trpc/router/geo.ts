@@ -50,6 +50,7 @@ export const geoRouter = t.router({
         )
         .query(async ({ ctx, input }) => {
             // Search for municipality
+            console.log({ env });
             const { httpStatus: statusCode, ...osmCommuneApiresult } =
                 await apiFetch<Record<string, OSMResultData>>(
                     `${env.OSM_SEARCH_URL}/search.php?q=${encodeURIComponent(
