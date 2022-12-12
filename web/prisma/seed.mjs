@@ -20,7 +20,6 @@ async function main() {
 
         console.log(`Start seeding ...`);
         console.log(`Empting cities table ...`);
-        await prisma.locality.deleteMany();
         await prisma.municipality.deleteMany();
         await prisma.city.deleteMany();
 
@@ -33,11 +32,6 @@ async function main() {
                         create: city.municipalities.map(m => {
                             return {
                                 name: m.name.toLowerCase()
-                                // localities: {
-                                //     create: m.localities.map(l => ({
-                                //         name: l.name.toLowerCase()
-                                //     }))
-                                // }
                             };
                         })
                     }
