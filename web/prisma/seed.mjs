@@ -23,12 +23,23 @@ async function main() {
         console.log(`Empting cities table ...`);
         await prisma.municipality.deleteMany();
 
-        try {
-            await prisma.user.delete({
-                where: {
-                    email: 'fredkiss3@gmail.com'
-                }
-            });
+        const default_owner = await prisma.user.findMany({
+            where: {
+                email: 'fredkiss3@gmail.com',
+                role: 'PROPERTY_OWNER'
+            }
+        });
+
+        if (default_owner.length === 0) {
+            try {
+                await prisma.user.delete({
+                    where: {
+                        email: 'fredkiss3@gmail.com'
+                    }
+                });
+            } catch (error) {
+                console.error('error =>', error.message);
+            }
 
             await prisma.user.create({
                 data: {
@@ -39,7 +50,7 @@ async function main() {
                         'https://avatars.githubusercontent.com/u/38298743?v=4'
                 }
             });
-        } catch (error) {}
+        }
 
         await prisma.city.deleteMany();
 
