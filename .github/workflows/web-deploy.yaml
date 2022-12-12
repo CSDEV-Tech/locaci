@@ -65,7 +65,7 @@ jobs:
           FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
           FORCE_COLOR=true pnpm run --filter=web telemetry:disable
           FORCE_COLOR=true pnpm run --filter=web prepare-db
-          FORCE_COLOR=true pnpm turbo run build
+          FORCE_COLOR=true pnpm run turbo run build
           echo build success ✅
 
           # Start 3 pm2 processes
