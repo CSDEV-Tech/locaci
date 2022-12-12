@@ -27,7 +27,7 @@ RUN pnpm run --filter=web telemetry:disable
 RUN --mount=type=secret,id=_env,dst=/app/web/.env FORCE_COLOR=true pnpm run --filter=web prepare-db \
   && FORCE_COLOR=true pnpm run --filter=web... build
 
-COPY ./copy-env.sh /app
-RUN chmod a+x /app/copy-env.sh
+COPY ./docker-start.sh /app
+RUN chmod a+x /app/docker-start.sh
 
-CMD ["./copy-env.sh && pnpm", "run", "start:web"]
+CMD ["/bin/sh", "-c", "/app/docker-start.sh"]
