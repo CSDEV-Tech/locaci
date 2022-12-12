@@ -67,16 +67,6 @@ jobs:
           echo pushing image...
           docker image push --all-tags dcr.fredkiss.dev/locaci.net
           echo Image pushed ✅
-
-
-          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
-            # Exit on error
-            set -e -o errexit
-            cd $DEPLOY_DIR
-            echo deploying to docker swam...
-            docker stack deploy  -c ./docker-compose.prod.yml locaci
-            echo Deployed successfully ✅
-            "
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
           DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
