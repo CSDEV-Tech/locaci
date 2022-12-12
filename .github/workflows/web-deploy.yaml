@@ -73,9 +73,12 @@ jobs:
           # Start 3 pm2 processes
           pm2 stop all || true
           pm2 delete all || true
+
+          echo Starting processes...
           pm2 start "pnpm run start:web -p 8889" --name locaci-web1  
           pm2 start "pnpm run start:web -p 8890" --name locaci-web2
           pm2 start "pnpm run start:web -p 8891" --name locaci-web3 
+          echo processes succesfully started ✅
           "
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
