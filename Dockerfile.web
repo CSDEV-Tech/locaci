@@ -29,7 +29,7 @@ COPY ./ui ./ui
 RUN pnpm run --filter=web telemetry:disable 
 
 # Run build with secrets
-RUN RUN --mount=type=secret,id=_env,dst=/app/.env pnpm run --filter=web db push \
+RUN --mount=type=secret,id=_env,dst=/app/.env pnpm run --filter=web db push \
   && pnpm run --filter=web seed \
   && pnpm run build
 
