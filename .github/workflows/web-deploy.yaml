@@ -65,7 +65,7 @@ jobs:
           FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
           FORCE_COLOR=true pnpm run --filter=web telemetry:disable
           FORCE_COLOR=true pnpm run --filter=web prepare-db
-          FORCE_COLOR=true pnpm run --filter=web... build
+          FORCE_COLOR=true pnpm turbo run build
           echo build success ✅
 
           # Start 3 pm2 processes
@@ -82,3 +82,5 @@ jobs:
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DCR_PASSWD: ${{ secrets.DCR_PASSWD }}
           DCR_USER: ${{ secrets.DCR_USER }}
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
