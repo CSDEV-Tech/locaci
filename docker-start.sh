@@ -11,7 +11,7 @@ export NEXT_PUBLIC_CF_IMAGES_URL="https://$CF_IMAGES_DOMAIN"
 export JWT_SECRET=$(cat /run/secrets/locaci_jwt_secret)
 export OAUTH_CLIENT_SECRET=$(cat /run/secrets/locaci_oauth_cliend_secret)
 export DATABASE_URL="postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/locaci_db?schema=public"
-export OSM_SEARCH_URL="http://osm-search:8090"
+export OSM_SEARCH_URL="http://osm-search:8080"
 
 # Run pnpm
 pnpm run start:web
