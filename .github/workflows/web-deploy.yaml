@@ -62,7 +62,7 @@ jobs:
           git pull origin develop # to change when using main branch
 
           echo Building packages...
-          FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
+          FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
           FORCE_COLOR=true pnpm run --filter=web telemetry:disable
           FORCE_COLOR=true pnpm run --filter=web prepare-db
           FORCE_COLOR=true pnpm run turbo run build
