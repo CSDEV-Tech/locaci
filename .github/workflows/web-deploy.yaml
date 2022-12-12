@@ -36,8 +36,8 @@ jobs:
           cat > .env << EOF
           NEXT_PUBLIC_SITE_URL="https://locaci.fredkiss.dev"
           JWT_SECRET=${{ secrets.JWT_SECRET }}
-          DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5434/locaci_db?schema=public"
-          OSM_SEARCH_URL=http://localhost:8090
+          DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:5434/locaci_db?schema=public"
+          OSM_SEARCH_URL=http://127.0.0.1:8090
           NEXT_PUBLIC_MAPBOX_KEY=${{ secrets.MAPBOX_KEY }}
           NEXT_PUBLIC_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}
           NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=${{ secrets.ISSUER_BASE_URL }}
