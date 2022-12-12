@@ -25,25 +25,25 @@ services:
             NOMINATIM_PASSWORD: password
         volumes:
             - osm_search_data:/var/lib/postgresql/14/main
-    web:
-        image: dcr.fredkiss.dev/locaci.net:latest
-        ports:
-            - '8889:3000'
-        secrets:
-            - locaci_cf_access_key_id
-            - locaci_cf_access_key_secret
-            - locaci_cf_account_id
-            - locaci_cf_images_bucket_name
-            - locaci_cf_images_domain
-            - locaci_jwt_secret
-            - locaci_oauth_cliend_secret
-            - locaci_postgres_password
-            - locaci_postgres_user
-        deploy:
-            replicas: 2
-            placement:
-                constraints:
-                    - node.role==manager
+    # web:
+    #     image: dcr.fredkiss.dev/locaci.net:latest
+    #     ports:
+    #         - '8889:3000'
+    #     secrets:
+    #         - locaci_cf_access_key_id
+    #         - locaci_cf_access_key_secret
+    #         - locaci_cf_account_id
+    #         - locaci_cf_images_bucket_name
+    #         - locaci_cf_images_domain
+    #         - locaci_jwt_secret
+    #         - locaci_oauth_cliend_secret
+    #         - locaci_postgres_password
+    #         - locaci_postgres_user
+    #     deploy:
+    #         replicas: 2
+    #         placement:
+    #             constraints:
+    #                 - node.role==manager
 
 secrets:
     locaci_cf_access_key_id:

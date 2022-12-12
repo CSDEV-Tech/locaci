@@ -32,16 +32,12 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          echo Logging in...
-          echo $DCR_PASSWD | docker login --username=$DCR_USER --password-stdin dcr.fredkiss.dev 
-          echo Logged in ✅
-
-          # Copy env files
+          echo Copying env files...
           cat > .env << EOF
           NEXT_PUBLIC_SITE_URL="https://locaci.fredkiss.dev"
           JWT_SECRET=${{ secrets.JWT_SECRET }}
-          DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@$DEPLOY_DOMAIN:5434/locaci_db?schema=public"
-          OSM_SEARCH_URL=http://$DEPLOY_DOMAIN:8090
+          DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5434/locaci_db?schema=public"
+          OSM_SEARCH_URL=http://localhost:8090
           NEXT_PUBLIC_MAPBOX_KEY=${{ secrets.MAPBOX_KEY }}
           NEXT_PUBLIC_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}
           NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=${{ secrets.ISSUER_BASE_URL }}
@@ -54,19 +50,30 @@ jobs:
           CF_IMAGES_BUCKET_NAME=${{ secrets.CF_IMAGES_BUCKET_NAME }}
           EOF
 
-          # export vars to be used inside build
+          scp -P $DEPLOY_PORT ./.env $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/web/.env
+          echo env copied ✅
 
-          # Pull image to have access to build cache
-          echo Pulling previous image version...
-          docker pull dcr.fredkiss.dev/locaci.net:latest || true
-          # Build
-          echo Building image...
-          DOCKER_BUILDKIT=1 docker build -f Dockerfile.web --secret id=_env,src=.env --build-arg NEXT_PUBLIC_MAPBOX_KEY=${{ secrets.MAPBOX_KEY }} --build-arg NEXT_PUBLIC_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }} --build-arg NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=${{ secrets.ISSUER_BASE_URL }} -t dcr.fredkiss.dev/locaci.net:$GITHUB_SHA -t dcr.fredkiss.dev/locaci.net:latest .
-          echo Image built ✅
+          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
+          set -e -o errexit
+          cd $DEPLOY_DIR
 
-          echo pushing image...
-          docker image push --all-tags dcr.fredkiss.dev/locaci.net
-          echo Image pushed ✅
+          echo Pulling latest version...
+          git pull origin develop # to change when using main branch
+
+          echo Building packages...
+          pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
+          pnpm run --filter=web telemetry:disable
+          pnpm run --filter=web prepare-db
+          FORCE_COLOR=true pnpm run --filter=web... build
+          echo build success ✅
+
+          # Start 3 pm2 processes
+          pm2 stop all
+          pm2 delete all
+          pm2 start "pnpm run start:web -p 8889" --name locaci-web1  
+          pm2 start "pnpm run start:web -p 8890" --name locaci-web2
+          pm2 start "pnpm run start:web -p 8891" --name locaci-web3 
+          "
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
           DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
