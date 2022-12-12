@@ -60,11 +60,12 @@ jobs:
           echo Pulling latest version...
           git pull origin develop # to change when using main branch
 
+          id
           echo Building packages...
-          FORCE_COLOR=true /home/fredkiss3/.nvm/versions/node/v16.18.1/bin/pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
-          FORCE_COLOR=true /home/fredkiss3/.nvm/versions/node/v16.18.1/bin/pnpm run --filter=web telemetry:disable
-          FORCE_COLOR=true /home/fredkiss3/.nvm/versions/node/v16.18.1/bin/pnpm run --filter=web prepare-db
-          FORCE_COLOR=true /home/fredkiss3/.nvm/versions/node/v16.18.1/bin/pnpm run --filter=web... build
+          FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true --filter=web...
+          FORCE_COLOR=true pnpm run --filter=web telemetry:disable
+          FORCE_COLOR=true pnpm run --filter=web prepare-db
+          FORCE_COLOR=true pnpm run --filter=web... build
           echo build success ✅
 
           # Start 3 pm2 processes
