@@ -128,6 +128,7 @@ jobs:
           # Then copy the static files
           scp -P $DEPLOY_PORT -r .next/static/ $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/.next/static
           scp -P $DEPLOY_PORT -r ./web/public/ $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/public
+          scp -P $DEPLOY_PORT ./ecosystem.config.js $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/
 
           # Restart processes
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
