@@ -31,6 +31,7 @@ const nextConfig = defineNextConfig({
         appDir: true,
         enableUndici: true
     },
+    output: 'standalone',
     reactStrictMode: false,
     swcMinify: true,
     images: {
