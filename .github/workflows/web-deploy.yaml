@@ -48,34 +48,30 @@ jobs:
 
       - name: Build the packages
         run: |
-          # Copy env files
-          cat > ./web/.env << EOF
-          NEXT_PUBLIC_SITE_URL="https://locaci.fredkiss.dev"
-          JWT_SECRET=${{ secrets.JWT_SECRET }}
-          DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@$DEPLOY_DOMAIN:5434/locaci_db?schema=public"
-          OSM_SEARCH_URL=http://$DEPLOY_DOMAIN:8090
-          NEXT_PUBLIC_MAPBOX_KEY=${{ secrets.MAPBOX_KEY }}
-          NEXT_PUBLIC_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}
-          NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=${{ secrets.ISSUER_BASE_URL }}
-          OAUTH_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}
-          NEXT_PUBLIC_CF_IMAGES_URL=${{ secrets.CF_IMAGES_URL }}
-          CF_IMAGES_DOMAIN=${{ secrets.CF_IMAGES_DOMAIN }}
-          CF_ACCOUNT_ID=${{ secrets.CF_ACCOUNT_ID }}
-          CF_ACCESS_KEY_ID=${{ secrets.CF_ACCESS_KEY_ID }}
-          CF_ACCESS_KEY_SECRET=${{ secrets.CF_ACCESS_KEY_SECRET }}
-          CF_IMAGES_BUCKET_NAME=${{ secrets.CF_IMAGES_BUCKET_NAME }}
-          EOF
+          # export env variables
+          export NEXT_PUBLIC_SITE_URL="https://locaci.fredkiss.dev"
+          export JWT_SECRET=${{ secrets.JWT_SECRET }}
+          export DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@$DEPLOY_DOMAIN:5434/locaci_db?schema=public"
+          export OSM_SEARCH_URL=http://$DEPLOY_DOMAIN:8090
+          export NEXT_PUBLIC_MAPBOX_KEY=${{ secrets.MAPBOX_KEY }}
+          export NEXT_PUBLIC_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}
+          export NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=${{ secrets.ISSUER_BASE_URL }}
+          export OAUTH_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}
+          export NEXT_PUBLIC_CF_IMAGES_URL=${{ secrets.CF_IMAGES_URL }}
+          export CF_IMAGES_DOMAIN=${{ secrets.CF_IMAGES_DOMAIN }}
+          export CF_ACCOUNT_ID=${{ secrets.CF_ACCOUNT_ID }}
+          export CF_ACCESS_KEY_ID=${{ secrets.CF_ACCESS_KEY_ID }}
+          export CF_ACCESS_KEY_SECRET=${{ secrets.CF_ACCESS_KEY_SECRET }}
+          export CF_IMAGES_BUCKET_NAME=${{ secrets.CF_IMAGES_BUCKET_NAME }}
 
           FORCE_COLOR=true pnpm run --filter=web telemetry:disable
           FORCE_COLOR=true pnpm run --filter=web prepare-db
-          FORCE_COLOR=true TURBO_TOKEN=$TURBO_TOKEN TURBO_TEAM=$TURBO_TEAM pnpm run turbo run build
+          FORCE_COLOR=true pnpm run turbo run build
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
           DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
           DEPLOY_DOMAIN: ${{ secrets.DEPLOY_DOMAIN }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DCR_PASSWD: ${{ secrets.DCR_PASSWD }}
-          DCR_USER: ${{ secrets.DCR_USER }}
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
@@ -108,8 +104,26 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          # Copy env file
+          cat > ./web/.next/standalone/.env << EOF
+          NEXT_PUBLIC_SITE_URL="https://locaci.fredkiss.dev"
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@$DEPLOY_DOMAIN:5434/locaci_db?schema=public"
+          OSM_SEARCH_URL=http://$DEPLOY_DOMAIN:8090
+          NEXT_PUBLIC_MAPBOX_KEY=${{ secrets.MAPBOX_KEY }}
+          NEXT_PUBLIC_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}
+          NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL=${{ secrets.ISSUER_BASE_URL }}
+          OAUTH_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}
+          NEXT_PUBLIC_CF_IMAGES_URL=${{ secrets.CF_IMAGES_URL }}
+          CF_IMAGES_DOMAIN=${{ secrets.CF_IMAGES_DOMAIN }}
+          CF_ACCOUNT_ID=${{ secrets.CF_ACCOUNT_ID }}
+          CF_ACCESS_KEY_ID=${{ secrets.CF_ACCESS_KEY_ID }}
+          CF_ACCESS_KEY_SECRET=${{ secrets.CF_ACCESS_KEY_SECRET }}
+          CF_IMAGES_BUCKET_NAME=${{ secrets.CF_IMAGES_BUCKET_NAME }}
+          EOF
+
           # Deploy the standalone version first
-          rsync -arvzP -e "ssh -p $DEPLOY_PORT" ./web/.next/standalone/* $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/
+          rsync -arvzP --force -e "ssh -p $DEPLOY_PORT" ./web/.next/standalone/* $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/
 
           # create the folders that will accept static files
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
