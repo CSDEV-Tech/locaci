@@ -38,10 +38,10 @@ jobs:
         uses: actions/cache@v3
         with:
           # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
-          path: ./web/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          path: ./web/.next
+          key: ${{ runner.os }}-next-${{ hashFiles('**/pnpm-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-
+            ${{ runner.os }}-next-${{ hashFiles('**/pnpm-lock.json') }}-
 
       - name: Install dependencies
         run: FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
@@ -68,7 +68,7 @@ jobs:
 
           FORCE_COLOR=true pnpm run --filter=web telemetry:disable
           FORCE_COLOR=true pnpm run --filter=web prepare-db
-          FORCE_COLOR=true pnpm run turbo run build
+          FORCE_COLOR=true TURBO_TOKEN=$TURBO_TOKEN TURBO_TEAM=$TURBO_TEAM pnpm run turbo run build
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
           DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
@@ -94,10 +94,10 @@ jobs:
         uses: actions/cache@v3
         with:
           # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
-          path: ./web/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          path: ./web/.next
+          key: ${{ runner.os }}-next-${{ hashFiles('**/pnpm-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-
+            ${{ runner.os }}-next-${{ hashFiles('**/pnpm-lock.json') }}-
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -140,7 +140,3 @@ jobs:
           DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
           DEPLOY_DOMAIN: ${{ secrets.DEPLOY_DOMAIN }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DCR_PASSWD: ${{ secrets.DCR_PASSWD }}
-          DCR_USER: ${{ secrets.DCR_USER }}
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
