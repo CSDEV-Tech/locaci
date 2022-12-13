@@ -34,6 +34,15 @@ jobs:
           node-version: 16.x
           cache: "pnpm"
 
+      - name: Store nextjs build cache
+        uses: actions/cache@v3
+        with:
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: ./web/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-
+
       - name: Install dependencies
         run: FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
 
@@ -70,12 +79,6 @@ jobs:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
           TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
-      - name: Upload build artifact to be sent
-        uses: actions/upload-artifact@v3
-        with:
-          name: next-webapp-build-output
-          if-no-files-found: error
-          path: ./web/.next
   deploy:
     # The type of runner that the job will run on
     needs:
@@ -87,11 +90,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v2
+      - name: use nextjs build cache
+        uses: actions/cache@v3
         with:
-          name: next-webapp-build-output
-          path: .next
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: ./web/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -104,10 +110,18 @@ jobs:
         run: |
           # Deploy the standalone version first
           rsync -arvzP -e "ssh -p $DEPLOY_PORT" .next/standalone/* $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/
+
+          # create the folders that will accept static files
+          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
+          mkdir -p .next/static
+          mkdir public 
+          "
+
           # Then copy the static files
           scp -P $DEPLOY_PORT -r .next/static/ $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/.next/static
           scp -P $DEPLOY_PORT -r ./public/ $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/public
 
+          # Restart processes
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
           source ~/.zshrc
           set -e -o errexit
