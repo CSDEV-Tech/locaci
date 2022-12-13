@@ -31,8 +31,7 @@ type FormStep3Props = {
 
 // lazy load the map component
 const Map = dynamic(() => import('~/features/shared/components/map'), {
-    // TODO: THIS SHOULD BE FIXED !
-    // ssr: false
+    ssr: false
 });
 
 /**

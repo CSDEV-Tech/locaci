@@ -8,8 +8,7 @@ import dynamic from 'next/dynamic';
 import type { ModalProps } from '@locaci/ui/components/atoms/modal';
 
 const Modal = dynamic(() => import(`@locaci/ui/components/atoms/modal`), {
-    // FIXME : this should be fixed by the next release of nextjs
-    // ssr: false,
+    ssr: false,
     loading: () => <></>
 });
 
