@@ -237,12 +237,32 @@ export const ownerDraftRouter = t.router({
                         "L'annonce que vous essayez de modifier n'existe pas"
                 });
             }
+
+            /**
+             * Count the number of Rooms to the property
+             */
+            type DraftPropertyRoom = Pick<Room, 'type'>;
+            let noOfRooms = 0;
+            for (const room of input.additionalRooms as Array<DraftPropertyRoom>) {
+                // the rooms that are counted in the display of the total number of rooms
+                const roomCountedInDisplayOfTotal = [
+                    RoomType.BEDROOM,
+                    RoomType.LIVING_ROOM,
+                    RoomType.KITCHEN
+                ] as Array<RoomType>;
+
+                if (roomCountedInDisplayOfTotal.includes(room.type)) {
+                    noOfRooms += 1;
+                }
+            }
+
             return ctx.prisma.draftProperty.update({
                 where: {
                     id: input.uid
                 },
                 data: {
                     rooms: input.additionalRooms,
+                    noOfRooms,
                     currentStep:
                         draft.currentStep === PropertyFormStep.ROOMS
                             ? draft.rentType === 'SHORT_TERM'
