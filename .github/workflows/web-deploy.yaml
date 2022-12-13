@@ -121,8 +121,9 @@ jobs:
 
           # create the folders that will accept static files
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
-          mkdir -p .next/static
-          mkdir public 
+          cd $DEPLOY_DIR
+          mkdir -p .next/static || true
+          mkdir public || true
           "
 
           # Then copy the static files
