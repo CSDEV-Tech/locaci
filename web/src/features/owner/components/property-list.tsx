@@ -26,7 +26,9 @@ function getTitle(item: DraftProperty | Property) {
 }
 
 export function PropertyList() {
-    const { data } = t.owner.draft.getAll.useQuery();
+    const { data } = t.owner.draft.getAll.useQuery(undefined, {
+        staleTime: 60 * 60 * 1000 // 1 hour
+    });
 
     return (
         <>

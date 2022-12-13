@@ -46,7 +46,6 @@ export function EditDraftPropertyForm({
     );
     const utils = t.useContext();
     const router = useRouter();
-    const [isSaving, startTransition] = React.useTransition();
 
     // states
     const [step, goTo] = React.useState(getStepNumber(draft?.currentStep));
@@ -120,11 +119,10 @@ export function EditDraftPropertyForm({
 
     const saveDraftStep8 = t.owner.draft.saveDraftStep8.useMutation({
         onSuccess: async data => {
-            startTransition(() => {
-                router.refresh();
-                setListingUid(data.listingUid);
-                setSuccessModalOpen(true);
-            });
+            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.draft.getAll.invalidate();
+            setListingUid(data.listingUid);
+            setSuccessModalOpen(true);
         }
     });
 
@@ -303,7 +301,7 @@ export function EditDraftPropertyForm({
                         defaultValues={{
                             rentType: draft.rentType
                         }}
-                        isSubmitting={saveDraftStep8.isLoading || isSaving}
+                        isSubmitting={saveDraftStep8.isLoading}
                     />
                 )}
             </div>
@@ -324,6 +322,7 @@ function getStepNumber(step?: PropertyFormStep | null) {
         case 'IMAGES':
             return 7;
         case 'LISTING_DETAILS':
+        case 'COMPLETE':
             return 8;
         default:
             return 1;
