@@ -103,10 +103,10 @@ jobs:
       - name: Deploy to Server
         run: |
           # Deploy the standalone version first
-          rsync -arvzP -e "ssh -p $DEPLOY_PORT" .next/standalone $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/
+          rsync -arvzP -e "ssh -p $DEPLOY_PORT" .next/standalone/* $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/
           # Then copy the static files
-          scp -P $DEPLOY_PORT .next/static $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/.next/static
-          scp -P $DEPLOY_PORT ./public $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/public
+          scp -P $DEPLOY_PORT -r .next/static/ $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/.next/static
+          scp -P $DEPLOY_PORT -r ./public/ $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/public
 
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
           source ~/.zshrc
