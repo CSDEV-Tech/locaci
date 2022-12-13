@@ -14,7 +14,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  deploy:
+  build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: dev
@@ -23,17 +23,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@646cdf48217256a3d0b80361c5a50727664284f2
         with:
-          key: ${{ secrets.SSH_SERVER_KEY }}
-          name: id_rsa # optional
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          version: 7.1.0
 
-      - name: Deploy to Server
+      - name: Setup Node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
+
+      - name: Build the packages
         run: |
-          echo Copying env files...
-          cat > .env << EOF
+          # Copy env files
+          cat > ./web/.env << EOF
           NEXT_PUBLIC_SITE_URL="https://locaci.fredkiss.dev"
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           DATABASE_URL="postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:5434/locaci_db?schema=public"
@@ -50,27 +57,63 @@ jobs:
           CF_IMAGES_BUCKET_NAME=${{ secrets.CF_IMAGES_BUCKET_NAME }}
           EOF
 
-          scp -P $DEPLOY_PORT ./.env $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/web/.env
-          echo env copied ✅
+          FORCE_COLOR=true pnpm run --filter=web telemetry:disable
+          FORCE_COLOR=true pnpm run --filter=web prepare-db
+          FORCE_COLOR=true pnpm run turbo run build
+        env:
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
+          DEPLOY_DOMAIN: ${{ secrets.DEPLOY_DOMAIN }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DCR_PASSWD: ${{ secrets.DCR_PASSWD }}
+          DCR_USER: ${{ secrets.DCR_USER }}
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+      - name: Upload build artifact to be sent
+        uses: actions/upload-artifact@v3
+        with:
+          name: next-webapp-build-output
+          if-no-files-found: error
+          path: ./web/.next
+  deploy:
+    # The type of runner that the job will run on
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment: dev
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: next-webapp-build-output
+          path: .next
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_SERVER_KEY }}
+          name: id_rsa # optional
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      - name: Deploy to Server
+        run: |
+          # Deploy the standalone version first
+          rsync -arvzP -e "ssh -p $DEPLOY_PORT" .next/standalone $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/
+          # Then copy the static files
+          scp -P $DEPLOY_PORT .next/static $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/.next/static
+          scp -P $DEPLOY_PORT ./public $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/public
 
           ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_DOMAIN "
           source ~/.zshrc
           set -e -o errexit
           cd $DEPLOY_DIR
 
-          echo Pulling latest version...
-          git pull origin develop # to change when using main branch
-
-          echo Building packages...
-          export TURBO_TEAM=$TURBO_TEAM
-          export TURBO_TOKEN=$TURBO_TOKEN
-          FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
-          FORCE_COLOR=true pnpm run --filter=web telemetry:disable
-          FORCE_COLOR=true pnpm run --filter=web prepare-db
-          FORCE_COLOR=true pnpm run turbo run build
-          echo build success ✅
-
-          # Start 3 pm2 processes
+          # Start the 3 pm2 processes
           pm2 stop all || true
           pm2 delete all || true
 

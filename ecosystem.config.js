@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'locaci-web1',
-            script: 'pnpm start:web -p 8889',
+            script: 'node server.js -p 8889',
             time: true,
             instances: 1,
             autorestart: true,
@@ -12,7 +12,7 @@ module.exports = {
         },
         {
             name: 'locaci-web2',
-            script: 'pnpm start:web -p 8890',
+            script: 'node server.js -p 8890',
             time: true,
             instances: 1,
             autorestart: true,
@@ -22,7 +22,7 @@ module.exports = {
         },
         {
             name: 'locaci-web3',
-            script: 'pnpm start:web -p 8891',
+            script: 'node server.js -p 8891',
             time: true,
             instances: 1,
             autorestart: true,
