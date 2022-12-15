@@ -36,11 +36,11 @@ export function DraftSuccessModal({
                     </h1>
 
                     <h2 className="text-center text-lg text-gray">
-                        L'annonce de votre logement a été mise en ligne, vous
-                        pouvez inspecter le résultat :&nbsp;
+                        Votre logement a été mise en ligne, vous pouvez voir le
+                        résultat&nbsp;
                         <NextLink
                             href={`/properties/${listingUid}`}
-                            className={`underline`}>
+                            className={`font-semibold underline`}>
                             En cliquant sur ce lien
                         </NextLink>
                     </h2>

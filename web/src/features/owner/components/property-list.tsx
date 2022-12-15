@@ -56,7 +56,7 @@ export function PropertyList() {
                         Ajouter un nouveau logement
                     </AddButton>
 
-                    <ul className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-1">
+                    <ul className="grid w-full place-content-center gap-6 sm:grid-cols-2 lg:grid-cols-1">
                         {data?.drafts.map(draft => (
                             <li key={draft.id}>
                                 <ListingCard
