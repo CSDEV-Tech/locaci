@@ -28,7 +28,7 @@ export default async function OwnerDashboardPage() {
                                     </h1>
                                 </section>
                             }>
-                            {/* @ts-ignore */}
+                            {/* @ts-expect-error Async Server component */}
                             <DraftList />
                         </React.Suspense>
                     }
