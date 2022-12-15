@@ -97,7 +97,6 @@ model Property {
     noOfRooms Int
 
     archived  Boolean   @default(false)
-    complete  Boolean   @default(false)
     rooms     Room[]
     amenities Amenity[]
     listings  Listing[]
