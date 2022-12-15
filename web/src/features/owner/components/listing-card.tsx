@@ -17,6 +17,7 @@ import { Copy, PencilSimple, TrashSimple } from 'phosphor-react';
 import { clsx } from '@locaci/ui/lib/functions';
 import { t } from '~/utils/trpc-rq-hooks';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 // types
 import type { PropertyCardProps } from '@locaci/ui/components/molecules/property-card';
@@ -47,23 +48,34 @@ export function ListingCard({
         React.useState(false);
 
     // mutations
-    const deleteDraftMutation = t.owner.draft.deleteDraft.useMutation({
+    const { mutate: deleteDraft } = t.owner.draft.deleteDraft.useMutation({
         onSuccess() {
             startTransition(() => router.refresh());
+            toast.success(`Ce brouillon a bien été supprimé`);
         }
     });
 
-    const deletePropertyMutation = t.owner.property.deleteProperty.useMutation({
-        onSuccess() {
-            startTransition(() => router.refresh());
-        }
-    });
+    const { mutate: deleteProperty } =
+        t.owner.property.deleteProperty.useMutation({
+            onSuccess() {
+                startTransition(() => router.refresh());
+                toast.success(`Votre logement a bien été supprimé`);
+            }
+        });
+
+    const { mutate: duplicateProperty } =
+        t.owner.property.duplicate.useMutation({
+            onSuccess() {
+                startTransition(() => router.refresh());
+                toast.success(`Votre logement a bien été dupliqué`);
+            }
+        });
 
     async function handleDelete() {
         if (isDraft) {
-            deleteDraftMutation.mutate({ uid: id });
+            deleteDraft({ uid: id });
         } else {
-            deletePropertyMutation.mutate({ uid: id });
+            deleteProperty({ uid: id });
         }
 
         setDeletedPropertiesIds(oldIds => {
@@ -85,7 +97,7 @@ export function ListingCard({
     if (!isDraft) {
         actions.push({
             onClick() {
-                console.log('Duppliquer ?');
+                duplicateProperty({ uid: id });
             },
             text: 'Dupliquer',
             Icon: props => <Copy className={props.className} weight="bold" />
@@ -124,7 +136,14 @@ export function ListingCard({
                             <NextLinkButton href={href} variant="dark">
                                 Modifier
                             </NextLinkButton>
-                            {!isDraft && <Button>Dupliquer</Button>}
+                            {!isDraft && (
+                                <Button
+                                    onClick={() =>
+                                        duplicateProperty({ uid: id })
+                                    }>
+                                    Dupliquer
+                                </Button>
+                            )}
                         </div>
                         <Button
                             square
