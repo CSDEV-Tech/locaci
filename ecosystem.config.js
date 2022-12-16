@@ -1,34 +1,19 @@
 module.exports = {
     apps: [
         {
-            name: 'locaci-web1',
-            script: 'pnpm start:web -p 8889',
+            name: 'locaci-w',
+            script: 'standalone/server.js',
             time: true,
-            instances: 1,
+            instances: 3,
             autorestart: true,
-            max_restarts: 50,
+            max_restarts: 10,
+            exec_mode: 'cluster_mode',
             watch: false,
-            max_memory_restart: '1G'
-        },
-        {
-            name: 'locaci-web2',
-            script: 'pnpm start:web -p 8890',
-            time: true,
-            instances: 1,
-            autorestart: true,
-            max_restarts: 50,
-            watch: false,
-            max_memory_restart: '1G'
-        },
-        {
-            name: 'locaci-web3',
-            script: 'pnpm start:web -p 8891',
-            time: true,
-            instances: 1,
-            autorestart: true,
-            max_restarts: 50,
-            watch: false,
-            max_memory_restart: '1G'
+            instance_var: 'INSTANCE_ID',
+            max_memory_restart: '1G',
+            env: {
+                PORT: 8089
+            }
         }
     ]
 };

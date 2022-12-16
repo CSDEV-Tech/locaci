@@ -17,14 +17,6 @@ export default function PublicLayout({ children }: LayoutProps) {
                 logoAltText="Logo LOCACI"
                 logoUrlDesktop="/logo.svg"
                 logoUrlMobile="/favicon.svg"
-                leadingElement={
-                    <SearchButton
-                        className="lg:hidden"
-                        href="/search"
-                        customLink={NextLink}>
-                        Rechercher un logement
-                    </SearchButton>
-                }
                 trailingElement={<LoginButton />}
             />
             <main>{children}</main>
