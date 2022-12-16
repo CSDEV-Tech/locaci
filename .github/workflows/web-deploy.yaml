@@ -74,7 +74,7 @@ jobs:
           rsync -a web/.next/standalone/ standalone/
 
           # Replace port variable to support multiport with pm2 cluster_mode
-          sed 's/parseInt(process.env.PORT, 10)/parseInt(process.env.PORT, 10) + parseInt(process.env.INSTANCE_ID, 10)/g' standalone/server.js
+          sed -i 's/parseInt(process.env.PORT, 10)/parseInt(process.env.PORT, 10) + parseInt(process.env.INSTANCE_ID, 10)/g' standalone/server.js
 
           # Start 3 pm2 processes
           echo Starting processes...
