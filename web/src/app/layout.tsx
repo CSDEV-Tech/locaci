@@ -29,7 +29,10 @@ export default function RootLayout({ children }: LayoutProps) {
     return (
         <html lang="fr" className={poppins.className}>
             <head>
-                <meta name="viewport" content="width=device-width" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
                 <meta name="charset" content="utf-8" />
             </head>
             <body>

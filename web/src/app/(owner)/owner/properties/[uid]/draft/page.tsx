@@ -11,7 +11,7 @@ import { rsc } from '~/server/trpc/rsc';
 // types
 import type { PageProps } from '~/types';
 
-export default async function AddListingPage({
+export default async function AddDraftPage({
     params
 }: PageProps<{ uid: string }>) {
     const propertyDraft = await rsc.owner.draft.getSingleDraft.fetch({
