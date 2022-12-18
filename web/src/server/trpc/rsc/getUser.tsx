@@ -1,4 +1,6 @@
 import { cookies } from 'next/headers';
+
+import { cache } from 'react';
 import { getUserFromSessionToken } from '~/server/ssr-helpers';
 import { AsyncLocalStorage } from 'async_hooks';
 
@@ -15,7 +17,7 @@ const asyncStorage: AsyncLocalStorage<LocalStorageContext> =
     require('next/dist/client/components/request-async-storage').requestAsyncStorage;
 asyncStorage.getStore();
 
-export async function getUser(): Promise<User | null> {
+export const getUser = cache(async (): Promise<User | null> => {
     const sessionToken = cookies().get(`__session`)?.value;
     return sessionToken ? getUserFromSessionToken(sessionToken) : null;
-}
+});

@@ -7,6 +7,7 @@ import { PropertyList } from '~/features/owner/components/property-list';
 
 // utils
 import { rsc } from '~/server/trpc/rsc';
+import { use } from 'react';
 
 // types
 import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
@@ -28,7 +29,6 @@ export default async function OwnerDashboardPage() {
                                     </h1>
                                 </section>
                             }>
-                            {/* @ts-expect-error Async Server component */}
                             <DraftList />
                         </React.Suspense>
                     }
@@ -39,11 +39,11 @@ export default async function OwnerDashboardPage() {
     );
 }
 
-async function DraftList() {
-    await rsc.owner.draft.getAll.fetch();
+function DraftList() {
+    use(rsc.owner.draft.getAll.fetch());
 
     return (
-        <HydrateClient state={await rsc.dehydrate()}>
+        <HydrateClient state={use(rsc.dehydrate())}>
             <PropertyList />
         </HydrateClient>
     );
