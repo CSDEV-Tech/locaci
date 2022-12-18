@@ -3,7 +3,6 @@ import * as React from 'react';
 
 // components
 import { Progress } from '@locaci/ui/components/atoms/progress';
-import { DraftSuccessModal } from './draft-success-modal';
 import { FormStep1 } from './form-step1';
 import { FormStep2 } from './form-step2';
 import { FormStep3 } from './form-step3';
@@ -12,85 +11,92 @@ import { FormStep5 } from './form-step5';
 import { FormStep6 } from './form-step6';
 import { FormStep7 } from './form-step7';
 import { FormStep8 } from './form-step8';
+import { EditPropertySuccessModal } from './edit-property-success-modal';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
 import { t } from '~/utils/trpc-rq-hooks';
 import { useRouter } from 'next/navigation';
-
-// types
-import type { z } from 'zod';
 import {
     updatePropertyStep5Schema,
     updatePropertyStep6Schema,
     updatePropertyStep7Schema
 } from '~/validation/property-schema';
-import type { PropertyFormStep } from '@prisma/client';
+
+// types
+import type { z } from 'zod';
 import type { Form2Values } from './form-step2';
 import type { BoundingBox } from '~/utils/types';
 
-type EditDraftPropertyFormProps = {
-    propertyDraftUid: string;
+type EditPropertyPropertyFormProps = {
+    propertyUid: string;
 };
 
-export function EditDraftPropertyForm({
-    propertyDraftUid
-}: EditDraftPropertyFormProps) {
-    const { data: draft } = t.owner.draft.getSingleDraft.useQuery(
+export function EditPropertyPropertyForm({
+    propertyUid
+}: EditPropertyPropertyFormProps) {
+    const { data: property } = t.owner.property.getSingle.useQuery(
         {
-            uid: propertyDraftUid
+            uid: propertyUid
         },
         {
             staleTime: Infinity
         }
     );
+
+    if (!property) {
+        return null;
+    }
+
     const utils = t.useContext();
     const router = useRouter();
 
     // states
-    const [step, goTo] = React.useState(getStepNumber(draft?.currentStep));
+    const [step, goTo] = React.useState(1);
     const [isSuccessModalOpen, setSuccessModalOpen] = React.useState(false);
-    const [propertyUid, setPropertyUid] = React.useState<string | null>(null);
+    const [propertyShortUid, setPropertyShortUid] = React.useState<
+        string | null
+    >(null);
 
     const [valuesForm2, setValuesForm2] = React.useState<
-        Partial<Form2Values & { boundingbox?: BoundingBox }>
+        Form2Values & { boundingBox: BoundingBox }
     >({
-        localityName: draft?.localityName ?? '',
-        localityOSMID: draft?.locality_osm_id ?? '',
-        municipalityUid: draft?.municipalityId ?? '',
-        cityUid: draft?.cityId ?? '',
-        municipalityQuery: draft?.municipalityName ?? '',
-        boundingBox: draft?.locality_bbox as BoundingBox | undefined
+        localityName: property.localityName,
+        localityOSMID: property.locality_osm_id,
+        municipalityUid: property.municipalityId,
+        cityUid: property.cityId,
+        municipalityQuery: property.municipality.name,
+        boundingBox: property.locality_bbox as BoundingBox
     });
 
     // mutations
-    const saveDraftStep1 = t.owner.draft.saveDraftStep1.useMutation({
+    const savePropertyStep1 = t.owner.property.savePropertyStep1.useMutation({
         onSuccess: async () => {
-            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.property.getSingle.invalidate();
             await utils.owner.draft.getAll.invalidate();
             goTo(2);
         }
     });
 
-    const saveDraftStep2 = t.owner.draft.saveDraftStep2.useMutation({
+    const savePropertyStep2 = t.owner.property.savePropertyStep2.useMutation({
         onSuccess: async () => {
-            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.property.getSingle.invalidate();
             await utils.owner.draft.getAll.invalidate();
             goTo(4);
         }
     });
 
-    const saveDraftStep4 = t.owner.draft.saveDraftStep4.useMutation({
+    const savePropertyStep4 = t.owner.property.savePropertyStep4.useMutation({
         onSuccess: async () => {
-            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.property.getSingle.invalidate();
             await utils.owner.draft.getAll.invalidate();
             goTo(5);
         }
     });
 
-    const saveDraftStep5 = t.owner.draft.saveDraftStep5.useMutation({
+    const savePropertyStep5 = t.owner.property.savePropertyStep5.useMutation({
         onSuccess: async data => {
-            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.property.getSingle.invalidate();
             await utils.owner.draft.getAll.invalidate();
 
             if (data.rentType === 'SHORT_TERM') {
@@ -101,37 +107,35 @@ export function EditDraftPropertyForm({
         }
     });
 
-    const saveDraftStep6 = t.owner.draft.saveDraftStep6.useMutation({
+    const savePropertyStep6 = t.owner.property.savePropertyStep6.useMutation({
         onSuccess: async () => {
-            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.property.getSingle.invalidate();
             await utils.owner.draft.getAll.invalidate();
             goTo(7);
         }
     });
 
-    const saveDraftStep7 = t.owner.draft.saveDraftStep7.useMutation({
+    const saveDraftStep7 = t.owner.property.savePropertyStep7.useMutation({
         onSuccess: async () => {
-            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.property.getSingle.invalidate();
             await utils.owner.draft.getAll.invalidate();
             goTo(8);
         }
     });
 
-    const saveDraftStep8 = t.owner.draft.saveDraftStep8.useMutation({
+    const savePropertyStep8 = t.owner.property.savePropertyStep8.useMutation({
         onSuccess: async data => {
-            await utils.owner.draft.getSingleDraft.invalidate();
+            await utils.owner.property.getSingle.invalidate();
             await utils.owner.draft.getAll.invalidate();
-            setPropertyUid(data.propertyUid);
+            setPropertyShortUid(data.propertyShortUid);
             setSuccessModalOpen(true);
         }
     });
 
-    if (!draft) return null;
-
     return (
         <>
-            {propertyUid && (
-                <DraftSuccessModal
+            {propertyShortUid && (
+                <EditPropertySuccessModal
                     propertyUid={propertyUid}
                     open={isSuccessModalOpen}
                     onClose={() => {
@@ -158,16 +162,16 @@ export function EditDraftPropertyForm({
                     <FormStep1
                         onSubmit={values => {
                             console.log({ step1: values });
-                            saveDraftStep1.mutate({
+                            savePropertyStep1.mutate({
                                 ...values,
-                                uid: draft.id
+                                uid: property.id
                             });
                         }}
                         defaultValues={{
-                            surfaceArea: draft.surfaceArea,
-                            rentType: draft.rentType
+                            surfaceArea: property.surfaceArea,
+                            rentType: property.rentType
                         }}
-                        isSubmitting={saveDraftStep1.isLoading}
+                        isSubmitting={savePropertyStep1.isLoading}
                     />
                 )}
                 {step === 2 && (
@@ -185,22 +189,22 @@ export function EditDraftPropertyForm({
                     <FormStep3
                         onSubmit={values => {
                             console.log({ step3: values });
-                            saveDraftStep2.mutate({
+                            savePropertyStep2.mutate({
                                 ...values,
-                                uid: draft.id,
-                                cityUid: valuesForm2.cityUid!,
-                                localityName: valuesForm2.localityName!,
-                                municipalityUid: valuesForm2.municipalityUid!,
-                                boundingBox: valuesForm2.boundingBox!,
-                                municipalityName: valuesForm2.municipalityQuery!
+                                uid: property.id,
+                                cityUid: valuesForm2.cityUid,
+                                localityName: valuesForm2.localityName,
+                                municipalityUid: valuesForm2.municipalityUid,
+                                boundingBox: valuesForm2.boundingBox,
+                                municipalityName: valuesForm2.municipalityQuery
                             });
                         }}
                         onPreviousClick={() => goTo(2)}
                         defaultValues={{
-                            localityOSMID: valuesForm2.localityOSMID!,
-                            boundingbox: valuesForm2.boundingBox!
+                            localityOSMID: valuesForm2.localityOSMID,
+                            boundingbox: valuesForm2.boundingBox
                         }}
-                        isSubmitting={saveDraftStep2.isLoading}
+                        isSubmitting={savePropertyStep2.isLoading}
                     />
                 )}
 
@@ -208,16 +212,17 @@ export function EditDraftPropertyForm({
                     <FormStep4
                         onSubmit={values => {
                             console.log({ step4: values });
-                            saveDraftStep4.mutate({
+                            savePropertyStep4.mutate({
                                 ...values,
-                                uid: draft.id
+                                uid: property.id
                             });
                         }}
                         onPreviousClick={() => goTo(3)}
                         defaultValues={{
-                            addressInstructions: draft.addressInstructions ?? ''
+                            addressInstructions:
+                                property.addressInstructions ?? ''
                         }}
-                        isSubmitting={saveDraftStep4.isLoading}
+                        isSubmitting={savePropertyStep4.isLoading}
                     />
                 )}
 
@@ -225,19 +230,19 @@ export function EditDraftPropertyForm({
                     <FormStep5
                         onSubmit={values => {
                             console.log({ step5: values });
-                            saveDraftStep5.mutate({
+                            savePropertyStep5.mutate({
                                 ...values,
-                                uid: draft.id
+                                uid: property.id
                             });
                         }}
                         onPreviousClick={() => goTo(4)}
                         defaultValues={{
                             additionalRooms:
-                                (draft.rooms as z.TypeOf<
+                                (property.rooms as z.TypeOf<
                                     typeof updatePropertyStep5Schema
                                 >['additionalRooms']) ?? []
                         }}
-                        isSubmitting={saveDraftStep5.isLoading}
+                        isSubmitting={savePropertyStep5.isLoading}
                     />
                 )}
 
@@ -245,19 +250,19 @@ export function EditDraftPropertyForm({
                     <FormStep6
                         onSubmit={values => {
                             console.log({ step6: values });
-                            saveDraftStep6.mutate({
+                            savePropertyStep6.mutate({
                                 ...values,
-                                uid: draft.id
+                                uid: property.id
                             });
                         }}
                         onPreviousClick={() => goTo(5)}
                         defaultValues={{
                             amenities:
-                                (draft.amenities as z.TypeOf<
+                                (property.amenities as z.TypeOf<
                                     typeof updatePropertyStep6Schema
                                 >['amenities']) ?? []
                         }}
-                        isSubmitting={saveDraftStep6.isLoading}
+                        isSubmitting={savePropertyStep6.isLoading}
                     />
                 )}
 
@@ -267,11 +272,11 @@ export function EditDraftPropertyForm({
                             console.log({ step7: values });
                             saveDraftStep7.mutate({
                                 ...values,
-                                uid: draft.id
+                                uid: property.id
                             });
                         }}
                         onPreviousClick={() => {
-                            if (draft.rentType === 'SHORT_TERM') {
+                            if (property.rentType === 'SHORT_TERM') {
                                 goTo(6);
                             } else {
                                 goTo(5);
@@ -279,7 +284,7 @@ export function EditDraftPropertyForm({
                         }}
                         defaultValues={{
                             images:
-                                (draft.images as z.TypeOf<
+                                (property.images as z.TypeOf<
                                     typeof updatePropertyStep7Schema
                                 >['images']) ?? []
                         }}
@@ -289,42 +294,30 @@ export function EditDraftPropertyForm({
 
                 {step === 8 && (
                     <FormStep8
-                        intent="draft"
+                        intent="edit"
                         onSubmit={values => {
                             console.log({ step8: values });
-                            saveDraftStep8.mutate({
+                            savePropertyStep8.mutate({
                                 ...values,
-                                uid: draft.id
+                                uid: property.id
                             });
                         }}
                         onPreviousClick={() => goTo(7)}
                         defaultValues={{
-                            rentType: draft.rentType
+                            rentType: property.rentType,
+                            cautionMonthsPaymentAdvance:
+                                property.cautionMonthsPaymentAdvance,
+                            agencyMonthsPaymentAdvance:
+                                property.agencyMonthsPaymentAdvance,
+                            availableFrom: property.availableFrom,
+                            description: property.description,
+                            housingFee: property.housingFee,
+                            housingPeriod: property.housingPeriod
                         }}
-                        isSubmitting={saveDraftStep8.isLoading}
+                        isSubmitting={savePropertyStep8.isLoading}
                     />
                 )}
             </div>
         </>
     );
-}
-
-function getStepNumber(step?: PropertyFormStep | null) {
-    switch (step) {
-        case 'ADDRESS':
-            return 2;
-        case 'INSTRUCTIONS':
-            return 4;
-        case 'ROOMS':
-            return 5;
-        case 'AMENITIES':
-            return 6;
-        case 'IMAGES':
-            return 7;
-        case 'LISTING_DETAILS':
-        case 'COMPLETE':
-            return 8;
-        default:
-            return 1;
-    }
 }

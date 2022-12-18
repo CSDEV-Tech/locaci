@@ -54,7 +54,7 @@ export function FormStep7(props: FormStep7Props) {
     const isUploadingImages = files.some(f => f.state === 'UPLOADING');
 
     // mutations
-    const uploadMutation = useUploadFileMutation();
+    const { mutateAsync: uploadImage } = useUploadFileMutation();
 
     const utils = t.useContext();
 
@@ -73,7 +73,7 @@ export function FormStep7(props: FormStep7Props) {
                 await utils.owner.storage.generatePresignedURLForImage.fetch({
                     name: file.name
                 });
-            await uploadMutation.mutateAsync({
+            await uploadImage({
                 file: file.fileObject,
                 uploadURL: presignedURL,
                 extension: getFileExtension(file.name)
