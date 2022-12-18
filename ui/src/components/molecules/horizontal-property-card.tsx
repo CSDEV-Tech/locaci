@@ -61,7 +61,7 @@ export function HorizontalPropertyCard({
                         'animate-pulse cursor-not-allowed': disabled
                     }
                 )}>
-                <div className="flex h-full w-48 flex-shrink-0 items-center justify-center rounded-l-lg bg-gray/40">
+                <div className="flex h-full w-24 flex-shrink-0 items-center justify-center rounded-l-lg bg-gray/40 md:w-48">
                     {coverURL ? (
                         <Img
                             width={200}
@@ -81,16 +81,19 @@ export function HorizontalPropertyCard({
                         href={href}
                         Custom={customLink}
                         className={clsx(
-                            `whitespace-nowrap text-xl font-semibold`,
+                            `text-sm font-semibold`,
                             `min-w-0 flex-shrink overflow-hidden text-ellipsis`,
+                            `hover:underline`,
+                            `md:whitespace-nowrap md:text-xl`,
                             {
-                                'after:absolute after:inset-0': !disabled,
-                                'pointer-events-none': disabled
+                                'pointer-events-none': disabled,
+                                'text-gray': isDraft,
+                                'text-dark': !isDraft
                             }
                         )}>
                         {title}&nbsp;
                         {isDraft && (
-                            <span className="text-base text-gray">
+                            <span className="text-sm text-gray md:text-base">
                                 (Brouillon)
                             </span>
                         )}
@@ -102,7 +105,12 @@ export function HorizontalPropertyCard({
                             className="h-4 w-4 flex-shrink-0"
                         />
                         &nbsp;
-                        <div className="min-w-0 flex-shrink overflow-hidden text-ellipsis whitespace-nowrap text-sm">
+                        <div
+                            className={clsx(
+                                'min-w-0 flex-shrink text-xs',
+                                'overflow-hidden text-ellipsis',
+                                'whitespace-nowrap md:text-sm'
+                            )}>
                             {Boolean(address?.trim()) ? address : 'Non défini'}
                         </div>
                     </div>
@@ -111,7 +119,7 @@ export function HorizontalPropertyCard({
                         <div className="flex items-center text-dark">
                             <BedIcon className="h-4 w-4 flex-shrink-0" />
                             &nbsp;
-                            <span className="text-sm">
+                            <span className="text-xs md:text-sm">
                                 {numberOfRooms} pièce
                                 {numberOfRooms !== 1 && 's'}
                             </span>
@@ -120,7 +128,7 @@ export function HorizontalPropertyCard({
                         <div className="flex items-center text-dark">
                             <RulerIcon className="h-4 w-4 flex-shrink-0" />
                             &nbsp;
-                            <span className="text-sm">
+                            <span className="text-xs md:text-sm">
                                 {surfaceArea} m<sup>2</sup>
                             </span>
                         </div>
@@ -131,11 +139,12 @@ export function HorizontalPropertyCard({
                     <Dropdown
                         customLink={customLink}
                         align="right"
-                        className="z-40"
+                        itemsClassName="z-40"
                         button={() => (
                             <Button
                                 disabled={disabled}
                                 square
+                                className="relative z-30"
                                 renderLeadingIcon={cls => (
                                     <HorizontalDotsIcon className={cls} />
                                 )}
