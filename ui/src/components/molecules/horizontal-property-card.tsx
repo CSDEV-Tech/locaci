@@ -8,6 +8,7 @@ import { ImageIcon } from '../atoms/icons/image';
 import { MapPinIcon } from '../atoms/icons/map-pin';
 import { RulerIcon } from '../atoms/icons/ruler';
 import { Link, type LinkProps } from '../atoms/link';
+import { Tag } from '../atoms/tag';
 import { Dropdown, DropdownItem } from './dropdown';
 
 export type CustomImageProps = {
@@ -32,6 +33,7 @@ export type HorizontalPropertyCardProps = {
     isDraft?: boolean;
     actions: DropdownItem[];
     disabled?: boolean;
+    isVisible?: boolean;
 };
 
 export function HorizontalPropertyCard({
@@ -44,6 +46,7 @@ export function HorizontalPropertyCard({
     href,
     customImage: CustomImage,
     className,
+    isVisible = false,
     isDraft = false,
     actions = [],
     disabled = false
@@ -76,28 +79,42 @@ export function HorizontalPropertyCard({
                 </div>
 
                 <div className="inline-flex min-w-0 flex-grow flex-col gap-2 py-2">
-                    <Link
-                        disabled={disabled}
-                        href={href}
-                        Custom={customLink}
-                        className={clsx(
-                            `text-sm font-semibold`,
-                            `min-w-0 flex-shrink overflow-hidden text-ellipsis`,
-                            `hover:underline`,
-                            `md:whitespace-nowrap md:text-xl`,
-                            {
-                                'pointer-events-none': disabled,
-                                'text-gray': isDraft,
-                                'text-dark': !isDraft
-                            }
-                        )}>
-                        {title}&nbsp;
-                        {isDraft && (
-                            <span className="text-sm text-gray md:text-base">
-                                (Brouillon)
-                            </span>
+                    <div className="flex items-center gap-4">
+                        <Link
+                            disabled={disabled}
+                            href={href}
+                            Custom={customLink}
+                            className={clsx(
+                                `text-sm font-semibold`,
+                                `min-w-0 flex-shrink overflow-hidden text-ellipsis`,
+                                `hover:underline`,
+                                `md:whitespace-nowrap md:text-xl`,
+                                {
+                                    'pointer-events-none': disabled,
+                                    'text-gray': isDraft,
+                                    'text-dark': !isDraft
+                                }
+                            )}>
+                            {title}&nbsp;
+                            {isDraft && (
+                                <span className="text-sm text-gray md:text-base">
+                                    (Brouillon)
+                                </span>
+                            )}
+                        </Link>
+                        {!isDraft && (
+                            <div className="flex items-center">
+                                <Tag
+                                    variant={
+                                        isVisible
+                                            ? 'secondary-light'
+                                            : 'accent-primary'
+                                    }>
+                                    {isVisible ? 'Actif' : 'Inactif'}
+                                </Tag>
+                            </div>
                         )}
-                    </Link>
+                    </div>
 
                     <div className={clsx(`flex items-center`, `text-gray`)}>
                         <MapPinIcon

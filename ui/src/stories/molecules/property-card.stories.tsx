@@ -24,7 +24,8 @@ Default.args = {
     href: `#`,
     numberOfRooms: 1,
     surfaceArea: 9,
-    address: `Riviera 6, cocody, abidjan`
+    address: `Riviera 6, cocody, abidjan`,
+    isVisible: true
 } as PropertyCardProps;
 
 export const Draft = Template.bind({});

@@ -4,9 +4,6 @@ import {
     HorizontalPropertyCard,
     HorizontalPropertyCardProps
 } from '../../components/molecules/horizontal-property-card';
-import { Button } from '../../components/atoms/button';
-import { HorizontalDotsIcon } from '../../components/atoms/icons/horizontal-dots';
-import { Dropdown } from '../../components/molecules/dropdown';
 
 export default {
     title: 'Composants/Molecules/HorizontalPropertyCard',
@@ -34,7 +31,8 @@ Draft.args = {
     title: `Studio en colocation`,
     href: `#`,
     numberOfRooms: 1,
-    surfaceArea: 9
+    surfaceArea: 9,
+    isVisible: true
 } as HorizontalPropertyCardProps;
 
 export const Disabled = Template.bind({});
