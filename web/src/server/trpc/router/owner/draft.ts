@@ -20,6 +20,7 @@ import {
 } from '@prisma/client';
 
 import type { Amenity, Room } from '@prisma/client';
+import { Uuid } from '~/utils/uuid';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerDraftRouter = t.router({
@@ -398,7 +399,13 @@ export const ownerDraftRouter = t.router({
                 cityId: draft.cityId!,
                 municipalityId: draft.municipalityId!,
                 images: draft.images!,
-                locality_bbox: draft.locality_bbox!
+                locality_bbox: draft.locality_bbox!,
+                agencyMonthsPaymentAdvance: input.agencyMonthsPaymentAdvance,
+                cautionMonthsPaymentAdvance: input.cautionMonthsPaymentAdvance,
+                availableFrom: input.availableFrom,
+                description: input.description,
+                housingFee: input.housingFee,
+                housingPeriod: input.housingPeriod
             };
 
             /**
@@ -450,23 +457,8 @@ export const ownerDraftRouter = t.router({
                 }
             });
 
-            const listing = await ctx.prisma.listing.create({
-                data: {
-                    propertyId: property.id,
-                    agencyMonthsPaymentAdvance:
-                        input.agencyMonthsPaymentAdvance,
-                    cautionMonthsPaymentAdvance:
-                        input.cautionMonthsPaymentAdvance,
-                    availableFrom: input.availableFrom,
-                    description: input.description,
-                    housingFee: input.housingFee,
-                    housingPeriod: input.housingPeriod,
-                    active: true
-                }
-            });
-
             return {
-                listingUid: listing.id
+                propertyUid: new Uuid(property.id).short()
             };
         })
 });
