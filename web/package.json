@@ -10,7 +10,7 @@
         "postinstall": "prisma generate",
         "prisma": "prisma",
         "seed": "node prisma/seed.mjs",
-        "prepare-db": "prisma db push --accept-data-loss --force-reset && node prisma/seed.mjs",
+        "prepare-db": "prisma db push --accept-data-loss && node prisma/seed.mjs",
         "telemetry:disable": "next telemetry disable"
     },
     "prisma": {
