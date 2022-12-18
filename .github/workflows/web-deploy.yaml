@@ -79,7 +79,7 @@ jobs:
 
           # Start 3 pm2 processes
           echo Starting processes...
-          pm2 reloadOrReload ecosystem.config.js --update-env
+          pm2 startOrReload ecosystem.config.js --update-env
           echo processes succesfully started ✅
           "
         env:
