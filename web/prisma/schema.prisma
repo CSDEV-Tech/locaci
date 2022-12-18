@@ -99,7 +99,6 @@ model Property {
     archived  Boolean   @default(false)
     rooms     Room[]
     amenities Amenity[]
-    listings  Listing[]
 
     images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
 
@@ -117,13 +116,8 @@ model Property {
     cityId              String       @db.Uuid
     municipalityId      String       @db.Uuid
     addressInstructions String?
-}
 
-model Listing {
-    id         String   @id @default(uuid()) @db.Uuid
-    property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-    propertyId String   @db.Uuid
-
+    // listing details
     housingFee                  Int
     description                 String
     housingPeriod               Int
@@ -131,7 +125,7 @@ model Listing {
     agencyMonthsPaymentAdvance  Int
     availableFrom               DateTime
 
-    active Boolean @default(false)
+    activeForListing Boolean @default(false)
 }
 
 model DraftProperty {
