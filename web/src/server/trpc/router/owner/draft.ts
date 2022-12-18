@@ -444,6 +444,7 @@ export const ownerDraftRouter = t.router({
             const property = await ctx.prisma.property.create({
                 data: {
                     ...propertyCreated,
+                    activeForListing: true,
                     rooms: {
                         createMany: {
                             data: propertyRooms
