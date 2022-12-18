@@ -4,25 +4,21 @@ import * as React from 'react';
 // components
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { HorizontalPropertyCard } from '@locaci/ui/components/molecules/horizontal-property-card';
-import {
-    NextLink,
-    NextLinkButton
-} from '~/features/shared/components/next-link';
-import { Button } from '@locaci/ui/components/atoms/button';
-import { TrashIcon } from '@locaci/ui/components/atoms/icons/trash';
+import { NextLink } from '~/features/shared/components/next-link';
 import Image from 'next/image';
-import { Copy, PencilSimple, TrashSimple } from 'phosphor-react';
+import { Copy, Eye, PencilSimple, TrashSimple } from 'phosphor-react';
+import { DropdownItem } from '@locaci/ui/components/molecules/dropdown';
+import { DeleteConfirmationModal } from './delete-confirmation-modal';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
 import { t } from '~/utils/trpc-rq-hooks';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { Uuid } from '~/utils/uuid';
 
 // types
 import type { PropertyCardProps } from '@locaci/ui/components/molecules/property-card';
-import type { DropdownItem } from '@locaci/ui/components/molecules/dropdown';
-import { DeleteConfirmationModal } from './delete-confirmation-modal';
 
 export type ListingCardProps = Omit<
     PropertyCardProps,
@@ -83,36 +79,63 @@ export function ListingCard({
         });
     }
 
-    const actions: DropdownItem[] = [
-        {
-            href,
-            text: 'Modifier',
-            Icon: props => (
-                <PencilSimple className={props.className} weight="bold" />
-            )
-        }
-    ];
-
-    // Only non draft can be duplicated
-    if (!isDraft) {
-        actions.push({
-            onClick() {
-                duplicateProperty({ uid: id });
-            },
-            text: 'Dupliquer',
-            Icon: props => <Copy className={props.className} weight="bold" />
-        });
-    }
-
-    // we should add delete only at the end
-    actions.push({
-        onClick: () => setModalConfirmationOpenState(true),
-        text: 'Supprimer',
-        Icon: props => (
-            <TrashSimple className={clsx(props.className)} weight="fill" />
-        ),
-        clsx: ({ active }) => (active ? 'text-white' : 'text-danger')
-    });
+    const actions: DropdownItem[] = !isDraft
+        ? [
+              {
+                  href: `/properties/${new Uuid(id).short()}`,
+                  text: 'Voir les détails',
+                  Icon: props => (
+                      <Eye className={props.className} weight="bold" />
+                  )
+              },
+              {
+                  href,
+                  text: 'Modifier',
+                  Icon: props => (
+                      <PencilSimple className={props.className} weight="bold" />
+                  )
+              },
+              {
+                  onClick() {
+                      duplicateProperty({ uid: id });
+                  },
+                  text: 'Dupliquer',
+                  Icon: props => (
+                      <Copy className={props.className} weight="bold" />
+                  )
+              },
+              {
+                  onClick: () => setModalConfirmationOpenState(true),
+                  text: 'Supprimer',
+                  Icon: props => (
+                      <TrashSimple
+                          className={clsx(props.className)}
+                          weight="fill"
+                      />
+                  ),
+                  clsx: ({ active }) => (active ? 'text-white' : 'text-danger')
+              }
+          ]
+        : [
+              {
+                  href,
+                  text: 'Modifier',
+                  Icon: props => (
+                      <PencilSimple className={props.className} weight="bold" />
+                  )
+              },
+              {
+                  onClick: () => setModalConfirmationOpenState(true),
+                  text: 'Supprimer',
+                  Icon: props => (
+                      <TrashSimple
+                          className={clsx(props.className)}
+                          weight="fill"
+                      />
+                  ),
+                  clsx: ({ active }) => (active ? 'text-white' : 'text-danger')
+              }
+          ];
 
     return (
         <>
@@ -130,33 +153,8 @@ export function ListingCard({
                 customLink={NextLink}
                 // @ts-ignore
                 customImage={Image}
-                actionBar={
-                    <div className="flex items-center justify-between gap-4">
-                        <div className="flex gap-4">
-                            <NextLinkButton href={href} variant="dark">
-                                Modifier
-                            </NextLinkButton>
-                            {!isDraft && (
-                                <Button
-                                    onClick={() =>
-                                        duplicateProperty({ uid: id })
-                                    }>
-                                    Dupliquer
-                                </Button>
-                            )}
-                        </div>
-                        <Button
-                            square
-                            variant="danger"
-                            aria-label="Archiver"
-                            onClick={() => setModalConfirmationOpenState(true)}
-                            renderLeadingIcon={cls => (
-                                <TrashIcon className={cls} />
-                            )}
-                        />
-                    </div>
-                }
                 {...props}
+                actions={actions}
                 className="h-full w-full lg:hidden"
                 disabled={deletedPropertiesIds.includes(id)}
             />

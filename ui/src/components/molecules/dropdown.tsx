@@ -23,8 +23,9 @@ export type DropdownItem = DropdownLink | DropdownButton;
 
 export interface DropdownProps {
     items: DropdownItem[];
-    button: () => React.ReactElement;
+    button: (options: { open: boolean }) => React.ReactElement;
     className?: string;
+    itemsClassName?: string;
     align?: 'left' | 'right';
     customLink?: LinkProps[`Custom`];
 }
@@ -38,13 +39,16 @@ export const Dropdown = ({
     className = '',
     button,
     align = 'right',
-    customLink
+    customLink,
+    itemsClassName = ''
 }: DropdownProps) => {
     return (
         <Menu as="div" className={clsx(`relative`, className)}>
             {({ open }) => (
                 <>
-                    <Menu.Button as={React.Fragment}>{button}</Menu.Button>
+                    <Menu.Button as={React.Fragment}>
+                        {button({ open })}
+                    </Menu.Button>
 
                     <Transition
                         show={open}
@@ -58,6 +62,7 @@ export const Dropdown = ({
                         <Menu.Items
                             static
                             className={clsx(
+                                itemsClassName,
                                 `absolute mt-2 flex flex-col items-start gap-1 rounded-md p-2`,
                                 `bg-white shadow-md focus:outline-none`,
                                 {
