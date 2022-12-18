@@ -22,7 +22,7 @@ import type { PropertyCardProps } from '@locaci/ui/components/molecules/property
 
 export type ListingCardProps = Omit<
     PropertyCardProps,
-    'customLink' | 'customImage' | 'actionBar'
+    'customLink' | 'customImage' | 'actions'
 > & {
     id: string;
 };
