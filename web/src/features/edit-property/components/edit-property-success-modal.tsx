@@ -9,17 +9,17 @@ import { NextLink } from '~/features/shared/components/next-link';
 import { ResponsiveModal } from '~/features/shared/components/responsive-modal';
 
 // type
-export type DraftSuccessModalProps = {
+export type EditPropertySuccessModalProps = {
     open: boolean;
     onClose: () => void;
     propertyUid: string;
 };
 
-export function DraftSuccessModal({
+export function EditPropertySuccessModal({
     onClose,
     open,
     propertyUid
-}: DraftSuccessModalProps) {
+}: EditPropertySuccessModalProps) {
     return (
         <>
             <ResponsiveModal title="Succès" isOpen={open} onClose={onClose}>
@@ -32,12 +32,11 @@ export function DraftSuccessModal({
                     />
 
                     <h1 className="px-6 text-center text-2xl font-extrabold leading-normal md:text-3xl">
-                        Votre logement a été créé
+                        Votre logement a été modifié avec succès
                     </h1>
 
                     <h2 className="text-center text-lg text-gray">
-                        Votre logement a été mise en ligne, vous pouvez voir le
-                        résultat&nbsp;
+                        Vous pouvez voir le résultat&nbsp;
                         <NextLink
                             href={`/properties/${propertyUid}`}
                             className={`font-semibold text-secondary underline`}>

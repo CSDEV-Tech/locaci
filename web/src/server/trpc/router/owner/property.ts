@@ -12,6 +12,8 @@ import { z } from 'zod';
 import { t } from '~/server/trpc/trpc-server-root';
 import { isOwner } from '~/server/trpc/middleware/auth';
 import { type Amenity, Prisma, RoomType, Room } from '@prisma/client';
+import { isCustomAmenity } from './draft';
+import { Uuid } from '~/utils/uuid';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerPropertiesRouter = t.router({
@@ -29,7 +31,9 @@ export const ownerPropertiesRouter = t.router({
                     archived: false
                 },
                 include: {
-                    rooms: true
+                    rooms: true,
+                    municipality: true,
+                    amenities: true
                 }
             });
 
@@ -49,16 +53,6 @@ export const ownerPropertiesRouter = t.router({
                     },
                     data: {
                         archived: true
-                    }
-                });
-
-                // Deactivate the listings for the property
-                await ctx.prisma.listing.updateMany({
-                    where: {
-                        propertyId: input.uid
-                    },
-                    data: {
-                        active: false
                     }
                 });
             } catch (error) {
@@ -94,8 +88,7 @@ export const ownerPropertiesRouter = t.router({
                 },
                 include: {
                     rooms: true,
-                    amenities: true,
-                    listings: true
+                    amenities: true
                 }
             });
 
@@ -126,7 +119,14 @@ export const ownerPropertiesRouter = t.router({
                 cityId: property.cityId,
                 municipalityId: property.municipalityId,
                 images: property.images,
-                locality_bbox: property.locality_bbox
+                locality_bbox: property.locality_bbox,
+                agencyMonthsPaymentAdvance: property.agencyMonthsPaymentAdvance,
+                cautionMonthsPaymentAdvance:
+                    property.cautionMonthsPaymentAdvance,
+                availableFrom: property.availableFrom,
+                description: property.description,
+                housingFee: property.housingFee,
+                housingPeriod: property.housingPeriod
             };
 
             /**
@@ -139,7 +139,7 @@ export const ownerPropertiesRouter = t.router({
             /**
              * Create the property in the DB
              */
-            const newProperty = await ctx.prisma.property.create({
+            await ctx.prisma.property.create({
                 data: {
                     ...propertyCreated,
                     images: propertyCreated.images as any[],
@@ -161,22 +161,281 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
-            // Create a listing
-            await ctx.prisma.listing.create({
-                data: {
-                    propertyId: newProperty.id,
-                    agencyMonthsPaymentAdvance:
-                        property.listings[0].agencyMonthsPaymentAdvance,
-                    cautionMonthsPaymentAdvance:
-                        property.listings[0].cautionMonthsPaymentAdvance,
-                    availableFrom: property.listings[0].availableFrom,
-                    description: property.listings[0].description,
-                    housingFee: property.listings[0].housingFee,
-                    housingPeriod: property.listings[0].housingPeriod,
-                    active: true
+            return { success: true };
+        }),
+    savePropertyStep1: protectedProcedure
+        .input(updatePropertyStep1Schema)
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
                 }
             });
 
-            return { success: true };
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "Le logement que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            return ctx.prisma.property.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    surfaceArea: input.surfaceArea,
+                    rentType: input.rentType
+                }
+            });
+        }),
+    savePropertyStep2: protectedProcedure
+        .input(updatePropertyStep2Schema)
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "Le logement que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            const municipality = await ctx.prisma.municipality.findUnique({
+                where: {
+                    id: input.municipalityUid
+                },
+                include: {
+                    city: true
+                }
+            });
+
+            if (!municipality) {
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                    message: "La commune que vous avez indiqué n'existe pas."
+                });
+            }
+
+            return ctx.prisma.property.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    locality_osm_id: input.localityOSMID,
+                    locality_bbox: input.boundingBox,
+                    cityId: input.cityUid,
+                    municipalityId: input.municipalityUid,
+                    longitude: input.longitude,
+                    latitude: input.latitude,
+                    geoData: input.geoJSON,
+                    localityName: input.localityName
+                }
+            });
+        }),
+    savePropertyStep4: protectedProcedure
+        .input(updatePropertyStep4Schema)
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "Le logement que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            return ctx.prisma.property.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    addressInstructions: input.addressInstructions
+                }
+            });
+        }),
+    savePropertyStep5: protectedProcedure
+        .input(updatePropertyStep5Schema)
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                },
+                include: {
+                    rooms: true
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "Le logement que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            /**
+             * Count the number of Rooms to the property
+             */
+            type DraftPropertyRoom = Pick<Room, 'type'>;
+            let noOfRooms = 0;
+            for (const room of input.additionalRooms as Array<DraftPropertyRoom>) {
+                // the rooms that are counted in the display of the total number of rooms
+                const roomCountedInDisplayOfTotal = [
+                    RoomType.BEDROOM,
+                    RoomType.LIVING_ROOM,
+                    RoomType.KITCHEN
+                ] as Array<RoomType>;
+
+                if (roomCountedInDisplayOfTotal.includes(room.type)) {
+                    noOfRooms += 1;
+                }
+            }
+
+            return ctx.prisma.property.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    noOfRooms,
+                    rooms: {
+                        deleteMany: {},
+                        createMany: {
+                            data: input.additionalRooms
+                        }
+                    }
+                }
+            });
+        }),
+    savePropertyStep6: protectedProcedure
+        .input(updatePropertyStep6Schema)
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "Le logement que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            const amenities: Array<Pick<Amenity, 'name' | 'type'>> = [];
+
+            if (property.rentType === 'SHORT_TERM') {
+                for (const amenity of input.amenities) {
+                    if (isCustomAmenity(amenity)) {
+                        amenities.push({
+                            name: amenity.name,
+                            type: 'OTHER'
+                        });
+                    } else {
+                        amenities.push({
+                            name: null,
+                            type: amenity.type
+                        });
+                    }
+                }
+            }
+
+            return ctx.prisma.property.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    amenities: {
+                        deleteMany: {},
+                        createMany: {
+                            data: amenities
+                        }
+                    }
+                }
+            });
+        }),
+    savePropertyStep7: protectedProcedure
+        .input(updatePropertyStep7Schema)
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            return ctx.prisma.property.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    images: input.images
+                }
+            });
+        }),
+    savePropertyStep8: protectedProcedure
+        .input(updatePropertyStep8Schema)
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "L'annonce que vous essayez de modifier n'existe pas"
+                });
+            }
+
+            // Update the old listing
+            await ctx.prisma.property.update({
+                where: {
+                    id: property.id
+                },
+                data: {
+                    agencyMonthsPaymentAdvance:
+                        input.agencyMonthsPaymentAdvance,
+                    cautionMonthsPaymentAdvance:
+                        input.cautionMonthsPaymentAdvance,
+                    availableFrom: input.availableFrom,
+                    description: input.description,
+                    housingFee: input.housingFee,
+                    housingPeriod: input.housingPeriod
+                }
+            });
+
+            return {
+                propertyShortUid: new Uuid(property.id).short()
+            };
         })
 });

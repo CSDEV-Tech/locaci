@@ -14,7 +14,6 @@ import { t } from '~/utils/trpc-rq-hooks';
 import { z } from 'zod';
 
 // types
-import type { BoundingBox } from '~/utils/types';
 export type Form2Values = Pick<
     z.TypeOf<typeof updatePropertyStep2Schema>,
     | 'cityUid'

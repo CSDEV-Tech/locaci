@@ -52,7 +52,8 @@ export function FormStep8(props: FormStep8Props) {
                 props.defaultValues.housingPeriod ??
                 props.defaultValues.rentType === 'SHORT_TERM'
                     ? 1
-                    : 30
+                    : 30,
+            description: props.defaultValues.description
         }
     });
 
@@ -79,7 +80,7 @@ export function FormStep8(props: FormStep8Props) {
                 onSubmit={form.handleSubmit(values => {
                     props.onSubmit(values);
                 })}>
-                {props.defaultValues.rentType === 'SHORT_TERM' && (
+                {props.defaultValues.rentType === 'SHORT_TERM' ? (
                     <Controller
                         name="housingPeriod"
                         control={form.control}
@@ -113,43 +114,47 @@ export function FormStep8(props: FormStep8Props) {
                             />
                         )}
                     />
+                ) : (
+                    <>
+                        <Controller
+                            name="cautionMonthsPaymentAdvance"
+                            control={form.control}
+                            render={({
+                                field: { ref, ...field },
+                                formState: { errors }
+                            }) => (
+                                <NumberInput
+                                    {...field}
+                                    label={`Nombre de mois de caution`}
+                                    showButtons
+                                    errorText={
+                                        errors.cautionMonthsPaymentAdvance
+                                            ?.message
+                                    }
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            name="agencyMonthsPaymentAdvance"
+                            control={form.control}
+                            render={({
+                                field: { ref, ...field },
+                                formState: { errors }
+                            }) => (
+                                <NumberInput
+                                    {...field}
+                                    label={`Nombre de mois d'agence`}
+                                    showButtons
+                                    errorText={
+                                        errors.agencyMonthsPaymentAdvance
+                                            ?.message
+                                    }
+                                />
+                            )}
+                        />
+                    </>
                 )}
-
-                <Controller
-                    name="cautionMonthsPaymentAdvance"
-                    control={form.control}
-                    render={({
-                        field: { ref, ...field },
-                        formState: { errors }
-                    }) => (
-                        <NumberInput
-                            {...field}
-                            label={`Nombre de mois de caution`}
-                            showButtons
-                            errorText={
-                                errors.cautionMonthsPaymentAdvance?.message
-                            }
-                        />
-                    )}
-                />
-
-                <Controller
-                    name="agencyMonthsPaymentAdvance"
-                    control={form.control}
-                    render={({
-                        field: { ref, ...field },
-                        formState: { errors }
-                    }) => (
-                        <NumberInput
-                            {...field}
-                            label={`Nombre de mois d'agence`}
-                            showButtons
-                            errorText={
-                                errors.agencyMonthsPaymentAdvance?.message
-                            }
-                        />
-                    )}
-                />
 
                 <Controller
                     name="housingFee"
