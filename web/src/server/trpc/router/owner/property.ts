@@ -39,6 +39,40 @@ export const ownerPropertiesRouter = t.router({
 
             return property;
         }),
+    toggleVisibility: t.procedure
+        .input(
+            z.object({
+                uid: z.string().uuid()
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            const property = await ctx.prisma.property.findUnique({
+                where: {
+                    id: input.uid
+                }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "Le logement que vous essayez de modifier n'existe pas."
+                });
+            }
+
+            await ctx.prisma.property.update({
+                where: {
+                    id: input.uid
+                },
+                data: {
+                    activeForListing: !property.activeForListing
+                }
+            });
+
+            return {
+                isActive: !property.activeForListing
+            };
+        }),
     deleteProperty: protectedProcedure
         .input(
             z.object({
@@ -73,7 +107,6 @@ export const ownerPropertiesRouter = t.router({
                 }
             }
         }),
-
     duplicate: protectedProcedure
         .input(
             z.object({

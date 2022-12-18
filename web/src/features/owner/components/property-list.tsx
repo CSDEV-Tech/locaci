@@ -33,7 +33,7 @@ export function PropertyList() {
     return (
         <>
             {data?.properties.length === 0 && data?.drafts.length === 0 ? (
-                <>
+                <div className="mx-auto flex w-[400px] flex-col items-center gap-4 pt-28">
                     <img
                         src="/listing_not_found.svg"
                         alt="Illustration Aucune Annonce"
@@ -41,15 +41,15 @@ export function PropertyList() {
                     />
 
                     <h1 className="text-2xl font-extrabold">
-                        Aucune annonce trouvée
+                        Aucun logement créé
                     </h1>
 
                     <p className="text-center text-gray">
                         Créer votre première annonce pour mettre en valeur votre
                         logement et attirer les futurs locataires.
                     </p>
-                    <AddButton>Ajouter votre premièr logement</AddButton>
-                </>
+                    <AddButton>Ajouter votre premier logement</AddButton>
+                </div>
             ) : (
                 <>
                     <AddButton className="sm:self-start">
@@ -82,6 +82,7 @@ export function PropertyList() {
                         {data?.properties?.map(property => (
                             <li key={property.id}>
                                 <ListingCard
+                                    isVisible={property.activeForListing}
                                     className="h-full w-full"
                                     coverURL={
                                         property.images

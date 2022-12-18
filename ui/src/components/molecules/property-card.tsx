@@ -13,6 +13,7 @@ import { Dropdown } from './dropdown';
 
 import type { LinkProps } from '../atoms/link';
 import type { DropdownItem } from './dropdown';
+import { Tag } from '../atoms/tag';
 export type CustomImageProps = {
     className?: string | null;
     src?: string;
@@ -35,6 +36,7 @@ export type PropertyCardProps = {
     isDraft?: boolean;
     disabled?: boolean;
     actions: DropdownItem[];
+    isVisible?: boolean;
 };
 
 export function PropertyCard({
@@ -47,6 +49,7 @@ export function PropertyCard({
     href,
     customImage: CustomImage,
     className,
+    isVisible = false,
     isDraft = false,
     disabled = false,
     actions = []
@@ -55,13 +58,12 @@ export function PropertyCard({
 
     return (
         <Card
-            animated={!disabled}
             className={clsx(
                 className,
                 'inline-flex flex-col',
                 'relative w-full max-w-[345px]',
                 {
-                    'animate-pulse cursor-not-allowed': disabled
+                    'animate-pulse': disabled
                 }
             )}>
             {isDraft && (
@@ -117,14 +119,14 @@ export function PropertyCard({
                     <ImageIcon className="h-16 w-16 text-gray" />
                 )}
             </div>
-            <div className="flex h-full flex-col justify-between gap-4 p-4">
+            <div className="flex h-full flex-col gap-4 p-4">
                 <Link
                     disabled={disabled}
                     href={href}
                     Custom={customLink}
                     className={clsx(`text-xl font-semibold`, {
-                        'after:absolute after:inset-0': !disabled,
                         'pointer-events-none': disabled,
+                        'hover:underline': !disabled,
                         'text-gray': isDraft,
                         'text-dark': !isDraft
                     })}>
@@ -168,6 +170,18 @@ export function PropertyCard({
                             {surfaceArea} m<sup>2</sup>
                         </span>
                     </div>
+                    {!isDraft && (
+                        <div className="flex items-center">
+                            <Tag
+                                variant={
+                                    isVisible
+                                        ? 'secondary-light'
+                                        : 'accent-primary'
+                                }>
+                                {isVisible ? 'Actif' : 'Inactif'}
+                            </Tag>
+                        </div>
+                    )}
                 </div>
             </div>
         </Card>

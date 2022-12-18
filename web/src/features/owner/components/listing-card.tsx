@@ -6,7 +6,14 @@ import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { HorizontalPropertyCard } from '@locaci/ui/components/molecules/horizontal-property-card';
 import { NextLink } from '~/features/shared/components/next-link';
 import Image from 'next/image';
-import { Copy, Eye, PencilSimple, TrashSimple } from 'phosphor-react';
+import {
+    Copy,
+    Eye,
+    EyeSlash,
+    Link,
+    PencilSimple,
+    TrashSimple
+} from 'phosphor-react';
 import { DropdownItem } from '@locaci/ui/components/molecules/dropdown';
 import { DeleteConfirmationModal } from './delete-confirmation-modal';
 
@@ -67,6 +74,18 @@ export function ListingCard({
             }
         });
 
+    const { mutate: toggleVisibility } =
+        t.owner.property.toggleVisibility.useMutation({
+            onSuccess(data) {
+                startTransition(() => router.refresh());
+                toast.success(
+                    `Votre logement a bien été ${
+                        data.isActive ? 'publié' : 'dépublié'
+                    }`
+                );
+            }
+        });
+
     async function handleDelete() {
         if (isDraft) {
             deleteDraft({ uid: id });
@@ -83,9 +102,9 @@ export function ListingCard({
         ? [
               {
                   href: `/properties/${new Uuid(id).short()}`,
-                  text: 'Voir les détails',
+                  text: 'Voir sur le site',
                   Icon: props => (
-                      <Eye className={props.className} weight="bold" />
+                      <Link className={props.className} weight="bold" />
                   )
               },
               {
@@ -94,6 +113,18 @@ export function ListingCard({
                   Icon: props => (
                       <PencilSimple className={props.className} weight="bold" />
                   )
+              },
+              {
+                  onClick() {
+                      toggleVisibility({ uid: id });
+                  },
+                  text: props.isVisible ? 'Dépublier' : 'Publier',
+                  Icon: ({ className }) =>
+                      props.isVisible ? (
+                          <EyeSlash className={className} weight="fill" />
+                      ) : (
+                          <Eye className={className} weight="bold" />
+                      )
               },
               {
                   onClick() {
