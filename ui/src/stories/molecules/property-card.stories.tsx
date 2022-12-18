@@ -24,22 +24,7 @@ Default.args = {
     href: `#`,
     numberOfRooms: 1,
     surfaceArea: 9,
-    address: `Riviera 6, cocody, abidjan`,
-    actionBar: (
-        <div className="flex items-center justify-between gap-4">
-            <div className="flex gap-4">
-                <Button variant="dark">Modifier</Button>
-                <Button>Dupliquer</Button>
-            </div>
-            <Button
-                square
-                variant="danger"
-                aria-label="Archiver"
-                renderLeadingIcon={cls => (
-                    <TrashIcon className={cls} />
-                )}></Button>
-        </div>
-    )
+    address: `Riviera 6, cocody, abidjan`
 } as PropertyCardProps;
 
 export const Draft = Template.bind({});
@@ -48,21 +33,7 @@ Draft.args = {
     href: `#`,
     numberOfRooms: 1,
     surfaceArea: 9,
-    isDraft: true,
-    actionBar: (
-        <div className="flex items-center justify-between gap-4">
-            <div className="flex gap-4">
-                <Button variant="dark">Modifier</Button>
-            </div>
-            <Button
-                square
-                variant="danger"
-                aria-label="Supprimer"
-                renderLeadingIcon={cls => (
-                    <TrashIcon className={cls} />
-                )}></Button>
-        </div>
-    )
+    isDraft: true
 } as PropertyCardProps;
 
 export const Disabled = Template.bind({});
@@ -73,22 +44,5 @@ Disabled.args = {
     numberOfRooms: 1,
     surfaceArea: 9,
     isDraft: true,
-    disabled: true,
-    actionBar: (
-        <div className="flex items-center justify-between gap-4">
-            <div className="flex gap-4">
-                <Button variant="dark" disabled>
-                    Modifier
-                </Button>
-            </div>
-            <Button
-                disabled
-                square
-                variant="danger"
-                aria-label="Supprimer"
-                renderLeadingIcon={cls => (
-                    <TrashIcon className={cls} />
-                )}></Button>
-        </div>
-    )
+    disabled: true
 } as PropertyCardProps;

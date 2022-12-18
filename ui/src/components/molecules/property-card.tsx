@@ -6,9 +6,13 @@ import { BedIcon } from '../atoms/icons/bed';
 import { RulerIcon } from '../atoms/icons/ruler';
 import { MapPinIcon } from '../atoms/icons/map-pin';
 import { Card } from '../atoms/card';
-import { Tag } from '../atoms/tag';
+import { Button } from '../atoms/button';
+import { CaretDownIcon } from '../atoms/icons/caret-down';
+import { CaretUpIcon } from '../atoms/icons/caret-up';
+import { Dropdown } from './dropdown';
 
 import type { LinkProps } from '../atoms/link';
+import type { DropdownItem } from './dropdown';
 export type CustomImageProps = {
     className?: string | null;
     src?: string;
@@ -25,17 +29,16 @@ export type PropertyCardProps = {
     numberOfRooms: number;
     coverURL?: string;
     address?: string;
-    actionBar?: React.ReactNode;
     customLink?: LinkProps['Custom'];
     customImage?: CustomImageComponentType;
     className?: string;
     isDraft?: boolean;
     disabled?: boolean;
+    actions: DropdownItem[];
 };
 
 export function PropertyCard({
     coverURL,
-    actionBar,
     address,
     surfaceArea,
     numberOfRooms,
@@ -45,7 +48,8 @@ export function PropertyCard({
     customImage: CustomImage,
     className,
     isDraft = false,
-    disabled = false
+    disabled = false,
+    actions = []
 }: PropertyCardProps) {
     const Img = CustomImage ?? 'img';
 
@@ -71,11 +75,34 @@ export function PropertyCard({
                             }
                         )}
                     />
-                    <Tag className="absolute top-4 right-4" variant="hollow">
-                        Brouillon
-                    </Tag>
                 </>
             )}
+
+            <Dropdown
+                customLink={customLink}
+                align="right"
+                className="!absolute top-4 right-4"
+                itemsClassName="z-40"
+                button={({ open }) => (
+                    <Button
+                        square
+                        disabled={disabled}
+                        variant={`dark`}
+                        className={clsx('relative z-30', {
+                            'cursor-not-allowed': disabled
+                        })}
+                        renderTrailingIcon={cls =>
+                            !open ? (
+                                <CaretDownIcon className={cls} />
+                            ) : (
+                                <CaretUpIcon className={cls} />
+                            )
+                        }>
+                        Menu
+                    </Button>
+                )}
+                items={actions}
+            />
 
             <div className="flex h-[175px] w-full max-w-[345px] flex-shrink-0 items-center justify-center rounded-t-lg bg-gray/20">
                 {coverURL ? (
@@ -97,9 +124,16 @@ export function PropertyCard({
                     Custom={customLink}
                     className={clsx(`text-xl font-semibold`, {
                         'after:absolute after:inset-0': !disabled,
-                        'pointer-events-none': disabled
+                        'pointer-events-none': disabled,
+                        'text-gray': isDraft,
+                        'text-dark': !isDraft
                     })}>
-                    {title}
+                    {title}&nbsp;
+                    {isDraft && (
+                        <span className="text-sm text-gray md:text-base">
+                            (Brouillon)
+                        </span>
+                    )}
                 </Link>
 
                 <div className="flex w-full flex-col gap-2">
@@ -135,8 +169,6 @@ export function PropertyCard({
                         </span>
                     </div>
                 </div>
-
-                {actionBar && <div className="relative z-20">{actionBar}</div>}
             </div>
         </Card>
     );
