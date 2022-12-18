@@ -10,8 +10,7 @@ import type { BottomSheetProps } from '@locaci/ui/components/atoms/bottom-sheet'
 const BottomSheet = dynamic(
     () => import(`@locaci/ui/components/atoms/bottom-sheet`),
     {
-        // FIXME : this should be fixed by the next release of nextjs
-        // ssr: false
+        ssr: false,
         loading: () => <></>
     }
 );
