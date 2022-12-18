@@ -247,6 +247,16 @@
         opacity: 1;
     }
 
+    .text-primary {
+        -webkit-text-fill-color: theme('colors.primary.DEFAULT');
+        opacity: 1;
+    }
+
+    .text-secondary {
+        -webkit-text-fill-color: theme('colors.secondary.DEFAULT');
+        opacity: 1;
+    }
+
     .text-gray-400 {
         -webkit-text-fill-color: theme('colors.gray.400');
         opacity: 1;
