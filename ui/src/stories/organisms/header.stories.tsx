@@ -11,7 +11,6 @@ import { Link } from '../../components/atoms/link';
 import { Avatar } from '../../components/atoms/avatar';
 import { SearchButton } from '../../components/atoms/search-button';
 import { Button } from '../../components/atoms/button';
-import { SearchBar } from '../molecules/input-group.stories';
 import { List, PlusCircle } from 'phosphor-react';
 import { Breadcrumb } from '../../components/molecules/breadcrumb';
 
@@ -33,7 +32,6 @@ Default.args = {
     logoAltText: 'Logo LOCACI',
     leadingElement: (
         <>
-            <SearchBar className="hidden lg:flex" />
             <SearchButton className="lg:hidden" onClick={() => {}}>
                 Rechercher un logement
             </SearchButton>
