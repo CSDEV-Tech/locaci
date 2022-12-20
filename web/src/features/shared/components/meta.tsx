@@ -13,7 +13,7 @@ export function Meta(props: MetaProps) {
         props.title ?? 'Trouvez votre prochain Logement en quelques clics';
     const description =
         props.description ??
-        "Découvrez le premier logiciel de gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.";
+        "Découvrez le premier site de recherche et gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.";
 
     const metaImgURL = props.imageURL
         ? `${env.NEXT_PUBLIC_SITE_URL}${props.imageURL}`

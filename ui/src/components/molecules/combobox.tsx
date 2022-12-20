@@ -8,9 +8,10 @@ import { CheckCircleIcon } from '../atoms/icons/check-circle';
 import { LoadingIndicator } from '../atoms/loading-indicator';
 
 export type ComboBoxProps = {
-    value?: string;
+    value?: string | null;
     onChange: (newValue: string | null) => void;
     onSearch: (query: string) => void;
+    name?: string;
     isLoading?: boolean;
     options?: Array<{
         value: string;
@@ -26,19 +27,22 @@ export type ComboBoxProps = {
     variant?: 'primary' | 'secondary';
     errorText?: string;
     helpText?: string;
+    required?: boolean;
 };
 
 export function ComboBox({
     value,
     onChange,
     label,
-    onSearch,
+    name,
     autoFocus,
     disabled,
     className,
     inputClassName,
     errorText,
     helpText,
+    onSearch,
+    required = false,
     isLoading = false,
     variant = 'primary',
     options = []
@@ -49,12 +53,9 @@ export function ComboBox({
         <Combobox
             disabled={disabled}
             value={selected}
+            name={name}
             onChange={newValue => {
-                // if (newValue) {
-                console.log('onChange : ', { newValue });
-
                 onChange(newValue?.value ?? null);
-                // }
             }}>
             {() => (
                 <div className={clsx(className, 'relative w-full')}>
@@ -68,6 +69,7 @@ export function ComboBox({
                             onChange={event => {
                                 onSearch(event.target.value);
                             }}
+                            required={required}
                             errorText={errorText}
                             helpText={helpText}
                             label={label}
@@ -195,7 +197,7 @@ const CustomComboboxInput = React.forwardRef<HTMLInputElement, TextInputProps>(
                         {({ open }) => (
                             <CaretDownIcon
                                 weight="bold"
-                                className={clsx('h-4 w-4', {
+                                className={clsx('h-4 w-4 text-dark', {
                                     'rotate-180': open
                                 })}
                             />

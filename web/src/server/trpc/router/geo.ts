@@ -4,6 +4,7 @@ import { env } from '~/env/server.mjs';
 import { t } from '~/server/trpc/trpc-server-root';
 import { apiFetch, compareStrIgnoreAccent } from '~/utils/functions';
 import type { OSMDetailResultData, OSMResultData } from '~/utils/types';
+import { Uuid } from '~/utils/uuid';
 
 export const geoRouter = t.router({
     searchCityByName: t.procedure
@@ -231,7 +232,23 @@ export const geoRouter = t.router({
             return {
                 ...osmApiresult
             };
-        })
+        }),
+    getAllMunicipalities: t.procedure.query(async ({ ctx }) => {
+        let municipalities = await ctx.prisma.municipality
+            .findMany({
+                orderBy: {
+                    name: 'asc'
+                }
+            })
+            .then(municipalities =>
+                municipalities.map(m => ({
+                    ...m,
+                    id: new Uuid(m.id).short()
+                }))
+            );
+
+        return municipalities;
+    })
 });
 
 function isResultSuccess(
