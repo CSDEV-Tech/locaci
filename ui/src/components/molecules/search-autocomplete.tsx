@@ -31,6 +31,7 @@ export type SearchAutocompleteProps = {
     disabled?: boolean;
     autoFocus?: boolean;
     required?: boolean;
+    inputClassName?: string;
 };
 
 export function SearchAutocomplete(props: SearchAutocompleteProps) {
@@ -111,6 +112,7 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
         <div className={clsx(props.className, 'relative w-full')}>
             <TextInput
                 {...inputProps}
+                className={clsx(props.inputClassName)}
                 labelProps={{ ...labelProps }}
                 disabled={props.disabled}
                 label={props.label}

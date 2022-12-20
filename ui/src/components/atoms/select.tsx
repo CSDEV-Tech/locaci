@@ -16,6 +16,7 @@ export type SelectProps = {
     errorText?: string;
     helpText?: string;
     required?: boolean;
+    name?: string;
 };
 
 export function Select({
@@ -26,6 +27,7 @@ export function Select({
     onChange,
     errorText,
     helpText,
+    name,
     required = false,
     variant = 'primary',
     disabled = false,
@@ -48,7 +50,11 @@ export function Select({
                             !!errorText
                     }
                 )}>
-                <Listbox value={value} onChange={onChange} disabled={disabled}>
+                <Listbox
+                    value={value}
+                    onChange={onChange}
+                    disabled={disabled}
+                    name={name}>
                     {({ open }) => (
                         <>
                             <Listbox.Label className="text-sm font-normal text-gray">
@@ -78,7 +84,7 @@ export function Select({
                                 </span>
                                 <CaretDownIcon
                                     weight="bold"
-                                    className={clsx('h-5 w-5', {
+                                    className={clsx('h-4 w-4', {
                                         'rotate-180': open
                                     })}
                                 />

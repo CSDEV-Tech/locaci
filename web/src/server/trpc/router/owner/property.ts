@@ -178,6 +178,7 @@ export const ownerPropertiesRouter = t.router({
                     images: propertyCreated.images as any[],
                     geoData: propertyCreated.geoData as any[],
                     locality_bbox: propertyCreated.locality_bbox as any[],
+                    activeForListing: true,
                     rooms: {
                         createMany: {
                             data: property.rooms.map(room => ({}))
