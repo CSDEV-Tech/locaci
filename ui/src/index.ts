@@ -4,7 +4,7 @@ export type {
     WeighedIconProps
 } from './components/atoms/icons/types';
 export type { TagProps } from './components/atoms/tag';
-export type { PropertyCardProps as PresentationListingCardProps } from './components/molecules/property-card';
+export type { DashboardPropertyCardProps } from './components/molecules/dashboard-property-card';
 export type { ButtonProps } from './components/atoms/button';
 export type { CardProps } from './components/atoms/card';
 export type { SwitchProps } from './components/atoms/switch';
