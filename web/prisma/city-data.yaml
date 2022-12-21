@@ -2,6 +2,7 @@ cities:
   - name: Abidjan
     municipalities:
       - name: Abobo
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Welcome_to_ABOBO.jpg/1920px-Welcome_to_ABOBO.jpg"
         localities:
           - name: Abobo Baoule
           - name: Abobo Nord
@@ -42,6 +43,7 @@ cities:
           - name: Tamini
           - name: Yapi
       - name: Yopougon
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/5/53/Petit_immeuble_%C3%A0_Yopougon.jpg"
         localities:
           - name: Sikasso
           - name: ile Boulay
@@ -134,12 +136,14 @@ cities:
           - name: Yopougon-Sante
           - name: Zone Industrielle
       - name: Le plateau
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/View_of_the_Plateau%2C_Abidjan.jpg/1920px-View_of_the_Plateau%2C_Abidjan.jpg"
         localities:
           - name: Indenie
           - name: Quai Fruitier (QB1 – QB2)
           - name: Cite Esculape
           - name: Residence Roume
-      - name: Attecoube
+      - name: Attecoubé
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Entr%C3%A9e_du_Sanctuaire_Marial_d%27Att%C3%A9coub%C3%A9.JPG/1920px-Entr%C3%A9e_du_Sanctuaire_Marial_d%27Att%C3%A9coub%C3%A9.JPG"
         localities:
           - name: Abobo Doume
           - name: Abobo Doume village
@@ -176,6 +180,7 @@ cities:
           - name: Sante-village
           - name: Sebroko
       - name: Cocody
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Mairiecocody.JPG/1920px-Mairiecocody.JPG"
         localities:
           - name: 8e et 9e tranche
           - name: Aghien
@@ -205,14 +210,17 @@ cities:
           - name: RTI
           - name: Vieux Cocody
       - name: Koumassi
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Le_boucher_au_march%C3%A9_de_Koumassi.JPG/1920px-Le_boucher_au_march%C3%A9_de_Koumassi.JPG"
         localities:
           - name: ile Desiree
           - name: ile des Chauves-Souris
       - name: Marcory
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Alyssa_K._Barry_Marcory%2C_Abidjan%2C_Ivory_Coast.jpg/1780px-Alyssa_K._Barry_Marcory%2C_Abidjan%2C_Ivory_Coast.jpg"
         localities:
           - name: ile d'Anoumabo
           - name: ile de Petit-Bassam
       - name: Port-Bouet
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/7/7f/L%E2%80%99%C3%A9pave_de_l%27avion_ab%C3%AEm%C3%A9_au_bord_de_la_mer_au_Port_Bouet%2C_Abidjan%2C_14_octobre_2017.jpg"
         localities:
           - name: Abouabou
           - name: Adjifou Deux
@@ -236,12 +244,13 @@ cities:
           - name: Vridi
           - name: Vridi Ako
       - name: Treichville
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Le_ponton_et_le_pont.jpg/1920px-Le_ponton_et_le_pont.jpg"
         localities:
           - name: Biafra
           - name: Apollo
           - name: Arras
           - name: Belleville
-      - name: Brofodoume
+      - name: Brofodoumé
         localities: []
       - name: Anyama
         localities:
@@ -316,6 +325,7 @@ cities:
           - name: Yao
           - name: Yao Niaba
       - name: Bingerville
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/La_sabli%C3%A8re.jpg/1920px-La_sabli%C3%A8re.jpg"
         localities:
           - name: Abatta
           - name: Abatta BCEAO
@@ -355,7 +365,8 @@ cities:
           - name: Palmafrique Eloka
           - name: Quartier Scierie GIB
           - name: Sebia Yao
-      - name: Adjame
+      - name: Adjamé
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Rond_point_libert%C3%A9.jpg/1920px-Rond_point_libert%C3%A9.jpg"
         localities:
           - name: 220 logements
           - name: Abobo Adjame
