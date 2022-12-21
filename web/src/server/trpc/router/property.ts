@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { Uuid } from '~/utils/uuid';
 import { t } from '../trpc-server-root';
