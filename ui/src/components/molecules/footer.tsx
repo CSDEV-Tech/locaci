@@ -25,16 +25,16 @@ export function Footer({ className, links, customLink }: FooterProps) {
                 <div className="bg-lightgray p-10">
                     <ul
                         className={clsx(
-                            'grid grid-cols-2 gap-8',
+                            'grid gap-8',
                             'mx-auto max-w-[1200px]',
-                            'md:grid-cols-4'
+                            'sm:grid-cols-2 md:grid-cols-4'
                         )}>
                         {links?.map(({ links, title }) => (
                             <li key={title} className="flex flex-col gap-4">
                                 <h3 className="font-bold">{title}</h3>
                                 <ul className="flex flex-col gap-3 font-normal text-gray">
-                                    {links?.map(({ label, href }) => (
-                                        <li key={href}>
+                                    {links?.map(({ label, href }, index) => (
+                                        <li key={index}>
                                             <Link
                                                 Custom={customLink}
                                                 href={href}
@@ -63,7 +63,7 @@ export function Footer({ className, links, customLink }: FooterProps) {
                     )}>
                     <ul className="flex flex-col gap-4 md:flex-row md:items-center">
                         <li className="text-gray">
-                            &copy; 2022 locaci.net, Tous droits réservés
+                            &copy; {(new Date).getFullYear()} locaci.net, Tous droits réservés
                         </li>
                         <li>
                             <Link
