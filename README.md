@@ -35,19 +35,21 @@ Un coup d'œil rapide sur les fichiers et répertoires de premier niveau que vou
     └── web/
         ├── prisma/
         └── src/
-            ├── pages/
+            ├── app/
             ├── server/
             │     └── router/
-            └── lib/
+            ├── lib/
+            └── features/
 
-1. **`ui`** : Ce dossier contient le package du design-system de locaci
-1. **`web`** : Ce dossier contient l'application web faite avec nextjs
+1. **`ui`** : Ce dossier contient la librairie des composants de locaci 
+2. **`web`** : Ce dossier contient l'application web faite avec nextjs
     1. **`prisma`** : Ce dossier contient le schema de la base de données 
     2. **`src`** : Ce dossier contient le code et la logique de notre app
-       1. **`pages`** contient les pages de l'app
+       1. **`app`** contient les pages de l'app
        2. **`server`** contient la logique backend de l'app
           1. **`router`** contient les controlleurs
-       1. **`lib`** contient les utilitaires, fonctions et hooks
+       3. **`lib`** contient les utilitaires et fonctions
+       4. **`features`** contient les composants et hooks corresponds à chaque fonctionnalité de LOCACI
 
 ## 💫 Déployer le projet
 
