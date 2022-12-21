@@ -1,5 +1,5 @@
-import { Meta } from '~/features/shared/components/meta';
+import { Meta } from "~/features/shared/components/meta";
 
 export default function Head() {
-    return <Meta title="Tableau de bord" />;
+  return <Meta title="Tableau de bord" pathname={`/owner`} />;
 }

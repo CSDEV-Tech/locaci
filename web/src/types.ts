@@ -1,27 +1,25 @@
 type PageParams = Record<string, string>;
 export type PageProps<
-    TParams extends PageParams = {},
-    TSearchParams extends any = any
+  TParams extends PageParams = {},
+  TSearchParams extends any = any
 > = {
-    params: TParams;
-    searchParams?: TSearchParams;
+  params: TParams;
+  searchParams?: TSearchParams;
 };
 
 export type LayoutProps<TParams extends PageParams = {}> = {
-    children: React.ReactNode;
-    params: TParams;
+  children: React.ReactNode;
+  params: TParams;
 };
 
-export type HeadProps = {
-    params: PageParams;
-};
+export type HeadProps<T> = PageProps<T>;
 
 export type ErrorBoundaryProps = {
-    error: Error;
-    reset: () => void;
+  error: Error;
+  reset: () => void;
 };
 
 export type ListingImage = {
-    uri: string;
-    name: string;
+  uri: string;
+  name: string;
 };
