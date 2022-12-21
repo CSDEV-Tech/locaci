@@ -1,38 +1,11 @@
 # LOCACI
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/181ff0b4-3ff0-4836-a2de-b31727919630/deploy-status)](https://app.netlify.com/sites/locaci-ui-lib/deploys)
+![logo locaci](web/public/logo.svg)
 
 ## Prérequis
 
 - Node >= v14.17.0
 - [PNPM](https://pnpm.io/installation) >= 6.16.0
-
-## Stack : 
-
-
-- Frontend
-  - NextJS/React
-  - headlessui -> composants modal, etc
-  - tailwindcss -> css
-  - react-aria/calendar + /daterangepicker -> composants pour les dates
-  - mapbox -> manipulation des maps
-- Backend
-  - NextJS
-  - tRPC -> logique
-  - NextAuth -> authentification -> (outlook, facebook, google)
-  - Quirrel -> queue jobbing (+ redis)
-
-- Database
-    - PostgresSQL -> geo (recherche dans une zone, un carré, un polygone, etc...)
-- Recherche
-    - typesense -> client (algolia, elasticsearch)
-
-- externes
-  - sentry -> Alertes erreurs
-  - eversign -> signature documents
-  - matomo (self-hosted) -> stocker analytics users
-  - twilio -> send SMS
-
 
 ## 🚀 Comment travailler sur le projet ?
 
