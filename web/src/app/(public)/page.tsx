@@ -7,7 +7,7 @@ import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 import { PropertyHomeList } from '~/features/public/components/property-home-list';
 
 // utils
-import HeaderImg from '~/assets/img/header-img.jpg';
+import headerImgUrl from '~/assets/img/header-img.jpg';
 import { rsc } from '~/server/trpc/rsc';
 import { cache, use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
@@ -73,7 +73,7 @@ function HeaderSection() {
 
             {/* Bg image */}
             <Image
-                src={HeaderImg}
+                src={headerImgUrl}
                 alt={`Image d'entête`}
                 className={`absolute inset-0 h-full object-cover object-center`}
                 placeholder={'blur'}
@@ -87,7 +87,7 @@ function MunicipalitiesListSection() {
         m => m.previewPhotoURL !== null && m._count.Property > 0
     );
     return municipalities.length > 0 ? (
-        <section className="flex flex-col gap-4 px-8 py-10">
+        <section className="flex flex-col gap-4 bg-gray/5 px-8 py-14">
             <h2
                 className={`text-left text-2xl font-bold text-dark md:text-3xl`}>
                 Recherchez par ville
@@ -115,10 +115,10 @@ function MunicipalitiesListSection() {
 }
 
 function LatestPropertiesSection() {
-    use(rsc.property.getLastThreeCreated.fetch());
+    use(rsc.property.getRecentProperties.fetchInfinite({ limit: 4 }));
 
     return (
-        <section className="flex flex-col gap-4 px-8 py-10">
+        <section className="flex flex-col gap-4  px-8 py-14">
             <h2
                 className={`text-left text-2xl font-bold text-dark md:text-3xl`}>
                 Nos derniers logements mis en ligne
