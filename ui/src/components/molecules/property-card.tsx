@@ -1,43 +1,38 @@
 import * as React from 'react';
-import { Link } from '../atoms/link';
-import { ImageIcon } from '../atoms/icons/image';
-import { clsx } from '../../lib/functions';
-import { BedIcon } from '../atoms/icons/bed';
-import { RulerIcon } from '../atoms/icons/ruler';
-import { MapPinIcon } from '../atoms/icons/map-pin';
+import { clsx, formatNumberToFCFA } from '../../lib/functions';
 import { Card } from '../atoms/card';
-import { Button } from '../atoms/button';
-import { CaretDownIcon } from '../atoms/icons/caret-down';
-import { CaretUpIcon } from '../atoms/icons/caret-up';
-import { Dropdown } from './dropdown';
-
-import type { LinkProps } from '../atoms/link';
-import type { DropdownItem } from './dropdown';
-import { Tag } from '../atoms/tag';
-export type CustomImageProps = {
-    className?: string | null;
-    src?: string;
-    alt: string;
-    width: number;
-    height: number;
-};
-export type CustomImageComponentType = React.ComponentType<CustomImageProps>;
+import { BedIcon } from '../atoms/icons/bed';
+import { MapPinIcon } from '../atoms/icons/map-pin';
+import { RulerIcon } from '../atoms/icons/ruler';
+import { Link, LinkProps } from '../atoms/link';
+import type { CustomImageComponentType } from './dashboard-property-card';
 
 export type PropertyCardProps = {
     href: string;
     title: string;
     surfaceArea: number;
     numberOfRooms: number;
-    coverURL?: string;
-    address?: string;
+    coverURL: string;
+    address: string;
+    price: number;
     customLink?: LinkProps['Custom'];
     customImage?: CustomImageComponentType;
     className?: string;
-    isDraft?: boolean;
-    disabled?: boolean;
-    actions: DropdownItem[];
-    isVisible?: boolean;
+    housingPeriod?: number;
 };
+
+function getHousingPeriodLabel(
+    housingPeriod: PropertyCardProps['housingPeriod']
+) {
+    switch (housingPeriod) {
+        case 1:
+            return 'jour';
+        case 7:
+            return 'semaine';
+        default:
+            return 'mois';
+    }
+}
 
 export function PropertyCard({
     coverURL,
@@ -47,141 +42,84 @@ export function PropertyCard({
     title,
     customLink,
     href,
-    customImage: CustomImage,
-    className,
-    isVisible = false,
-    isDraft = false,
-    disabled = false,
-    actions = []
+    customImage,
+    price,
+    housingPeriod = 30,
+    className
 }: PropertyCardProps) {
-    const Img = CustomImage ?? 'img';
+    const Img = customImage ?? 'img';
 
     return (
         <Card
             className={clsx(
                 className,
                 'inline-flex flex-col',
-                'relative w-full max-w-[345px]',
-                {
-                    'animate-pulse': disabled
-                }
-            )}>
-            {isDraft && (
-                <>
-                    <div
-                        className={clsx(
-                            'absolute left-0 right-0 rounded-t-lg bg-dark opacity-60',
-                            'h-[175px] w-full max-w-[345px]',
-                            {
-                                'opactity-30': !coverURL
-                            }
-                        )}
-                    />
-                </>
+                'relative w-full max-w-[345px]'
             )}
-
-            <Dropdown
-                customLink={customLink}
-                align="right"
-                className="!absolute top-4 right-4"
-                itemsClassName="z-40"
-                button={({ open }) => (
-                    <Button
-                        square
-                        disabled={disabled}
-                        variant={`dark`}
-                        className={clsx('relative z-30', {
-                            'cursor-not-allowed': disabled
-                        })}
-                        renderTrailingIcon={cls =>
-                            !open ? (
-                                <CaretDownIcon className={cls} />
-                            ) : (
-                                <CaretUpIcon className={cls} />
-                            )
-                        }>
-                        Menu
-                    </Button>
-                )}
-                items={actions}
-            />
-
+            animated>
             <div className="flex h-[175px] w-full max-w-[345px] flex-shrink-0 items-center justify-center rounded-t-lg bg-gray/20">
-                {coverURL ? (
-                    <Img
-                        width={345}
-                        height={175}
-                        alt={title}
-                        src={coverURL}
-                        className="h-full w-full rounded-t-lg object-cover object-center"
-                    />
-                ) : (
-                    <ImageIcon className="h-16 w-16 text-gray" />
-                )}
+                <Img
+                    width={345}
+                    height={175}
+                    alt={title}
+                    src={coverURL}
+                    className="h-full w-full rounded-t-lg object-cover object-center"
+                />
             </div>
-            <div className="flex h-full flex-col gap-4 p-4">
+
+            <div className="flex h-full flex-col p-4">
                 <Link
-                    disabled={disabled}
                     href={href}
                     Custom={customLink}
-                    className={clsx(`text-xl font-semibold`, {
-                        'pointer-events-none': disabled,
-                        'hover:underline': !disabled,
-                        'text-gray': isDraft,
-                        'text-dark': !isDraft
-                    })}>
+                    className={clsx(
+                        `text-lg font-semibold text-dark`,
+                        `after:absolute after:inset-0`,
+                        `hover:underline`
+                    )}>
                     {title}&nbsp;
-                    {isDraft && (
-                        <span className="text-sm text-gray md:text-base">
-                            (Brouillon)
-                        </span>
-                    )}
                 </Link>
 
-                <div className="flex w-full flex-col gap-2">
+                <div className="mt-2 flex w-full flex-col gap-2">
                     <div
-                        className={clsx(`flex w-full max-w-full items-center`, {
-                            'text-gray':
-                                !address || address?.trim().length === 0,
-                            'text-dark': address?.trim().length !== 0
-                        })}>
+                        className={clsx(
+                            `flex w-full max-w-full items-center text-gray`
+                        )}>
                         <MapPinIcon
                             aria-label="Addresse :"
                             className="h-6 w-6 flex-shrink-0"
                         />
                         &nbsp;
-                        <span className="text-sm">
+                        <small>
                             {Boolean(address?.trim()) ? address : 'Non défini'}
-                        </span>
+                        </small>
                     </div>
 
-                    <div className="flex items-center text-dark">
+                    <div className="flex items-center text-gray">
                         <BedIcon className="h-6 w-6 flex-shrink-0" />
                         &nbsp;
-                        <span className="text-sm">
+                        <small>
                             {numberOfRooms} pièce{numberOfRooms !== 1 && 's'}
-                        </span>
+                        </small>
                     </div>
 
-                    <div className="flex items-center text-dark">
+                    <div className="flex items-center text-gray">
                         <RulerIcon className="h-6 w-6 flex-shrink-0" />
                         &nbsp;
-                        <span className="text-sm">
+                        <small>
                             {surfaceArea} m<sup>2</sup>
-                        </span>
+                        </small>
                     </div>
-                    {!isDraft && (
-                        <div className="flex items-center">
-                            <Tag
-                                variant={
-                                    isVisible
-                                        ? 'secondary-light'
-                                        : 'accent-primary'
-                                }>
-                                {isVisible ? 'Actif' : 'Inactif'}
-                            </Tag>
-                        </div>
-                    )}
+                </div>
+
+                <div className="mt-4 flex items-center ">
+                    <h4 className="">
+                        <span className="text-lg font-semibold text-dark">
+                            {formatNumberToFCFA(price)}&nbsp;
+                        </span>
+                        <small className="font-regular text-gray">
+                            /{getHousingPeriodLabel(housingPeriod)}
+                        </small>
+                    </h4>
                 </div>
             </div>
         </Card>
