@@ -42,6 +42,11 @@ const nextConfig = defineNextConfig({
             {
                 protocol: 'https',
                 hostname: env.CF_IMAGES_DOMAIN
+            },
+            {
+                protocol: 'https',
+                // wikimedia link for municipalities
+                hostname: 'upload.wikimedia.org'
             }
         ]
     }

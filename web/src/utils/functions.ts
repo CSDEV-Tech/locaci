@@ -1,4 +1,26 @@
+import type { RentType } from './../features/shared/types';
 import type { Role } from '@prisma/client';
+
+/**
+ * get the title for a property
+ * @param item
+ * @returns
+ */
+export function getPropertyTitle(item: {
+    noOfRooms: number;
+    rentType: RentType;
+}) {
+    const type = item.noOfRooms === 1 ? 'Studio' : 'Appartement';
+
+    const label =
+        item.rentType === 'SHORT_TERM'
+            ? 'meublé'
+            : item.rentType === 'SHARED_APPARTMENT'
+            ? 'en colocation'
+            : 'Non meublé';
+
+    return `${type} ${label}`;
+}
 
 export function getHostWithScheme(url: string): string {
     const urlObject = new URL(url);

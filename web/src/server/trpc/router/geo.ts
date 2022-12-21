@@ -238,6 +238,16 @@ export const geoRouter = t.router({
             .findMany({
                 orderBy: {
                     name: 'asc'
+                },
+                select: {
+                    name: true,
+                    id: true,
+                    previewPhotoURL: true,
+                    _count: {
+                        select: {
+                            Property: true
+                        }
+                    }
                 }
             })
             .then(municipalities =>
