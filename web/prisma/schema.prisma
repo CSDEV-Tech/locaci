@@ -156,7 +156,7 @@ model DraftProperty {
     latitude  String?
 
     // rooms & amenities
-    noOfRooms Int?
+    noOfRooms Int  @default(0)
     rooms     Json @default("[]") // A JSON Array of ids ([{type}]) 
     amenities Json @default("[]") // A JSON Array of ids ([{type, name}]) 
 
@@ -184,9 +184,10 @@ model City {
 
 // Commune
 model Municipality {
-    id       String     @id @default(uuid()) @db.Uuid
-    name     String
-    city     City       @relation(fields: [cityId], references: [id])
-    cityId   String     @db.Uuid
-    Property Property[]
+    id              String     @id @default(uuid()) @db.Uuid
+    name            String
+    city            City       @relation(fields: [cityId], references: [id])
+    cityId          String     @db.Uuid
+    Property        Property[]
+    previewPhotoURL String?
 }

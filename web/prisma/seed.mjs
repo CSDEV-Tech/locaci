@@ -31,6 +31,7 @@ async function main() {
         });
 
         if (default_owner.length === 0) {
+            console.log(`Creating a default owner...`);
             try {
                 await prisma.user.delete({
                     where: {
@@ -62,6 +63,7 @@ async function main() {
                     municipalities: {
                         create: city.municipalities.map(m => {
                             return {
+                                previewPhotoURL: m.photoURL,
                                 name: m.name.toLowerCase()
                             };
                         })
