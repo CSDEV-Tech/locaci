@@ -6,6 +6,7 @@ import { Button } from '@locaci/ui/components/atoms/button';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { RefreshIcon } from '@locaci/ui/components/atoms/icons/refresh';
 import { NextLink } from '~/features/shared/components/next-link';
+import { ArrowRight } from 'phosphor-react';
 import Image from 'next/image';
 
 // utils
@@ -14,8 +15,6 @@ import { getPropertyTitle } from '~/utils/functions';
 
 // types
 import type { ListingImage } from '~/types';
-import Link from 'next/link';
-import { ArrowRight } from 'phosphor-react';
 
 export function PropertyHomeList() {
     const { data, hasNextPage, isFetching, fetchNextPage } =

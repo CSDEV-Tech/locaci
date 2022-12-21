@@ -1,9 +1,9 @@
 // components
 import { Header } from '@locaci/ui/components/organisms/header';
 import { Footer } from '@locaci/ui/components/molecules/footer';
-import { SearchButton } from '@locaci/ui/components/atoms/search-button';
 import { NextLink } from '~/features/shared/components/next-link';
 import { LoginButton } from '~/features/public/components/login-button';
+import { HeaderSearchButton } from '~/features/public/components/header-search-button';
 
 // types
 import type { LayoutProps } from '~/types';
@@ -17,14 +17,63 @@ export default function PublicLayout({ children }: LayoutProps) {
                 logoAltText="Logo LOCACI"
                 logoUrlDesktop="/logo.svg"
                 logoUrlMobile="/favicon.svg"
+                leadingElement={<HeaderSearchButton />}
                 trailingElement={<LoginButton />}
             />
             <main>{children}</main>
             <Footer
                 className="stiky bottom-0"
                 customLink={NextLink}
-                // TODO : Links
-                links={[]}
+                links={[
+                    {
+                        title: 'A propos',
+                        links: [
+                            {
+                                href: '/about-us',
+                                label: 'Qui sommes-nous ?'
+                            },
+                            {
+                                href: '#', // the definitive URL will be => /faq#how-it-works
+                                label: 'Comment ça marche ?'
+                            }
+                        ]
+                    },
+                    {
+                        title: 'Logement',
+                        links: [
+                            {
+                                href: '/search',
+                                label: 'Rechercher un appartement'
+                            }
+                        ]
+                    },
+                    {
+                        title: 'Devenir propriétaire',
+                        links: [
+                            {
+                                href: '#', // the definitive URL will be => /faq#owner-prerequisities
+                                label: 'Conditions nécessaires'
+                            },
+                            {
+                                href: '/auth/request-owner',
+                                label: 'Demander à devenir propriétaire'
+                            }
+                        ]
+                    },
+                    {
+                        title: 'Support',
+                        links: [
+                            {
+                                href: '#', // the URL will be => /faq
+                                label: 'Foire aux questions'
+                            },
+                            {
+                                href: '#',
+                                label: 'Communauté'
+                            }
+                        ]
+                    }
+                ]}
             />
         </>
     );
