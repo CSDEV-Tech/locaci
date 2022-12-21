@@ -15,9 +15,10 @@ export function Card({ className, children, animated = false }: CardProps) {
                 `inline-flex`,
                 className,
                 {
-                    'transition duration-300 ease-in-out hover:scale-105':
+                    'transition duration-300 ease-in-out focus-within:scale-105 hover:scale-105 active:scale-105':
                         animated,
-                    'hover:shadow-card': animated
+                    'focus-within:shadow-card hover:shadow-card active:shadow-card':
+                        animated
                 }
             )}>
             {children}

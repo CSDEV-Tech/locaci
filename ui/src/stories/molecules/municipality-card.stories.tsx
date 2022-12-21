@@ -12,7 +12,9 @@ export default {
 
 // 👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof MunicipalityCard> = args => (
-    <MunicipalityCard {...args} />
+    <div className="px-14">
+        <MunicipalityCard {...args} />
+    </div>
 );
 
 export const Default = Template.bind({});
