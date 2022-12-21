@@ -74,7 +74,7 @@ export function PropertyCard({
                     className={clsx(
                         `text-lg font-semibold text-dark`,
                         `after:absolute after:inset-0`,
-                        `hover:underline`
+                        `focus:outline-none`
                     )}>
                     {title}&nbsp;
                 </Link>

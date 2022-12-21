@@ -50,7 +50,7 @@ export function MunicipalityCard({
                         <Link
                             Custom={customLink}
                             href={href}
-                            className={`text-xl font-semibold text-dark after:absolute after:inset-0 hover:underline`}>
+                            className={`text-xl font-semibold text-dark after:absolute after:inset-0 focus:outline-none`}>
                             {name}
                         </Link>
                     </h3>
