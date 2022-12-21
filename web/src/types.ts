@@ -12,7 +12,10 @@ export type LayoutProps<TParams extends PageParams = {}> = {
   params: TParams;
 };
 
-export type HeadProps<T> = PageProps<T>;
+export type HeadProps<
+  TParams extends PageParams = {},
+  TSearchParams extends any = any
+> = PageProps<TParams, TSearchParams>;
 
 export type ErrorBoundaryProps = {
   error: Error;
