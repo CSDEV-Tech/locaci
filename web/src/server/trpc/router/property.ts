@@ -1,8 +1,9 @@
+import { Uuid } from '~/utils/uuid';
 import { t } from '../trpc-server-root';
 
 export const propertyRouter = t.router({
     getLastThreeCreated: t.procedure.query(async ({ ctx }) => {
-        return await ctx.prisma.property.findMany({
+        const properties = await ctx.prisma.property.findMany({
             where: {
                 archived: false,
                 activeForListing: true
@@ -12,5 +13,10 @@ export const propertyRouter = t.router({
                 createdAt: 'desc'
             }
         });
+
+        return properties.map(p => ({
+            ...p,
+            id: new Uuid(p.id).short()
+        }));
     })
 });
