@@ -2,8 +2,10 @@
 import * as React from 'react';
 
 // components
-import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
-import { HorizontalPropertyCard } from '@locaci/ui/components/molecules/horizontal-property-card';
+import {
+    DashboardPropertyCard,
+    HorizontalDashboardPropertyCard
+} from '@locaci/ui/components/molecules/dashboard-property-card';
 import { NextLink } from '~/features/shared/components/next-link';
 import Image from 'next/image';
 import {
@@ -25,22 +27,22 @@ import { toast } from 'react-hot-toast';
 import { Uuid } from '~/utils/uuid';
 
 // types
-import type { PropertyCardProps } from '@locaci/ui/components/molecules/property-card';
+import type { DashboardPropertyCardProps } from '@locaci/ui/components/molecules/dashboard-property-card';
 
-export type ListingCardProps = Omit<
-    PropertyCardProps,
+export type PropertyDraftCardProps = Omit<
+    DashboardPropertyCardProps,
     'customLink' | 'customImage' | 'actions'
 > & {
     id: string;
 };
 
-export function ListingCard({
+export function PropertyDraftCard({
     id,
     isDraft,
     href,
     title,
     ...props
-}: ListingCardProps) {
+}: PropertyDraftCardProps) {
     // state
     const router = useRouter();
     const [deletedPropertiesIds, setDeletedPropertiesIds] = React.useState<
@@ -118,9 +120,9 @@ export function ListingCard({
                   onClick() {
                       toggleVisibility({ uid: id });
                   },
-                  text: props.isVisible ? 'Dépublier' : 'Publier',
+                  text: props.isActiveForListing ? 'Dépublier' : 'Publier',
                   Icon: ({ className }) =>
-                      props.isVisible ? (
+                      props.isActiveForListing ? (
                           <EyeSlash className={className} weight="fill" />
                       ) : (
                           <Eye className={className} weight="bold" />
@@ -177,7 +179,7 @@ export function ListingCard({
                 onConfirm={handleDelete}
             />
 
-            <PropertyCard
+            <DashboardPropertyCard
                 isDraft={isDraft}
                 href={href}
                 title={title.trim()}
@@ -190,11 +192,13 @@ export function ListingCard({
                 disabled={deletedPropertiesIds.includes(id)}
             />
 
-            <HorizontalPropertyCard
+            <HorizontalDashboardPropertyCard
                 {...props}
                 disabled={deletedPropertiesIds.includes(id)}
                 className={`hidden lg:flex`}
                 isDraft={isDraft}
+                // @ts-ignore
+                customImage={Image}
                 customLink={NextLink}
                 actions={actions}
                 href={href}

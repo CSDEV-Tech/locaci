@@ -3,27 +3,14 @@ import * as React from 'react';
 
 // components
 import { AddButton } from './add-button';
-import { ListingCard } from './listing-card';
+import { PropertyDraftCard } from './property-draft-card';
 
 // utils
 import { t } from '~/utils/trpc-rq-hooks';
 
 // types
-import type { DraftProperty, Property } from '@prisma/client';
 import type { ListingImage } from '~/types';
-
-function getTitle(item: DraftProperty | Property) {
-    const type = item.noOfRooms === 1 ? 'Studio' : 'Appartement';
-
-    const label =
-        item.rentType === 'SHORT_TERM'
-            ? 'meublé'
-            : item.rentType === 'SHARED_APPARTMENT'
-            ? 'en colocation'
-            : 'Non meublé';
-
-    return `${type} ${label}`;
-}
+import { getPropertyTitle } from '~/utils/functions';
 
 export function PropertyList() {
     const { data } = t.owner.draft.getAll.useQuery(undefined, {
@@ -59,7 +46,7 @@ export function PropertyList() {
                     <ul className="grid w-full place-content-center gap-6 sm:grid-cols-2 lg:grid-cols-1">
                         {data?.drafts.map(draft => (
                             <li key={draft.id}>
-                                <ListingCard
+                                <PropertyDraftCard
                                     className="h-full w-full"
                                     coverURL={
                                         draft.images
@@ -74,15 +61,17 @@ export function PropertyList() {
                                     address={draft.localityName ?? ''}
                                     numberOfRooms={draft.noOfRooms ?? 0}
                                     surfaceArea={draft.surfaceArea}
-                                    title={getTitle(draft)}
+                                    title={getPropertyTitle(draft)}
                                 />
                             </li>
                         ))}
 
                         {data?.properties?.map(property => (
                             <li key={property.id}>
-                                <ListingCard
-                                    isVisible={property.activeForListing}
+                                <PropertyDraftCard
+                                    isActiveForListing={
+                                        property.activeForListing
+                                    }
                                     className="h-full w-full"
                                     coverURL={
                                         property.images
@@ -96,7 +85,7 @@ export function PropertyList() {
                                     address={property.localityName ?? ''}
                                     numberOfRooms={property.noOfRooms ?? 0}
                                     surfaceArea={property.surfaceArea}
-                                    title={getTitle(property)}
+                                    title={getPropertyTitle(property)}
                                 />
                             </li>
                         ))}
