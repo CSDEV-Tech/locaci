@@ -83,9 +83,9 @@ function HeaderSection() {
 }
 
 function MunicipalitiesListSection() {
-    const municipalities = use(getAllMunicipalities()).filter(
-        m => m.previewPhotoURL !== null && m._count.Property > 0
-    );
+    const municipalities = use(getAllMunicipalities())
+        .filter(m => m.previewPhotoURL !== null && m._count.Property > 0)
+        .slice(0, 9);
     return municipalities.length > 0 ? (
         <section className="flex flex-col gap-4 bg-gray/5 px-8 py-14">
             <h2
@@ -93,7 +93,7 @@ function MunicipalitiesListSection() {
                 Recherchez par ville
             </h2>
 
-            <ul className="grid gap-4">
+            <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {municipalities.map(m => (
                     <li key={m.id}>
                         <MunicipalityCard
