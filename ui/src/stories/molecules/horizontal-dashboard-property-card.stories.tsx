@@ -1,19 +1,19 @@
 import * as React from 'react';
 import type { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
-    HorizontalPropertyCard,
-    HorizontalPropertyCardProps
-} from '../../components/molecules/horizontal-property-card';
+    HorizontalDashboardPropertyCard,
+    PropertyCardProps
+} from '../../components/molecules/dashboard-property-card';
 
 export default {
-    title: 'Composants/Molecules/HorizontalPropertyCard',
-    component: HorizontalPropertyCard
-} as ComponentMeta<typeof HorizontalPropertyCard>;
+    title: 'Composants/Molecules/DashboardPropertyCard/HorizontalDashboardPropertyCard',
+    component: HorizontalDashboardPropertyCard
+} as ComponentMeta<typeof HorizontalDashboardPropertyCard>;
 
 // 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof HorizontalPropertyCard> = args => (
-    <HorizontalPropertyCard {...args} />
-);
+const Template: ComponentStory<
+    typeof HorizontalDashboardPropertyCard
+> = args => <HorizontalDashboardPropertyCard {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -23,7 +23,7 @@ Default.args = {
     numberOfRooms: 1,
     surfaceArea: 9,
     address: `Marché, A1, Étoile, Sagbé, Abobo, Abidjan, Côte d’Ivoire`
-} as HorizontalPropertyCardProps;
+} as PropertyCardProps;
 
 export const Draft = Template.bind({});
 Draft.args = {
@@ -33,7 +33,7 @@ Draft.args = {
     numberOfRooms: 1,
     surfaceArea: 9,
     isVisible: true
-} as HorizontalPropertyCardProps;
+} as PropertyCardProps;
 
 export const Disabled = Template.bind({});
 Disabled.args = {
@@ -43,4 +43,4 @@ Disabled.args = {
     href: `#`,
     numberOfRooms: 1,
     surfaceArea: 9
-} as HorizontalPropertyCardProps;
+} as PropertyCardProps;
