@@ -36,7 +36,9 @@ export function SearchBar({
             className={clsx(
                 className,
                 'flex flex-col gap-2 rounded-md bg-white p-6',
-                'lg:flex-row lg:items-center lg:gap-0 lg:p-0'
+                'lg:flex lg:flex-row lg:items-stretch lg:gap-0 lg:p-0',
+                // this is to prevent a bug with the combobox not taking all the available parent height
+                'lg:h-[60.5px]'
             )}
             onSubmit={e => {
                 e.preventDefault();
@@ -48,8 +50,10 @@ export function SearchBar({
             <ComboBox
                 inputClassName={clsx(
                     'w-full rounded-none !border-0 !pb-0',
-                    `lg:w-[250px] lg:rounded-md lg:rounded-r-none lg:border`
+                    `lg:rounded-md lg:rounded-r-none lg:!border-r lg:h-full`
                 )}
+                className={`lg:h-full lg:w-[250px]`}
+                inputRootClassName={`lg:h-full`}
                 name="municipalityId"
                 label="Commune"
                 value={commune}
@@ -64,7 +68,7 @@ export function SearchBar({
                 name="rentType"
                 className={clsx(
                     `w-full rounded-none !border-0 !border-t !pb-0 `,
-                    `lg:w-[250px] lg:rounded-md lg:rounded-l-none lg:rounded-r-none lg:border`
+                    `lg:w-[250px] lg:rounded-md lg:rounded-l-none lg:rounded-r-none lg:!border-r`
                 )}
                 label="type de logement"
                 value={rentType}
@@ -91,12 +95,12 @@ export function SearchBar({
                 min={1}
                 className={clsx(
                     'rounded-none !border-0 !border-t',
-                    'lg:rounded-md lg:rounded-l-none lg:rounded-r-none lg:border'
+                    'lg:rounded-md lg:rounded-l-none lg:rounded-r-none lg:!border-r'
                 )}
                 label="Nombre de pièces"
                 value={noOfRooms}
                 onChange={setNoOfRooms}
-                rootClassName={clsx(`w-full`, `lg:w-[250px]`)}
+                rootClassName={clsx(`w-full`, `lg:w-[220px]`)}
                 showButtons
             />
 
@@ -110,13 +114,13 @@ export function SearchBar({
                 label="Prix maximum"
                 value={maxPrice}
                 onChange={setMaxPrice}
-                rootClassName={clsx(`w-full`, `lg:w-[250px]`)}
+                rootClassName={clsx(`w-full`, `lg:w-[220px]`)}
                 appendix={
                     <div className="flex items-center gap-2">
                         <span>FCFA</span>
                         <Button
                             type="submit"
-                            className="hidden"
+                            className="hidden lg:flex"
                             aria-label="Appliquer les filtres de logement"
                             variant="primary"
                             square
@@ -130,6 +134,7 @@ export function SearchBar({
 
             <Button
                 variant="primary"
+                className="lg:hidden"
                 renderTrailingIcon={cls => <MagnifyingGlass className={cls} />}>
                 Rechercher
             </Button>

@@ -33,7 +33,7 @@ export function PropertyHomeList() {
 
     return (
         <div className="flex w-full flex-col items-center gap-8">
-            <ul className="grid w-full place-items-center gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid w-full auto-rows-max place-content-center place-items-center items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {data?.pages?.map((page, index) => (
                     <React.Fragment key={index}>
                         {page.properties.map(p => (
@@ -41,7 +41,7 @@ export function PropertyHomeList() {
                                 key={p.id}
                                 className={`inline-flex w-full flex-col items-center`}>
                                 <PropertyCard
-                                    className="w-full"
+                                    className="h-full w-full"
                                     href={`/properties/${p.id}`}
                                     title={getPropertyTitle(p)}
                                     address={p.localityName}

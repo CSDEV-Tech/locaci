@@ -22,6 +22,7 @@ export type ComboBoxProps = {
     label: string;
     className?: string;
     inputClassName?: string;
+    inputRootClassName?: string;
     autoFocus?: boolean;
     disabled?: boolean;
     variant?: 'primary' | 'secondary';
@@ -39,6 +40,7 @@ export function ComboBox({
     disabled,
     className,
     inputClassName,
+    inputRootClassName,
     errorText,
     helpText,
     onSearch,
@@ -59,25 +61,24 @@ export function ComboBox({
             }}>
             {() => (
                 <div className={clsx(className, 'relative w-full')}>
-                    <div>
-                        <Combobox.Input<
-                            any,
-                            { value: string; label: string } | null
-                        >
-                            as={CustomComboboxInput}
-                            displayValue={option => option?.label ?? ''}
-                            onChange={event => {
-                                onSearch(event.target.value);
-                            }}
-                            required={required}
-                            errorText={errorText}
-                            helpText={helpText}
-                            label={label}
-                            disabled={disabled}
-                            className={inputClassName}
-                            autoFocus={autoFocus}
-                        />
-                    </div>
+                    <Combobox.Input<
+                        any,
+                        { value: string; label: string } | null
+                    >
+                        as={CustomComboboxInput}
+                        displayValue={option => option?.label ?? ''}
+                        onChange={event => {
+                            onSearch(event.target.value);
+                        }}
+                        required={required}
+                        errorText={errorText}
+                        helpText={helpText}
+                        label={label}
+                        disabled={disabled}
+                        rootClassName={inputRootClassName}
+                        className={inputClassName}
+                        autoFocus={autoFocus}
+                    />
                     <Transition
                         as={React.Fragment}
                         enter="transition ease-out duration-100"
