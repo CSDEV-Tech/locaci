@@ -10,7 +10,7 @@ import { ArrowRight } from 'phosphor-react';
 import Image from 'next/image';
 
 // utils
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 import { getPropertyTitle } from '~/utils/functions';
 
 // types

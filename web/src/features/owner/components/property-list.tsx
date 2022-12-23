@@ -6,7 +6,7 @@ import { AddButton } from './add-button';
 import { PropertyDraftCard } from './property-draft-card';
 
 // utils
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 
 // types
 import type { ListingImage } from '~/types';

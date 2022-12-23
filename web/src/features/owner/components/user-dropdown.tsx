@@ -8,7 +8,7 @@ import { Avatar } from '@locaci/ui/components/atoms/avatar';
 
 // utils
 import { useRouter } from 'next/navigation';
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 import { toast } from 'react-hot-toast';
 import { NextLink } from '~/features/shared/components/next-link';
 

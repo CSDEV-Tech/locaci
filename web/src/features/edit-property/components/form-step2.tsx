@@ -10,7 +10,7 @@ import { SearchAutocomplete } from '@locaci/ui/components/molecules/search-autoc
 // utils
 import { updatePropertyStep2Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 import { z } from 'zod';
 
 // types
