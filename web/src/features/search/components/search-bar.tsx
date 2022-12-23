@@ -68,7 +68,8 @@ export function SearchBar({
                 name="rentType"
                 className={clsx(
                     `w-full rounded-none !border-0 !border-t !pb-0 `,
-                    `lg:w-[250px] lg:rounded-md lg:rounded-l-none lg:rounded-r-none lg:!border-r`
+                    `lg:rounded-md lg:rounded-l-none lg:rounded-r-none`,
+                    `lg:w-[250px] lg:!border-r lg:!border-t-0`
                 )}
                 label="type de logement"
                 value={rentType}
@@ -95,7 +96,8 @@ export function SearchBar({
                 min={1}
                 className={clsx(
                     'rounded-none !border-0 !border-t',
-                    'lg:rounded-md lg:rounded-l-none lg:rounded-r-none lg:!border-r'
+                    'lg:rounded-md lg:rounded-l-none lg:rounded-r-none',
+                    'lg:!border-r lg:!border-t-0'
                 )}
                 label="Nombre de pièces"
                 value={noOfRooms}
@@ -109,7 +111,7 @@ export function SearchBar({
                 required
                 className={clsx(
                     'rounded-none !border-0 !border-t',
-                    'lg:rounded-md lg:rounded-l-none lg:border'
+                    'lg:rounded-md lg:rounded-l-none lg:border lg:!border-t-0'
                 )}
                 label="Prix maximum"
                 value={maxPrice}

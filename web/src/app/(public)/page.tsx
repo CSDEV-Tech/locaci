@@ -2,9 +2,16 @@
 import Image from 'next/image';
 import { SearchBar } from '~/features/search/components/search-bar';
 import { MunicipalityCard } from '@locaci/ui/components/molecules/municipality-card';
-import { NextLink } from '~/features/shared/components/next-link';
+import { QuotesIcon } from '@locaci/ui/components/atoms/icons/quotes';
+import {
+    NextLink,
+    NextLinkButton
+} from '~/features/shared/components/next-link';
 import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 import { PropertyHomeList } from '~/features/public/components/property-home-list';
+import { SwitchUserMarketingTabs } from '~/features/public/components/switch-user-marketing-tabs';
+import { MagnifyIngGlassIcon } from '@locaci/ui/components/atoms/icons/magnifying-glass';
+import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 
 // utils
 import headerImgUrl from '~/assets/img/header-img.jpg';
@@ -23,16 +30,20 @@ export default async function HomePage() {
             <HeaderSection />
             <MunicipalitiesListSection />
             <LatestPropertiesSection />
+            <SectionForWho />
+            <SectionAboutUs />
 
-            <img
-                src="/street_illustration.svg"
-                alt="Maison vide"
-                className={clsx(
-                    'mx-auto w-52 object-contain object-center',
-                    'md:w-[250px]',
-                    'lg:w-[400px]'
-                )}
-            />
+            <section className={clsx('px-8 lg:px-16')}>
+                <img
+                    src="/street_illustration.svg"
+                    alt="Maison vide"
+                    className={clsx(
+                        'mx-auto w-52 object-contain object-center',
+                        'md:w-[250px]',
+                        'lg:w-[400px]'
+                    )}
+                />
+            </section>
         </>
     );
 }
@@ -115,14 +126,14 @@ function MunicipalitiesListSection() {
         <section className={clsx('bg-gray/5 px-8 lg:px-16')}>
             <div
                 className={clsx(
-                    'flex flex-col gap-4 py-14',
+                    'flex flex-col gap-8 py-14',
                     'mx-auto max-w-[1200px]',
                     'md:gap-10 md:py-16',
                     'lg:py-32'
                 )}>
                 <h2
                     className={`text-left text-2xl font-bold text-dark md:text-3xl`}>
-                    Recherchez par ville
+                    Recherchez par commune
                 </h2>
 
                 <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
@@ -149,15 +160,14 @@ function MunicipalitiesListSection() {
 
 function LatestPropertiesSection() {
     use(rsc.property.getRecentProperties.fetchInfinite({ limit: 4 }));
-
     return (
         <section className="px-8 lg:px-16">
             <div
                 className={clsx(
-                    'flex flex-col gap-4 py-14',
+                    'flex flex-col gap-8 py-14',
                     'mx-auto max-w-[1200px]',
                     'md:gap-10 md:py-16',
-                    'lg:py-32 '
+                    'lg:py-32'
                 )}>
                 <h2
                     className={`text-left text-2xl font-bold text-dark md:text-3xl`}>
@@ -173,8 +183,150 @@ function LatestPropertiesSection() {
 }
 
 function SectionAboutUs() {
-    return <section></section>;
+    return (
+        <section className={clsx('px-8 lg:px-16')}>
+            <div
+                className={clsx(
+                    'flex flex-col gap-8 py-10',
+                    'mx-auto max-w-[1200px]',
+                    'md:items-center md:gap-10',
+                    'lg:py-32'
+                )}>
+                <h2
+                    className={`w-full text-left text-2xl font-bold text-dark md:text-3xl`}>
+                    Pourquoi LOCACI ?
+                </h2>
+
+                <blockquote
+                    className={clsx(
+                        'relative flex flex-col text-lg italic',
+                        'md:flex-row md:items-center'
+                    )}>
+                    <QuotesIcon
+                        className={clsx(
+                            `relative z-10 h-10 w-10 flex-shrink-0 -scale-x-100 text-dark/20`,
+                            'md:-top-4 md:left-4 md:self-start',
+                            'md:h-14 md:w-14'
+                        )}
+                        weight="fill"
+                    />
+                    <p className="relative z-20">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Earum corporis quasi aperiam dolores dicta vel,
+                        recusandae error magni nobis impedit numquam
+                        reprehenderit culpa similique, quaerat quam! Iure sint
+                        rerum voluptatem? Lorem ipsum dolor sit amet consectetur
+                        adipisicing elit. Illo, velit. Dolorem dolor earum quo
+                        id neque suscipit nesciunt aut commodi maiores!
+                        Expedita, sed. Blanditiis, provident. Voluptatum facilis
+                        libero quisquam accusantium.
+                    </p>
+                    <QuotesIcon
+                        className={clsx(
+                            `relative z-10 h-10 w-10 flex-shrink-0 text-dark/20`,
+                            'md:-bottom-4 md:right-4 md:self-end',
+                            'md:h-14 md:w-14'
+                        )}
+                        weight="fill"
+                    />
+                </blockquote>
+
+                <div className="flex items-center gap-4">
+                    <Image
+                        src={`/temomane.jpg`}
+                        alt={`photo CEO`}
+                        className={`h-[70px] w-[70px] rounded-full`}
+                        width={100}
+                        height={100}
+                    />
+
+                    <div className="flex flex-col gap-1">
+                        <strong className="text-lg font-semibold">
+                            Temomane De Sanzo
+                        </strong>
+                        <small className="text-gray">CEO de CSDEV</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
 }
+
 function SectionForWho() {
-    return <section></section>;
+    const UserContent = () => (
+        <div className="flex flex-col items-stretch gap-8 lg:items-start">
+            <div className="flex flex-col gap-4">
+                <h3
+                    className={`w-full text-left text-xl font-semibold text-dark md:text-2xl`}>
+                    Un outil de recherche
+                </h3>
+                <p className="lg:text-lg">
+                    <span className="font-semibold">LOCACI</span> est un outil
+                    digital qui vous permet de rechercher le logement qui vous
+                    convient, en fonction de critères que vous aurez saisis,
+                    parmi un catalogue de bailleurs vérifiés. Vous pouvez
+                    également générer de manière numérique vos documents
+                    essentiels au logement, notamment l&rsquo;
+                    <strong className="font-bold">Etat des lieux</strong> et
+                    le&nbsp;
+                    <strong className="font-bold">contrat de location</strong>.
+                </p>
+            </div>
+
+            <NextLinkButton href="/search" variant="primary">
+                <MagnifyIngGlassIcon className={`h-5 w-5`} weight={`bold`} />
+                <span>Commencez votre recherche</span>
+            </NextLinkButton>
+        </div>
+    );
+
+    const OwnerContent = () => (
+        <div className="flex flex-col items-stretch gap-4 lg:items-start">
+            <h3
+                className={`w-full text-left text-xl font-semibold text-dark md:text-2xl`}>
+                Un logiciel de gestion de votre logement
+            </h3>
+            <p className="lg:text-lg">
+                <span className="font-semibold">LOCACI</span> vous offre un
+                outil complet pour gérer les annonces de votre logement, créer
+                de manière automatisée les documents de votre logement et suivre
+                l'état des lieux de celui-ci.
+            </p>
+
+            <NextLinkButton href="/auth/request-owner" variant="primary">
+                <HouseIcon className={`h-5 w-5`} weight={`bold`} />
+                <span>Devenir propriétaire</span>
+            </NextLinkButton>
+        </div>
+    );
+
+    return (
+        <section className={clsx('bg-gray/5 px-8 lg:px-16')}>
+            <div
+                className={clsx(
+                    'flex flex-col gap-8 py-10',
+                    'mx-auto max-w-[1200px]',
+                    'md:items-center md:gap-10',
+                    'lg:py-32'
+                )}>
+                <h2
+                    className={`w-full text-left text-2xl font-bold text-dark md:text-3xl`}>
+                    C'est quoi LOCACI ?
+                </h2>
+
+                <SwitchUserMarketingTabs
+                    className="lg:hidden"
+                    userContent={<UserContent />}
+                    ownerContent={<OwnerContent />}
+                />
+
+                <div className="hidden lg:block">
+                    <UserContent />
+                </div>
+                <div className="hidden lg:block">
+                    <OwnerContent />
+                </div>
+            </div>
+        </section>
+    );
 }

@@ -28,6 +28,8 @@ import { RulerIcon } from '../../components/atoms/icons/ruler';
 import { MapPinIcon } from '../../components/atoms/icons/map-pin';
 import { RefreshIcon } from '../../components/atoms/icons/refresh';
 import { HorizontalDotsIcon } from '../../components/atoms/icons/horizontal-dots';
+import { QuotesIcon } from '../../components/atoms/icons/quotes';
+import { HouseIcon } from '../../components/atoms/icons/house';
 
 // types
 import type {
@@ -169,6 +171,22 @@ const Template: ComponentStory<IconComponent> = args => (
         <div className="flex flex-col items-center gap-2">
             <HorizontalDotsIcon className="h-10 w-10 " />
             <span>HorizontalDotsIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <QuotesIcon className="h-10 w-10 " />
+            <span>QuotesIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <QuotesIcon className="h-10 w-10" weight="fill" />
+            <span>QuotesIcon (fill)</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <HouseIcon className="h-10 w-10" />
+            <span>HouseIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <HouseIcon className="h-10 w-10" weight="fill" />
+            <span>HouseIcon (fill)</span>
         </div>
     </div>
 );
