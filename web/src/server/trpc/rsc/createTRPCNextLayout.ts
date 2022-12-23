@@ -31,8 +31,12 @@ export type DecorateProcedure<TProcedure extends AnyProcedure> =
                   input: inferProcedureInput<TProcedure>
               ): Promise<inferProcedureOutput<TProcedure>>;
               fetchInfinite(
-                  input: inferProcedureInput<TProcedure>
-              ): Promise<inferProcedureOutput<TProcedure>>;
+                  input: Omit<inferProcedureInput<TProcedure>, 'cursor'>
+              ): Promise<{
+                  pages: Array<inferProcedureOutput<TProcedure>>;
+                  // this type is how it is defined on @tanstack/react-query
+                  pageParams: unknown[];
+              }>;
           }
         : never;
 
