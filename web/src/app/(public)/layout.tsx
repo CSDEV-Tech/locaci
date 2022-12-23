@@ -33,8 +33,8 @@ export default function PublicLayout({ children }: LayoutProps) {
                                 label: 'Qui sommes-nous ?'
                             },
                             {
-                                href: '#', // the definitive URL will be => /faq#how-it-works
-                                label: 'Comment ça marche ?'
+                                href: '#', // the definitive URL will be => /contact
+                                label: 'Contactez-nous'
                             }
                         ]
                     },
