@@ -49,14 +49,13 @@ function HeaderSection() {
             <div className="relative z-20 flex flex-col gap-4 md:gap-8">
                 <h1
                     className={`px-8 text-center text-3xl font-bold text-white md:text-4xl`}>
-                    Des logements adaptés à tous les besoins, disponibles en
-                    quelques clics
+                    Des logements pour tout le monde, en toute confiance
                 </h1>
 
                 <h2 className="text-center text-base font-medium text-white md:hidden">
-                    Trouvez votre prochaine maison - qu'il s'agisse d'un
-                    appartement, d'un studio, meublé ou non meublé - tout en un
-                    seul et même endroit
+                    Nous nous sommes associés avec plusieurs propriétaires
+                    certifiés pour vous aider à trouver votre prochaine maison -
+                    démarrez votre recherche ici&nbsp;
                     <span role={'img'} aria-label="Doigt pointant vers le bas">
                         👇
                     </span>
