@@ -243,9 +243,10 @@ export const geoRouter = t.router({
                     name: true,
                     id: true,
                     previewPhotoURL: true,
-                    _count: {
-                        select: {
-                            Property: true
+                    properties: {
+                        where: {
+                            activeForListing: true,
+                            archived: false
                         }
                     }
                 }
@@ -253,7 +254,8 @@ export const geoRouter = t.router({
             .then(municipalities =>
                 municipalities.map(m => ({
                     ...m,
-                    id: new Uuid(m.id).short()
+                    id: new Uuid(m.id).short(),
+                    propertyCount: m.properties.length
                 }))
             );
 

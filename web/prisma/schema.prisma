@@ -188,6 +188,6 @@ model Municipality {
     name            String
     city            City       @relation(fields: [cityId], references: [id])
     cityId          String     @db.Uuid
-    Property        Property[]
+    properties      Property[]
     previewPhotoURL String?
 }

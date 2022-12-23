@@ -78,7 +78,7 @@ export const TextInput = React.forwardRef<
                 <div
                     className={clsx(
                         className,
-                        'rounded-lg border px-4 pt-4 pb-2',
+                        'rounded-lg border px-4 pt-5 pb-2',
                         {
                             'bg-white': !disabled,
                             'bg-lightgray': disabled,

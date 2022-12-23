@@ -67,7 +67,7 @@ export function PropertyCard({
                 />
             </div>
 
-            <div className="flex h-full flex-col p-4">
+            <div className="flex h-full flex-col justify-between p-4">
                 <Link
                     href={href}
                     Custom={customLink}
@@ -111,7 +111,7 @@ export function PropertyCard({
                     </div>
                 </div>
 
-                <div className="mt-4 flex items-center ">
+                <div className="mt-4 flex items-center">
                     <h4 className="">
                         <span className="text-lg font-semibold text-dark">
                             {formatNumberToFCFA(price)}&nbsp;
