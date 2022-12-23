@@ -48,6 +48,7 @@ jobs:
           CF_ACCESS_KEY_ID=${{ secrets.CF_ACCESS_KEY_ID }}
           CF_ACCESS_KEY_SECRET=${{ secrets.CF_ACCESS_KEY_SECRET }}
           CF_IMAGES_BUCKET_NAME=${{ secrets.CF_IMAGES_BUCKET_NAME }}
+          NEXT_REVALIDATE_SECRET=${{ secrets.NEXT_REVALIDATE_SECRET }}
           EOF
 
           scp -P $DEPLOY_PORT ./.env $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/web/.env
