@@ -11,7 +11,7 @@ import { ErrorScreen } from '~/features/shared/components/error-screen';
 import { getRoleURL } from '~/utils/functions';
 
 // types
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 
 export default function CallbackPage() {
     const searchParams = useSearchParams();

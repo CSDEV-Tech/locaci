@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Button } from '@locaci/ui/components/atoms/button';
 
 // utils
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 import { useRouter } from 'next/navigation';
 import { clsx } from '@locaci/ui/lib/functions';
 

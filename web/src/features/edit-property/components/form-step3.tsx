@@ -8,7 +8,7 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
 import dynamic from 'next/dynamic';
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 import { updatePropertyStep2Schema } from '~/validation/property-schema';
 
 // types

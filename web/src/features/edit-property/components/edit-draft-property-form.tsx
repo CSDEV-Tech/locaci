@@ -15,7 +15,7 @@ import { FormStep8 } from './form-step8';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
-import { t } from '~/utils/trpc-rq-hooks';
+import { t } from '~/app/trpc-client-provider';
 import { useRouter } from 'next/navigation';
 
 // types
