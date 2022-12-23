@@ -63,7 +63,8 @@ export function Footer({ className, links, customLink }: FooterProps) {
                     )}>
                     <ul className="flex flex-col gap-4 md:flex-row md:items-center">
                         <li className="text-gray">
-                            &copy; {(new Date).getFullYear()} locaci.net, Tous droits réservés
+                            &copy; {new Date().getFullYear()} locaci.net by
+                            CSDEV, Tous droits réservés
                         </li>
                         <li>
                             <Link

@@ -54,12 +54,12 @@ export function PropertyCard({
             className={clsx(
                 className,
                 'inline-flex flex-col',
-                'relative w-full max-w-[345px]'
+                'relative w-full'
             )}
             animated>
-            <div className="flex h-[175px] w-full max-w-[345px] flex-shrink-0 items-center justify-center rounded-t-lg bg-gray/20">
+            <div className="flex h-[175px] w-full flex-shrink-0 items-center justify-center rounded-t-lg bg-gray/20">
                 <Img
-                    width={345}
+                    width={370}
                     height={175}
                     alt={title}
                     src={coverURL}
