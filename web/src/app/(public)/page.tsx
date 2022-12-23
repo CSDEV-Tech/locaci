@@ -171,3 +171,10 @@ function LatestPropertiesSection() {
         </section>
     );
 }
+
+function SectionAboutUs() {
+    return <section></section>;
+}
+function SectionForWho() {
+    return <section></section>;
+}
