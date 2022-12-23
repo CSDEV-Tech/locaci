@@ -15,6 +15,7 @@ import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 
 // utils
 import headerImgUrl from '~/assets/img/header-img.jpg';
+import ceoImgUrl from '~/assets/img/temomane.jpg';
 import { rsc } from '~/server/trpc/rsc';
 import React, { cache, use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
@@ -242,7 +243,7 @@ function SectionAboutUs() {
 
                 <div className="flex items-center gap-4">
                     <Image
-                        src={`/temomane.jpg`}
+                        src={ceoImgUrl}
                         alt={`photo CEO`}
                         className={`h-[70px] w-[70px] rounded-full`}
                         width={100}

@@ -73,6 +73,8 @@ jobs:
 
           # Sync standalone output
           rsync -a web/.next/standalone/ standalone/
+          mkdir -p standalone/.next
+          rsync -a web/.next/static/ standalone/.next/static
 
           # Replace port variable to support multiport with pm2 cluster_mode
           sed -i 's/parseInt(process.env.PORT, 10)/parseInt(process.env.PORT, 10) + parseInt(process.env.INSTANCE_ID, 10)/g' standalone/server.js
