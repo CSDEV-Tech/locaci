@@ -16,7 +16,7 @@ import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 // utils
 import headerImgUrl from '~/assets/img/header-img.jpg';
 import { rsc } from '~/server/trpc/rsc';
-import { cache, use } from 'react';
+import React, { cache, use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
 
 // this page should be static and only be revalidated each day
@@ -154,13 +154,19 @@ function MunicipalitiesListSection() {
             </div>
         </section>
     ) : (
-        <></>
+        // We use a hidden div instead of a fragment because React-Server-components cannot parse them
+        <div hidden></div>
     );
 }
 
 function LatestPropertiesSection() {
-    use(rsc.property.getRecentProperties.fetchInfinite({ limit: 4 }));
-    return (
+    const { pages } = use(
+        rsc.property.getRecentProperties.fetchInfinite({
+            limit: 4
+        })
+    );
+
+    return pages[0].properties.length > 0 ? (
         <section className="px-8 lg:px-16">
             <div
                 className={clsx(
@@ -179,6 +185,9 @@ function LatestPropertiesSection() {
                 </HydrateClient>
             </div>
         </section>
+    ) : (
+        // We use a hidden div instead of a fragment because React-Server-components cannot parse them
+        <div hidden></div>
     );
 }
 
