@@ -62,7 +62,7 @@ export function MunicipalityCard({
                 <div className="flex h-full items-center">
                     <ArrowRightIcon
                         weight="bold"
-                        className={`hidden h-5 w-5 text-primary group-hover:block group-active:block`}
+                        className={`hidden h-5 w-5 text-primary group-focus-within:block group-hover:block group-active:block`}
                     />
                 </div>
             </div>

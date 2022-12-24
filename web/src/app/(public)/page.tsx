@@ -264,7 +264,10 @@ function SectionForWho() {
             <div className="flex flex-col gap-4">
                 <h3
                     className={`w-full text-left text-xl font-semibold text-dark md:text-2xl`}>
-                    Un outil de recherche
+                    Un outil de recherche&nbsp;
+                    <span className="hidden text-primary lg:inline">
+                        pour les futurs locataires
+                    </span>
                 </h3>
                 <p className="lg:text-lg">
                     <span className="font-semibold">LOCACI</span> est un outil
@@ -290,7 +293,10 @@ function SectionForWho() {
         <div className="flex flex-col items-stretch gap-4 lg:items-start">
             <h3
                 className={`w-full text-left text-xl font-semibold text-dark md:text-2xl`}>
-                Un logiciel de gestion de votre logement
+                Un logiciel de gestion de votre logement&nbsp;
+                <span className="hidden text-primary lg:inline">
+                    pour les propriétaires
+                </span>
             </h3>
             <p className="lg:text-lg">
                 <span className="font-semibold">LOCACI</span> vous offre un
