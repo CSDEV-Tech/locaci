@@ -154,10 +154,8 @@ function MunicipalitiesListSection() {
                 </ul>
             </div>
         </section>
-    ) : (
-        // We use a hidden div instead of a fragment because React-Server-components cannot parse them
-        <div hidden></div>
-    );
+    ) : // We use null because react server components cannot serialize Fragments
+    null;
 }
 
 function LatestPropertiesSection() {
@@ -186,10 +184,8 @@ function LatestPropertiesSection() {
                 </HydrateClient>
             </div>
         </section>
-    ) : (
-        // We use a hidden div instead of a fragment because React-Server-components cannot parse them
-        <div hidden></div>
-    );
+    ) : // We use null because react server components cannot serialize Fragments
+    null;
 }
 
 function SectionAboutUs() {
