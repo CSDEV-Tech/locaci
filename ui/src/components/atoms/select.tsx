@@ -5,7 +5,7 @@ import { CaretDownIcon } from './icons/caret-down';
 import { CheckCircleIcon } from './icons/check-circle';
 
 export type SelectProps = {
-    value?: string;
+    value?: string | null;
     onChange: (newValue: string) => void;
     options?: Array<{ value: string; label: string }>;
     label: string;
@@ -41,7 +41,7 @@ export function Select({
             <div
                 className={clsx(
                     className,
-                    'group relative w-full rounded-md border px-4 pt-1 pb-2',
+                    'group relative w-full rounded-md border px-4 pt-5 pb-2',
                     {
                         'bg-white': !disabled,
                         'cursor-not-allowed bg-lightgray': disabled,
@@ -57,7 +57,7 @@ export function Select({
                     name={name}>
                     {({ open }) => (
                         <>
-                            <Listbox.Label className="text-sm font-normal text-gray">
+                            <Listbox.Label className="absolute left-4 top-1.5 text-sm font-normal text-gray">
                                 {label}
                                 {required && (
                                     <span

@@ -5,10 +5,17 @@ import { NextLink } from '~/features/shared/components/next-link';
 import { LoginButton } from '~/features/public/components/login-button';
 import { HeaderSearchButton } from '~/features/public/components/header-search-button';
 
+// utils
+import { getAllMunicipalities } from '~/server/utils';
+import { use } from 'react';
+
 // types
 import type { LayoutProps } from '~/types';
 
 export default function PublicLayout({ children }: LayoutProps) {
+    const municipalitiesPromise = getAllMunicipalities().then(result =>
+        result.map(m => ({ label: m.name, value: m.id }))
+    );
     return (
         <>
             <Header
@@ -17,7 +24,11 @@ export default function PublicLayout({ children }: LayoutProps) {
                 logoAltText="Logo LOCACI"
                 logoUrlDesktop="/logo.svg"
                 logoUrlMobile="/favicon.svg"
-                leadingElement={<HeaderSearchButton />}
+                leadingElement={
+                    <HeaderSearchButton
+                        defaultMunicipalities={use(municipalitiesPromise)}
+                    />
+                }
                 trailingElement={<LoginButton />}
             />
             <main>{children}</main>
