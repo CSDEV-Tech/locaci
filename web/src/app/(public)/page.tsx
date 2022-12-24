@@ -17,8 +17,9 @@ import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 import headerImgUrl from '~/assets/img/header-img.jpg';
 import ceoImgUrl from '~/assets/img/temomane.jpg';
 import { rsc } from '~/server/trpc/rsc';
-import React, { cache, use } from 'react';
+import React, { use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
+import { getAllMunicipalities } from '~/server/utils';
 
 // this page should be static and only be revalidated each day
 export const dynamic = 'force-static',
@@ -48,8 +49,6 @@ export default async function HomePage() {
         </>
     );
 }
-
-const getAllMunicipalities = cache(() => rsc.geo.getAllMunicipalities.fetch());
 
 function HeaderSection() {
     const municipalitiesPromise = getAllMunicipalities().then(result =>
