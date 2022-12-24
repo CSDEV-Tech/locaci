@@ -47,7 +47,7 @@
         "dist/components/**/*.js"
     ],
     "scripts": {
-        "storybook": "start-storybook -p 6006",
+        "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
         "build-storybook": "build-storybook",
         "build": "esbuild ./src/**/*.ts ./src/components/**/*.tsx  ./src/components/**/icons/*.tsx  --outdir=./dist --format=esm --tree-shaking=true && tsc --emitDeclarationOnly",
         "dev": "nodemon"
