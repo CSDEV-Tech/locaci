@@ -17,8 +17,10 @@ export function SwitchUserMarketingTabs({
         <>
             <Tabs className={className}>
                 <Tabs.Header>
-                    <Tabs.HeaderItem>Futurs locataires</Tabs.HeaderItem>
-                    <Tabs.HeaderItem>Propriétaires</Tabs.HeaderItem>
+                    <Tabs.HeaderItem>
+                        Pour les futurs locataires
+                    </Tabs.HeaderItem>
+                    <Tabs.HeaderItem>Pour les propriétaires</Tabs.HeaderItem>
                 </Tabs.Header>
 
                 <Tabs.Body>
