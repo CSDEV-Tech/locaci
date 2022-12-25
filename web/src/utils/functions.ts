@@ -1,5 +1,5 @@
-import type { RentType } from './../features/shared/types';
-import type { Role } from '@prisma/client';
+import type { RentType, Role } from './../features/shared/types';
+import { env } from '~/env/client.mjs';
 
 /**
  * get the title for a property
@@ -229,6 +229,22 @@ export function linkWithSlash(link: string): string | undefined {
     return link !== undefined ? (link.endsWith('/') ? link : `${link}/`) : link;
 }
 
+/**
+ * Get the image URL wether it is remote or not
+ *
+ * @example
+ *      getAbsoluteURLForImage(`/logo.svg`) // https://locaci.net/logo.svg
+ *      getAbsoluteURLForImage(`https://locaci.fredkiss.dev/logo.svg`) // https://locaci.fredkiss.dev/logo.svg
+ * @param url
+ */
+export function getAbsoluteURLForImage(imageURL: string) {
+    if (imageURL.startsWith('https')) {
+        return imageURL;
+    }
+
+    return `${env.NEXT_PUBLIC_SITE_URL}${imageURL}`;
+}
+
 export function getRoleURL(role: Role) {
     switch (role) {
         case 'ADMIN':
@@ -238,4 +254,18 @@ export function getRoleURL(role: Role) {
         default:
             return '/profile';
     }
+}
+
+/**
+ * capitalize a string
+ *
+ * @example
+ *      capitalize('abidjan'); // => "Abidjan"
+ * @param str
+ */
+export function capitalize(str: string) {
+    const firstLetter = str.charAt(0);
+    const rest = str.slice(1);
+
+    return `${firstLetter.toUpperCase()}${rest}`;
 }

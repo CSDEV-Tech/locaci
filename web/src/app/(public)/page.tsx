@@ -17,7 +17,7 @@ import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 import headerImgUrl from '~/assets/img/header-img.jpg';
 import ceoImgUrl from '~/assets/img/temomane.jpg';
 import { rsc } from '~/server/trpc/rsc';
-import React, { use } from 'react';
+import { use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getAllMunicipalities } from '~/server/utils';
 
@@ -82,7 +82,7 @@ function HeaderSection() {
                         certifiés pour vous aider à trouver votre prochaine
                         maison
                     </span>
-                    <span className="lg:hidden">-</span>
+                    <span className="lg:hidden"> - </span>
                     <span>
                         Démarrez votre recherche ici&nbsp;
                         <span
@@ -109,8 +109,11 @@ function HeaderSection() {
             {/* Bg image */}
             <Image
                 src={headerImgUrl}
+                priority
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 alt={`Image d'entête`}
-                className={`absolute inset-0 h-full object-cover object-center`}
+                className={`absolute inset-0 h-full w-full object-cover object-center`}
                 placeholder={'blur'}
             />
         </section>

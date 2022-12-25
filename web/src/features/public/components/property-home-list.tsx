@@ -14,7 +14,7 @@ import { t } from '~/app/trpc-client-provider';
 import { getPropertyTitle } from '~/utils/functions';
 
 // types
-import type { ListingImage } from '~/types';
+import type { ListingImage } from '~/features/shared/types';
 
 export function PropertyHomeList() {
     const { data, hasNextPage, isFetching, fetchNextPage } =

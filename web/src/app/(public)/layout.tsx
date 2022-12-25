@@ -22,6 +22,7 @@ export default function PublicLayout({ children }: LayoutProps) {
                 logoHref={`/`}
                 customLink={NextLink}
                 logoAltText="Logo LOCACI"
+                className="lg:shadow-md"
                 logoUrlDesktop="/logo.svg"
                 logoUrlMobile="/favicon.svg"
                 leadingElement={
@@ -33,7 +34,6 @@ export default function PublicLayout({ children }: LayoutProps) {
             />
             <main>{children}</main>
             <Footer
-                className="stiky bottom-0"
                 customLink={NextLink}
                 links={[
                     {

@@ -7,6 +7,9 @@ export const RentTypes: Record<RentType, string> = {
     SHORT_TERM: 'Location court-séjour (meublée)'
 };
 
+// ROLES
+export type Role = 'HOUSING_APPLICANT' | 'PROPERTY_OWNER' | 'ADMIN';
+
 // rooms
 export type RoomType =
     | 'BEDROOM'
@@ -57,3 +60,9 @@ export const AmenityTypes: Record<PredefinedAmenityTypes, string> = {
     TWIN_BED: 'Double lit ou Lit supperposé',
     CABLE: 'TV Satellite (ex: Canal +)'
 } as const;
+
+// listing Image
+export type ListingImage = {
+    uri: string;
+    name: string;
+};
