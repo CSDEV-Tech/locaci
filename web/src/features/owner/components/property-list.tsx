@@ -7,10 +7,10 @@ import { PropertyDraftCard } from './property-draft-card';
 
 // utils
 import { t } from '~/app/trpc-client-provider';
+import { getPropertyTitle } from '~/utils/functions';
 
 // types
-import type { ListingImage } from '~/types';
-import { getPropertyTitle } from '~/utils/functions';
+import type { ListingImage } from '~/features/shared/types';
 
 export function PropertyList() {
     const { data } = t.owner.draft.getAll.useQuery(undefined, {

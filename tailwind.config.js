@@ -7,10 +7,16 @@ module.exports = {
                 'translate-in': {
                     '0%': { transform: 'translate(-200%, 0)' },
                     '100%': { transform: 'translate(0%, 0)' }
+                },
+                shimmer: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '60%': { transform: 'translateX(100%)' },
+                    '100%': { transform: 'translateX(100%)' }
                 }
             },
             animation: {
-                'translate-in': 'translate-in 0.3s 0.1s both'
+                'translate-in': 'translate-in 0.3s 0.1s both',
+                shimmer: 'shimmer 1.6s linear 0.5s infinite'
             },
             boxShadow: {
                 card: '0px 20px 24px rgba(153, 155, 168, 0.15);'
@@ -33,7 +39,7 @@ module.exports = {
                 },
                 dark: {
                     DEFAULT: `#3a3335`,
-                    75: `#6f6165`,
+                    75: `#6f6165`
                 },
                 gray: {
                     DEFAULT: `#908E8E`

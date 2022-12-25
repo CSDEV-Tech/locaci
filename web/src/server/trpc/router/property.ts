@@ -46,5 +46,29 @@ export const propertyRouter = t.router({
                 })),
                 nextCursor
             };
+        }),
+    getPropertyDetail: t.procedure
+        .input(
+            z.object({
+                uid: z.string()
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const uid = Uuid.fromShort(input.uid);
+
+            return ctx.prisma.property.findFirst({
+                where: {
+                    id: uid.toString(),
+                    activeForListing: true,
+                    archived: false
+                },
+                include: {
+                    amenities: true,
+                    city: true,
+                    municipality: true,
+                    owner: true,
+                    rooms: true
+                }
+            });
         })
 });

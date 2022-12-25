@@ -1,11 +1,13 @@
 import { env } from '~/env/server.mjs';
-import { linkWithSlash } from '~/utils/functions';
+import { getAbsoluteURLForImage, linkWithSlash } from '~/utils/functions';
 
 export type MetaProps = {
     title?: string;
     description?: string;
     imageURL?: string;
     pathname?: string;
+    type?: 'website' | 'article';
+    articlePublishedAt?: Date;
 };
 
 export function Meta(props: MetaProps) {
@@ -16,11 +18,14 @@ export function Meta(props: MetaProps) {
         "Découvrez le premier site de recherche et gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.";
 
     const metaImgURL = props.imageURL
-        ? `${env.NEXT_PUBLIC_SITE_URL}${props.imageURL}`
+        ? getAbsoluteURLForImage(props.imageURL)
         : `${env.NEXT_PUBLIC_SITE_URL}/logo.svg`;
+
     const url = `${env.NEXT_PUBLIC_SITE_URL}${linkWithSlash(
         props.pathname ?? ''
     )}`;
+
+    const contentType = props.type ?? 'website';
 
     return (
         <>
@@ -28,9 +33,15 @@ export function Meta(props: MetaProps) {
             <title>{`${title} | LOCACI`}</title>
             <link rel="canonical" href={url} />
             <meta name="description" content={description} />
+            {props.articlePublishedAt && (
+                <meta
+                    name="article:published_time"
+                    content={props.articlePublishedAt.toISOString()}
+                />
+            )}
 
             {/*Open Graph / Facebook */}
-            <meta property="og:type" content="website" />
+            <meta property="og:type" content={contentType} />
             <meta property="og:url" content={url} />
             <meta property="og:image" content={metaImgURL} />
             <meta property="og:title" content={`${title} | LOCACI`} />
