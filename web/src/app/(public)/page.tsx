@@ -190,76 +190,6 @@ function LatestPropertiesSection() {
     null;
 }
 
-function SectionAboutUs() {
-    return (
-        <section className={clsx('px-8 lg:px-16')}>
-            <div
-                className={clsx(
-                    'flex flex-col gap-8 py-10',
-                    'mx-auto max-w-[1200px]',
-                    'md:items-center md:gap-10',
-                    'lg:py-32'
-                )}>
-                <h2
-                    className={`w-full text-left text-2xl font-bold text-dark md:text-3xl`}>
-                    Pourquoi LOCACI ?
-                </h2>
-
-                <blockquote
-                    className={clsx(
-                        'relative flex flex-col text-lg italic',
-                        'md:flex-row md:items-center'
-                    )}>
-                    <QuotesIcon
-                        className={clsx(
-                            `relative z-10 h-10 w-10 flex-shrink-0 -scale-x-100 text-dark/20`,
-                            'md:-top-4 md:left-4 md:self-start',
-                            'md:h-14 md:w-14'
-                        )}
-                        weight="fill"
-                    />
-                    <p className="relative z-20">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Earum corporis quasi aperiam dolores dicta vel,
-                        recusandae error magni nobis impedit numquam
-                        reprehenderit culpa similique, quaerat quam! Iure sint
-                        rerum voluptatem? Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit. Illo, velit. Dolorem dolor earum quo
-                        id neque suscipit nesciunt aut commodi maiores!
-                        Expedita, sed. Blanditiis, provident. Voluptatum facilis
-                        libero quisquam accusantium.
-                    </p>
-                    <QuotesIcon
-                        className={clsx(
-                            `relative z-10 h-10 w-10 flex-shrink-0 text-dark/20`,
-                            'md:-bottom-4 md:right-4 md:self-end',
-                            'md:h-14 md:w-14'
-                        )}
-                        weight="fill"
-                    />
-                </blockquote>
-
-                <div className="flex items-center gap-4">
-                    <Image
-                        src={ceoImgUrl}
-                        alt={`photo CEO`}
-                        className={`h-[70px] w-[70px] rounded-full`}
-                        width={100}
-                        height={100}
-                    />
-
-                    <div className="flex flex-col gap-1">
-                        <strong className="text-lg font-semibold">
-                            Temomane De Sanzo
-                        </strong>
-                        <small className="text-gray">CEO de CSDEV</small>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
 function SectionForWho() {
     const UserContent = () => (
         <div className="flex flex-col items-stretch gap-8 lg:items-start">
@@ -272,15 +202,14 @@ function SectionForWho() {
                     </span>
                 </h3>
                 <p className="lg:text-lg">
-                    <span className="font-semibold">LOCACI</span> est un outil
-                    digital qui vous permet de rechercher le logement qui vous
-                    convient, en fonction de critères que vous aurez saisis,
-                    parmi un catalogue de bailleurs vérifiés. Vous pouvez
-                    également générer de manière numérique vos documents
-                    essentiels au logement, notamment l&rsquo;
-                    <strong className="font-bold">Etat des lieux</strong> et
-                    le&nbsp;
-                    <strong className="font-bold">contrat de location</strong>.
+                    <span className="font-semibold">LOCACI</span> une
+                    application web créée par CSDEV TECHNOLOGY qui vous permet
+                    de rechercher le logement qui vous convient, en fonction de
+                    critères que vous aurez saisis, parmi un catalogue de
+                    bailleurs vérifiés. LOCACI vous permet aussi de consulter
+                    les détails d'un appartement occupé par le dernier
+                    locataire, ce qui vous permet de mieux appréhender le bien
+                    que vous souhaitez louer.
                 </p>
             </div>
 
@@ -339,6 +268,97 @@ function SectionForWho() {
                 </div>
                 <div className="hidden lg:block">
                     <OwnerContent />
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function SectionAboutUs() {
+    return (
+        <section className={clsx('px-8 lg:px-16')}>
+            <div
+                className={clsx(
+                    'flex flex-col gap-8 py-10',
+                    'mx-auto max-w-[1200px]',
+                    'md:items-center md:gap-10',
+                    'lg:py-32'
+                )}>
+                <h2
+                    className={`w-full text-left text-2xl font-bold text-dark md:text-3xl`}>
+                    Pourquoi LOCACI ?
+                </h2>
+
+                <blockquote
+                    className={clsx(
+                        'relative flex flex-col text-lg italic',
+                        'md:flex-row md:items-center'
+                    )}>
+                    <QuotesIcon
+                        className={clsx(
+                            `relative z-10 h-10 w-10 flex-shrink-0 -scale-x-100 text-dark/20`,
+                            'md:-top-4 md:left-4 md:self-start',
+                            'md:h-14 md:w-14'
+                        )}
+                        weight="fill"
+                    />
+                    <div className="relative z-20 flex flex-col gap-1.5">
+                        <p>
+                            Trouver un loyer qui me convienne a été difficile.
+                            J'ai dû me battre pour en trouver un, en passant par
+                            le filtrage des annonces sur Facebook et les
+                            recommandations de bouche à oreille, puis en
+                            finissant par les tracas des démarcheurs qui ne
+                            tenaient pas compte de mes conditions.
+                        </p>
+                        <p>
+                            Finalement, j'ai réussi à trouver un appartement qui
+                            correspondait à mes critères à 50%. J'ai discuté de
+                            cette expérience avec un ami et nous avons eu l'idée
+                            de créer des algorithmes et des solutions pour aider
+                            les locataires à trouver un logement facilement et
+                            sans stress, en utilisant un outil pratique et
+                            utile.
+                        </p>
+                        <p>
+                            Pour cela, nous n'avons pas oublié les bailleurs car
+                            faciliter la recherche des logements pour les
+                            locataires passe par la création d'un outil efficace
+                            pour les bailleurs, un outil qui leur donnerai la
+                            possibilité de rendre plus visible leur logements et
+                            leur permettrait de gérer efficacement leur
+                            propriété.
+                        </p>
+                        <p>
+                            De là est né&nbsp;
+                            <strong className="font-bold">LOCACI</strong>.
+                        </p>
+                    </div>
+                    <QuotesIcon
+                        className={clsx(
+                            `relative z-10 h-10 w-10 flex-shrink-0 text-dark/20`,
+                            'md:-bottom-4 md:right-4 md:self-end',
+                            'md:h-14 md:w-14'
+                        )}
+                        weight="fill"
+                    />
+                </blockquote>
+
+                <div className="flex items-center gap-4">
+                    <Image
+                        src={ceoImgUrl}
+                        alt={`photo CEO`}
+                        className={`h-[70px] w-[70px] rounded-full`}
+                        width={100}
+                        height={100}
+                    />
+
+                    <div className="flex flex-col gap-1">
+                        <strong className="text-lg font-semibold">
+                            Temomane De Sanzo
+                        </strong>
+                        <small className="text-gray">CEO de CSDEV</small>
+                    </div>
                 </div>
             </div>
         </section>
