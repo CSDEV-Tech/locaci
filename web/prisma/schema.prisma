@@ -64,17 +64,23 @@ enum AmenityType {
     WIFI
     CABLE
     HOT_WATER
-    TWIN_BED
-    RADIATOR
+    WASHING_MACHINE
+    DRYER_MACHINE
+    DESKTOP
+    HEATING
+    AIR_CONDITIONNER
     OTHER
+    REFREGIRATOR
+    OVEN
+    MICROWAVE
 }
 
 model Amenity {
     id         String      @id @default(uuid()) @db.Uuid
     type       AmenityType
     name       String?
-    Property   Property?   @relation(fields: [propertyId], references: [id])
-    propertyId String?     @db.Uuid
+    property   Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+    propertyId String      @db.Uuid
 }
 
 enum RentType {
