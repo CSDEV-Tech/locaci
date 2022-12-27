@@ -44,7 +44,7 @@ export default function Head({ params }: HeadProps<{ uid: string }>) {
             description={property?.description}
             type={`article`}
             articlePublishedAt={property?.createdAt}
-            imageURL={(property?.images as Array<ListingImage>)[0]?.uri}
+            imageURL={(property?.images as Array<ListingImage>)?.[0]?.uri}
         />
     );
 }
