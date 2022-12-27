@@ -99,9 +99,8 @@ export default function Map({ localityData: data, boundingbox }: MapProps) {
                     }
                 />
             </template>
-            <div className="relative h-[25rem] bg-primary-15 md:h-[32rem]">
-                <div ref={mapRef} className={`h-full w-full`} />
-            </div>
+
+            <div ref={mapRef} className={`h-full w-full`} />
         </>
     );
 }
