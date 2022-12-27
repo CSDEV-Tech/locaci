@@ -306,28 +306,22 @@ function SectionAboutUs() {
                         <p>
                             Trouver un loyer qui me convienne a été difficile.
                             J'ai dû me battre pour en trouver un, en passant par
-                            le filtrage des annonces sur Facebook et les
-                            recommandations de bouche à oreille, puis en
-                            finissant par les tracas des démarcheurs qui ne
-                            tenaient pas compte de mes conditions.
+                            les tracas des démarcheurs qui ne tenaient pas
+                            compte de mes conditions.
                         </p>
                         <p>
-                            Finalement, j'ai réussi à trouver un appartement qui
-                            correspondait à mes critères à 50%. J'ai discuté de
-                            cette expérience avec un ami et nous avons eu l'idée
-                            de créer des algorithmes et des solutions pour aider
-                            les locataires à trouver un logement facilement et
-                            sans stress, en utilisant un outil pratique et
-                            utile.
+                            j'ai pu finalement réussir à trouver un appartement
+                            qui correspondait à mes critères mais seulement à
+                            50%. J'ai discuté de cette expérience avec un ami et
+                            de ce fait nous nous eu l'idée de créer des
+                            algorithmes et des solutions pour aider les
+                            locataires à trouver un logement facilement et sans
+                            stress, en utilisant un outil pratique et utile.
                         </p>
                         <p>
-                            Pour cela, nous n'avons pas oublié les bailleurs car
-                            faciliter la recherche des logements pour les
-                            locataires passe par la création d'un outil efficace
-                            pour les bailleurs, un outil qui leur donnerai la
-                            possibilité de rendre plus visible leur logements et
-                            leur permettrait de gérer efficacement leur
-                            propriété.
+                            Et nous n'avons pas oublié les bailleurs en leur
+                            donnant un outil efficace pour leur permettre de
+                            gérer efficacement leur propriété.
                         </p>
                         <p>
                             De là est né&nbsp;
@@ -355,7 +349,7 @@ function SectionAboutUs() {
 
                     <div className="flex flex-col gap-1">
                         <strong className="text-lg font-semibold">
-                            Temomane De Sanzo
+                            Temomane DE SANZO
                         </strong>
                         <small className="text-gray">CEO de CSDEV</small>
                     </div>
