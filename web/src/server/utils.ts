@@ -1,3 +1,5 @@
+// these functions should only be called inside server-components
+import 'server-only';
 import { cache } from 'react';
 import { rsc } from './trpc/rsc';
 import { prisma } from './db/client';

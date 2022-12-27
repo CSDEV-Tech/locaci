@@ -135,6 +135,7 @@ importers:
       react-error-boundary: ^3.1.4
       react-hook-form: ^7.39.5
       react-hot-toast: ^2.3.0
+      server-only: ^0.0.1
       sharp: ^0.31.2
       short-uuid: ^4.2.2
       superjson: ^1.11.0
@@ -164,6 +165,7 @@ importers:
       react-error-boundary: 3.1.4_react@18.2.0
       react-hook-form: 7.40.0_react@18.2.0
       react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
+      server-only: 0.0.1
       sharp: 0.31.2
       short-uuid: 4.2.2
       superjson: 1.11.0
@@ -17516,6 +17518,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /server-only/0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+    dev: false
 
   /set-blocking/2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
