@@ -36,7 +36,7 @@ const nextConfig = defineNextConfig({
     output: 'standalone',
     images: {
         deviceSizes: [320, 640, 1080, 1440],
-        imageSizes: [128, 256, 384],
+        imageSizes: [64, 128, 256, 384],
         minimumCacheTTL: 31 * 24 * 60 * 60, // 31 days
         remotePatterns: [
             {

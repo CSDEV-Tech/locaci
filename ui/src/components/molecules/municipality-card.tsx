@@ -34,10 +34,10 @@ export function MunicipalityCard({
                 'group'
             )}
             animated>
-            <div className="h-[70px] w-[70px] flex-shrink-0">
+            <div className="h-[64px] w-[64px] flex-shrink-0">
                 <Img
-                    width={90}
-                    height={90}
+                    width={64}
+                    height={64}
                     alt={name}
                     src={coverURL}
                     className="h-full w-full rounded-lg object-cover object-center"
