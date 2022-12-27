@@ -28,7 +28,7 @@ export function HeroImageGallery({ images, className }: HeroImageGalleryProps) {
                     'relative grid h-[250px]',
                     'md:h-[320px] md:grid-cols-3 md:gap-1',
                     'lg:h-[500px] lg:grid-cols-5',
-                    'lg:gap-2 lg:px-8'
+                    'lg:gap-2 lg:px-8 xl:px-0'
                 )}>
                 <div
                     className={clsx(

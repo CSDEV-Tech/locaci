@@ -37,11 +37,12 @@ export function EditPropertySuccessModal({
 
                     <h2 className="text-center text-lg text-gray">
                         Vous pouvez voir le résultat&nbsp;
-                        <NextLink
+                        <a
+                            target={`_blank`}
                             href={`/properties/${propertyUid}`}
                             className={`font-semibold text-secondary underline`}>
                             En cliquant sur ce lien
-                        </NextLink>
+                        </a>
                     </h2>
 
                     <Button variant={`dark`} onClick={onClose}>

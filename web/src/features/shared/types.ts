@@ -44,21 +44,33 @@ export const RoomTypes: Record<RoomType, string> = {
 
 // amenities
 export type AmenityType =
-    | 'HOT_WATER'
-    | 'CABLE'
     | 'WIFI'
-    | 'TWIN_BED'
-    | 'OTHER'
-    | 'RADIATOR';
+    | 'CABLE'
+    | 'HOT_WATER'
+    | 'WASHING_MACHINE'
+    | 'DRYER_MACHINE'
+    | 'DESKTOP'
+    | 'HEATING'
+    | 'AIR_CONDITIONNER'
+    | 'REFREGIRATOR'
+    | 'OVEN'
+    | 'MICROWAVE'
+    | 'OTHER';
 
 export type PredefinedAmenityTypes = Exclude<AmenityType, 'OTHER'>;
 
 export const AmenityTypes: Record<PredefinedAmenityTypes, string> = {
     HOT_WATER: 'Eau chaude',
-    RADIATOR: 'Climatisation ou Radiateur',
+    HEATING: 'Chauffage',
     WIFI: 'Wi-fi ou Fibre Optique',
-    TWIN_BED: 'Double lit ou Lit supperposé',
-    CABLE: 'TV Satellite (ex: Canal +)'
+    WASHING_MACHINE: 'Machine à laver',
+    DRYER_MACHINE: 'Machine à sécher',
+    DESKTOP: 'Bureau de travail',
+    CABLE: 'TV Satellite (ex: Canal +)',
+    AIR_CONDITIONNER: 'Climatisation',
+    OVEN: 'Four',
+    MICROWAVE: 'Micro-ondes',
+    REFREGIRATOR: 'Réfrégirateur'
 } as const;
 
 // listing Image

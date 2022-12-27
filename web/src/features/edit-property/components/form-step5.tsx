@@ -38,7 +38,7 @@ export function FormStep5(props: FormStep5Props) {
 
     const roomsAdded = form.watch('additionalRooms');
 
-    const rooms = React.useMemo(() => {
+    const roomTypes = React.useMemo(() => {
         return roomsAdded.reduce((preVious, currentValue) => {
             const newTypeRooms = preVious;
             const typeRoom = newTypeRooms.find(
@@ -60,7 +60,7 @@ export function FormStep5(props: FormStep5Props) {
     const [roomTypeToAdd, setRoomTypeToAdd] =
         React.useState<RoomType>('BEDROOM');
 
-    const noOfBedRooms = rooms.find(r => r.type === 'BEDROOM')?.count ?? 0;
+    const noOfBedRooms = roomTypes.find(r => r.type === 'BEDROOM')?.count ?? 0;
 
     function addRoom(type: RoomType) {
         form.setValue('additionalRooms', [
@@ -116,7 +116,7 @@ export function FormStep5(props: FormStep5Props) {
                             onDecrease={() => removeRoom('BEDROOM')}
                         />
                     </li>
-                    {rooms
+                    {roomTypes
                         .filter(r => r.type !== 'BEDROOM')
                         .map(({ type, count }) => (
                             <li

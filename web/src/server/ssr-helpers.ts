@@ -28,3 +28,18 @@ export async function getUserFromSessionToken(sessionToken: string) {
         return null;
     }
 }
+
+export function revalidatePath(paths: string | string[]) {
+    const searchParams = new URLSearchParams();
+    if (typeof paths === 'string') {
+        searchParams.append('path', paths);
+    } else {
+        for (const path of paths) {
+            searchParams.append('path', path);
+        }
+    }
+    searchParams.append('nextSecret', env.NEXT_REVALIDATE_SECRET);
+    return fetch(
+        `${env.NEXT_PUBLIC_SITE_URL}/api/revalidate?${searchParams.toString()}`
+    );
+}
