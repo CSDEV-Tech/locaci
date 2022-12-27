@@ -56,7 +56,7 @@ export const propertyRouter = t.router({
         .query(async ({ ctx, input }) => {
             const uid = Uuid.fromShort(input.uid);
 
-            return ctx.prisma.property.findFirst({
+            const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: uid.toString(),
                     activeForListing: true,
@@ -70,5 +70,30 @@ export const propertyRouter = t.router({
                     rooms: true
                 }
             });
+
+            const similarProperties = property
+                ? await ctx.prisma.property.findMany({
+                      where: {
+                          id: { not: uid.toString() },
+                          municipalityId: property?.municipalityId,
+                          activeForListing: true,
+                          archived: false
+                      },
+                      take: 3,
+                      orderBy: {
+                          createdAt: 'desc'
+                      }
+                  })
+                : [];
+
+            return property
+                ? {
+                      ...property,
+                      similar: similarProperties.map(p => ({
+                          ...p,
+                          id: new Uuid(p.id).short()
+                      }))
+                  }
+                : null;
         })
 });

@@ -49,7 +49,9 @@ function MapLoader(props: ClientMapProps) {
             osm_place_id: props.locality_osm_id
         },
         {
-            suspense: true
+            suspense: true,
+            staleTime: Infinity,
+            refetchOnMount: false
         }
     );
 
