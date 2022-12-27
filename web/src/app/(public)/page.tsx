@@ -37,6 +37,8 @@ export default async function HomePage() {
 
             <section className={clsx('px-8 lg:px-16')}>
                 <img
+                    decoding="async"
+                    loading="lazy"
                     src="/street_illustration.svg"
                     alt="Maison vide"
                     className={clsx(
@@ -304,27 +306,27 @@ function SectionAboutUs() {
                     />
                     <div className="relative z-20 flex flex-col gap-1.5">
                         <p>
-                            Trouver un loyer qui me convienne a été difficile.
-                            J'ai dû me battre pour en trouver un, en passant par
-                            les tracas des démarcheurs qui ne tenaient pas
-                            compte de mes conditions.
+                            J'ai constaté qu'il était&nbsp;
+                            <strong className="font-bold">
+                                très compliqué
+                            </strong>
+                            &nbsp;de trouver un logement. J'ai du passer par les
+                            réseaux sociaux, des démarcheurs vendeurs
+                            d'illusions, tout cet épuisement sans trouver le
+                            logement qui me correspondait à 100%.
                         </p>
+
                         <p>
-                            j'ai pu finalement réussir à trouver un appartement
-                            qui correspondait à mes critères mais seulement à
-                            50%. J'ai discuté de cette expérience avec un ami et
-                            de ce fait nous nous eu l'idée de créer des
-                            algorithmes et des solutions pour aider les
-                            locataires à trouver un logement facilement et sans
-                            stress, en utilisant un outil pratique et utile.
+                            C'est pourquoi j'ai rassemblé une équipe pour
+                            réfléchir à la question : comment faciliter la
+                            recherche de logements ? Comment avoir accès aux
+                            détails des biens proposés ? Et après l'acquisition
+                            du logement, que se passe-t'il ?
                         </p>
+
                         <p>
-                            Et nous n'avons pas oublié les bailleurs en leur
-                            donnant un outil efficace pour leur permettre de
-                            gérer efficacement leur propriété.
-                        </p>
-                        <p>
-                            De là est né&nbsp;
+                            C'est en réponse à ces interrogations que nous avons
+                            développé&nbsp;
                             <strong className="font-bold">LOCACI</strong>.
                         </p>
                     </div>
@@ -342,9 +344,9 @@ function SectionAboutUs() {
                     <Image
                         src={ceoImgUrl}
                         alt={`photo CEO`}
-                        className={`h-[70px] w-[70px] rounded-full`}
-                        width={100}
-                        height={100}
+                        className={`h-[64px] w-[64px] rounded-full`}
+                        width={64}
+                        height={64}
                     />
 
                     <div className="flex flex-col gap-1">
