@@ -35,7 +35,9 @@ const nextConfig = defineNextConfig({
     swcMinify: true,
     output: 'standalone',
     images: {
-        minimumCacheTTL: 7 * 24 * 60 * 60, // 7 days
+        deviceSizes: [320, 640, 1080, 1440],
+        imageSizes: [128, 256, 384],
+        minimumCacheTTL: 31 * 24 * 60 * 60, // 31 days
         remotePatterns: [
             {
                 protocol: 'https',

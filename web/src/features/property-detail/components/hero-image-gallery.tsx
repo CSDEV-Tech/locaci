@@ -40,6 +40,7 @@ export function HeroImageGallery({ images, className }: HeroImageGalleryProps) {
                     <Image
                         width={1000}
                         height={500}
+                        sizes="(max-width: 768px) 640w, (max-width: 1200px) 1080w, 1920w"
                         alt="Image 1 du logement"
                         src={images[0].uri}
                         className={clsx(
