@@ -17,7 +17,7 @@ export default function Loading() {
                     'grid h-[250px]',
                     'md:h-[320px] md:grid-cols-3 md:gap-1',
                     'lg:h-[500px] lg:grid-cols-5',
-                    'lg:gap-2 lg:px-8'
+                    'lg:gap-2 lg:px-8 xl:px-0'
                 )}>
                 <Skeleton
                     className={clsx(
@@ -46,10 +46,16 @@ export default function Loading() {
             <div
                 className={clsx(
                     'flex max-w-[650px] flex-col gap-2 px-4',
-                    'lg:gap-4 lg:px-8'
+                    'lg:gap-4 lg:px-8 xl:px-0'
                 )}>
-                <Skeleton roundedCorners className="h-[30px] w-2/3" />
-                <Skeleton roundedCorners className="h-[15px] w-full" />
+                <Skeleton
+                    roundedCorners
+                    className="h-[24px] w-[280px] lg:h-[30px] lg:w-[320px]"
+                />
+                <Skeleton
+                    roundedCorners
+                    className="h-[16px] w-[250px] lg:h-[18px] lg:w-[250px]"
+                />
             </div>
         </section>
     );
