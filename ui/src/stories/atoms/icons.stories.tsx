@@ -30,6 +30,29 @@ import { RefreshIcon } from '../../components/atoms/icons/refresh';
 import { HorizontalDotsIcon } from '../../components/atoms/icons/horizontal-dots';
 import { QuotesIcon } from '../../components/atoms/icons/quotes';
 import { HouseIcon } from '../../components/atoms/icons/house';
+import { ArmchairIcon } from '../../components/atoms/icons/armchair';
+import { BathtubIcon } from '../../components/atoms/icons/bathtub';
+import { CarIcon } from '../../components/atoms/icons/car';
+import { CookingPotIcon } from '../../components/atoms/icons/cooking-pot';
+import { DropIcon } from '../../components/atoms/icons/drop';
+import { ForkKnifeIcon } from '../../components/atoms/icons/fork-knife';
+import { LadderIcon } from '../../components/atoms/icons/ladder';
+import { StorefrontIcon } from '../../components/atoms/icons/storefront';
+import { ToiletIcon } from '../../components/atoms/icons/toilet';
+import { UmbrellaIcon } from '../../components/atoms/icons/umbrella';
+import { WindowIcon } from '../../components/atoms/icons/window';
+import { WifiIcon } from '../../components/atoms/icons/wifi';
+import { TvIcon } from '../../components/atoms/icons/tv';
+import { DropHotIcon } from '../../components/atoms/icons/drop-hot';
+import { WashingMachineIcon } from '../../components/atoms/icons/washing-machine';
+import { DryerMachineIcon } from '../../components/atoms/icons/dryer-machine';
+import { DesktopIcon } from '../../components/atoms/icons/dekstop';
+import { ThermometerIcon } from '../../components/atoms/icons/thermometer';
+import { ThermometerHotIcon } from '../../components/atoms/icons/thermometer-hot';
+import { SnowflakeIcon } from '../../components/atoms/icons/snowflake';
+import { RefregiratorIcon } from '../../components/atoms/icons/refregirator';
+import { OvenIcon } from '../../components/atoms/icons/oven';
+import { MicrowaveIcon } from '../../components/atoms/icons/microwave';
 
 // types
 import type {
@@ -187,6 +210,121 @@ const Template: ComponentStory<IconComponent> = args => (
         <div className="flex flex-col items-center gap-2">
             <HouseIcon className="h-10 w-10" weight="fill" />
             <span>HouseIcon (fill)</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <ArmchairIcon className="h-10 w-10" />
+            <span>ArmchairIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <BathtubIcon className="h-10 w-10" />
+            <span>BathtubIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <CarIcon className="h-10 w-10" />
+            <span>CarIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <CookingPotIcon className="h-10 w-10" />
+            <span>CookingPotIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <DropIcon className="h-10 w-10" />
+            <span>DropIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <ForkKnifeIcon className="h-10 w-10" />
+            <span>ForkKnifeIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <LadderIcon className="h-10 w-10" />
+            <span>LadderIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <StorefrontIcon className="h-10 w-10" />
+            <span>StorefrontIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <ToiletIcon className="h-10 w-10" />
+            <span>ToiletIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <UmbrellaIcon className="h-10 w-10" />
+            <span>UmbrellaIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <WindowIcon className="h-10 w-10" />
+            <span>WindowIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <WifiIcon className="h-10 w-10" />
+            <span>WifiIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <TvIcon className="h-10 w-10" />
+            <span>TvIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <DropHotIcon className="h-10 w-10" />
+            <span>DropHotIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <WashingMachineIcon className="h-10 w-10" />
+            <span>WashingMachineIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <DryerMachineIcon className="h-10 w-10" />
+            <span>DryerMachineIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <DesktopIcon className="h-10 w-10" />
+            <span>DesktopIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <ThermometerIcon className="h-10 w-10" />
+            <span>ThermometerIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <ThermometerHotIcon className="h-10 w-10" />
+            <span>ThermometerHotIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <SnowflakeIcon className="h-10 w-10" />
+            <span>SnowflakeIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <RefregiratorIcon className="h-10 w-10" />
+            <span>RefregiratorIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <OvenIcon className="h-10 w-10" />
+            <span>OvenIcon</span>
+        </div>
+
+        <div className="flex flex-col items-center gap-2">
+            <MicrowaveIcon className="h-10 w-10" />
+            <span>MicrowaveIcon</span>
         </div>
     </div>
 );
