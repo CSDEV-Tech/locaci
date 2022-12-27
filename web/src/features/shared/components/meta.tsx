@@ -19,7 +19,7 @@ export function Meta(props: MetaProps) {
 
     const metaImgURL = props.imageURL
         ? getAbsoluteURLForImage(props.imageURL)
-        : `${env.NEXT_PUBLIC_SITE_URL}/logo.svg`;
+        : `${env.NEXT_PUBLIC_SITE_URL}/logo.png`;
 
     const url = `${env.NEXT_PUBLIC_SITE_URL}${linkWithSlash(
         props.pathname ?? ''
