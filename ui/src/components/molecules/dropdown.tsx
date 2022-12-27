@@ -8,6 +8,7 @@ export type DropdownLink = {
     text: string;
     Icon: React.ComponentType<{ className?: string; active: boolean }>;
     href: string;
+    external?: boolean;
     clsx?: (state: { active: boolean }) => string;
 };
 
@@ -101,7 +102,16 @@ export const Dropdown = ({
                                         } else {
                                             return (
                                                 <Link
-                                                    Custom={customLink}
+                                                    Custom={
+                                                        !item.external
+                                                            ? customLink
+                                                            : undefined
+                                                    }
+                                                    target={
+                                                        item.external
+                                                            ? '_blank'
+                                                            : '_self'
+                                                    }
                                                     href={`${item.href}`}
                                                     className={clsx(
                                                         item.clsx?.({ active }),
