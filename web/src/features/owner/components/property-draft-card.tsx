@@ -105,6 +105,7 @@ export function PropertyDraftCard({
               {
                   href: `/properties/${new Uuid(id).short()}`,
                   text: 'Voir sur le site',
+                  external: true,
                   Icon: props => (
                       <Link className={props.className} weight="bold" />
                   )

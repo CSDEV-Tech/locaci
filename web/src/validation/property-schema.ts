@@ -110,11 +110,18 @@ export const updatePropertyStep6Schema = z.object({
         z.union([
             z.object({
                 type: z.enum([
-                    'HOT_WATER',
-                    'CABLE',
                     'WIFI',
-                    'TWIN_BED',
-                    'RADIATOR'
+                    'CABLE',
+                    'HOT_WATER',
+                    'WASHING_MACHINE',
+                    'DRYER_MACHINE',
+                    'DESKTOP',
+                    'HEATING',
+                    'AIR_CONDITIONNER',
+                    'OTHER',
+                    'REFREGIRATOR',
+                    'OVEN',
+                    'MICROWAVE'
                 ]),
                 name: z.string().nullish()
             }),

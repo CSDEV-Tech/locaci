@@ -405,7 +405,8 @@ export const ownerDraftRouter = t.router({
                 availableFrom: input.availableFrom,
                 description: input.description,
                 housingFee: input.housingFee,
-                housingPeriod: input.housingPeriod
+                housingPeriod:
+                    draft.rentType === 'SHORT_TERM' ? input.housingPeriod : 30
             };
 
             /**

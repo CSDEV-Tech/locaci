@@ -14,6 +14,7 @@ import { isOwner } from '~/server/trpc/middleware/auth';
 import { type Amenity, Prisma, RoomType, Room } from '@prisma/client';
 import { isCustomAmenity } from './draft';
 import { Uuid } from '~/utils/uuid';
+import { revalidatePath } from '~/server/ssr-helpers';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerPropertiesRouter = t.router({
@@ -39,16 +40,18 @@ export const ownerPropertiesRouter = t.router({
 
             return property;
         }),
-    toggleVisibility: t.procedure
+    toggleVisibility: protectedProcedure
         .input(
             z.object({
                 uid: z.string().uuid()
             })
         )
         .mutation(async ({ ctx, input }) => {
-            const property = await ctx.prisma.property.findUnique({
+            const property = await ctx.prisma.property.findFirst({
                 where: {
-                    id: input.uid
+                    id: input.uid,
+                    userId: ctx.user.id,
+                    archived: false
                 }
             });
 
@@ -60,14 +63,21 @@ export const ownerPropertiesRouter = t.router({
                 });
             }
 
-            await ctx.prisma.property.update({
+            await ctx.prisma.property.updateMany({
                 where: {
-                    id: input.uid
+                    id: input.uid,
+                    userId: ctx.user.id,
+                    archived: false
                 },
                 data: {
                     activeForListing: !property.activeForListing
                 }
             });
+
+            // revalidate detail page
+            await revalidatePath(
+                `/properties/${new Uuid(property.id).short()}`
+            );
 
             return {
                 isActive: !property.activeForListing
@@ -81,14 +91,21 @@ export const ownerPropertiesRouter = t.router({
         )
         .mutation(async ({ ctx, input }) => {
             try {
-                await ctx.prisma.property.update({
+                await ctx.prisma.property.updateMany({
                     where: {
-                        id: input.uid
+                        id: input.uid,
+                        userId: ctx.user.id,
+                        archived: false
                     },
                     data: {
                         archived: true
                     }
                 });
+
+                // revalidate detail page
+                await revalidatePath(
+                    `/properties/${new Uuid(input.uid).short()}`
+                );
             } catch (error) {
                 if (
                     error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -117,7 +134,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     userId: ctx.user.id,
-                    id: input.uid
+                    id: input.uid,
+                    archived: false
                 },
                 include: {
                     rooms: true,
@@ -159,7 +177,10 @@ export const ownerPropertiesRouter = t.router({
                 availableFrom: property.availableFrom,
                 description: property.description,
                 housingFee: property.housingFee,
-                housingPeriod: property.housingPeriod
+                housingPeriod:
+                    property.rentType === 'SHORT_TERM'
+                        ? property.housingPeriod
+                        : 30
             };
 
             /**
@@ -203,7 +224,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: input.uid,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    archived: false
                 }
             });
 
@@ -215,7 +237,7 @@ export const ownerPropertiesRouter = t.router({
                 });
             }
 
-            return ctx.prisma.property.update({
+            await ctx.prisma.property.update({
                 where: {
                     id: input.uid
                 },
@@ -224,6 +246,9 @@ export const ownerPropertiesRouter = t.router({
                     rentType: input.rentType
                 }
             });
+
+            // revalidate detail page
+            revalidatePath(`/properties/${new Uuid(input.uid).short()}`);
         }),
     savePropertyStep2: protectedProcedure
         .input(updatePropertyStep2Schema)
@@ -231,7 +256,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: input.uid,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    archived: false
                 }
             });
 
@@ -259,7 +285,7 @@ export const ownerPropertiesRouter = t.router({
                 });
             }
 
-            return ctx.prisma.property.update({
+            await ctx.prisma.property.update({
                 where: {
                     id: input.uid
                 },
@@ -274,6 +300,9 @@ export const ownerPropertiesRouter = t.router({
                     localityName: input.localityName
                 }
             });
+
+            // revalidate detail page
+            revalidatePath(`/properties/${new Uuid(input.uid).short()}`);
         }),
     savePropertyStep4: protectedProcedure
         .input(updatePropertyStep4Schema)
@@ -281,7 +310,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: input.uid,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    archived: false
                 }
             });
 
@@ -293,7 +323,7 @@ export const ownerPropertiesRouter = t.router({
                 });
             }
 
-            return ctx.prisma.property.update({
+            await ctx.prisma.property.update({
                 where: {
                     id: input.uid
                 },
@@ -301,6 +331,9 @@ export const ownerPropertiesRouter = t.router({
                     addressInstructions: input.addressInstructions
                 }
             });
+
+            // revalidate detail page
+            revalidatePath(`/properties/${new Uuid(input.uid).short()}`);
         }),
     savePropertyStep5: protectedProcedure
         .input(updatePropertyStep5Schema)
@@ -308,7 +341,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: input.uid,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    archived: false
                 },
                 include: {
                     rooms: true
@@ -341,7 +375,7 @@ export const ownerPropertiesRouter = t.router({
                 }
             }
 
-            return ctx.prisma.property.update({
+            const updatedProperty = await ctx.prisma.property.update({
                 where: {
                     id: input.uid
                 },
@@ -355,6 +389,12 @@ export const ownerPropertiesRouter = t.router({
                     }
                 }
             });
+
+            // revalidate detail page
+            revalidatePath(`/properties/${new Uuid(input.uid).short()}`);
+            return {
+                rentType: updatedProperty.rentType
+            };
         }),
     savePropertyStep6: protectedProcedure
         .input(updatePropertyStep6Schema)
@@ -362,7 +402,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: input.uid,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    archived: false
                 }
             });
 
@@ -392,7 +433,7 @@ export const ownerPropertiesRouter = t.router({
                 }
             }
 
-            return ctx.prisma.property.update({
+            await ctx.prisma.property.update({
                 where: {
                     id: input.uid
                 },
@@ -405,6 +446,9 @@ export const ownerPropertiesRouter = t.router({
                     }
                 }
             });
+
+            // revalidate detail page
+            revalidatePath(`/properties/${new Uuid(input.uid).short()}`);
         }),
     savePropertyStep7: protectedProcedure
         .input(updatePropertyStep7Schema)
@@ -412,7 +456,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: input.uid,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    archived: false
                 }
             });
 
@@ -424,7 +469,7 @@ export const ownerPropertiesRouter = t.router({
                 });
             }
 
-            return ctx.prisma.property.update({
+            await ctx.prisma.property.update({
                 where: {
                     id: input.uid
                 },
@@ -432,6 +477,9 @@ export const ownerPropertiesRouter = t.router({
                     images: input.images
                 }
             });
+
+            // revalidate detail page
+            revalidatePath(`/properties/${new Uuid(input.uid).short()}`);
         }),
     savePropertyStep8: protectedProcedure
         .input(updatePropertyStep8Schema)
@@ -439,7 +487,8 @@ export const ownerPropertiesRouter = t.router({
             const property = await ctx.prisma.property.findFirst({
                 where: {
                     id: input.uid,
-                    userId: ctx.user.id
+                    userId: ctx.user.id,
+                    archived: false
                 }
             });
 
@@ -447,7 +496,7 @@ export const ownerPropertiesRouter = t.router({
                 throw new TRPCError({
                     code: 'NOT_FOUND',
                     message:
-                        "L'annonce que vous essayez de modifier n'existe pas"
+                        "Le logement que vous essayez de modifier n'existe pas"
                 });
             }
 
@@ -464,10 +513,15 @@ export const ownerPropertiesRouter = t.router({
                     availableFrom: input.availableFrom,
                     description: input.description,
                     housingFee: input.housingFee,
-                    housingPeriod: input.housingPeriod
+                    housingPeriod:
+                        property.rentType === 'SHORT_TERM'
+                            ? input.housingPeriod
+                            : 30
                 }
             });
 
+            // revalidate detail page
+            revalidatePath(`/properties/${new Uuid(input.uid).short()}`);
             return {
                 propertyShortUid: new Uuid(property.id).short()
             };
