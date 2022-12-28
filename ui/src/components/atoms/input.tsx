@@ -181,6 +181,8 @@ export interface NumberInputProps extends InputProps<number> {
     min?: number;
     max?: number;
     onChange: (newValue: number) => void;
+    labelIncrementButton?: string;
+    labelDecrementButton?: string;
 }
 
 export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
@@ -195,6 +197,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             errorText,
             helpText,
             rootClassName,
+            labelDecrementButton = 'Diminuer',
+            labelIncrementButton = 'Augmenter',
             required = false,
             showButtons = false,
             disabled = false,
@@ -332,6 +336,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                                     variant={`outline`}
                                     square
                                     type="button"
+                                    aria-label={labelDecrementButton}
                                     className={clsx({
                                         'pointer-events-none': disabled
                                     })}
@@ -344,6 +349,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                                     variant={`outline`}
                                     square
                                     type="button"
+                                    aria-label={labelIncrementButton}
                                     className={clsx({
                                         'pointer-events-none': disabled
                                     })}

@@ -1,3 +1,10 @@
+/**
+ * We import mapbox css in a layout because when you import a css in a file
+ * nextjs try to hoist it on the <head/> tag, with suspense and SSR it can cause problems
+ * if imported at a random component in the tree.
+ */
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 // components
 import { Header } from '@locaci/ui/components/organisms/header';
 import { NextLink } from '~/features/shared/components/next-link';
