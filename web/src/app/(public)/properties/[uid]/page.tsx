@@ -26,6 +26,7 @@ import type { BoundingBox } from '~/utils/types';
 import type { RoomType } from '~/features/shared/types';
 import type { ListingImage } from '~/features/shared/types';
 import { MunicipalityCard } from '@locaci/ui/components/molecules/municipality-card';
+import { env } from '~/env/client.mjs';
 
 // This page is static but only if prebuilt
 export const dynamic = 'force-static',
@@ -110,7 +111,10 @@ function HeroSection({ uid }: { uid: string }) {
                 'mx-auto mt-4 flex max-w-[1200px] flex-col',
                 'lg:gap-8'
             )}>
-            <HeroImageGallery images={property.images as Array<ListingImage>} />
+            <HeroImageGallery
+                images={property.images as Array<ListingImage>}
+                propertyLink={`${env.NEXT_PUBLIC_SITE_URL}/properties/${uid}`}
+            />
         </section>
     );
 }

@@ -10,18 +10,29 @@ import { EyeIcon } from '@locaci/ui/components/atoms/icons/eye';
 import { clsx } from '@locaci/ui/lib/functions';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { Share } from 'phosphor-react';
+import { ShareModal } from '~/features/property-detail/components/share-modal';
 
 // types
 export type HeroImageGalleryProps = {
     images: ListingImage[];
     className?: string;
+    propertyLink: string;
 };
 
-export function HeroImageGallery({ images, className }: HeroImageGalleryProps) {
-    const [] = React.useState(false);
+export function HeroImageGallery({
+    images,
+    className,
+    propertyLink
+}: HeroImageGalleryProps) {
+    const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
 
     return (
         <>
+            <ShareModal
+                open={isShareModalOpen}
+                onClose={() => setIsShareModalOpen(false)}
+                link={propertyLink}
+            />
             <div
                 className={clsx(
                     className,
@@ -131,6 +142,7 @@ export function HeroImageGallery({ images, className }: HeroImageGalleryProps) {
 
                 <div className="absolute bottom-4 right-4 flex items-center gap-2 lg:right-12">
                     <Button
+                        onClick={() => setIsShareModalOpen(true)}
                         variant="hollow"
                         className="border border-dark"
                         renderLeadingIcon={cls => <Share className={cls} />}>

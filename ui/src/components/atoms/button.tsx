@@ -95,10 +95,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 <span className="sr-only" aria-live="assertive">
                     {loading ? loadingMessage : ''}
                 </span>
-                {loading && <LoadingIndicator className={`h-5 w-5`} />}
-                {!loading && renderLeadingIcon && renderLeadingIcon(`h-5 w-5`)}
+                {loading && (
+                    <LoadingIndicator className={`h-5 w-5 flex-shrink-0`} />
+                )}
+                {!loading &&
+                    renderLeadingIcon &&
+                    renderLeadingIcon(`h-5 w-5 flex-shrink-0`)}
                 {children}
-                {renderTrailingIcon && renderTrailingIcon(`h-5 w-5`)}
+                {renderTrailingIcon &&
+                    renderTrailingIcon(`h-5 w-5 flex-shrink-0`)}
             </button>
         );
     }
