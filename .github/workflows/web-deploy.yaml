@@ -60,8 +60,11 @@ jobs:
           set -e -o errexit
           cd $DEPLOY_DIR
 
+          # Reset ecosystem.config.js to its original state to avoid conflicts
+          git checkout -- ecosystem.config.js 
+
           echo Pulling latest version...
-          git pull origin develop # to change when using main branch
+          git pull origin ${GITHUB_REF##*/}
 
           echo Building packages...
           export TURBO_TEAM=$TURBO_TEAM
@@ -88,6 +91,7 @@ jobs:
           # Replace port variable to support multiport with pm2 cluster_mode
           sed -i 's/parseInt(process.env.PORT, 10)/parseInt(process.env.PORT, 10) + parseInt(process.env.INSTANCE_ID, 10)/g' standalone/server.js
           sed -i 's/localhost/0.0.0.0/g' standalone/server.js 
+          sed -i "s/{{SHARP_PATH}}/$DEPLOY_DIR/g" ecosystem.config.js
 
           # Start 3 pm2 processes
           echo Starting processes...
