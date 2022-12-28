@@ -78,7 +78,7 @@ jobs:
 
           # Return to root dir
           cd $DEPLOY_DIR
-          export NEXT_SHARP_PATH=$DEPLOY_DIR/node_modules/sharp
+          export NEXT_SHARP_PATH="$DEPLOY_DIR/node_modules/sharp"
           pnpm run --filter=web telemetry:disable
           pnpm run --filter=web prepare-db
           pnpm run turbo run build
@@ -92,6 +92,8 @@ jobs:
           # Replace port variable to support multiport with pm2 cluster_mode
           sed -i 's/parseInt(process.env.PORT, 10)/parseInt(process.env.PORT, 10) + parseInt(process.env.INSTANCE_ID, 10)/g' standalone/server.js
           sed -i 's/localhost/0.0.0.0/g' standalone/server.js 
+
+          echo "path: $NEXT_SHARP_PATH"
           sed -i "s#{{SHARP_PATH}}#$NEXT_SHARP_PATH#g" ecosystem.config.js 
 
           # Start 3 pm2 processes
