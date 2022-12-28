@@ -115,7 +115,6 @@ function HeaderSection() {
                 src={headerImgUrl}
                 priority
                 fill
-                sizes="(min-width: 1200px) 1440w, (min-width: 768px) 1080w,  (min-width: 640px) 640w, 384w"
                 alt={`Image d'entête`}
                 className={`absolute inset-0 h-full w-full object-cover object-center`}
                 placeholder={'blur'}

@@ -60,10 +60,10 @@ export function HeroImageGallery({
                         'group relative'
                     )}>
                     <Image
-                        width={1000}
+                        width={640}
                         height={500}
                         priority
-                        sizes="(min-width: 640px) 640w, 384w"
+                        sizes="(min-width: 640px) 640px, 384px"
                         alt="Image 1 du logement"
                         src={images[0].uri}
                         className={clsx(
@@ -105,7 +105,7 @@ export function HeroImageGallery({
                             src={images[1].uri}
                             width={500}
                             height={200}
-                            sizes="(min-width: 1024px) 384w, 256w"
+                            sizes="(min-width: 1024px) 384px, 256px"
                             className={clsx(
                                 'h-full w-full bg-gray object-cover object-center',
                                 'md:h-[158px]',
@@ -138,7 +138,7 @@ export function HeroImageGallery({
                             src={images[2].uri}
                             width={500}
                             height={200}
-                            sizes="(min-width: 1024px) 384w, 256w"
+                            sizes="(min-width: 1024px) 384px, 256px"
                             className={clsx(
                                 'h-full w-full bg-gray object-cover object-center',
                                 'md:h-[158px]',
