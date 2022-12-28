@@ -11,7 +11,7 @@ import {
 // utils
 import { updatePropertyStep7Schema } from '~/validation/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
-import { useUploadFileMutation } from '~/features/shared/hooks/use-upload-image-mutation';
+import { useUploadImageMutation } from '~/features/shared/hooks/use-upload-image-mutation';
 import { getFileExtension, isNativeDOMFile } from '~/utils/functions';
 import { env } from '~/env/client.mjs';
 import { t } from '~/app/trpc-client-provider';
@@ -54,7 +54,7 @@ export function FormStep7(props: FormStep7Props) {
     const isUploadingImages = files.some(f => f.state === 'UPLOADING');
 
     // mutations
-    const { mutateAsync: uploadImage } = useUploadFileMutation();
+    const { mutateAsync: uploadImage } = useUploadImageMutation();
 
     const utils = t.useContext();
 

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Uuid } from '~/utils/uuid';
-import { t } from '../trpc-server-root';
+import { t } from '~/server/trpc/trpc-server-root';
 
 export const propertyRouter = t.router({
     getRecentProperties: t.procedure
