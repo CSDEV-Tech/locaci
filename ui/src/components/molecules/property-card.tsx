@@ -112,14 +112,14 @@ export function PropertyCard({
                 </div>
 
                 <div className="mt-4 flex items-center">
-                    <h4 className="">
+                    <div>
                         <span className="text-lg font-semibold text-dark">
                             {formatNumberToFCFA(price)}&nbsp;
                         </span>
                         <small className="font-regular text-gray">
                             /{getHousingPeriodLabel(housingPeriod)}
                         </small>
-                    </h4>
+                    </div>
                 </div>
             </div>
         </Card>
