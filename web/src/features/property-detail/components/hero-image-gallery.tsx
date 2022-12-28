@@ -62,7 +62,8 @@ export function HeroImageGallery({
                     <Image
                         width={1000}
                         height={500}
-                        sizes="(max-width: 768px) 640w, (max-width: 1200px) 1080w, 1920w"
+                        priority
+                        sizes="(min-width: 640px) 640w, 384w"
                         alt="Image 1 du logement"
                         src={images[0].uri}
                         className={clsx(
@@ -103,7 +104,8 @@ export function HeroImageGallery({
                             alt="Image 2 du logement"
                             src={images[1].uri}
                             width={500}
-                            height={300}
+                            height={200}
+                            sizes="(min-width: 1024px) 384w, 256w"
                             className={clsx(
                                 'h-full w-full bg-gray object-cover object-center',
                                 'md:h-[158px]',
@@ -135,7 +137,8 @@ export function HeroImageGallery({
                             alt="Image 2 du logement"
                             src={images[2].uri}
                             width={500}
-                            height={300}
+                            height={200}
+                            sizes="(min-width: 1024px) 384w, 256w"
                             className={clsx(
                                 'h-full w-full bg-gray object-cover object-center',
                                 'md:h-[158px]',

@@ -22,6 +22,7 @@ export type CustomImageProps = {
     width?: number;
     height?: number;
     fill?: boolean;
+    sizes?: string;
 };
 export type CustomImageComponentType = React.ComponentType<CustomImageProps>;
 

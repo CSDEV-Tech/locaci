@@ -41,6 +41,8 @@ export default async function HomePage() {
                     loading="lazy"
                     src="/street_illustration.svg"
                     alt="Maison vide"
+                    width={400}
+                    height={300}
                     className={clsx(
                         'mx-auto w-52 object-contain object-center',
                         'md:w-[250px]',
@@ -113,7 +115,7 @@ function HeaderSection() {
                 src={headerImgUrl}
                 priority
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                sizes="(min-width: 1200px) 1440w, (min-width: 768px) 1080w,  (min-width: 640px) 640w, 384w"
                 alt={`Image d'entête`}
                 className={`absolute inset-0 h-full w-full object-cover object-center`}
                 placeholder={'blur'}
