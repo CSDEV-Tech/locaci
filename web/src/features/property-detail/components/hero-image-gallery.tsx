@@ -5,6 +5,7 @@ import * as React from 'react';
 import Image from 'next/image';
 import { ListingImage } from '~/features/shared/types';
 import { EyeIcon } from '@locaci/ui/components/atoms/icons/eye';
+import { ImageLightbox } from '@locaci/ui/components/molecules/image-lightbox';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
@@ -25,6 +26,8 @@ export function HeroImageGallery({
     propertyLink
 }: HeroImageGalleryProps) {
     const [isShareModalOpen, setIsShareModalOpen] = React.useState(false);
+    const [isImageLightboxOpen, setIsImageLightboxOpen] = React.useState(false);
+    const [startIndex, setStartIndex] = React.useState(0);
 
     return (
         <>
@@ -33,6 +36,14 @@ export function HeroImageGallery({
                 onClose={() => setIsShareModalOpen(false)}
                 link={propertyLink}
             />
+
+            <ImageLightbox
+                startIndex={startIndex}
+                isOpen={isImageLightboxOpen}
+                images={images}
+                onClose={() => setIsImageLightboxOpen(false)}
+            />
+
             <div
                 className={clsx(
                     className,
@@ -63,6 +74,10 @@ export function HeroImageGallery({
                     />
 
                     <button
+                        onClick={() => {
+                            setStartIndex(0);
+                            setIsImageLightboxOpen(true);
+                        }}
                         className={clsx(
                             'absolute inset-0 w-full cursor-pointer bg-dark-75/80 opacity-0',
                             'flex items-center justify-center',
@@ -97,6 +112,10 @@ export function HeroImageGallery({
                         />
 
                         <button
+                            onClick={() => {
+                                setStartIndex(1);
+                                setIsImageLightboxOpen(true);
+                            }}
                             className={clsx(
                                 'absolute inset-0 w-full cursor-pointer bg-dark-75/80 opacity-0',
                                 'flex items-center justify-center',
@@ -125,6 +144,10 @@ export function HeroImageGallery({
                         />
 
                         <button
+                            onClick={() => {
+                                setStartIndex(2);
+                                setIsImageLightboxOpen(true);
+                            }}
                             className={clsx(
                                 'absolute inset-0 w-full cursor-pointer bg-dark-75/80 opacity-0',
                                 'flex items-center justify-center',
@@ -149,6 +172,7 @@ export function HeroImageGallery({
                         Partager
                     </Button>
                     <Button
+                        onClick={() => setIsImageLightboxOpen(true)}
                         variant="hollow"
                         className="border border-dark"
                         renderLeadingIcon={cls => <EyeIcon className={cls} />}>
