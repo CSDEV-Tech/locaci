@@ -121,6 +121,8 @@ export function SearchBar({
                         )}
                         label="Nombre de pièces"
                         value={noOfRooms}
+                        labelIncrementButton={`Augmenter le nombre de pièces`}
+                        labelDecrementButton={`Diminuer le nombre de pièces`}
                         onChange={setNoOfRooms}
                         rootClassName={clsx(`w-full`, `lg:w-[220px]`)}
                         showButtons
