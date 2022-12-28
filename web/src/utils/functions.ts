@@ -1,3 +1,4 @@
+import { Check } from 'phosphor-react';
 import type { RentType, Role } from './../features/shared/types';
 import { env } from '~/env/client.mjs';
 
@@ -268,4 +269,28 @@ export function capitalize(str: string) {
     const rest = str.slice(1);
 
     return `${firstLetter.toUpperCase()}${rest}`;
+}
+
+/**
+ * Check if user agent if a phone or tablet
+ * @returns
+ */
+export function isMobileOrTablet() {
+    const ua = navigator.userAgent;
+    const mobileUserAgent = /IEMobile|Windows Phone|Lumia/i.test(ua)
+        ? 'w'
+        : /iPhone|iP[oa]d/.test(ua)
+        ? 'i'
+        : /Android/.test(ua)
+        ? 'a'
+        : /BlackBerry|PlayBook|BB10/.test(ua)
+        ? 'b'
+        : /Mobile Safari/.test(ua)
+        ? 's'
+        : /webOS|Mobile|Tablet|Opera Mini|\bCrMo\/|Opera Mobi/i.test(ua)
+        ? 1
+        : false;
+    const isTablet = /Tablet|iPad/i.test(ua);
+
+    return Boolean(mobileUserAgent) || isTablet;
 }

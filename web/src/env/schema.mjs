@@ -29,7 +29,8 @@ export const clientSchema = z.object({
     NEXT_PUBLIC_SITE_URL: z.string().url(),
     NEXT_PUBLIC_OAUTH_CLIENT_ID: z.string(),
     NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL: z.string().url(),
-    NEXT_PUBLIC_CF_IMAGES_URL: z.string().url()
+    NEXT_PUBLIC_CF_IMAGES_URL: z.string().url(),
+    NEXT_PUBLIC_FACEBOOK_APP_ID: z.string().min(1)
 });
 
 /**
@@ -42,6 +43,7 @@ export const clientEnv = {
     NEXT_PUBLIC_MAPBOX_KEY: process.env.NEXT_PUBLIC_MAPBOX_KEY,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_CF_IMAGES_URL: process.env.NEXT_PUBLIC_CF_IMAGES_URL,
+    NEXT_PUBLIC_FACEBOOK_APP_ID: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
     NEXT_PUBLIC_OAUTH_CLIENT_ID: process.env.NEXT_PUBLIC_OAUTH_CLIENT_ID,
     NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL:
         process.env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL
