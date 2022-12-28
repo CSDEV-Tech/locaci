@@ -38,6 +38,7 @@ export function MunicipalityCard({
                 <Img
                     width={64}
                     height={64}
+                    sizes={`64w`}
                     alt={name}
                     src={coverURL}
                     className="h-full w-full rounded-lg object-cover object-center"

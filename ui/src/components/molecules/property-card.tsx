@@ -61,6 +61,7 @@ export function PropertyCard({
                 <Img
                     width={370}
                     height={175}
+                    sizes={`384w`}
                     alt={title}
                     src={coverURL}
                     className="h-full w-full rounded-t-lg object-cover object-center"
