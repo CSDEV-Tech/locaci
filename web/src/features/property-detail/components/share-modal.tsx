@@ -91,7 +91,7 @@ function ShareModalContent({ link }: Pick<ShareModalProps, 'link'>) {
             <div className="flex w-full flex-col gap-2">
                 <h3 className="text-gray">Lien vers le logement</h3>
                 <div className="flex items-center justify-between gap-2 bg-primary-15 p-4">
-                    <span>{link}</span>
+                    <span className="break-all">{link}</span>
                     <Button variant="dark" onClick={copyToClipBoard}>
                         Copier
                     </Button>
