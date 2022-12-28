@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-export function useUploadFileMutation() {
+export function useUploadImageMutation() {
     return useMutation(
         async (fileObject: {
             file: File;
