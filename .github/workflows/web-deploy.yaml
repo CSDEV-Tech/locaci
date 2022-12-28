@@ -66,10 +66,18 @@ jobs:
           echo Building packages...
           export TURBO_TEAM=$TURBO_TEAM
           export TURBO_TOKEN=$TURBO_TOKEN
-          FORCE_COLOR=true pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
-          FORCE_COLOR=true pnpm run --filter=web telemetry:disable
-          FORCE_COLOR=true pnpm run --filter=web prepare-db
-          FORCE_COLOR=true pnpm run turbo run build
+          export FORCE_COLOR=true
+          pnpm install --shamefully-hoist --strict-peer-dependencies=false --frozen-lockfile --ignore-scripts=true
+
+          # Install sharp binairies for the OS version
+          cd ./web/node_modules/sharp
+          pnpm run install
+
+          # Return to root dir
+          cd $DEPLOY_DIR
+          pnpm run --filter=web telemetry:disable
+          pnpm run --filter=web prepare-db
+          pnpm run turbo run build
           echo build success ✅
 
           # Sync standalone output
