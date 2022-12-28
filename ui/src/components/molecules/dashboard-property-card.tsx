@@ -10,17 +10,18 @@ import { Button } from '../atoms/button';
 import { CaretDownIcon } from '../atoms/icons/caret-down';
 import { CaretUpIcon } from '../atoms/icons/caret-up';
 import { Dropdown } from './dropdown';
+import { Tag } from '../atoms/tag';
+import { HorizontalDotsIcon } from '../atoms/icons/horizontal-dots';
 
 import type { LinkProps } from '../atoms/link';
 import type { DropdownItem } from './dropdown';
-import { Tag } from '../atoms/tag';
-import { HorizontalDotsIcon } from '../atoms/icons/horizontal-dots';
 export type CustomImageProps = {
     className?: string | null;
     src?: string;
     alt: string;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
+    fill?: boolean;
 };
 export type CustomImageComponentType = React.ComponentType<CustomImageProps>;
 
