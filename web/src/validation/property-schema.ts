@@ -118,7 +118,6 @@ export const updatePropertyStep6Schema = z.object({
                     'DESKTOP',
                     'HEATING',
                     'AIR_CONDITIONNER',
-                    'OTHER',
                     'REFREGIRATOR',
                     'OVEN',
                     'MICROWAVE'
