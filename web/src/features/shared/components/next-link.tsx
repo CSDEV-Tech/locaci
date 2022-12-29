@@ -1,12 +1,14 @@
 'use client';
 import * as React from 'react';
-
 // components
 import Link from 'next/link';
 import {
     LinkButton,
     type LinkButtonProps
 } from '@locaci/ui/components/atoms/link-button';
+
+// utils
+import { useRouter } from 'next/navigation';
 
 // types
 import type { CustomLink } from '@locaci/ui/components/atoms/link';
@@ -20,3 +22,24 @@ export const NextLink = React.forwardRef<HTMLAnchorElement, CustomLink>(
 export function NextLinkButton(props: Omit<LinkButtonProps, 'Custom'>) {
     return <LinkButton {...props} Custom={NextLink} />;
 }
+
+export const NextDynamicLink = React.forwardRef<HTMLAnchorElement, CustomLink>(
+    ({ href, children, ...props }, ref) => {
+        const router = useRouter();
+
+        return (
+            <a
+                {...props}
+                ref={ref}
+                href={href}
+                onClick={e => {
+                    if (!href.startsWith(`#`)) {
+                        e.preventDefault();
+                        router.push(href);
+                    }
+                }}>
+                {children}
+            </a>
+        );
+    }
+);

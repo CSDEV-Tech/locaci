@@ -8,7 +8,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 // components
 import Image from 'next/image';
 import { Avatar } from '@locaci/ui/components/atoms/avatar';
-import { NextLink } from '~/features/shared/components/next-link';
+import {
+    NextDynamicLink,
+    NextLink
+} from '~/features/shared/components/next-link';
 import { ClientMap } from '~/features/property-detail/components/client-map';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { RoomTypeLine } from '~/features/property-detail/components/room-type-line';
@@ -18,12 +21,7 @@ import { HeroImageGallery } from '~/features/property-detail/components/hero-ima
 // utils
 import React, { use } from 'react';
 import { notFound } from 'next/navigation';
-import {
-    getAllMunicipalities,
-    getPropertyDetail,
-    getTop100RecentPropertiesUid
-} from '~/server/utils';
-import { Uuid } from '~/utils/uuid';
+import { getAllMunicipalities, getPropertyDetail } from '~/server/utils';
 import { getPropertyTitle } from '~/utils/functions';
 import { clsx, formatNumberToFCFA } from '@locaci/ui/lib/functions';
 
@@ -35,16 +33,7 @@ import type { ListingImage } from '~/features/shared/types';
 import { MunicipalityCard } from '@locaci/ui/components/molecules/municipality-card';
 import { env } from '~/env/client.mjs';
 
-// This page is static but only if prebuilt
-export const dynamic = 'force-static',
-    dynamicParams = true;
-
-export async function generateStaticParams() {
-    const propertyIds = await getTop100RecentPropertiesUid();
-    return propertyIds.map(({ id }) => ({
-        uid: new Uuid(id).short()
-    }));
-}
+export const dynamic = 'force-dynamic';
 
 export default function DetailPage({ params }: PageProps<{ uid: string }>) {
     const property = use(getPropertyDetail(params.uid));
@@ -408,7 +397,7 @@ function SimilarPropertiesSection({ uid }: { uid: string }) {
                                 address={p.localityName}
                                 // @ts-ignore
                                 customImage={Image}
-                                customLink={NextLink}
+                                customLink={NextDynamicLink}
                                 numberOfRooms={p.noOfRooms}
                                 surfaceArea={p.surfaceArea}
                                 price={p.housingFee}
