@@ -27,3 +27,5 @@ export function getTop100RecentPropertiesUid() {
         }
     });
 }
+
+export const getUserCached = cache(() => rsc.auth.getUser.fetch());

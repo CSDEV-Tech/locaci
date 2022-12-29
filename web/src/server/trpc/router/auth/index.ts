@@ -165,7 +165,7 @@ export const authRouter = t.router({
 
             ctx.res?.setHeader(
                 'set-cookie',
-                `__session=${token}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
+                `__session=${token}; path=/; samesite=Lax; httponly; expires=${expirationDate.toUTCString()}`
             );
 
             return { success: true };
@@ -173,7 +173,7 @@ export const authRouter = t.router({
     removeAuthCookie: t.procedure.mutation(async ({ ctx }) => {
         ctx.res?.setHeader(
             'set-cookie',
-            `__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict; httponly;`
+            `__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=Lax; httponly;`
         );
         return { success: true };
     }),
@@ -278,7 +278,7 @@ export const authRouter = t.router({
 
             ctx.res?.setHeader(
                 'set-cookie',
-                `__session=${token}; path=/; samesite=strict; httponly; expires=${expirationDate.toUTCString()}`
+                `__session=${token}; path=/; samesite=Lax; httponly; expires=${expirationDate.toUTCString()}`
             );
 
             return {

@@ -16,23 +16,31 @@ import { ClientMap } from '~/features/property-detail/components/client-map';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { RoomTypeLine } from '~/features/property-detail/components/room-type-line';
 import { AmenityTypeLine } from '~/features/property-detail/components/amenity-type-line';
+import { MunicipalityCard } from '@locaci/ui/components/molecules/municipality-card';
 import { HeroImageGallery } from '~/features/property-detail/components/hero-image-gallery';
+import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
+import { BookPropertyButton } from '~/features/book/components/book-property-button';
 
 // utils
 import React, { use } from 'react';
 import { notFound } from 'next/navigation';
-import { getAllMunicipalities, getPropertyDetail } from '~/server/utils';
-import { getPropertyTitle } from '~/utils/functions';
+import {
+    getAllMunicipalities,
+    getPropertyDetail,
+    getUserCached
+} from '~/server/utils';
+import { getPropertyTitle, wait } from '~/utils/functions';
 import { clsx, formatNumberToFCFA } from '@locaci/ui/lib/functions';
+import { env } from '~/env/client.mjs';
+import { rsc } from '~/server/trpc/rsc';
 
 // types
 import type { PageProps } from '~/types';
 import type { BoundingBox } from '~/utils/types';
 import type { RoomType } from '~/features/shared/types';
 import type { ListingImage } from '~/features/shared/types';
-import { MunicipalityCard } from '@locaci/ui/components/molecules/municipality-card';
-import { env } from '~/env/client.mjs';
 
+// this is a dynamic page
 export const dynamic = 'force-dynamic';
 
 export default function DetailPage({ params }: PageProps<{ uid: string }>) {
@@ -339,12 +347,16 @@ function OwnerInfoDesktopSection({ uid }: { uid: string }) {
 }
 
 function PriceReservationSection({ uid }: { uid: string }) {
+    // preload user data so that the request is always defined on the children
+    use(getUserCached());
     const property = use(getPropertyDetail(uid))!;
+
     return (
         <aside
             className={clsx(
-                'fixed bottom-0 left-0 right-0 z-20',
-                'flex items-center bg-white px-4 py-8',
+                'fixed bottom-0 left-0 right-0 z-20 bg-white',
+                'flex items-center justify-between',
+                'px-4 py-8 pb-10',
                 'border-t border-gray/50',
                 'md:px-8 lg:items-start',
                 'lg:static lg:rounded-md lg:border',
@@ -367,6 +379,9 @@ function PriceReservationSection({ uid }: { uid: string }) {
             </div>
 
             {/* TODO: Button reservation */}
+            <HydrateClient state={use(rsc.dehydrate())}>
+                <BookPropertyButton propertyUid={uid} />
+            </HydrateClient>
         </aside>
     );
 }

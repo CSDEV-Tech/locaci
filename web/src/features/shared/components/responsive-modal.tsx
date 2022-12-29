@@ -9,6 +9,7 @@ export type ResponsiveModalProps = {
     onClose: () => void;
     title: string;
     maxHeightRatio?: number;
+    minHeightRatio?: number;
 };
 
 export function ResponsiveModal({
@@ -16,6 +17,7 @@ export function ResponsiveModal({
     isOpen,
     onClose,
     title,
+    minHeightRatio,
     maxHeightRatio = 0.95
 }: ResponsiveModalProps) {
     const canShowModal = useMediaQuery(`(min-width: 768px)`);
@@ -42,9 +44,8 @@ export function ResponsiveModal({
                     expandOnContentDrag
                     title={title}
                     onDismiss={onClose}
-                    defaultSnap={({ minHeight }) => minHeight}
                     snapPoints={({ maxHeight, minHeight }) => [
-                        minHeight,
+                        minHeightRatio ? maxHeight * maxHeightRatio : minHeight,
                         maxHeight * maxHeightRatio
                     ]}
                     className={`z-[100] md:hidden`}>
