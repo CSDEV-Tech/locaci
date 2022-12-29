@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { RefreshIcon } from '@locaci/ui/components/atoms/icons/refresh';
-import { NextLink } from '~/features/shared/components/next-link';
+import { NextDynamicLink } from '~/features/shared/components/next-link';
 import { ArrowRight } from 'phosphor-react';
 import Image from 'next/image';
 
@@ -45,7 +45,7 @@ export function PropertyHomeList() {
                                     address={p.localityName}
                                     // @ts-ignore
                                     customImage={Image}
-                                    customLink={NextLink}
+                                    customLink={NextDynamicLink}
                                     numberOfRooms={p.noOfRooms}
                                     surfaceArea={p.surfaceArea}
                                     price={p.housingFee}
@@ -73,12 +73,12 @@ export function PropertyHomeList() {
                     En charger plus
                 </Button>
             ) : (
-                <NextLink
+                <NextDynamicLink
                     href="/search"
                     className="flex items-center gap-2 text-lg font-semibold text-primary underline">
                     <span>Voir plus de logements</span>
                     <ArrowRight className="h-4 w-4" weight="bold" />
-                </NextLink>
+                </NextDynamicLink>
             )}
         </div>
     );
