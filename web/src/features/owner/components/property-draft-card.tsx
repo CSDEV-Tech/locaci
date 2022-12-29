@@ -6,7 +6,7 @@ import {
     DashboardPropertyCard,
     HorizontalDashboardPropertyCard
 } from '@locaci/ui/components/molecules/dashboard-property-card';
-import { NextLink } from '~/features/shared/components/next-link';
+import { NextDynamicLink } from '~/features/shared/components/next-link';
 import Image from 'next/image';
 import {
     Copy,
@@ -105,7 +105,6 @@ export function PropertyDraftCard({
               {
                   href: `/properties/${new Uuid(id).short()}`,
                   text: 'Voir sur le site',
-                  external: true,
                   Icon: props => (
                       <Link className={props.className} weight="bold" />
                   )
@@ -184,7 +183,7 @@ export function PropertyDraftCard({
                 isDraft={isDraft}
                 href={href}
                 title={title.trim()}
-                customLink={NextLink}
+                customLink={NextDynamicLink}
                 // @ts-ignore
                 customImage={Image}
                 {...props}
@@ -200,7 +199,7 @@ export function PropertyDraftCard({
                 isDraft={isDraft}
                 // @ts-ignore
                 customImage={Image}
-                customLink={NextLink}
+                customLink={NextDynamicLink}
                 actions={actions}
                 href={href}
                 title={title.trim()}
