@@ -6,12 +6,14 @@ export type ErrorScreenProps = {
     errorTitle?: string;
     children: React.ReactNode;
     className?: string;
+    illustration_url?: string;
 };
 
 export function ErrorScreen({
     children,
     className,
     errorDescription,
+    illustration_url = '/error_illustration.svg',
     errorTitle = 'OOPS !'
 }: ErrorScreenProps) {
     return (
@@ -19,7 +21,7 @@ export function ErrorScreen({
             <div
                 className={`flex flex-col items-center gap-6 md:m-auto md:w-[450px]`}>
                 <img
-                    src="/error_illustration.svg"
+                    src={illustration_url}
                     alt="Image d'erreur"
                     className="h-[165px] w-[240px]"
                 />

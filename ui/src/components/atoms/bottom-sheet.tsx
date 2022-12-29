@@ -25,7 +25,7 @@ export function BottomSheet({
 }: BottomSheetProps) {
     const sheetRef = React.useRef<BottomSheetRef>(null);
     return (
-        <div>
+        <div hidden>
             <ReactSpringBottomSheet
                 open={open}
                 ref={sheetRef}

@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 import { cache } from 'react';
 import { getUserFromSessionToken } from '~/server/ssr-helpers';
