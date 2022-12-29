@@ -20,7 +20,11 @@ import { getHostWithScheme } from '~/utils/functions';
 import { env } from '~/env/client.mjs';
 import toast from 'react-hot-toast';
 
-export function LoginForm() {
+export type LoginFormProps = {
+    redirectTo?: string;
+};
+
+export function LoginForm({ redirectTo }: LoginFormProps) {
     // forms
     const sendOtpForm = useZodForm({
         schema: sendOtpSchema,
@@ -40,7 +44,7 @@ export function LoginForm() {
     const [receiverEmail, setReceiverEmail] = React.useState<string>();
 
     const router = useRouter();
-    const [isRefreshing, startRefreshTransition] = React.useTransition();
+    const [isRefreshing, startTransition] = React.useTransition();
 
     // mutations
     const sendOtpMutation = t.auth.sendOtpCode.useMutation({
@@ -55,7 +59,13 @@ export function LoginForm() {
         onSuccess() {
             // refresh to redirect to login
             toast.success(`Connexion effectuée avec succès`);
-            startRefreshTransition(() => router.refresh());
+            startTransition(() => {
+                if (redirectTo) {
+                    router.push(redirectTo);
+                } else {
+                    router.refresh();
+                }
+            });
         }
     });
 
@@ -125,7 +135,8 @@ export function LoginForm() {
                             href={`${
                                 env.NEXT_PUBLIC_OAUTH_ISSUER_BASE_URL
                             }/authorize?${getAuth0URL(
-                                'google-oauth2'
+                                'google-oauth2',
+                                redirectTo
                             ).toString()}`}
                             renderLeadingIcon={cls => (
                                 <img src={`/Google_Logo.svg`} className={cls} />
@@ -191,13 +202,20 @@ export function LoginForm() {
     );
 }
 
-function getAuth0URL(provider: string): URLSearchParams {
+function getAuth0URL(
+    provider: string,
+    redirect_after_callback?: string
+): URLSearchParams {
     const params = new URLSearchParams();
     params.append('response_type', 'code');
     params.append('client_id', env.NEXT_PUBLIC_OAUTH_CLIENT_ID);
     params.append(
         'redirect_uri',
-        `${getHostWithScheme(env.NEXT_PUBLIC_SITE_URL)}/auth/callback`
+        `${getHostWithScheme(env.NEXT_PUBLIC_SITE_URL)}/auth/callback${
+            redirect_after_callback
+                ? `?redirect_to=${encodeURIComponent(redirect_after_callback)}`
+                : ''
+        }`
     );
     params.append('connection', provider);
     params.append('scope', 'openid profile email');

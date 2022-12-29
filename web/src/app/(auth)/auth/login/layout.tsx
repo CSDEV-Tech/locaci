@@ -6,21 +6,12 @@ import {
 } from '~/features/shared/components/next-link';
 
 // utils
-import { redirect } from 'next/navigation';
 import { clsx } from '@locaci/ui/lib/functions';
-import { getRoleURL } from '~/utils/functions';
 
 // types
 import type { LayoutProps } from '~/types';
-import { getUser } from '~/server/trpc/rsc/getUser';
 
 export default async function LoginLayout({ children }: LayoutProps) {
-    const user = await getUser();
-
-    if (user) {
-        redirect(getRoleURL(user.role));
-    }
-
     return (
         <div className="min-h-screen">
             <Header
