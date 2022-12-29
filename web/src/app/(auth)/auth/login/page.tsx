@@ -2,9 +2,27 @@
 import { LoginForm } from '~/features/auth/components/login-form';
 
 // utils
+import { redirect } from 'next/navigation';
+import { getRoleURL } from '~/utils/functions';
 import { clsx } from '@locaci/ui/lib/functions';
+import { getUser } from '~/server/trpc/rsc/getUser';
+import { PageProps } from '~/types';
 
-export default async function LoginPage() {
+export default async function LoginPage({
+    searchParams
+}: PageProps<{}, { force_login?: string; redirect_to?: string }>) {
+    console.log({
+        searchParams
+    });
+
+    if (searchParams?.force_login !== 'true') {
+        const user = await getUser();
+
+        if (user) {
+            redirect(getRoleURL(user.role));
+        }
+    }
+
     return (
         <>
             <section className="flex h-full items-center justify-center">
@@ -22,7 +40,7 @@ export default async function LoginPage() {
                         </h2>
                     </div>
 
-                    <LoginForm />
+                    <LoginForm redirectTo={searchParams?.redirect_to} />
                 </div>
             </section>
         </>

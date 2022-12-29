@@ -18,7 +18,7 @@ export default function CallbackPage() {
     const router = useRouter();
     const verifyOAuthCodeMutation = t.auth.verifyOAuthCode.useMutation({
         onSuccess({ role }) {
-            router.replace(getRoleURL(role));
+            router.replace(searchParams.get('redirect_to') ?? getRoleURL(role));
         }
     });
     const code = searchParams.get('code');
