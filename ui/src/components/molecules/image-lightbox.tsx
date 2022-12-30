@@ -81,14 +81,23 @@ export function ImageLightbox({
     React.useEffect(() => {
         const listener = function (ev: KeyboardEvent) {
             const evt = ev || window.event;
-            if (evt.key === 'Escape' || evt.key === 'Esc') {
-                onClose();
+            switch (evt.key) {
+                case 'Escape':
+                case 'Esc':
+                    onClose();
+                    break;
+                case 'ArrowLeft':
+                    scrollPrev();
+                    break;
+                case 'ArrowRight':
+                    scrollNext();
+                    break;
             }
         };
 
         document.addEventListener('keydown', listener);
         return () => document.removeEventListener('keydown', listener);
-    }, []);
+    }, [scrollPrev, scrollNext]);
 
     return isOpen ? (
         createPortal(
