@@ -20,7 +20,7 @@ export function PropertyHomeList() {
     const { data, hasNextPage, isFetching, fetchNextPage } =
         t.property.getRecentProperties.useInfiniteQuery(
             {
-                limit: 4
+                limit: 6
             },
             {
                 getNextPageParam(lastPage) {
