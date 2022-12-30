@@ -27,19 +27,19 @@ services:
     #     ports:
     #         - '9181:9181'
 
-    # redis:
-    #     image: redis
-    #     volumes:
-    #         - redis_data:/data
-    #     ports:
-    #         - '6379:6379'
+    redis:
+        image: redis
+        volumes:
+            - redis_data:/data
+        ports:
+            - '6379:6379'
 
-    # redis-gui:
-    #     image: rediscommander/redis-commander
-    #     environment:
-    #         - REDIS_HOSTS=local:redis:6379
-    #     ports:
-    #         - '8089:8081'
+    redis-gui:
+        image: rediscommander/redis-commander
+        environment:
+            - REDIS_HOSTS=local:redis:6379
+        ports:
+            - '8089:8081'
     openstreetmap-search:
         image: mediagis/nominatim:4.1
         restart: always

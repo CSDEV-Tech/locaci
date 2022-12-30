@@ -14,7 +14,8 @@ import { isOwner } from '~/server/trpc/middleware/auth';
 import { isCustomAmenity } from './draft';
 import { Uuid } from '~/utils/uuid';
 
-import { type Amenity, Prisma, RoomType, Room } from '@prisma/client';
+import { type Amenity, RoomType, Room } from '@prisma/client';
+import { Cache, CacheKeys } from '~/server/cache';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerPropertiesRouter = t.router({
@@ -74,6 +75,10 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
+
             return {
                 isActive: !property.activeForListing
             };
@@ -85,34 +90,36 @@ export const ownerPropertiesRouter = t.router({
             })
         )
         .mutation(async ({ ctx, input }) => {
-            try {
-                await ctx.prisma.property.updateMany({
-                    where: {
-                        id: input.uid,
-                        userId: ctx.user.id,
-                        archived: false
-                    },
-                    data: {
-                        archived: true
-                    }
-                });
-            } catch (error) {
-                if (
-                    error instanceof Prisma.PrismaClientKnownRequestError &&
-                    error.code === 'P2025'
-                ) {
-                    throw new TRPCError({
-                        code: 'NOT_FOUND',
-                        message:
-                            "Le logement que vous essayez de supprimer n'existe pas."
-                    });
-                } else {
-                    throw new TRPCError({
-                        code: 'BAD_REQUEST',
-                        message: (error as Error).message
-                    });
+            const property = await ctx.prisma.property.findFirst({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id,
+                    archived: false
                 }
+            });
+
+            if (!property) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message:
+                        "Le logement que vous essayez de supprimer n'existe pas."
+                });
             }
+
+            await ctx.prisma.property.updateMany({
+                where: {
+                    id: input.uid,
+                    userId: ctx.user.id,
+                    archived: false
+                },
+                data: {
+                    archived: true
+                }
+            });
+
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
         }),
     duplicate: protectedProcedure
         .input(
@@ -236,6 +243,10 @@ export const ownerPropertiesRouter = t.router({
                     rentType: input.rentType
                 }
             });
+
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
         }),
     savePropertyStep2: protectedProcedure
         .input(updatePropertyStep2Schema)
@@ -287,6 +298,10 @@ export const ownerPropertiesRouter = t.router({
                     localityName: input.localityName
                 }
             });
+
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
         }),
     savePropertyStep4: protectedProcedure
         .input(updatePropertyStep4Schema)
@@ -315,6 +330,10 @@ export const ownerPropertiesRouter = t.router({
                     addressInstructions: input.addressInstructions
                 }
             });
+
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
         }),
     savePropertyStep5: protectedProcedure
         .input(updatePropertyStep5Schema)
@@ -371,6 +390,10 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
+
             return {
                 rentType: updatedProperty.rentType
             };
@@ -425,6 +448,10 @@ export const ownerPropertiesRouter = t.router({
                     }
                 }
             });
+
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
         }),
     savePropertyStep7: protectedProcedure
         .input(updatePropertyStep7Schema)
@@ -453,6 +480,10 @@ export const ownerPropertiesRouter = t.router({
                     images: input.images
                 }
             });
+
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
         }),
     savePropertyStep8: protectedProcedure
         .input(updatePropertyStep8Schema)
@@ -492,6 +523,10 @@ export const ownerPropertiesRouter = t.router({
                             : 30
                 }
             });
+
+            // invalidate cache for property
+            await Cache.invalidate(CacheKeys.properties.single(input.uid));
+            await Cache.invalidate(CacheKeys.municipalities.all());
 
             return {
                 propertyShortUid: new Uuid(property.id).short()
