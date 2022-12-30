@@ -14,7 +14,10 @@ import { CaretDoubleLeft, Check } from 'phosphor-react';
 // utils
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { convertDateToBeginOfDate } from '~/utils/functions';
-import { updatePropertyStep8Schema } from '~/validation/property-schema';
+import {
+    updatePropertyStep8Schema,
+    updatePropertyStep8SchemaWithoutUid
+} from '~/validation/property-schema';
 
 // types
 import type { z } from 'zod';
@@ -36,9 +39,7 @@ export type FormStep8Props = {
 export function FormStep8(props: FormStep8Props) {
     // form state
     const form = useZodForm({
-        schema: updatePropertyStep8Schema.omit({
-            uid: true
-        }),
+        schema: updatePropertyStep8SchemaWithoutUid,
         defaultValues: {
             availableFrom:
                 props.defaultValues.availableFrom ??
@@ -53,7 +54,11 @@ export function FormStep8(props: FormStep8Props) {
                 props.defaultValues.rentType === 'SHORT_TERM'
                     ? 1
                     : 30,
-            description: props.defaultValues.description
+            description: props.defaultValues.description,
+            minAvailability:
+                props.intent === 'draft'
+                    ? new Date()
+                    : props.defaultValues.availableFrom!
         }
     });
 
@@ -181,6 +186,11 @@ export function FormStep8(props: FormStep8Props) {
                         formState: { errors }
                     }) => (
                         <CalendarInput
+                            minValue={
+                                props.intent === 'draft'
+                                    ? new Date()
+                                    : props.defaultValues.availableFrom
+                            }
                             label={`Date de disponibilité`}
                             {...field}
                             errorText={errors.availableFrom?.message}

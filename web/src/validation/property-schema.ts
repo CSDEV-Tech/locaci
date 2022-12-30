@@ -145,6 +145,16 @@ export const updatePropertyStep7Schema = z.object({
     uid: z.string().uuid()
 });
 
+export function availableIsFromTheFuture(data: {
+    availableFrom: Date;
+    minAvailability: Date;
+}) {
+    return (
+        convertDateToBeginOfDate(data.availableFrom) >=
+        convertDateToBeginOfDate(data.minAvailability)
+    );
+}
+
 export const updatePropertyStep8Schema = z.object({
     uid: z.string().uuid(),
     description: z
@@ -153,14 +163,6 @@ export const updatePropertyStep8Schema = z.object({
                 'Veuillez saisir une description pour votre logement'
         })
         .min(15, 'La description doit avoir au moins 15 caractères'),
-    availableFrom: z
-        .date()
-        .refine(
-            date =>
-                convertDateToBeginOfDate(date) >=
-                convertDateToBeginOfDate(new Date()),
-            'La date de disponibilité doit être dans le futur'
-        ),
     housingFee: z
         .number({
             required_error: 'Veuillez saisir un prix du logement'
@@ -174,5 +176,16 @@ export const updatePropertyStep8Schema = z.object({
         .min(0, 'Le nombre de mois de caution doit être positif'),
     agencyMonthsPaymentAdvance: z
         .number()
-        .min(0, "Le nombre de mois d'agence doit être positif")
+        .min(0, "Le nombre de mois d'agence doit être positif"),
+    availableFrom: z.date(),
+    minAvailability: z.date()
 });
+
+export const updatePropertyStep8SchemaWithoutUid = updatePropertyStep8Schema
+    .omit({
+        uid: true
+    })
+    .refine(
+        availableIsFromTheFuture,
+        'La date de disponibilité doit être dans le futur'
+    );
