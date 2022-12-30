@@ -5,7 +5,7 @@ import { Button } from '@locaci/ui/components/atoms/button';
 
 // utils
 import { BookPropertyModal } from './book-property-modal';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // types
 export type BookPropertyButtonProps = {
@@ -14,6 +14,8 @@ export type BookPropertyButtonProps = {
 
 export function BookPropertyButton({ propertyUid }: BookPropertyButtonProps) {
     const searchParams = useSearchParams();
+    const router = useRouter();
+    const [_, startTransition] = React.useTransition();
 
     const [isBookModalOpen, setIsModalOpen] = React.useState(
         searchParams.get('booking_modal_open') === 'true'
@@ -25,6 +27,11 @@ export function BookPropertyButton({ propertyUid }: BookPropertyButtonProps) {
                 variant="primary"
                 onClick={() => {
                     setIsModalOpen(true);
+                    startTransition(() =>
+                        router.replace(
+                            `/properties/${propertyUid}?booking_modal_open=true`
+                        )
+                    );
                 }}>
                 Réserver
             </Button>
@@ -33,6 +40,9 @@ export function BookPropertyButton({ propertyUid }: BookPropertyButtonProps) {
                 open={isBookModalOpen}
                 onClose={() => {
                     setIsModalOpen(false);
+                    startTransition(() =>
+                        router.replace(`/properties/${propertyUid}`)
+                    );
                 }}
                 propertyUid={propertyUid}
             />
