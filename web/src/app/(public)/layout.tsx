@@ -6,7 +6,7 @@ import { LoginButton } from '~/features/public/components/login-button';
 import { HeaderSearchButton } from '~/features/public/components/header-search-button';
 
 // utils
-import { getAllMunicipalities } from '~/server/utils';
+import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
 import { use } from 'react';
 
 // types

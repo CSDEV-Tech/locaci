@@ -1,31 +1,45 @@
-// these functions should only be called inside server-components
-import 'server-only';
-import { cache } from 'react';
-import { rsc } from './trpc/rsc';
-import { prisma } from './db/client';
+import jwt from 'jsonwebtoken';
+import { prisma } from '~/server/db/client';
+import { Uuid } from '~/utils/uuid';
+import { env } from '~/env/server.mjs';
 
-export const getAllMunicipalities = cache(() =>
-    rsc.geo.getAllMunicipalities.fetch()
-);
+import type { User } from '@prisma/client';
 
-export const getPropertyDetail = cache((uid: string) =>
-    rsc.property.getPropertyDetail.fetch({ uid })
-);
+export async function getUserFromSessionToken(sessionToken: string) {
+    // get user from cookie
+    let user: User | null = null;
 
-export function getTop100RecentPropertiesUid() {
-    return prisma.property.findMany({
-        where: {
-            archived: false,
-            activeForListing: true
-        },
-        select: {
-            id: true
-        },
-        take: 100,
-        orderBy: {
-            createdAt: 'desc'
+    try {
+        // Verify the token
+        const decoded = jwt.verify(sessionToken, env.JWT_SECRET) as {
+            id?: string;
+        };
+
+        if (decoded.id) {
+            user = await prisma.user.findFirst({
+                where: {
+                    id: Uuid.fromShort(decoded.id).toString()
+                }
+            });
         }
-    });
+
+        return user;
+    } catch (error) {
+        return null;
+    }
 }
 
-export const getUserCached = cache(() => rsc.auth.getUser.fetch());
+export function revalidatePath(paths: string | string[]) {
+    const searchParams = new URLSearchParams();
+    if (typeof paths === 'string') {
+        searchParams.append('path', paths);
+    } else {
+        for (const path of paths) {
+            searchParams.append('path', path);
+        }
+    }
+    searchParams.append('nextSecret', env.NEXT_REVALIDATE_SECRET);
+    return fetch(
+        `${env.NEXT_PUBLIC_SITE_URL}/api/revalidate?${searchParams.toString()}`
+    );
+}

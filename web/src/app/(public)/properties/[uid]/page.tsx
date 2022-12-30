@@ -28,8 +28,8 @@ import {
     getAllMunicipalities,
     getPropertyDetail,
     getUserCached
-} from '~/server/utils';
-import { getPropertyTitle, wait } from '~/utils/functions';
+} from '~/server/trpc/rsc/cached-queries';
+import { getPropertyTitle } from '~/utils/functions';
 import { clsx, formatNumberToFCFA } from '@locaci/ui/lib/functions';
 import { env } from '~/env/client.mjs';
 import { rsc } from '~/server/trpc/rsc';

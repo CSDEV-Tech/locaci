@@ -1,7 +1,7 @@
 import { cookies, headers } from 'next/headers';
 
 import { cache } from 'react';
-import { getUserFromSessionToken } from '~/server/ssr-helpers';
+import { getUserFromSessionToken } from '~/server/utils';
 import { AsyncLocalStorage } from 'async_hooks';
 
 import type { User } from '@prisma/client';

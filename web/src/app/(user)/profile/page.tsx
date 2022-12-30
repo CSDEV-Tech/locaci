@@ -1,10 +1,9 @@
-import { cookies } from 'next/headers';
-import type { PageProps } from '~/types';
-import { getUserFromSessionToken } from '~/server/ssr-helpers';
+import { getUserCached } from '~/server/trpc/rsc/cached-queries';
+import { use } from 'react';
 
-export default async function ProfilePage(props: PageProps) {
-    const session = cookies().get('__session')?.value;
-    const user = session ? await getUserFromSessionToken(session) : null;
+import type { PageProps } from '~/types';
+export default function ProfilePage(props: PageProps) {
+    const user = use(getUserCached());
 
     return (
         <>

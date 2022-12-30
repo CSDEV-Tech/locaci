@@ -1,5 +1,5 @@
 // utils
-import { getUserFromSessionToken } from '~/server/ssr-helpers';
+import { getUserFromSessionToken } from '~/server/utils';
 import { getCookie } from '~/utils/functions';
 import { prisma } from '~/server/db/client';
 
