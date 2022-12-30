@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { env } from '~/env/server.mjs';
+import { Cache, CacheKeys } from '~/server/cache';
 import { t } from '~/server/trpc/trpc-server-root';
 import { apiFetch, compareStrIgnoreAccent } from '~/utils/functions';
 import type { OSMDetailResultData, OSMResultData } from '~/utils/types';
@@ -234,30 +235,32 @@ export const geoRouter = t.router({
             };
         }),
     getAllMunicipalities: t.procedure.query(async ({ ctx }) => {
-        let municipalities = await ctx.prisma.municipality
-            .findMany({
-                orderBy: {
-                    name: 'asc'
-                },
-                select: {
-                    name: true,
-                    id: true,
-                    previewPhotoURL: true,
-                    properties: {
-                        where: {
-                            activeForListing: true,
-                            archived: false
+        let municipalities = await Cache.get(
+            CacheKeys.municipalities.all(),
+            () =>
+                ctx.prisma.municipality.findMany({
+                    orderBy: {
+                        name: 'asc'
+                    },
+                    select: {
+                        name: true,
+                        id: true,
+                        previewPhotoURL: true,
+                        properties: {
+                            where: {
+                                activeForListing: true,
+                                archived: false
+                            }
                         }
                     }
-                }
-            })
-            .then(municipalities =>
-                municipalities.map(m => ({
-                    ...m,
-                    id: new Uuid(m.id).short(),
-                    propertyCount: m.properties.length
-                }))
-            );
+                })
+        ).then(municipalities =>
+            municipalities.map(m => ({
+                ...m,
+                id: new Uuid(m.id).short(),
+                propertyCount: m.properties.length
+            }))
+        );
 
         return municipalities;
     })
