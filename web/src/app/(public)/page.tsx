@@ -19,7 +19,7 @@ import ceoImgUrl from '~/assets/img/temomane.jpg';
 import { rsc } from '~/server/trpc/rsc';
 import { use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
-import { getAllMunicipalities } from '~/server/utils';
+import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
 
 // this page should be static and only be revalidated each day
 export const dynamic = 'force-static',
@@ -166,7 +166,7 @@ function MunicipalitiesListSection() {
 function LatestPropertiesSection() {
     const { pages } = use(
         rsc.property.getRecentProperties.fetchInfinite({
-            limit: 4
+            limit: 6
         })
     );
 

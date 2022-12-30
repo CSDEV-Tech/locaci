@@ -1,7 +1,7 @@
 import { formatNumberToFCFA } from '@locaci/ui/lib/functions';
 import { use } from 'react';
 import { Meta } from '~/features/shared/components/meta';
-import { getPropertyDetail } from '~/server/utils';
+import { getPropertyDetail } from '~/server/trpc/rsc/cached-queries';
 import { capitalize, getPropertyTitle } from '~/utils/functions';
 
 // types
