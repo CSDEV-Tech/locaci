@@ -313,7 +313,8 @@ function OwnerInfoDesktopSection({ uid }: { uid: string }) {
                 'hidden lg:flex',
                 'mr-8 flex-col gap-8 px-5 py-8',
                 'rounded-md border border-gray/50',
-                'xl:mx-0'
+                'lg:p-8',
+                'xl:mx-0',
             )}>
             <h2 className="text-lg font-semibold lg:text-2xl">
                 A propos du bailleur
@@ -358,9 +359,9 @@ function PriceReservationSection({ uid }: { uid: string }) {
                 'flex items-center justify-between',
                 'px-4 py-8 pb-10',
                 'border-t border-gray/50',
-                'md:px-8 lg:items-start',
+                'lg:p-8',
                 'lg:static lg:rounded-md lg:border',
-                'lg:mr-8 lg:mt-8 lg:flex-col',
+                'lg:mr-8 lg:mt-8',
                 'xl:mx-0'
             )}>
             <div>
@@ -378,7 +379,6 @@ function PriceReservationSection({ uid }: { uid: string }) {
                 </span>
             </div>
 
-            {/* TODO: Button reservation */}
             <HydrateClient state={use(rsc.dehydrate())}>
                 <BookPropertyButton propertyUid={uid} />
             </HydrateClient>
