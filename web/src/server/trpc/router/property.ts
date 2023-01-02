@@ -1,8 +1,12 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { Uuid } from '~/utils/uuid';
 import { t } from '~/server/trpc/trpc-server-root';
 import { Cache, CacheKeys } from '~/server/cache';
+import { bookPropertySchema } from '~/validation/booking-schema';
+import { isLoggedIn } from '~/server/trpc/middleware/auth';
 
+const protectedProcedure = t.procedure.use(isLoggedIn);
 export const propertyRouter = t.router({
     getRecentProperties: t.procedure
         .input(
@@ -114,5 +118,33 @@ export const propertyRouter = t.router({
                       }))
                   }
                 : null;
+        }),
+    bookProperty: protectedProcedure
+        .input(bookPropertySchema)
+        .mutation(async ({ ctx, input }) => {
+            // User can only do one reservation at a time
+            const existingBooking = await ctx.prisma.propertyBooking.findFirst({
+                where: {
+                    userId: ctx.user.id,
+                    propertyId: input.uid
+                }
+            });
+
+            if (existingBooking) {
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                    message: 'Vous avez déjà réservé ce logement.'
+                });
+            }
+
+            await ctx.prisma.propertyBooking.create({
+                data: {
+                    userId: ctx.user.id,
+                    propertyId: input.uid,
+                    dateOfReservation: input.bookingDate
+                }
+            });
+
+            return { reservationDate: input.bookingDate };
         })
 });
