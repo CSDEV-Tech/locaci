@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
     HorizontalDashboardPropertyCard,
-    PropertyCardProps
+    DashboardPropertyCardProps
 } from '../../components/molecules/dashboard-property-card';
 
 export default {
@@ -23,7 +23,7 @@ Default.args = {
     numberOfRooms: 1,
     surfaceArea: 9,
     address: `Marché, A1, Étoile, Sagbé, Abobo, Abidjan, Côte d’Ivoire`
-} as PropertyCardProps;
+} as DashboardPropertyCardProps;
 
 export const Draft = Template.bind({});
 Draft.args = {
@@ -32,8 +32,9 @@ Draft.args = {
     href: `#`,
     numberOfRooms: 1,
     surfaceArea: 9,
-    isVisible: true
-} as PropertyCardProps;
+    isVisible: true,
+    actions: []
+} as DashboardPropertyCardProps;
 
 export const Disabled = Template.bind({});
 Disabled.args = {
@@ -43,4 +44,4 @@ Disabled.args = {
     href: `#`,
     numberOfRooms: 1,
     surfaceArea: 9
-} as PropertyCardProps;
+} as DashboardPropertyCardProps;

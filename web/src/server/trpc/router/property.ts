@@ -146,5 +146,24 @@ export const propertyRouter = t.router({
             });
 
             return { reservationDate: input.bookingDate };
+        }),
+    checkIfPropertyIsBooked: protectedProcedure
+        .input(
+            z.object({
+                propertyId: z.string()
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            // User can only do one reservation at a time
+            const existingBooking = await ctx.prisma.propertyBooking.findFirst({
+                where: {
+                    userId: ctx.user.id,
+                    propertyId: input.propertyId
+                }
+            });
+
+            return {
+                existing: existingBooking !== null
+            };
         })
 });

@@ -5,7 +5,8 @@ import {
     useDateField,
     useDatePicker,
     useDateSegment,
-    useLocale
+    useLocale,
+    type AriaDatePickerProps
 } from 'react-aria';
 import {
     useDatePickerState,
@@ -37,6 +38,7 @@ export type CalendarInputProps = {
     onChange?: (newDate: Date) => void;
     errorText?: string;
     helpText?: string;
+    required?: boolean;
 } & Omit<
     DatePickerStateOptions<CalendarDate>,
     | 'createCalendar'
@@ -48,6 +50,7 @@ export type CalendarInputProps = {
     | 'validationState'
     | 'errorMessage'
     | 'description'
+    | 'isRequired'
 >;
 
 export function CalendarInput({
@@ -59,6 +62,7 @@ export function CalendarInput({
     onChange,
     helpText,
     errorText,
+    required = false,
     ...restProps
 }: CalendarInputProps) {
     const props = {
@@ -69,7 +73,8 @@ export function CalendarInput({
         maxValue: maxValue ? dateToReactAriaDate(maxValue) : undefined,
         onChange: (date: DateValue) => {
             onChange?.(new Date(date.toDate(getLocalTimeZone())));
-        }
+        },
+        isRequired: required
     };
 
     const state = useDatePickerState(props ?? {});
@@ -107,6 +112,13 @@ export function CalendarInput({
                     {...labelProps}
                     className={clsx('text-sm font-normal', 'text-gray')}>
                     {label}
+                    {required && (
+                        <span
+                            aria-label="ce champ est requis"
+                            className="text-red-400">
+                            *
+                        </span>
+                    )}
                 </label>
 
                 <div

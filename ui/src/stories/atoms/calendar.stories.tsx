@@ -9,7 +9,7 @@ export default {
 
 // 👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof Calendar> = args => (
-    <div className="m-4 inline-flex bg-white p-4">
+    <div className="m-4 inline-flex rounded-md bg-white p-4">
         <Calendar {...args} />
     </div>
 );
