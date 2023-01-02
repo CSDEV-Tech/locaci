@@ -12,20 +12,4 @@ export const getPropertyDetail = cache((uid: string) =>
     rsc.property.getPropertyDetail.fetch({ uid })
 );
 
-export function getTop100RecentPropertiesUid() {
-    return prisma.property.findMany({
-        where: {
-            archived: false,
-            activeForListing: true
-        },
-        select: {
-            id: true
-        },
-        take: 100,
-        orderBy: {
-            createdAt: 'desc'
-        }
-    });
-}
-
 export const getUserCached = cache(() => rsc.auth.getUser.fetch());

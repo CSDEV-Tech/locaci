@@ -10,7 +10,8 @@ import Image from 'next/image';
 import { Avatar } from '@locaci/ui/components/atoms/avatar';
 import {
     NextDynamicLink,
-    NextLink
+    NextLink,
+    NextLinkButton
 } from '~/features/shared/components/next-link';
 import { ClientMap } from '~/features/property-detail/components/client-map';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
@@ -18,8 +19,6 @@ import { RoomTypeLine } from '~/features/property-detail/components/room-type-li
 import { AmenityTypeLine } from '~/features/property-detail/components/amenity-type-line';
 import { MunicipalityCard } from '@locaci/ui/components/molecules/municipality-card';
 import { HeroImageGallery } from '~/features/property-detail/components/hero-image-gallery';
-import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
-import { BookPropertyButton } from '~/features/book/components/book-property-button';
 
 // utils
 import React, { use } from 'react';
@@ -314,7 +313,7 @@ function OwnerInfoDesktopSection({ uid }: { uid: string }) {
                 'mr-8 flex-col gap-8 px-5 py-8',
                 'rounded-md border border-gray/50',
                 'lg:p-8',
-                'xl:mx-0',
+                'xl:mx-0'
             )}>
             <h2 className="text-lg font-semibold lg:text-2xl">
                 A propos du bailleur
@@ -348,8 +347,6 @@ function OwnerInfoDesktopSection({ uid }: { uid: string }) {
 }
 
 function PriceReservationSection({ uid }: { uid: string }) {
-    // preload user data so that the request is always defined on the children
-    use(getUserCached());
     const property = use(getPropertyDetail(uid))!;
 
     return (
@@ -379,9 +376,9 @@ function PriceReservationSection({ uid }: { uid: string }) {
                 </span>
             </div>
 
-            <HydrateClient state={use(rsc.dehydrate())}>
-                <BookPropertyButton propertyUid={uid} />
-            </HydrateClient>
+            <NextLinkButton variant="primary" href={`/properties/${uid}/book`}>
+                Réserver
+            </NextLinkButton>
         </aside>
     );
 }
@@ -406,8 +403,8 @@ function SimilarPropertiesSection({ uid }: { uid: string }) {
                     {similar.map(p => (
                         <li key={p.id} className={`w-full`}>
                             <PropertyCard
-                                className="h-full w-full"
                                 href={`/properties/${p.id}`}
+                                className="h-full w-full"
                                 title={getPropertyTitle(p)}
                                 address={p.localityName}
                                 // @ts-ignore
