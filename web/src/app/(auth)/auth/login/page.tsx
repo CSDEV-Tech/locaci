@@ -11,10 +11,6 @@ import { PageProps } from '~/types';
 export default async function LoginPage({
     searchParams
 }: PageProps<{}, { force_login?: string; redirect_to?: string }>) {
-    console.log({
-        searchParams
-    });
-
     if (searchParams?.force_login !== 'true') {
         const user = await getUser();
 
