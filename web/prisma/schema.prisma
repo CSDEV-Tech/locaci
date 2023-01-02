@@ -35,6 +35,7 @@ model User {
     civicTitle     Civility @default(MR)
 
     properties Property[] // A user can have many properties
+    bookings   PropertyBooking[]
 }
 
 model Room {
@@ -89,6 +90,15 @@ enum RentType {
     SHORT_TERM
 }
 
+model PropertyBooking {
+    id                String   @id @default(uuid()) @db.Uuid
+    userId            String   @db.Uuid
+    propertyId        String   @db.Uuid
+    applicant         User     @relation(fields: [userId], references: [id])
+    property          Property @relation(fields: [propertyId], references: [id])
+    dateOfReservation DateTime
+}
+
 model Property {
     id        String   @id @default(uuid()) @db.Uuid
     userId    String   @db.Uuid
@@ -131,7 +141,8 @@ model Property {
     agencyMonthsPaymentAdvance  Int
     availableFrom               DateTime
 
-    activeForListing Boolean @default(false)
+    activeForListing Boolean           @default(false)
+    bookings         PropertyBooking[]
 }
 
 model DraftProperty {
