@@ -38,7 +38,7 @@ export function Popover(props: PopoverProps) {
                 className={clsx(
                     props.className,
                     'flex flex-col rounded-md bg-white py-3 shadow-card',
-                    'absolute top-[calc(100%+0.5rem)] z-10',
+                    'absolute top-[calc(100%+0.5rem)] z-[1000]',
                     {
                         'left-0': !props.overflowLeft,
                         'right-0': !props.overflowRight
