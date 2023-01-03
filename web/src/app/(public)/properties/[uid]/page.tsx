@@ -25,13 +25,11 @@ import React, { use } from 'react';
 import { notFound } from 'next/navigation';
 import {
     getAllMunicipalities,
-    getPropertyDetail,
-    getUserCached
+    getPropertyDetail
 } from '~/server/trpc/rsc/cached-queries';
 import { getPropertyTitle } from '~/utils/functions';
 import { clsx, formatNumberToFCFA } from '@locaci/ui/lib/functions';
 import { env } from '~/env/client.mjs';
-import { rsc } from '~/server/trpc/rsc';
 
 // types
 import type { PageProps } from '~/types';
@@ -354,7 +352,7 @@ function PriceReservationSection({ uid }: { uid: string }) {
             className={clsx(
                 'fixed bottom-0 left-0 right-0 z-20 bg-white',
                 'flex items-center justify-between',
-                'px-4 py-8 pb-10',
+                'px-4 py-8',
                 'border-t border-gray/50',
                 'lg:p-8',
                 'lg:static lg:rounded-md lg:border',

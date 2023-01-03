@@ -19,6 +19,10 @@ import { getPropertyTitle } from '~/utils/functions';
 import { ListingImage } from '~/features/shared/types';
 import Image from 'next/image';
 import { BookPropertyForm } from '~/features/book/components/book-property-form';
+import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
+
+// this is a dynamic page
+export const dynamic = 'force-dynamic';
 
 export default function BookingPage({ params }: PageProps<{ uid: string }>) {
     const property = use(getPropertyDetail(params.uid));
@@ -47,11 +51,6 @@ export default function BookingPage({ params }: PageProps<{ uid: string }>) {
         'redirect_to',
         `/properties/${params.uid}/book`
     );
-
-    // calculate the number of bedrooms
-    const noOfBedRooms = property.rooms.filter(
-        r => r.type === 'BEDROOM'
-    ).length;
 
     return (
         <>
@@ -98,76 +97,17 @@ export default function BookingPage({ params }: PageProps<{ uid: string }>) {
                             <span>Retournez à l'écran précédent</span>
                         </NextLinkButton>
                     </div>
-                ) : hasAlreadyBooked ? (
-                    <>
-                        <div className="flex flex-col items-center gap-8 pt-24">
-                            <img
-                                src="/forbidden_illustration.svg"
-                                alt="Image de succès"
-                                className="h-[165px] w-[240px] text-primary-15"
-                            />
-
-                            <h1 className="text-center text-2xl font-extrabold">
-                                Vous avez déjà réservé ce logement
-                            </h1>
-
-                            <p className="text-center text-gray">
-                                Nous avons déjà envoyé un message&nbsp;
-                                <strong>Whatsapp</strong> au bailleur, il vous
-                                reviendra au plut tôt.
-                            </p>
-
-                            <NextLinkButton
-                                href={`/properties/${params.uid}`}
-                                variant="primary">
-                                <ArrowLeftIcon className={`h-4 w-4`} />
-                                <span>Retournez à l'écran précédent</span>
-                            </NextLinkButton>
-                        </div>
-                    </>
                 ) : (
-                    <div className="flex flex-col gap-4 pt-6 md:m-auto md:w-[600px]">
-                        <BookPropertyForm
-                            availableFrom={property.availableFrom.toISOString()}
-                            propertyUid={property.id}
-                            firstName={user.firstName}
-                            lastName={user.lastName}
-                            phoneNumber={user.phoneNumber}
-                            initialHeader={
-                                <>
-                                    <h1 className="text-center text-xl font-extrabold md:text-2xl">
-                                        Réserver ce logement pour une prochaine
-                                        visite
-                                    </h1>
-
-                                    <p className="text-center text-gray">
-                                        Remplissez le formulaire, nous nous
-                                        chargeons d'informer le propriétaire.
-                                    </p>
-
-                                    <PropertyPresentationCard
-                                        className="h-full w-full"
-                                        title={getPropertyTitle(property)}
-                                        address={property.localityName}
-                                        // @ts-ignore
-                                        customImage={Image}
-                                        numberOfRooms={property.noOfRooms}
-                                        surfaceArea={property.surfaceArea}
-                                        numberOfBedRooms={noOfBedRooms}
-                                        price={property.housingFee}
-                                        housingPeriod={property.housingPeriod}
-                                        coverURL={
-                                            property.images
-                                                ? (
-                                                      property.images as Array<ListingImage>
-                                                  )[0]?.uri
-                                                : ''
-                                        }
-                                    />
-                                </>
-                            }
-                        />
-                    </div>
+                    <>
+                        <HydrateClient state={use(rsc.dehydrate())}>
+                            <BookPropertyForm
+                                propertyUid={params.uid}
+                                firstName={user.firstName}
+                                lastName={user.lastName}
+                                phoneNumber={user.phoneNumber}
+                            />
+                        </HydrateClient>
+                    </>
                 )}
 
                 <div

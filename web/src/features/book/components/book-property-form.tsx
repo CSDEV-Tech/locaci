@@ -7,32 +7,53 @@ import { TextInput } from '@locaci/ui/components/atoms/input';
 import { NextLinkButton } from '~/features/shared/components/next-link';
 import { ArrowRightIcon } from '@locaci/ui/components/atoms/icons/arrow-right';
 import { CalendarInput } from '@locaci/ui/components/molecules/calendar-input';
+import Image from 'next/image';
 
 // utils
 import { t } from '~/app/trpc-client-provider';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { bookPropertySchema } from '~/validation/booking-schema';
+import { PropertyPresentationCard } from '@locaci/ui/components/molecules/property-presentation-card';
+import { getPropertyTitle } from '~/utils/functions';
+import { ListingImage } from '~/features/shared/types';
+import { ArrowLeftIcon } from '@locaci/ui/components/atoms/icons/arrow-left';
 
 // types
 export type BookPropertyFormProps = {
-    availableFrom: string;
     propertyUid: string;
     firstName?: string | null;
     lastName?: string | null;
     phoneNumber?: string | null;
-    initialHeader: React.ReactNode;
 };
 
 export function BookPropertyForm({
     propertyUid,
     lastName,
     firstName,
-    phoneNumber,
-    initialHeader,
-    availableFrom
+    phoneNumber
 }: BookPropertyFormProps) {
+    const utils = t.useContext();
+    const { data: property } = t.property.getPropertyDetail.useQuery(
+        {
+            uid: propertyUid
+        },
+        {
+            staleTime: Infinity
+        }
+    );
+
+    const { data: hasAlreadyBooked } =
+        t.property.checkIfPropertyIsBooked.useQuery(
+            {
+                propertyId: property!.id
+            },
+            {
+                enabled: Boolean(property)
+            }
+        );
+
     const today = new Date();
-    let minDateReservation = new Date(availableFrom);
+    let minDateReservation = new Date(property!.availableFrom);
     let defaultBookingDate = minDateReservation;
     if (today >= minDateReservation) {
         defaultBookingDate = today;
@@ -45,7 +66,7 @@ export function BookPropertyForm({
     const form = useZodForm({
         schema: bookPropertySchema,
         defaultValues: {
-            uid: propertyUid,
+            uid: property!.id,
             lastName: lastName ?? '',
             firstName: firstName ?? '',
             phoneNumber: phoneNumber ?? '',
@@ -53,7 +74,16 @@ export function BookPropertyForm({
         }
     });
 
-    const bookingMutation = t.property.bookProperty.useMutation();
+    // calculate the number of bedrooms
+    const noOfBedRooms = property!.rooms.filter(
+        r => r.type === 'BEDROOM'
+    ).length;
+
+    const bookingMutation = t.property.bookProperty.useMutation({
+        onSuccess() {
+            utils.property.checkIfPropertyIsBooked.invalidate();
+        }
+    });
 
     return bookingMutation.isSuccess ? (
         <div className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10">
@@ -88,9 +118,59 @@ export function BookPropertyForm({
                 Voir vos réservations en cours
             </NextLinkButton>
         </div>
+    ) : hasAlreadyBooked?.existing ? (
+        <div className="flex flex-col items-center gap-8 pt-24">
+            <img
+                src="/forbidden_illustration.svg"
+                alt="Image de succès"
+                className="h-[165px] w-[240px] text-primary-15"
+            />
+
+            <h1 className="text-center text-2xl font-extrabold">
+                Vous avez déjà réservé ce logement
+            </h1>
+
+            <p className="text-center text-gray">
+                Nous avons déjà envoyé un message&nbsp;
+                <strong>Whatsapp</strong> au bailleur, il vous reviendra au plut
+                tôt.
+            </p>
+
+            <NextLinkButton
+                href={`/properties/${propertyUid}`}
+                variant="primary">
+                <ArrowLeftIcon className={`h-4 w-4`} />
+                <span>Retournez à l'écran précédent</span>
+            </NextLinkButton>
+        </div>
     ) : (
-        <>
-            {initialHeader}
+        <div className="flex flex-col gap-4 pt-6 md:m-auto md:w-[600px]">
+            <h1 className="text-center text-xl font-extrabold md:text-2xl">
+                Réserver ce logement pour une prochaine visite
+            </h1>
+
+            <p className="text-center text-gray">
+                Remplissez le formulaire, nous nous chargeons d'informer le
+                propriétaire.
+            </p>
+
+            <PropertyPresentationCard
+                className="h-full w-full"
+                title={getPropertyTitle(property!)}
+                address={property!.localityName}
+                // @ts-ignore
+                customImage={Image}
+                numberOfRooms={property!.noOfRooms}
+                surfaceArea={property!.surfaceArea}
+                numberOfBedRooms={noOfBedRooms}
+                price={property!.housingFee}
+                housingPeriod={property!.housingPeriod}
+                coverURL={
+                    property!.images
+                        ? (property!.images as Array<ListingImage>)[0]?.uri
+                        : ''
+                }
+            />
 
             <span className="text-gray">Détails</span>
             <form
@@ -151,6 +231,6 @@ export function BookPropertyForm({
                         : `Réserver`}
                 </Button>
             </form>
-        </>
+        </div>
     );
 }

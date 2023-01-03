@@ -135,7 +135,7 @@ export function EditDraftPropertyForm({
                     propertyUid={propertyUid}
                     open={isSuccessModalOpen}
                     onClose={() => {
-                        router.push(`/owner`);
+                        router.replace(`/owner`);
                     }}
                 />
             )}
