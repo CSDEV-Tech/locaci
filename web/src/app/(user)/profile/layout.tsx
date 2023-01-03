@@ -10,7 +10,7 @@ import type { LayoutProps } from '~/types';
 export default function UserLayout({ children }: LayoutProps) {
     const user = use(getUserCached());
 
-    if (user?.role !== 'HOUSING_APPLICANT') {
+    if (!user) {
         redirect(`/auth/login`);
     }
 

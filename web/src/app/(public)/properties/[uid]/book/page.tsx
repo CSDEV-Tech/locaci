@@ -123,14 +123,14 @@ export default function BookingPage({ params }: PageProps<{ uid: string }>) {
                 ) : (
                     <div className="flex flex-col gap-4 pt-6 md:m-auto md:w-[600px]">
                         <BookPropertyForm
-                            availableFrom={property.availableFrom}
+                            availableFrom={property.availableFrom.toISOString()}
                             propertyUid={property.id}
                             firstName={user.firstName}
                             lastName={user.lastName}
                             phoneNumber={user.phoneNumber}
                             initialHeader={
                                 <>
-                                    <h1 className="text-center text-xl font-extrabold">
+                                    <h1 className="text-center text-xl font-extrabold md:text-2xl">
                                         Réserver ce logement pour une prochaine
                                         visite
                                     </h1>
