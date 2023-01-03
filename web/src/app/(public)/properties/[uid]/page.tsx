@@ -10,8 +10,8 @@ import Image from 'next/image';
 import { Avatar } from '@locaci/ui/components/atoms/avatar';
 import {
     NextDynamicLink,
-    NextLink,
-    NextLinkButton
+    NextDynamicLinkButton,
+    NextLink
 } from '~/features/shared/components/next-link';
 import { ClientMap } from '~/features/property-detail/components/client-map';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
@@ -376,9 +376,11 @@ function PriceReservationSection({ uid }: { uid: string }) {
                 </span>
             </div>
 
-            <NextLinkButton variant="primary" href={`/properties/${uid}/book`}>
+            <NextDynamicLinkButton
+                variant="primary"
+                href={`/properties/${uid}/book`}>
                 Réserver
-            </NextLinkButton>
+            </NextDynamicLinkButton>
         </aside>
     );
 }

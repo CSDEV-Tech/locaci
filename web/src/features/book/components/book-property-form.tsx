@@ -13,6 +13,7 @@ import { t } from '~/app/trpc-client-provider';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { bookPropertySchema } from '~/validation/booking-schema';
 
+// types
 export type BookPropertyFormProps = {
     availableFrom: string;
     propertyUid: string;
@@ -52,7 +53,7 @@ export function BookPropertyForm({
         }
     });
 
-    const bookingMutation = t.property.bookProperty.useMutation({});
+    const bookingMutation = t.property.bookProperty.useMutation();
 
     return bookingMutation.isSuccess ? (
         <div className="flex h-full flex-col items-center justify-center gap-6 px-6 py-10">

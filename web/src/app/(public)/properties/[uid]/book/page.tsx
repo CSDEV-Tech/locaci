@@ -48,6 +48,11 @@ export default function BookingPage({ params }: PageProps<{ uid: string }>) {
         `/properties/${params.uid}/book`
     );
 
+    // calculate the number of bedrooms
+    const noOfBedRooms = property.rooms.filter(
+        r => r.type === 'BEDROOM'
+    ).length;
+
     return (
         <>
             <section className={clsx('relative w-full px-4 pb-24', 'md:px-8')}>
@@ -148,6 +153,7 @@ export default function BookingPage({ params }: PageProps<{ uid: string }>) {
                                         customImage={Image}
                                         numberOfRooms={property.noOfRooms}
                                         surfaceArea={property.surfaceArea}
+                                        numberOfBedRooms={noOfBedRooms}
                                         price={property.housingFee}
                                         housingPeriod={property.housingPeriod}
                                         coverURL={

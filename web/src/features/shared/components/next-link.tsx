@@ -23,6 +23,10 @@ export function NextLinkButton(props: Omit<LinkButtonProps, 'Custom'>) {
     return <LinkButton {...props} Custom={NextLink} />;
 }
 
+export function NextDynamicLinkButton(props: Omit<LinkButtonProps, 'Custom'>) {
+    return <LinkButton {...props} Custom={NextDynamicLink} />;
+}
+
 export const NextDynamicLink = React.forwardRef<HTMLAnchorElement, CustomLink>(
     ({ href, children, ...props }, forwardedRef) => {
         const router = useRouter();
