@@ -8,7 +8,7 @@ import { z } from 'zod';
 export const serverSchema = z.object({
     NODE_ENV: z.enum(['development', 'test', 'production']),
     DATABASE_URL: z.string().url(),
-    REDIS_URL: z.string().url(),
+    REDIS_URL: z.string().min(1),
     CACHE_BYPASS: z.string().optional(),
     CACHE_PREFIX: z.string().optional(),
     CACHE_TTL: z.preprocess(val => Number(val), z.number()),

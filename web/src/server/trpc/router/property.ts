@@ -137,6 +137,18 @@ export const propertyRouter = t.router({
                 });
             }
 
+            // update user infos
+            await ctx.prisma.user.update({
+                where: {
+                    id: ctx.user.id
+                },
+                data: {
+                    firstName: input.firstName,
+                    lastName: input.lastName,
+                    phoneNumber: input.phoneNumber
+                }
+            });
+
             await ctx.prisma.propertyBooking.create({
                 data: {
                     userId: ctx.user.id,

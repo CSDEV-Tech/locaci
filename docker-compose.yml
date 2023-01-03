@@ -29,15 +29,17 @@ services:
 
     redis:
         image: redis
-        volumes:
-            - redis_data:/data
+        environment:
+            - REDIS_PASSWORD=redis_password
+        command: >
+            redis-server --requirepass redis_password
         ports:
             - '6379:6379'
 
     redis-gui:
         image: rediscommander/redis-commander
         environment:
-            - REDIS_HOSTS=local:redis:6379
+            - REDIS_HOSTS=local:redis:6379:0:redis_password
         ports:
             - '8089:8081'
     openstreetmap-search:
@@ -55,6 +57,5 @@ services:
 
 volumes:
     osm-search-data:
-    redis_data:
     db-data:
         driver: local

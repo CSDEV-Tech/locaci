@@ -8,7 +8,7 @@ export default function Loading() {
     return (
         <section
             className={clsx(
-                'mt-4 flex max-w-[1200px] flex-col gap-4 pb-20',
+                'mx-auto mt-4 flex max-w-[1200px] flex-col gap-4 pb-20',
                 'lg:gap-8'
             )}>
             <span className="sr-only">Chargement de votre logement...</span>

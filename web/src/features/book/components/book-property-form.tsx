@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { TextInput } from '@locaci/ui/components/atoms/input';
 import { NextLinkButton } from '~/features/shared/components/next-link';
-import { ArrowLeftIcon } from '@locaci/ui/components/atoms/icons/arrow-left';
+import { ArrowRightIcon } from '@locaci/ui/components/atoms/icons/arrow-right';
 import { CalendarInput } from '@locaci/ui/components/molecules/calendar-input';
 
 // utils
@@ -14,7 +14,7 @@ import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { bookPropertySchema } from '~/validation/booking-schema';
 
 export type BookPropertyFormProps = {
-    availableFrom: Date;
+    availableFrom: string;
     propertyUid: string;
     firstName?: string | null;
     lastName?: string | null;
@@ -27,10 +27,19 @@ export function BookPropertyForm({
     lastName,
     firstName,
     phoneNumber,
-    initialHeader
+    initialHeader,
+    availableFrom
 }: BookPropertyFormProps) {
-    const defaultBookingDate = new Date();
-    defaultBookingDate.setDate(defaultBookingDate.getDate() + 1); // add +1 day
+    const today = new Date();
+    let minDateReservation = new Date(availableFrom);
+    let defaultBookingDate = minDateReservation;
+    if (today >= minDateReservation) {
+        defaultBookingDate = today;
+        defaultBookingDate.setDate(defaultBookingDate.getDate() + 1); // add +1 day
+        minDateReservation = today;
+    } else {
+        defaultBookingDate = minDateReservation;
+    }
 
     const form = useZodForm({
         schema: bookPropertySchema,
@@ -73,9 +82,9 @@ export function BookPropertyForm({
 
             <NextLinkButton
                 variant="primary"
-                href="/"
-                renderLeadingIcon={cls => <ArrowLeftIcon className={cls} />}>
-                Retourner à l'accueil.
+                href="/profile"
+                renderTrailingIcon={cls => <ArrowRightIcon className={cls} />}>
+                Voir vos réservations en cours
             </NextLinkButton>
         </div>
     ) : (
@@ -104,8 +113,10 @@ export function BookPropertyForm({
                     label="téléphone"
                     required
                     {...form.register('phoneNumber')}
-                    helpText={`Nous utilisons ce numéro pour vous mettre en contact avec le bailleur, 
-                    afin d'assurer la sécurité de nos bailleurs ainsi que votre sécurité contre les appels frauduleux.`}
+                    helpText={`
+                    Nous utilisons ce numéro pour vous mettre en contact avec le bailleur, 
+                    afin d'assurer la sécurité de nos bailleurs ainsi que votre sécurité contre les appels frauduleux.
+                    `}
                     errorText={form.formState.errors.phoneNumber?.message}
                 />
 
@@ -118,11 +129,14 @@ export function BookPropertyForm({
                     }) => (
                         <CalendarInput
                             label={`Date de votre visite`}
-                            minValue={new Date()}
+                            minValue={minDateReservation}
                             {...field}
                             required
                             errorText={errors.bookingDate?.message}
-                            helpText={`Précisez la date souhaitée de votre visite, vous pourrez toujours en discuter avec le bailleur.`}
+                            helpText={`
+                            Précisez la date souhaitée de votre visite, à partir de la date à laquelle le logement sera disponible.
+                            Vous pourrez toujours en discuter avec le bailleur. 
+                            `}
                         />
                     )}
                 />
