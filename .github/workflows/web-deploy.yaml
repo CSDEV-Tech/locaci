@@ -51,6 +51,9 @@ jobs:
           NEXT_REVALIDATE_SECRET=${{ secrets.NEXT_REVALIDATE_SECRET }}
           NEXT_PUBLIC_FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID }}
           REDIS_URL=${{ secrets.REDIS_URL }}
+          CACHE_BYPASS="false"
+          CACHE_PREFIX="__cache"
+          CACHE_TTL="604800"
           EOF
 
           scp -P $DEPLOY_PORT ./.env $DEPLOY_USER@$DEPLOY_DOMAIN:$DEPLOY_DIR/web/.env
