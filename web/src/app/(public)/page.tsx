@@ -21,8 +21,9 @@ import { use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
 
-// this page should be dynamic, this is fine because we added cache for the data parts
-export const dynamic = 'force-dynamic';
+// this page should be static, and revalidated each day
+export const dynamic = 'force-static',
+    revalidate = 86400;
 
 // types
 export default async function HomePage() {
@@ -113,9 +114,9 @@ function HeaderSection() {
             <Image
                 src={headerImgUrl}
                 priority
-                width={640}
-                height={320}
-                sizes={`(max-width: 1080px) 100vw, 1080px`}
+                width={320}
+                height={120}
+                sizes={`(min-width: 640px) 100vw, 320px`}
                 alt={`Image d'entête`}
                 className={`absolute inset-0 h-full w-full object-cover object-center`}
                 placeholder={'blur'}
