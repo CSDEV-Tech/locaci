@@ -18,11 +18,10 @@
 3. **Lancer le projet**
 
    ```bash
-   pnpx run dev
+   pnpm run dev
    ```
 
-   Une page va s'ouvrir a l'adresse http://localhost:3000 où vous pourrez voir toute la documentation
-   des composants.
+   Une page va s'ouvrir a l'adresse http://localhost:3000 où vous pourrez voir l'app nextjs.
 
 4. **Ouvrez le code source et commencez à coder! 😎**
 

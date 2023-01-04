@@ -116,7 +116,7 @@ function HeaderSection() {
         priority
         width={640}
         height={320}
-        sizes={`(min-width: 420px) 100vw, 320px`}
+        sizes={`(max-width: 1080px) 100vw, 1080px`}
         alt={`Image d'entête`}
         className={`absolute inset-0 h-full w-full object-cover object-center`}
         placeholder={"blur"}
