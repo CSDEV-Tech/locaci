@@ -64,6 +64,7 @@ export function HeroImageGallery({
           <Image
             width={640}
             height={200}
+            priority
             sizes="(max-width: 640px) 100vw, 640px"
             alt="Image 1 du logement"
             src={images[0].uri}

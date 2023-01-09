@@ -113,6 +113,7 @@ function HeaderSection() {
       {/* Bg image */}
       <Image
         src={headerImgUrl}
+        priority
         width={320}
         height={120}
         sizes={`(min-width: 640px) 100vw, 320px`}
