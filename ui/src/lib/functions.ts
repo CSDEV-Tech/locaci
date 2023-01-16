@@ -111,3 +111,11 @@ export function getInitials(fullName: string) {
 
     return initials.join('').toUpperCase();
 }
+
+export function formatDateToFrenchDate(date: string | Date) {
+    return new Intl.DateTimeFormat('fr-FR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    }).format(new Date(date));
+}
