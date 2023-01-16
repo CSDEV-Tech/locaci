@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { clsx, formatNumberToFCFA } from '../../lib/functions';
+import {
+    clsx,
+    formatDateToFrenchDate,
+    formatNumberToFCFA
+} from '../../lib/functions';
 import { Card } from '../atoms/card';
+import { CalendarBlankIcon } from '../atoms/icons/calendar-blank';
 import { MapPinIcon } from '../atoms/icons/map-pin';
 
+import { Link, LinkProps } from '../atoms/link';
 import type { CustomImageComponentType } from './dashboard-property-card';
 
-export type PropertyPresentationCardProps = {
+export type PropertyBookingCardProps = {
     title: string;
     surfaceArea: number;
     numberOfRooms: number;
@@ -16,10 +22,13 @@ export type PropertyPresentationCardProps = {
     customImage?: CustomImageComponentType;
     className?: string;
     housingPeriod?: number;
+    dateOfReservation: Date;
+    href: string;
+    customLink?: LinkProps['Custom'];
 };
 
 function getHousingPeriodLabel(
-    housingPeriod: PropertyPresentationCardProps['housingPeriod']
+    housingPeriod: PropertyBookingCardProps['housingPeriod']
 ) {
     switch (housingPeriod) {
         case 1:
@@ -31,7 +40,7 @@ function getHousingPeriodLabel(
     }
 }
 
-export function PropertyPresentationCard({
+export function PropertyBookingCard({
     coverURL,
     address,
     surfaceArea,
@@ -41,8 +50,11 @@ export function PropertyPresentationCard({
     price,
     housingPeriod = 30,
     className,
-    numberOfBedRooms
-}: PropertyPresentationCardProps) {
+    numberOfBedRooms,
+    dateOfReservation,
+    customLink,
+    href
+}: PropertyBookingCardProps) {
     const Img = customImage ?? 'img';
 
     return (
@@ -73,24 +85,46 @@ export function PropertyPresentationCard({
                 />
             </div>
 
-            <div className="flex h-full flex-col justify-between p-4">
-                <h2 className={clsx(`text-lg font-semibold text-dark`)}>
-                    {title}&nbsp;
+            <div className="flex h-full w-full flex-col items-start justify-between p-4">
+                <h2
+                    className={clsx(
+                        `text-lg font-semibold text-dark md:inline`
+                    )}>
+                    <Link
+                        dynamic
+                        href={href}
+                        className={`after:absolute after:inset-0`}>
+                        {title}&nbsp;
+                    </Link>
                 </h2>
+
+                <div
+                    className={clsx(
+                        `inline-flex items-center rounded-md bg-secondary py-1 px-2 font-semibold text-white`
+                    )}>
+                    <CalendarBlankIcon
+                        aria-label="Date de réservation :"
+                        className="h-6 w-6 flex-shrink-0"
+                    />
+                    &nbsp;
+                    <small>
+                        <time dateTime={dateOfReservation.toISOString()}>
+                            {formatDateToFrenchDate(dateOfReservation)}
+                        </time>
+                    </small>
+                </div>
 
                 <div className="mt-2 flex w-full flex-col gap-2">
                     <div
                         className={clsx(
-                            `flex w-full max-w-full items-center text-gray`
+                            `flex w-full max-w-full items-center text-gray-500`
                         )}>
                         <MapPinIcon
                             aria-label="Addresse :"
                             className="h-6 w-6 flex-shrink-0"
                         />
                         &nbsp;
-                        <small>
-                            {Boolean(address?.trim()) ? address : 'Non défini'}
-                        </small>
+                        <small>{address}</small>
                     </div>
 
                     <div className="flex items-center text-dark">
@@ -104,7 +138,7 @@ export function PropertyPresentationCard({
 
                 <div className="mt-4 flex items-center">
                     <div>
-                        <span className="text-lg font-semibold text-dark">
+                        <span className="text-base font-semibold text-dark md:text-lg">
                             {formatNumberToFCFA(price)}&nbsp;
                         </span>
                         <small className="font-regular text-gray">

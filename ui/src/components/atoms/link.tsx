@@ -17,6 +17,7 @@ export type LinkProps = {
     'aria-current'?: React.AriaAttributes['aria-current'];
     Custom?: CustomLinkComponentType;
     onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+    dynamic?: boolean;
 } & Omit<React.HTMLProps<HTMLAnchorElement>, 'ref'>;
 
 export type CustomLink = Omit<LinkProps, 'Custom'>;

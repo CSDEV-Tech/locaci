@@ -124,6 +124,7 @@ export function DashboardPropertyCard({
             </div>
             <div className="flex h-full flex-col gap-4 p-4">
                 <Link
+                    dynamic
                     disabled={disabled}
                     href={href}
                     Custom={customLink}
@@ -236,6 +237,7 @@ export function HorizontalDashboardPropertyCard({
                 <div className="inline-flex min-w-0 flex-grow flex-col gap-2 py-2">
                     <div className="flex items-center gap-4">
                         <Link
+                            dynamic
                             disabled={disabled}
                             href={href}
                             Custom={customLink}

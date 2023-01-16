@@ -70,6 +70,7 @@ export function PropertyCard({
             <div className="flex h-full flex-col justify-between p-4">
                 <Link
                     href={href}
+                    dynamic
                     Custom={customLink}
                     className={clsx(
                         `text-lg font-semibold text-dark`,
