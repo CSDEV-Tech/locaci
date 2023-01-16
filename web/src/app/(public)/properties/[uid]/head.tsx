@@ -2,7 +2,7 @@ import { formatNumberToFCFA } from '@locaci/ui/lib/functions';
 import { use } from 'react';
 import { Meta } from '~/features/shared/components/meta';
 import { getPropertyDetail } from '~/server/trpc/rsc/cached-queries';
-import { capitalize, getPropertyTitle } from '~/utils/functions';
+import { capitalize, getPropertyTitle } from '~/lib/functions';
 
 // types
 import type { HeadProps } from '~/types';

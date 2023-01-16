@@ -7,7 +7,7 @@ import { TextInput } from '@locaci/ui/components/atoms/input';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 
 // utils
-import { updatePropertyStep6Schema } from '~/validation/property-schema';
+import { updatePropertyStep6Schema } from '~/lib/validation-schemas/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types

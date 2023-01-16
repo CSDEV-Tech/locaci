@@ -2,10 +2,10 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { env } from '~/env/server.mjs';
 import { Cache, CacheKeys } from '~/server/cache';
-import { t } from '~/server/trpc/trpc-server-root';
-import { apiFetch, compareStrIgnoreAccent } from '~/utils/functions';
-import type { OSMDetailResultData, OSMResultData } from '~/utils/types';
-import { Uuid } from '~/utils/uuid';
+import { t } from '~/server/trpc/root';
+import { apiFetch, compareStrIgnoreAccent } from '~/lib/functions';
+import type { OSMDetailResultData, OSMResultData } from '~/lib/types';
+import { Uuid } from '~/lib/uuid';
 
 export const geoRouter = t.router({
     searchCityByName: t.procedure
@@ -50,7 +50,7 @@ export const geoRouter = t.router({
                 municipality: z.string()
             })
         )
-        .query(async ({ ctx, input }) => {
+        .query(async ({ input }) => {
             // Search for municipality
             let osmCommuneApiresult: Record<string, OSMResultData> = {};
             try {
@@ -185,15 +185,6 @@ export const geoRouter = t.router({
                     el => el.type === 'administrative'
                 );
             }
-
-            console.dir(
-                {
-                    res: localityRes,
-                    locality: input.locality,
-                    municipality: input.municipality
-                },
-                { depth: null }
-            );
 
             return localityRes.map(locality => ({
                 ...locality,

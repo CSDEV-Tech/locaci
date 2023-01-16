@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { convertDateToBeginOfDate } from '~/utils/functions';
+import { convertDateToBeginOfDate } from '~/lib/functions';
 
 export const updatePropertyStep1Schema = z.object({
     surfaceArea: z

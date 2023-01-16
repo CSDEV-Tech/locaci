@@ -15,9 +15,6 @@ import { rsc } from '~/server/trpc/rsc';
 
 // types
 import type { PageProps } from '~/types';
-import { getPropertyTitle } from '~/utils/functions';
-import { ListingImage } from '~/features/shared/types';
-import Image from 'next/image';
 import { BookPropertyForm } from '~/features/book/components/book-property-form';
 import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 
@@ -32,10 +29,10 @@ export default function BookingPage({ params }: PageProps<{ uid: string }>) {
     }
 
     const user = use(getUserCached());
-    let hasAlreadyBooked = false;
 
     if (user) {
-        hasAlreadyBooked = use(
+        // eagerly check if the user can check the property, so that in client it is already loaded
+        use(
             rsc.property.checkIfPropertyIsBooked
                 .fetch({
                     propertyId: property.id

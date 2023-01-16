@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { prisma } from '~/server/db/client';
-import { Uuid } from '~/utils/uuid';
+import { Uuid } from '~/lib/uuid';
 import { env } from '~/env/server.mjs';
 
 import type { User } from '@prisma/client';

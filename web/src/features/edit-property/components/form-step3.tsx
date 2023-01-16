@@ -9,11 +9,11 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 // utils
 import dynamic from 'next/dynamic';
 import { t } from '~/app/trpc-client-provider';
-import { updatePropertyStep2Schema } from '~/validation/property-schema';
+import { updatePropertyStep2Schema } from '~/lib/validation-schemas/property-schema';
 
 // types
 import type { z } from 'zod';
-import type { BoundingBox } from '~/utils/types';
+import type { BoundingBox } from '~/lib/types';
 export type Form3Values = Pick<
     z.TypeOf<typeof updatePropertyStep2Schema>,
     'longitude' | 'latitude' | 'geoJSON' | 'localityOSMID' | 'localityName'
@@ -50,9 +50,7 @@ function MapLoader(props: { localityOSMID: string; boundingbox: BoundingBox }) {
     );
 
     return (
-        <>
-            <Map localityData={data} boundingbox={props.boundingbox} />
-        </>
+        <>{data && <Map markers={[data]} boundingbox={props.boundingbox} />}</>
     );
 }
 

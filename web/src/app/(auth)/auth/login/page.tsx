@@ -3,7 +3,7 @@ import { LoginForm } from '~/features/auth/components/login-form';
 
 // utils
 import { redirect } from 'next/navigation';
-import { getRoleURL } from '~/utils/functions';
+import { getRoleURL } from '~/lib/functions';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getUser } from '~/server/trpc/rsc/getUser';
 import { PageProps } from '~/types';

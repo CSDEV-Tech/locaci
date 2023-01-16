@@ -13,11 +13,11 @@ import { CaretDoubleLeft, Check } from 'phosphor-react';
 
 // utils
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
-import { convertDateToBeginOfDate } from '~/utils/functions';
+import { convertDateToBeginOfDate } from '~/lib/functions';
 import {
     updatePropertyStep8Schema,
     updatePropertyStep8SchemaWithoutUid
-} from '~/validation/property-schema';
+} from '~/lib/validation-schemas/property-schema';
 
 // types
 import type { z } from 'zod';

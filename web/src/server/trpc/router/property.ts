@@ -1,9 +1,9 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { Uuid } from '~/utils/uuid';
-import { t } from '~/server/trpc/trpc-server-root';
+import { Uuid } from '~/lib/uuid';
+import { t } from '~/server/trpc/root';
 import { Cache, CacheKeys } from '~/server/cache';
-import { bookPropertySchema } from '~/validation/booking-schema';
+import { bookPropertySchema } from '~/lib/validation-schemas/booking-schema';
 import { isLoggedIn } from '~/server/trpc/middleware/auth';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);

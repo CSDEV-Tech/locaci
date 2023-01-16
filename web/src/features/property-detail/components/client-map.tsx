@@ -11,7 +11,7 @@ const Map = dynamic(() => import('~/features/shared/components/map'), {
 });
 
 // types
-import type { BoundingBox } from '~/utils/types';
+import type { BoundingBox } from '~/lib/types';
 export type ClientMapProps = {
     locality_osm_id: string;
     boundingbox: BoundingBox;
@@ -45,8 +45,6 @@ function MapLoader(props: ClientMapProps) {
     );
 
     return (
-        <>
-            <Map localityData={data} boundingbox={props.boundingbox} />
-        </>
+        <>{data && <Map markers={[data]} boundingbox={props.boundingbox} />}</>
     );
 }

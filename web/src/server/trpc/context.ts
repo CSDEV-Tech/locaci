@@ -1,6 +1,6 @@
 // utils
 import { getUserFromSessionToken } from '~/server/utils';
-import { getCookie } from '~/utils/functions';
+import { getCookie } from '~/lib/functions';
 import { prisma } from '~/server/db/client';
 
 // types

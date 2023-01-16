@@ -15,8 +15,11 @@ import { CaretDoubleLeft } from 'phosphor-react';
 import { useRouter } from 'next/navigation';
 import { t } from '~/app/trpc-client-provider';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
-import { sendOtpSchema, verifyOtpSchema } from '~/validation/auth-schema';
-import { getHostWithScheme } from '~/utils/functions';
+import {
+    sendOtpSchema,
+    verifyOtpSchema
+} from '~/lib/validation-schemas/auth-schema';
+import { getHostWithScheme } from '~/lib/functions';
 import { env } from '~/env/client.mjs';
 import toast from 'react-hot-toast';
 

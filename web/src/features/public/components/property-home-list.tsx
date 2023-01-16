@@ -5,13 +5,13 @@ import * as React from 'react';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { RefreshIcon } from '@locaci/ui/components/atoms/icons/refresh';
-import { NextDynamicLink } from '~/features/shared/components/next-link';
+import { NextLink } from '~/features/shared/components/next-link';
 import { ArrowRight } from 'phosphor-react';
 import Image from 'next/image';
 
 // utils
 import { t } from '~/app/trpc-client-provider';
-import { getPropertyTitle } from '~/utils/functions';
+import { getPropertyTitle } from '~/lib/functions';
 
 // types
 import type { ListingImage } from '~/features/shared/types';
@@ -40,12 +40,13 @@ export function PropertyHomeList() {
                             <li key={p.id} className={`w-full`}>
                                 <PropertyCard
                                     className="h-full w-full"
+                                    // with querystring
                                     href={`/properties/${p.id}`}
                                     title={getPropertyTitle(p)}
                                     address={p.localityName}
                                     // @ts-ignore
                                     customImage={Image}
-                                    customLink={NextDynamicLink}
+                                    customLink={NextLink}
                                     numberOfRooms={p.noOfRooms}
                                     surfaceArea={p.surfaceArea}
                                     price={p.housingFee}
@@ -73,12 +74,13 @@ export function PropertyHomeList() {
                     En charger plus
                 </Button>
             ) : (
-                <NextDynamicLink
+                <NextLink
+                    dynamic
                     href="/search"
                     className="flex items-center gap-2 text-lg font-semibold text-primary underline">
                     <span>Voir plus de logements</span>
                     <ArrowRight className="h-4 w-4" weight="bold" />
-                </NextDynamicLink>
+                </NextLink>
             )}
         </div>
     );

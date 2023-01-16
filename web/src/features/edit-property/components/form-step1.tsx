@@ -9,7 +9,7 @@ import { CaretDoubleRight } from 'phosphor-react';
 
 // utils
 import { RentTypes } from '~/features/shared/types';
-import { updatePropertyStep1Schema } from '~/validation/property-schema';
+import { updatePropertyStep1Schema } from '~/lib/validation-schemas/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types

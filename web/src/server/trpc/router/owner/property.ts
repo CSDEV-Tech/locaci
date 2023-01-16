@@ -7,12 +7,12 @@ import {
     updatePropertyStep6Schema,
     updatePropertyStep7Schema,
     updatePropertyStep8Schema
-} from '~/validation/property-schema';
+} from '~/lib/validation-schemas/property-schema';
 import { z } from 'zod';
-import { t } from '~/server/trpc/trpc-server-root';
+import { t } from '~/server/trpc/root';
 import { isOwner } from '~/server/trpc/middleware/auth';
 import { isCustomAmenity } from './draft';
-import { Uuid } from '~/utils/uuid';
+import { Uuid } from '~/lib/uuid';
 
 import { type Amenity, RoomType, Room } from '@prisma/client';
 import { Cache, CacheKeys } from '~/server/cache';

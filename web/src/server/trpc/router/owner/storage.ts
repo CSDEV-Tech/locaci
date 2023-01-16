@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import S3 from 'aws-sdk/clients/s3.js';
 
-import { t } from '~/server/trpc/trpc-server-root';
+import { t } from '~/server/trpc/root';
 import { isOwner } from '~/server/trpc/middleware/auth';
 import { z } from 'zod';
 import { env } from '~/env/server.mjs';

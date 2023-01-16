@@ -9,9 +9,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import Image from 'next/image';
 import { Avatar } from '@locaci/ui/components/atoms/avatar';
 import {
-    NextDynamicLink,
-    NextDynamicLinkButton,
-    NextLink
+    NextLink,
+    NextLinkButton
 } from '~/features/shared/components/next-link';
 import { ClientMap } from '~/features/property-detail/components/client-map';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
@@ -27,18 +26,23 @@ import {
     getAllMunicipalities,
     getPropertyDetail
 } from '~/server/trpc/rsc/cached-queries';
-import { getPropertyTitle } from '~/utils/functions';
-import { clsx, formatNumberToFCFA } from '@locaci/ui/lib/functions';
+import { getPropertyTitle } from '~/lib/functions';
+import {
+    clsx,
+    formatDateToFrenchDate,
+    formatNumberToFCFA
+} from '@locaci/ui/lib/functions';
 import { env } from '~/env/client.mjs';
 
 // types
 import type { PageProps } from '~/types';
-import type { BoundingBox } from '~/utils/types';
+import type { BoundingBox } from '~/lib/types';
 import type { RoomType } from '~/features/shared/types';
 import type { ListingImage } from '~/features/shared/types';
 
 // this is a dynamic page
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic',
+    revalidate = 0;
 
 export default function DetailPage({ params }: PageProps<{ uid: string }>) {
     const property = use(getPropertyDetail(params.uid));
@@ -71,7 +75,7 @@ export default function DetailPage({ params }: PageProps<{ uid: string }>) {
                         <hr className="h-[1px] w-full bg-gray" />
                     </div>
 
-                    {property.rentType === 'SHORT_TERM' && (
+                    {property?.rentType === 'SHORT_TERM' && (
                         <>
                             <AmenitiesSection uid={params.uid} />
                             <div className="px-4 md:px-8 xl:px-0">
@@ -180,7 +184,7 @@ function CaracteristicsSection({ uid }: { uid: string }) {
 
             <div className="flex flex-col gap-4">
                 <h3 className="text-gray">Cette maison contient : </h3>
-                <div className="grid gap-2 md:gap-8">
+                <div className="grid gap-2 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
                     {roomTypes.map((rtype, index) => (
                         <RoomTypeLine
                             type={rtype.type}
@@ -331,11 +335,7 @@ function OwnerInfoDesktopSection({ uid }: { uid: string }) {
                     <span className="text-gray">
                         Inscrit depuis le&nbsp;
                         <time dateTime={owner.createdAt.toISOString()}>
-                            {new Intl.DateTimeFormat('fr-FR', {
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric'
-                            }).format(owner.createdAt)}
+                            {formatDateToFrenchDate(owner.createdAt)}
                         </time>
                     </span>
                 </div>
@@ -374,11 +374,12 @@ function PriceReservationSection({ uid }: { uid: string }) {
                 </span>
             </div>
 
-            <NextDynamicLinkButton
+            <NextLinkButton
                 variant="primary"
-                href={`/properties/${uid}/book`}>
+                href={`/properties/${uid}/book`}
+                dynamic>
                 Réserver
-            </NextDynamicLinkButton>
+            </NextLinkButton>
         </aside>
     );
 }
@@ -409,7 +410,7 @@ function SimilarPropertiesSection({ uid }: { uid: string }) {
                                 address={p.localityName}
                                 // @ts-ignore
                                 customImage={Image}
-                                customLink={NextDynamicLink}
+                                customLink={NextLink}
                                 numberOfRooms={p.noOfRooms}
                                 surfaceArea={p.surfaceArea}
                                 price={p.housingFee}

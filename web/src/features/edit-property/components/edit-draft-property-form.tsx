@@ -24,10 +24,10 @@ import {
     updatePropertyStep5Schema,
     updatePropertyStep6Schema,
     updatePropertyStep7Schema
-} from '~/validation/property-schema';
+} from '~/lib/validation-schemas/property-schema';
 import type { PropertyFormStep } from '@prisma/client';
 import type { Form2Values } from './form-step2';
-import type { BoundingBox } from '~/utils/types';
+import type { BoundingBox } from '~/lib/types';
 
 type EditDraftPropertyFormProps = {
     propertyDraftUid: string;

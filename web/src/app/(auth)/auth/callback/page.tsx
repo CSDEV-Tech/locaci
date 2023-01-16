@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { LoadingScreen } from '~/features/shared/components/loading-screen';
 import { NextLinkButton } from '~/features/shared/components/next-link';
 import { ErrorScreen } from '~/features/shared/components/error-screen';
-import { getRoleURL } from '~/utils/functions';
+import { getRoleURL } from '~/lib/functions';
 
 // types
 import { t } from '~/app/trpc-client-provider';

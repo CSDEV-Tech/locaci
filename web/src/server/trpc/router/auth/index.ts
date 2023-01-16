@@ -1,14 +1,14 @@
-import { verifyOtpSchema } from '~/validation/auth-schema';
+import { verifyOtpSchema } from '~/lib/validation-schemas/auth-schema';
 import { z } from 'zod';
-import { t } from '~/server/trpc/trpc-server-root';
+import { t } from '~/server/trpc/root';
 import { TRPCError } from '@trpc/server';
-import { Uuid } from '~/utils/uuid';
-import { sendOtpSchema } from '~/validation/auth-schema';
+import { Uuid } from '~/lib/uuid';
+import { sendOtpSchema } from '~/lib/validation-schemas/auth-schema';
 import jwt from 'jsonwebtoken';
 
 import { isLoggedIn } from '~/server/trpc/middleware/auth';
 import { env } from '~/env/server.mjs';
-import { apiFetch } from '~/utils/functions';
+import { apiFetch } from '~/lib/functions';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 

@@ -8,7 +8,7 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { RoomTypeCard } from './room-type-card';
 
 // utils
-import { updatePropertyStep5Schema } from '~/validation/property-schema';
+import { updatePropertyStep5Schema } from '~/lib/validation-schemas/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types

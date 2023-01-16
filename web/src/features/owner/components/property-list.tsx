@@ -7,7 +7,7 @@ import { PropertyDraftCard } from './property-draft-card';
 
 // utils
 import { t } from '~/app/trpc-client-provider';
-import { getPropertyTitle } from '~/utils/functions';
+import { getPropertyTitle } from '~/lib/functions';
 
 // types
 import type { ListingImage } from '~/features/shared/types';

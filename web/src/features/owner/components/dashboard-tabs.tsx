@@ -1,9 +1,11 @@
 'use client';
 import * as React from 'react';
+// components
 import { Tabs } from '@locaci/ui/components/molecules/tabs';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { RefreshIcon } from '@locaci/ui/components/atoms/icons/refresh';
 
+// types
 export type DashboardTabsProps = {
     properties: React.ReactNode;
     notifications: React.ReactNode;

@@ -6,7 +6,7 @@ import {
     DashboardPropertyCard,
     HorizontalDashboardPropertyCard
 } from '@locaci/ui/components/molecules/dashboard-property-card';
-import { NextDynamicLink } from '~/features/shared/components/next-link';
+import { NextLink } from '~/features/shared/components/next-link';
 import Image from 'next/image';
 import {
     Copy,
@@ -24,7 +24,7 @@ import { clsx } from '@locaci/ui/lib/functions';
 import { t } from '~/app/trpc-client-provider';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import { Uuid } from '~/utils/uuid';
+import { Uuid } from '~/lib/uuid';
 
 // types
 import type { DashboardPropertyCardProps } from '@locaci/ui/components/molecules/dashboard-property-card';
@@ -183,7 +183,7 @@ export function PropertyDraftCard({
                 isDraft={isDraft}
                 href={href}
                 title={title.trim()}
-                customLink={NextDynamicLink}
+                customLink={NextLink}
                 // @ts-ignore
                 customImage={Image}
                 {...props}
@@ -199,7 +199,7 @@ export function PropertyDraftCard({
                 isDraft={isDraft}
                 // @ts-ignore
                 customImage={Image}
-                customLink={NextDynamicLink}
+                customLink={NextLink}
                 actions={actions}
                 href={href}
                 title={title.trim()}

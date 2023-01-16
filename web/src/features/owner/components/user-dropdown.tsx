@@ -26,7 +26,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
     const [_, startTransition] = React.useTransition();
 
     const logoutMutation = t.auth.removeAuthCookie.useMutation({
-        onSuccess(data, variables, context) {
+        onSuccess() {
             startTransition(() => {
                 router.replace(`/`);
                 router.refresh();

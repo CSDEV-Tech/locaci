@@ -12,9 +12,9 @@ import Image from 'next/image';
 // utils
 import { t } from '~/app/trpc-client-provider';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
-import { bookPropertySchema } from '~/validation/booking-schema';
+import { bookPropertySchema } from '~/lib/validation-schemas/booking-schema';
 import { PropertyPresentationCard } from '@locaci/ui/components/molecules/property-presentation-card';
-import { getPropertyTitle } from '~/utils/functions';
+import { getPropertyTitle } from '~/lib/functions';
 import { ListingImage } from '~/features/shared/types';
 import { ArrowLeftIcon } from '@locaci/ui/components/atoms/icons/arrow-left';
 

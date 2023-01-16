@@ -21,12 +21,12 @@ import {
     updatePropertyStep5Schema,
     updatePropertyStep6Schema,
     updatePropertyStep7Schema
-} from '~/validation/property-schema';
+} from '~/lib/validation-schemas/property-schema';
 
 // types
 import type { z } from 'zod';
 import type { Form2Values } from './form-step2';
-import type { BoundingBox } from '~/utils/types';
+import type { BoundingBox } from '~/lib/types';
 
 type EditPropertyPropertyFormProps = {
     propertyUid: string;

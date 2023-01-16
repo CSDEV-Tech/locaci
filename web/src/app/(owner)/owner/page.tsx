@@ -15,7 +15,7 @@ import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 export default async function OwnerDashboardPage() {
     return (
         <>
-            <div className="px-4 pt-10">
+            <section className="px-4 pt-10">
                 <DashboardTabs
                     properties={
                         <React.Suspense
@@ -34,7 +34,7 @@ export default async function OwnerDashboardPage() {
                     }
                     notifications={<></>}
                 />
-            </div>
+            </section>
         </>
     );
 }

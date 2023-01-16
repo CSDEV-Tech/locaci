@@ -8,7 +8,7 @@ import { TextInput } from '@locaci/ui/components/atoms/input';
 import { SearchAutocomplete } from '@locaci/ui/components/molecules/search-autocomplete';
 
 // utils
-import { updatePropertyStep2Schema } from '~/validation/property-schema';
+import { updatePropertyStep2Schema } from '~/lib/validation-schemas/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { t } from '~/app/trpc-client-provider';
 import { z } from 'zod';

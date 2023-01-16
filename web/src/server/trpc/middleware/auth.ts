@@ -1,4 +1,4 @@
-import { t } from '../trpc-server-root';
+import { t } from '../root';
 import { TRPCError } from '@trpc/server';
 import { Role } from '@prisma/client';
 

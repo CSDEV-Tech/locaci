@@ -7,7 +7,7 @@ import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
 import { Controller } from 'react-hook-form';
 
 // utils
-import { updatePropertyStep4Schema } from '~/validation/property-schema';
+import { updatePropertyStep4Schema } from '~/lib/validation-schemas/property-schema';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 
 // types

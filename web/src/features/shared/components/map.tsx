@@ -10,14 +10,15 @@ import { env } from '~/env/client.mjs';
 import mapboxgl from 'mapbox-gl';
 
 // types
-import type { BoundingBox, OSMDetailResultData } from '~/utils/types';
+import type { BoundingBox, OSMDetailResultData, GeoJSON } from '~/lib/types';
 import { clsx } from '@locaci/ui/lib/functions';
 
 export type MapProps = {
-    markers?: OSMDetailResultData[];
+    markers?: (Omit<OSMDetailResultData, 'geometry'> & {
+        geometry?: GeoJSON;
+    })[];
     boundingbox: BoundingBox;
     className?: string;
-    hidePolygons?: boolean;
 };
 
 // set mapbox token
@@ -26,8 +27,7 @@ mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_KEY;
 export default function Map({
     markers = [],
     boundingbox,
-    className,
-    hidePolygons = false
+    className
 }: MapProps) {
     const mapRef = React.useRef<HTMLDivElement>(null);
     const markersRef = React.useRef<HTMLDivElement[]>([]);
@@ -48,7 +48,7 @@ export default function Map({
                 for (let index = 0; index < markers.length; index++) {
                     const marker = markers[index];
 
-                    if (!hidePolygons) {
+                    if (marker.geometry) {
                         // add map polygon
                         map.addSource(`source-${id}-${index}`, {
                             type: 'geojson',
@@ -96,13 +96,14 @@ export default function Map({
         }
         // Clean up on unmount
         return () => map?.remove();
-    }, [markers, boundingbox, hidePolygons]);
+    }, [markers, boundingbox]);
 
     return (
         <>
             <template>
-                {markers.map(_ => (
+                {markers.map((_, index) => (
                     <MapPin
+                        key={index}
                         ref={el => {
                             // add all the divs to ref
                             if (el) {

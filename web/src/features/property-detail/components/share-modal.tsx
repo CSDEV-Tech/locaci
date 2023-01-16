@@ -13,7 +13,7 @@ import {
 
 // utils
 import { toast } from 'react-hot-toast';
-import { isMobileOrTablet } from '~/utils/functions';
+import { isMobileOrTablet } from '~/lib/functions';
 import { env } from '~/env/client.mjs';
 
 // types

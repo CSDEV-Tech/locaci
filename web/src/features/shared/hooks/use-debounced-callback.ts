@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { debounce } from '~/utils/functions';
+import { debounce } from '~/lib/functions';
 
 /**
  * Hook Wrapper around the debounce function,

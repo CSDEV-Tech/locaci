@@ -7,9 +7,9 @@ import {
     updatePropertyStep6Schema,
     updatePropertyStep7Schema,
     updatePropertyStep8Schema
-} from '~/validation/property-schema';
+} from '~/lib/validation-schemas/property-schema';
 import { z } from 'zod';
-import { t } from '~/server/trpc/trpc-server-root';
+import { t } from '~/server/trpc/root';
 import { isOwner } from '~/server/trpc/middleware/auth';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from '@prisma/client';
 
 import type { Amenity, Room } from '@prisma/client';
-import { Uuid } from '~/utils/uuid';
+import { Uuid } from '~/lib/uuid';
 
 const protectedProcedure = t.procedure.use(isOwner);
 export const ownerDraftRouter = t.router({

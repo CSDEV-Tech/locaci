@@ -1,5 +1,5 @@
 import { env } from '~/env/server.mjs';
-import { getAbsoluteURLForImage, linkWithSlash } from '~/utils/functions';
+import { getAbsoluteURLForImage, linkWithSlash } from '~/lib/functions';
 
 export type MetaProps = {
     title?: string;
