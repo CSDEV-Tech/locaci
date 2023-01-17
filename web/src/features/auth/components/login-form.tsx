@@ -22,6 +22,7 @@ import {
 import { getHostWithScheme } from '~/lib/functions';
 import { env } from '~/env/client.mjs';
 import toast from 'react-hot-toast';
+import { useForm } from '~/lib/use-form';
 
 export type LoginFormProps = {
     redirectTo?: string;
@@ -72,6 +73,13 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
         }
     });
 
+    const { Form: EmailForm, ...emailFormResult } = useForm<{ success: true }>(
+        sendOtpSchema
+    );
+    console.log({
+        emailFormResult
+    });
+
     return (
         <>
             <LoginSuccessModal
@@ -81,21 +89,26 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
             />
 
             {step === 'INITIAL' && (
-                <form
+                <EmailForm
                     className="flex flex-col items-stretch gap-4"
-                    onSubmit={sendOtpForm.handleSubmit(({ email }) =>
-                        sendOtpMutation.mutate({
-                            email
-                        })
-                    )}>
+                    action="/api/auth/send-otp-form"
+                    redirectTo="/auth/login?force_login=true"
+                    method="post"
+                    // onSubmit={sendOtpForm.handleSubmit(({ email }) =>
+                    //     sendOtpMutation.mutate({
+                    //         email
+                    //     })
+                    // )}
+                >
                     <div className="flex flex-col gap-4 text-lg">
                         <TextInput
                             className="w-full"
                             type="email"
                             label="Email"
-                            required
+                            // required
                             {...sendOtpForm.register('email')}
                             errorText={
+                                emailFormResult.errors?.email?.join('') ||
                                 sendOtpForm.formState.errors.email?.message ||
                                 sendOtpMutation.error?.message
                             }
@@ -148,7 +161,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
                             Connectez-vous avec google
                         </NextLinkButton>
                     </div>
-                </form>
+                </EmailForm>
             )}
 
             {step === 'CODE' && (
