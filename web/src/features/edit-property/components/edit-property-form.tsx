@@ -161,7 +161,6 @@ export function EditPropertyPropertyForm({
                 {step === 1 && (
                     <FormStep1
                         onSubmit={values => {
-                            console.log({ step1: values });
                             savePropertyStep1.mutate({
                                 ...values,
                                 uid: property.id
@@ -177,7 +176,6 @@ export function EditPropertyPropertyForm({
                 {step === 2 && (
                     <FormStep2
                         onSubmit={values => {
-                            console.log({ step2: values });
                             setValuesForm2(values);
                             goTo(3);
                         }}
@@ -188,7 +186,6 @@ export function EditPropertyPropertyForm({
                 {step === 3 && (
                     <FormStep3
                         onSubmit={values => {
-                            console.log({ step3: values });
                             savePropertyStep2.mutate({
                                 ...values,
                                 uid: property.id,
@@ -211,7 +208,6 @@ export function EditPropertyPropertyForm({
                 {step === 4 && (
                     <FormStep4
                         onSubmit={values => {
-                            console.log({ step4: values });
                             savePropertyStep4.mutate({
                                 ...values,
                                 uid: property.id
@@ -229,7 +225,6 @@ export function EditPropertyPropertyForm({
                 {step === 5 && (
                     <FormStep5
                         onSubmit={values => {
-                            console.log({ step5: values });
                             savePropertyStep5.mutate({
                                 ...values,
                                 uid: property.id
@@ -249,7 +244,6 @@ export function EditPropertyPropertyForm({
                 {step === 6 && (
                     <FormStep6
                         onSubmit={values => {
-                            console.log({ step6: values });
                             savePropertyStep6.mutate({
                                 ...values,
                                 uid: property.id
@@ -269,7 +263,6 @@ export function EditPropertyPropertyForm({
                 {step === 7 && (
                     <FormStep7
                         onSubmit={values => {
-                            console.log({ step7: values });
                             saveDraftStep7.mutate({
                                 ...values,
                                 uid: property.id
@@ -296,7 +289,6 @@ export function EditPropertyPropertyForm({
                     <FormStep8
                         intent="edit"
                         onSubmit={values => {
-                            console.log({ step8: values });
                             savePropertyStep8.mutate({
                                 ...values,
                                 uid: property.id

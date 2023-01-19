@@ -157,7 +157,6 @@ export function EditDraftPropertyForm({
                 {step === 1 && (
                     <FormStep1
                         onSubmit={values => {
-                            console.log({ step1: values });
                             saveDraftStep1.mutate({
                                 ...values,
                                 uid: draft.id
@@ -173,7 +172,6 @@ export function EditDraftPropertyForm({
                 {step === 2 && (
                     <FormStep2
                         onSubmit={values => {
-                            console.log({ step2: values });
                             setValuesForm2(values);
                             goTo(3);
                         }}
@@ -184,7 +182,6 @@ export function EditDraftPropertyForm({
                 {step === 3 && (
                     <FormStep3
                         onSubmit={values => {
-                            console.log({ step3: values });
                             saveDraftStep2.mutate({
                                 ...values,
                                 uid: draft.id,
@@ -207,7 +204,6 @@ export function EditDraftPropertyForm({
                 {step === 4 && (
                     <FormStep4
                         onSubmit={values => {
-                            console.log({ step4: values });
                             saveDraftStep4.mutate({
                                 ...values,
                                 uid: draft.id
@@ -224,7 +220,6 @@ export function EditDraftPropertyForm({
                 {step === 5 && (
                     <FormStep5
                         onSubmit={values => {
-                            console.log({ step5: values });
                             saveDraftStep5.mutate({
                                 ...values,
                                 uid: draft.id
@@ -244,7 +239,6 @@ export function EditDraftPropertyForm({
                 {step === 6 && (
                     <FormStep6
                         onSubmit={values => {
-                            console.log({ step6: values });
                             saveDraftStep6.mutate({
                                 ...values,
                                 uid: draft.id
@@ -264,7 +258,6 @@ export function EditDraftPropertyForm({
                 {step === 7 && (
                     <FormStep7
                         onSubmit={values => {
-                            console.log({ step7: values });
                             saveDraftStep7.mutate({
                                 ...values,
                                 uid: draft.id
@@ -291,7 +284,6 @@ export function EditDraftPropertyForm({
                     <FormStep8
                         intent="draft"
                         onSubmit={values => {
-                            console.log({ step8: values });
                             saveDraftStep8.mutate({
                                 ...values,
                                 uid: draft.id

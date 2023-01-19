@@ -201,12 +201,6 @@ export function FormStep6(props: FormStep6Props) {
                         variant="dark"
                         className="w-full"
                         loading={props.isSubmitting}
-                        onClick={() => {
-                            console.log({
-                                state: form.getValues(),
-                                errors: form.formState.errors
-                            });
-                        }}
                         renderTrailingIcon={cls => (
                             <CaretDoubleRight className={cls} />
                         )}>
