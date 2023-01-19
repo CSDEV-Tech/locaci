@@ -1,11 +1,18 @@
 'use client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { httpBatchLink, loggerLink } from '@trpc/client';
-import { createTRPCReact } from '@trpc/react-query';
-import { useState } from 'react';
-import superjson from 'superjson';
+import * as React from 'react';
+
+// components
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+// utils
+import { QueryClient } from '@tanstack/react-query';
+import { httpBatchLink, loggerLink } from '@trpc/client';
+import { createTRPCReact } from '@trpc/react-query';
+import superjson from 'superjson';
+import { env } from '~/env/client.mjs';
+
+// types
 import type { AppRouter } from '~/server/trpc/router';
 
 export const t = createTRPCReact<AppRouter>({});
@@ -14,13 +21,11 @@ function getBaseUrl() {
     // browser should use relative path
     if (typeof window !== 'undefined') return '';
 
-    if (process.env.SITE_URL) return `https://${process.env.SITE_URL}`; // should use LOCACI's URL
-
-    return `http://localhost:${process.env.PORT ?? 3000}`; // dev should use localhost
+    return env.NEXT_PUBLIC_SITE_URL; // should use env URL
 }
 
 export function TrpcClientProvider(props: { children: React.ReactNode }) {
-    const [queryClient] = useState(
+    const [queryClient] = React.useState(
         () =>
             new QueryClient({
                 defaultOptions: {
@@ -32,7 +37,7 @@ export function TrpcClientProvider(props: { children: React.ReactNode }) {
                 }
             })
     );
-    const [trpcClient] = useState(() =>
+    const [trpcClient] = React.useState(() =>
         t.createClient({
             links: [
                 loggerLink({
