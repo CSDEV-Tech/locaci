@@ -11,6 +11,8 @@ import { rsc } from '~/server/trpc/rsc';
 // types
 import type { PageProps } from '~/types';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AddDraftPage({
     params
 }: PageProps<{ uid: string }>) {
