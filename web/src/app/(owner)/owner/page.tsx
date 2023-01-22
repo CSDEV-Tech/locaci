@@ -32,7 +32,7 @@ export default async function OwnerDashboardPage() {
                             <DraftList />
                         </React.Suspense>
                     }
-                    notifications={<></>}
+                    bookings={<></>}
                 />
             </section>
         </>

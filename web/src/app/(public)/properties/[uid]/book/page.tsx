@@ -1,7 +1,8 @@
 // components
 import { ArrowLeftIcon } from '@locaci/ui/components/atoms/icons/arrow-left';
-import { PropertyPresentationCard } from '@locaci/ui/components/molecules/property-presentation-card';
 import { NextLinkButton } from '~/features/shared/components/next-link';
+import { BookPropertyForm } from '~/features/book/components/book-property-form';
+import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 
 // utils
 import { notFound } from 'next/navigation';
@@ -15,8 +16,6 @@ import { rsc } from '~/server/trpc/rsc';
 
 // types
 import type { PageProps } from '~/types';
-import { BookPropertyForm } from '~/features/book/components/book-property-form';
-import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 
 // this is a dynamic page
 export const dynamic = 'force-dynamic';
