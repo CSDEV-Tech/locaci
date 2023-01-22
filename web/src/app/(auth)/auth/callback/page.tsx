@@ -6,9 +6,8 @@ import * as React from 'react';
 import { env } from '~/env/client.mjs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LoadingScreen } from '~/features/shared/components/loading-screen';
-import { NextLinkButton } from '~/features/shared/components/next-link';
-import { ErrorScreen } from '~/features/shared/components/error-screen';
 import { getRoleURL } from '~/lib/functions';
+import toast from 'react-hot-toast';
 
 // types
 import { t } from '~/app/trpc-client-provider';
@@ -19,13 +18,17 @@ export default function CallbackPage() {
     const verifyOAuthCodeMutation = t.auth.verifyOAuthCode.useMutation({
         onSuccess({ role }) {
             router.replace(searchParams.get('redirect_to') ?? getRoleURL(role));
+        },
+        onError(error) {
+            toast.error(error.message);
+            router.replace(`/auth/login?force_login=true`);
         }
     });
     const code = searchParams.get('code');
 
     React.useEffect(() => {
         if (!code) {
-            router.replace('/auth/login');
+            router.replace(`/auth/login?force_login=true`);
             return;
         }
 
@@ -37,20 +40,10 @@ export default function CallbackPage() {
 
     return (
         <>
-            {verifyOAuthCodeMutation.isError ? (
-                <ErrorScreen
-                    className="h-screen"
-                    errorDescription={`Une erreur est survenue lors de la connexion, veuillez vous reconnecter.`}>
-                    <NextLinkButton href="/auth/login" variant="primary">
-                        Connectez-vous
-                    </NextLinkButton>
-                </ErrorScreen>
-            ) : (
-                <LoadingScreen
-                    title="Connexion à votre compte..."
-                    className="h-screen w-full"
-                />
-            )}
+            <LoadingScreen
+                title="Connexion à votre compte..."
+                className="h-screen w-full"
+            />
         </>
     );
 }
