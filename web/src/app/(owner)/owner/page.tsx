@@ -13,42 +13,36 @@ import { use } from 'react';
 
 export default function OwnerDashboardPage() {
     return (
-        <>
-            <section className="px-4 pt-10">
-                <DashboardTabs
-                    properties={
-                        <React.Suspense
-                            fallback={
-                                <section className="mx-auto flex w-full items-center justify-center py-64 px-4">
-                                    <h1 className="flex items-center gap-4 text-2xl">
-                                        <LoadingIndicator className="h-10" />
-                                        <span>
-                                            Chargement de vos propriétés...
-                                        </span>
-                                    </h1>
-                                </section>
-                            }>
-                            <SuspenseDraftList />
-                        </React.Suspense>
-                    }
-                    bookings={
-                        <React.Suspense
-                            fallback={
-                                <section className="mx-auto flex w-full items-center justify-center py-64 px-4">
-                                    <h1 className="flex items-center gap-4 text-2xl">
-                                        <LoadingIndicator className="h-10" />
-                                        <span>
-                                            Chargement des réservations...
-                                        </span>
-                                    </h1>
-                                </section>
-                            }>
-                            <SuspenseBookingList />
-                        </React.Suspense>
-                    }
-                />
-            </section>
-        </>
+        <section className="px-4 pt-10">
+            <DashboardTabs
+                properties={
+                    <React.Suspense
+                        fallback={
+                            <section className="mx-auto flex w-full items-center justify-center py-64 px-4">
+                                <h1 className="flex items-center gap-4 text-2xl">
+                                    <LoadingIndicator className="h-10" />
+                                    <span>Chargement de vos propriétés...</span>
+                                </h1>
+                            </section>
+                        }>
+                        <SuspenseDraftList />
+                    </React.Suspense>
+                }
+                bookings={
+                    <React.Suspense
+                        fallback={
+                            <section className="mx-auto flex w-full items-center justify-center py-64 px-4">
+                                <h1 className="flex items-center gap-4 text-2xl">
+                                    <LoadingIndicator className="h-10" />
+                                    <span>Chargement des réservations...</span>
+                                </h1>
+                            </section>
+                        }>
+                        <SuspenseBookingList />
+                    </React.Suspense>
+                }
+            />
+        </section>
     );
 }
 

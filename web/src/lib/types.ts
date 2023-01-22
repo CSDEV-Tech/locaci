@@ -1,3 +1,6 @@
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
+import type { AppRouter } from '~/server/trpc/router';
+
 export type ArrayElement<ArrayType extends readonly unknown[]> =
     ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
@@ -47,3 +50,6 @@ export type OSMDetailResultData = Omit<
 };
 
 export type BoundingBox = [number, number, number, number]; // minLat, maxLat, minLong, maxLong
+
+export type RouterInput = inferRouterInputs<AppRouter>;
+export type RouterOutput = inferRouterOutputs<AppRouter>;

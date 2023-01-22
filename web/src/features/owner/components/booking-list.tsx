@@ -5,11 +5,15 @@ import * as React from 'react';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { RefreshIcon } from '@locaci/ui/components/atoms/icons/refresh';
 import { OwnerBookingCard } from '@locaci/ui/components/molecules/owner-booking-card';
+import { BookingDetailModal } from '~/features/owner/components/booking-detail-modal';
 
 // utils
 import { t } from '~/app/trpc-client-provider';
 import { ListingImage } from '~/features/shared/types';
 import { getPropertyTitle } from '~/lib/functions';
+
+// types
+import type { Booking } from '~/features/owner/components/booking-detail-modal';
 
 export function BookingList() {
     const { data, hasNextPage, isFetching, fetchNextPage, refetch } =
@@ -24,8 +28,24 @@ export function BookingList() {
             }
         );
 
+    const [selectedBooking, setSelectedBooking] =
+        React.useState<Booking | null>(null);
+
     return (
         <>
+            <BookingDetailModal
+                isOpen={selectedBooking !== null}
+                onClose={() => {
+                    setSelectedBooking(null);
+                }}
+                title={
+                    selectedBooking
+                        ? getPropertyTitle(selectedBooking?.property)
+                        : 'Détail réservation'
+                }
+                booking={selectedBooking}
+            />
+
             {data?.pages?.length === 0 ? (
                 <>
                     <div className="flex w-full flex-col items-center gap-4 pt-24">
@@ -46,6 +66,8 @@ export function BookingList() {
 
                         <Button
                             variant="primary"
+                            loading={isFetching}
+                            onClick={() => refetch()}
                             renderLeadingIcon={cls => (
                                 <RefreshIcon className={cls} />
                             )}>
@@ -90,7 +112,9 @@ export function BookingList() {
                                                         .images as ListingImage[]
                                                 )[0].uri
                                             }
-                                            onShowMore={() => {}}
+                                            onShowMore={() =>
+                                                setSelectedBooking(booking)
+                                            }
                                         />
                                     </li>
                                 ))}
