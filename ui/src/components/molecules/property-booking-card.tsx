@@ -63,13 +63,12 @@ export function PropertyBookingCard({
                 className,
                 'inline-flex flex-col',
                 'relative w-full',
-                'border !shadow-sm md:flex-row'
+                'border !shadow-sm'
             )}>
             <div
                 className={clsx(
                     'flex flex-shrink-0 items-center justify-center rounded-t-lg bg-gray/20',
-                    'h-[120px] w-full',
-                    'md:h-auto md:w-48 md:rounded-t-none md:rounded-l-lg'
+                    'h-[120px] w-full'
                 )}>
                 <Img
                     width={370}
@@ -77,10 +76,7 @@ export function PropertyBookingCard({
                     alt={title}
                     src={coverURL}
                     className={clsx(
-                        'h-full w-full rounded-t-lg object-cover object-center',
-                        'md:absolute md:top-0 md:bottom-0',
-                        'md:rounded-t-none md:rounded-l-lg',
-                        'md:w-48'
+                        'h-full w-full rounded-t-lg object-cover object-center'
                     )}
                 />
             </div>
@@ -92,6 +88,7 @@ export function PropertyBookingCard({
                     )}>
                     <Link
                         dynamic
+                        Custom={customLink}
                         href={href}
                         className={`after:absolute after:inset-0`}>
                         {title}&nbsp;
