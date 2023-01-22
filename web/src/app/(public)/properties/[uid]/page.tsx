@@ -144,6 +144,10 @@ function TitleSection({ uid }: { uid: string }) {
                     {getPropertyTitle(property)}
                 </h1>
 
+                <p className="flex items-center gap-1 text-gray">
+                    {property.localityName}
+                </p>
+
                 <div className="text-base text-dark lg:text-lg">
                     {property.noOfRooms} pièce
                     {property.noOfRooms > 1 ? 's' : ''}&nbsp;&middot;&nbsp;
