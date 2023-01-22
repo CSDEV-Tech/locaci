@@ -17,7 +17,7 @@ export const propertyRouter = t.router({
             })
         )
         .query(async ({ ctx, input }) => {
-            const limit = input.limit ?? 4;
+            const limit = input.limit ?? 6;
             const cursor = input.cursor ?? input.initialCursor;
 
             const query = () =>

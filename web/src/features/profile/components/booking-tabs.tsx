@@ -16,7 +16,7 @@ export function BookingTabs({ past, future }: BookingTabsProps) {
     return (
         <>
             {/* Mobile */}
-            <Tabs className="lg:hidden">
+            <Tabs className="md:hidden">
                 <Tabs.Header>
                     <Tabs.HeaderItem>A venir</Tabs.HeaderItem>
                     <Tabs.HeaderItem>Passées</Tabs.HeaderItem>
@@ -103,12 +103,12 @@ export function BookingTabs({ past, future }: BookingTabsProps) {
             </Tabs>
 
             {/* Desktop */}
-            <div className="mx-auto hidden w-full max-w-[1200px] grid-cols-2 gap-8 lg:grid">
+            <div className="mx-auto hidden w-full max-w-[1200px] grid-cols-2 gap-8 md:grid">
                 <section className="flex w-full flex-col gap-4 py-4">
                     <h1 className="text-start text-2xl font-bold sm:self-start">
                         Vos réservations à venir
                     </h1>
-                    <section className="grid grid-cols-2 gap-4 ">
+                    <section className="grid gap-4 lg:grid-cols-2 ">
                         {future.length > 0 ? (
                             future
                         ) : (

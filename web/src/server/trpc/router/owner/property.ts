@@ -41,6 +41,53 @@ export const ownerPropertiesRouter = t.router({
 
             return property;
         }),
+    getBookings: protectedProcedure
+        .input(
+            z.object({
+                limit: z.number().min(1).max(100).nullish(),
+                cursor: z.string().nullish(),
+                initialCursor: z.string().nullish()
+            })
+        )
+        .query(async ({ ctx, input }) => {
+            const limit = input.limit ?? 8;
+            const cursor = input.cursor ?? input.initialCursor;
+
+            const bookings = await ctx.prisma.propertyBooking.findMany({
+                where: {
+                    property: {
+                        archived: false,
+                        userId: ctx.user.id
+                    }
+                },
+                include: {
+                    applicant: true,
+                    property: true
+                },
+                take: limit + 1,
+                cursor: cursor
+                    ? {
+                          id: cursor
+                      }
+                    : undefined,
+                orderBy: {
+                    dateOfReservation: 'desc'
+                }
+            });
+
+            let nextCursor: string | undefined = undefined;
+
+            if (bookings.length > limit) {
+                // Remove the last item and use it as next cursor
+                const lasProperty = bookings.pop()!;
+                nextCursor = lasProperty.id;
+            }
+
+            return {
+                bookings,
+                nextCursor
+            };
+        }),
     toggleVisibility: protectedProcedure
         .input(
             z.object({
