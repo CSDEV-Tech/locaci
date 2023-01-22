@@ -56,7 +56,7 @@ export default function ProfilePage() {
             <section
                 className={clsx(
                     'mx-auto flex max-w-[1200px] flex-col gap-4 px-4 py-4',
-                    'md:px-8 lg:pb-16'
+                    'md:px-8 md:pb-16'
                 )}>
                 <h1 className="text-xl font-bold lg:hidden">
                     Vos réservations
