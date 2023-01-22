@@ -23,23 +23,23 @@ export default function ProfilePage() {
 
     return (
         <>
-            <section
-                className={clsx(
-                    'relative mx-auto h-32 max-w-[1200px] bg-secondary-15 px-4 pt-10'
-                )}>
-                <Avatar
-                    className={`absolute -bottom-10 left-4 h-24 w-24 bg-secondary`}
-                    src={user!.avatarURL}
-                    name={`${user.firstName} ${user.lastName}`}
-                />
+            <section className={clsx('relative h-32 bg-secondary-15')}>
+                <div className="relative mx-auto h-full w-full max-w-[1200px] px-4 pt-10 md:px-8">
+                    <Avatar
+                        className={`absolute -bottom-10 left-4 h-24 w-24 bg-secondary md:left-8`}
+                        src={user!.avatarURL}
+                        name={`${user.firstName} ${user.lastName}`}
+                    />
 
-                <img
-                    src={`/house_profile_illustration.svg`}
-                    alt={`Image de bannière de profil`}
-                    className={`absolute -right-10 bottom-0 h-full`}
-                />
+                    <img
+                        src={`/house_profile_illustration.svg`}
+                        alt={`Image de bannière de profil`}
+                        className={`absolute -right-10 bottom-0 h-full`}
+                    />
+                </div>
             </section>
-            <section className={clsx('mx-auto max-w-[1200px] px-4 pt-12')}>
+            <section
+                className={clsx('mx-auto max-w-[1200px] px-4 pt-12 md:px-8')}>
                 <h2 className={`text-2xl font-bold`}>
                     {user.firstName} {user.lastName}
                 </h2>
@@ -55,9 +55,12 @@ export default function ProfilePage() {
 
             <section
                 className={clsx(
-                    'mx-auto flex max-w-[1200px] flex-col gap-4 px-4 py-4'
+                    'mx-auto flex max-w-[1200px] flex-col gap-4 px-4 py-4',
+                    'md:px-8 lg:pb-16'
                 )}>
-                <h1 className="text-xl font-bold">Vos réservations</h1>
+                <h1 className="text-xl font-bold lg:hidden">
+                    Vos réservations
+                </h1>
 
                 <BookingTabs
                     past={pastBookings.map(booking => {
@@ -69,7 +72,7 @@ export default function ProfilePage() {
                         return (
                             <PropertyBookingCard
                                 dateOfReservation={booking.dateOfReservation}
-                                className="h-full w-full"
+                                className="h-full w-full md:h-auto"
                                 title={getPropertyTitle(booking.property)}
                                 address={booking.property.localityName}
                                 // @ts-ignore
@@ -102,7 +105,7 @@ export default function ProfilePage() {
                         return (
                             <PropertyBookingCard
                                 dateOfReservation={booking.dateOfReservation}
-                                className="h-full w-full"
+                                className="h-full w-full md:h-auto"
                                 title={getPropertyTitle(booking.property)}
                                 address={booking.property.localityName}
                                 // @ts-ignore
