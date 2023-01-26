@@ -214,7 +214,7 @@ function getAuth0URL(
     params.append('client_id', env.NEXT_PUBLIC_OAUTH_CLIENT_ID);
     params.append(
         'redirect_uri',
-        `${getHostWithScheme(env.NEXT_PUBLIC_SITE_URL)}/auth/callback${
+        `${getHostWithScheme(env.NEXT_PUBLIC_SITE_URL)}/api/auth-callback${
             redirect_after_callback
                 ? `?redirect_to=${encodeURIComponent(redirect_after_callback)}`
                 : ''
