@@ -99,6 +99,7 @@ export function FormStep2(props: FormStep2Props) {
                 municipality: municipality?.name ?? ''
             },
             {
+                staleTime: 1_000 * 5, // 5s
                 enabled: Boolean(municipality),
                 trpc: { abortOnUnmount: true }
             }

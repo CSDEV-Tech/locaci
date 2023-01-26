@@ -178,6 +178,23 @@ export function compareStrIgnoreAccent(str1?: string, str2?: string) {
 }
 
 /**
+ * Return a lowercase string of a string with possible accents and different case
+ *
+ * @example
+ *      convertAccentStringToNormalString('hôpital') // 'hopital'
+ *      compareStrIgnoreAccent('Hôpital') //  'hopital'
+ *
+ * @param str
+ * @returns
+ */
+export function convertAccentStringToNormalString(str: string) {
+    return str
+        .normalize('NFD')
+        .replace(/\p{Diacritic}/gu, '')
+        .toLocaleLowerCase();
+}
+
+/**
  * Get the extension of the filename
  *
  * @example
