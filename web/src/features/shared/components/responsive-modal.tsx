@@ -1,7 +1,7 @@
 import * as React from 'react';
-import useMediaQuery from '../hooks/use-media-query';
-import { LazyBottomSheet } from './lazy-bottom-sheet';
-import { LazyModal } from './lazy-modal';
+import useMediaQuery from '~/features/shared/hooks/use-media-query';
+import { LazyBottomSheet } from '~/features/shared/components/lazy-bottom-sheet';
+import { LazyModal } from '~/features/shared/components/lazy-modal';
 
 export type ResponsiveModalProps = {
     children: React.ReactNode;

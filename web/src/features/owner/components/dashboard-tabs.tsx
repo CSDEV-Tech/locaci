@@ -2,8 +2,6 @@
 import * as React from 'react';
 // components
 import { Tabs } from '@locaci/ui/components/molecules/tabs';
-import { Button } from '@locaci/ui/components/atoms/button';
-import { RefreshIcon } from '@locaci/ui/components/atoms/icons/refresh';
 
 // types
 export type DashboardTabsProps = {
@@ -37,7 +35,7 @@ export function DashboardTabs({ properties, bookings }: DashboardTabsProps) {
 
             {/* Desktop */}
             <div className="mx-auto hidden max-w-[1200px] grid-cols-5 gap-8 lg:grid">
-                <section className="col-span-3 flex flex-col gap-4 py-10">
+                <section className="col-span-3 flex flex-col gap-4 py-10 px-4">
                     <h1 className="text-start text-2xl font-bold sm:self-start">
                         Vos logements
                     </h1>
