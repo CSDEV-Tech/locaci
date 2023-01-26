@@ -199,8 +199,6 @@ export const authRouter = t.router({
             oauthTokenQueryString.append(`code`, code);
             oauthTokenQueryString.append(`redirect_uri`, redirectTo);
 
-            console.log(oauthTokenQueryString.toString());
-
             // get access token
             const { access_token, error, error_description, httpStatus } =
                 await apiFetch<Auth0TokenResult>(
@@ -232,8 +230,6 @@ export const authRouter = t.router({
                 }
             );
 
-            console.dir({ userInfosResult }, { depth: null });
-
             if (userInfosResult.httpStatus !== 200) {
                 throw new TRPCError({
                     message: `lien invalide, veuillez recommencer`,
@@ -255,8 +251,7 @@ export const authRouter = t.router({
                     email_verified: true
                 },
                 update: {
-                    firstName: userInfosResult.given_name,
-                    lastName: userInfosResult.family_name
+                    avatarURL: userInfosResult.picture
                 }
             });
 

@@ -16,8 +16,8 @@ export default async function handler(
         })
     );
 
-    const code = req.body.code;
-    const redirect_to = req.body.code;
+    const code = req.query.code as string;
+    const redirect_to = req.query.redirect_to as string;
 
     try {
         const { role } = await t.auth.verifyOAuthCode({
