@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { env } from '~/env/server.mjs';
 import { Cache, CacheKeys } from '~/server/cache';
 import { t } from '~/server/trpc/root';
-import { apiFetch, compareStrIgnoreAccent } from '~/lib/functions';
+import { apiFetch, convertAccentStringToNormalString } from '~/lib/functions';
 import type { OSMDetailResultData, OSMResultData } from '~/lib/types';
 import { Uuid } from '~/lib/uuid';
 
@@ -87,12 +87,24 @@ export const geoRouter = t.router({
             searchParams.append('addressdetails', '1');
             searchParams.append('accept-language', 'fr-FR');
             searchParams.append('bounded', '1');
-            searchParams.append('viewbox', municipality!.boundingbox.join(','));
+            searchParams.append('countrycodes', 'CI'); // nous ne cherchons qu'en côte d'ivoire
             searchParams.append('q', input.locality);
+            searchParams.append('limit', '50');
 
+            const [minLat, maxLat, minLong, maxLong] =
+                municipality!.boundingbox;
+
+            searchParams.append(
+                'viewbox',
+                [minLong, maxLat, maxLong, minLat].join(',')
+            );
+
+            const URL = `${
+                env.OSM_SEARCH_URL
+            }/search.php?${searchParams.toString()}`;
             const { httpStatus, ...osmApiresult } = await apiFetch<
                 Record<string, OSMResultData>
-            >(`${env.OSM_SEARCH_URL}/search.php?${searchParams.toString()}`);
+            >(URL);
 
             const localities = Object.values(osmApiresult);
             let localityRes = localities.filter(el => {
@@ -119,54 +131,15 @@ export const geoRouter = t.router({
                 const isAirport =
                     el.category === 'aeroway' && el.type === 'aerodrome';
 
-                const isInMunicipality = compareStrIgnoreAccent(
-                    el.address.municipality,
-                    input.municipality
-                );
-
-                const isInCity = compareStrIgnoreAccent(
-                    el.address.city,
-                    input.municipality
-                );
-
-                const isAnIndustrationPlace = compareStrIgnoreAccent(
-                    el.address.industrial,
-                    input.locality
-                );
-
-                const isAVillagePlace = compareStrIgnoreAccent(
-                    el.address.village,
-                    input.locality
-                );
-                const isANeighbourhoodPlace = compareStrIgnoreAccent(
-                    el.address.neighbourhood,
-                    input.locality
-                );
-                const isAResidentialPlace = compareStrIgnoreAccent(
-                    el.address.residential,
-                    input.locality
-                );
-
-                const isALeisurePlace = compareStrIgnoreAccent(
-                    el.address.leisure,
-                    input.locality
-                );
-
-                const isHamletInTown = compareStrIgnoreAccent(
-                    el.address.town,
-                    input.municipality
-                );
+                const isInMunicipality = el.address.municipality
+                    ? convertAccentStringToNormalString(
+                          el.address.municipality
+                      ) == convertAccentStringToNormalString(input.municipality)
+                    : true;
 
                 return (
                     (!isOfIgnoredCorrectCategory || isAirport) &&
-                    (isInCity ||
-                        isInMunicipality ||
-                        isAnIndustrationPlace ||
-                        isAVillagePlace ||
-                        isANeighbourhoodPlace ||
-                        isALeisurePlace ||
-                        isAResidentialPlace ||
-                        isHamletInTown)
+                    isInMunicipality
                 );
             });
 
