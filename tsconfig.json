@@ -18,8 +18,9 @@
         "noErrorTruncation": true,
         "declaration": true,
         "paths": {
-            "@locaci/ui/*": ["ui/dist/*"],
-            "~/*": ["web/src/*"]
+            "@locaci/ui/*": ["ui/dist/esm/*"],
+            "~/*": ["web/src/*"],
+            "~/www/*": ["www/app/*"]
         }
     }
 }
