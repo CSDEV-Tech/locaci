@@ -16,3 +16,5 @@ build
 *.old.*.turbo
 storybook-static/
 standalone/
+
+.env
