@@ -1,4 +1,10 @@
-import type { MetaFunction, LinksFunction } from '@remix-run/node';
+import * as React from 'react';
+// components
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+// utils
+import { QueryClient } from '@tanstack/react-query';
 import { json } from '@remix-run/node';
 import {
     Links,
@@ -12,6 +18,9 @@ import { env } from '~/www/lib/env.server';
 import { getMetaTags } from '~/www/lib/meta';
 
 import styles from '~/www/tailwind.css';
+
+// types
+import type { MetaFunction, LinksFunction } from '@remix-run/node';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: styles }];
 
@@ -28,6 +37,18 @@ export async function loader() {
 }
 
 export default function Root() {
+    const [queryClient] = React.useState(
+        () =>
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        refetchOnWindowFocus: false,
+                        retry: 2, // retry twice by default
+                        staleTime: 60 * 60 * 1_000 // 1 hour
+                    }
+                }
+            })
+    );
     return (
         <html lang="fr" suppressHydrationWarning>
             <head>
@@ -46,7 +67,11 @@ export default function Root() {
                 />
             </head>
             <body suppressHydrationWarning>
-                <Outlet />
+                <QueryClientProvider client={queryClient}>
+                    <Outlet />
+                    <ReactQueryDevtools position="bottom-right" />
+                </QueryClientProvider>
+
                 <ScrollRestoration />
                 <Scripts />
                 <LiveReload />

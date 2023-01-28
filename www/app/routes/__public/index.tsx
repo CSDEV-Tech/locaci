@@ -1,7 +1,13 @@
 // components
-import { RemixLink } from '~/www/features/shared/components/remix-link';
+import {
+    RemixLink,
+    RemixLinkButton
+} from '~/www/features/shared/components/remix-link';
 import { SearchBar } from '~/www/features/search/components/search-bar';
 import { MunicipalityCard } from '@locaci/ui/components/molecules/municipality-card';
+import { QuotesIcon } from '@locaci/ui/components/atoms/icons/quotes';
+import { MagnifyIngGlassIcon } from '@locaci/ui/components/atoms/icons/magnifying-glass';
+import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
@@ -10,30 +16,50 @@ import { useLoaderData } from '@remix-run/react';
 import { getAllMunicipalities } from '~/www/server/municipalities.server';
 
 // types
-import type { HeadersFunction } from '@remix-run/node';
+import type { HeadersFunction, LoaderArgs } from '@remix-run/node';
+import { Tabs } from '@locaci/ui/components/molecules/tabs';
+import { getRecentProperties } from '~/www/server/properties.server';
+import { dehydrate, Hydrate, QueryClient } from '@tanstack/react-query';
+import { useRecentProperties } from '../api/recent-properties';
 
 // Cache for 1 day
 export const headers: HeadersFunction = () => ({
     'cache-control': 's-maxage=86400, stale-while-revalidate'
 });
 
-export async function loader() {
+export async function loader({ request }: LoaderArgs) {
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchInfiniteQuery({
+        queryKey: ['properties', 'recent', { limit: 6 }],
+        queryFn: () => getRecentProperties(request)
+    });
+
     return json({
-        municipalities: await getAllMunicipalities()
+        municipalities: await getAllMunicipalities(),
+        dehydratedState: dehydrate(queryClient)
     });
 }
 
 export default function Index() {
+    const { dehydratedState } = useLoaderData<typeof loader>();
     return (
         <>
             <HeroSection />
             <MunicipalitiesListSection />
+            <Hydrate state={dehydratedState}>
+                <LatestPropertiesSection />
+            </Hydrate>
+
+            <SectionForWho />
+            <SectionAboutUs />
+
             <section className={clsx('px-8 lg:px-16')}>
                 <img
                     decoding="async"
                     loading="lazy"
                     src="/street_illustration.svg"
-                    alt="Maison vide"
+                    alt=""
                     width={400}
                     height={300}
                     className={clsx(
@@ -45,6 +71,33 @@ export default function Index() {
             </section>
         </>
     );
+}
+
+function LatestPropertiesSection() {
+    const { data } = useRecentProperties();
+
+    return data && data.pages[0].properties.length > 0 ? (
+        <>
+            <section className="px-8 lg:px-16">
+                <div
+                    className={clsx(
+                        'flex flex-col gap-8 py-14',
+                        'mx-auto max-w-[1200px]',
+                        'md:gap-10 md:py-16',
+                        'lg:py-32'
+                    )}>
+                    <h2
+                        className={`text-left text-2xl font-bold text-dark md:text-3xl`}>
+                        Nos derniers logements mis en ligne
+                    </h2>
+
+                    {/* <HydrateClient state={use(rsc.dehydrate())}>
+          <PropertyHomeList />
+        </HydrateClient> */}
+                </div>
+            </section>
+        </>
+    ) : null;
 }
 
 function HeroSection() {
@@ -154,4 +207,187 @@ function MunicipalitiesListSection() {
             </div>
         </section>
     ) : null;
+}
+
+function SectionForWho() {
+    const UserContent = () => (
+        <div className="flex flex-col items-stretch gap-8 lg:items-start">
+            <div className="flex flex-col gap-4">
+                <h3
+                    className={`w-full text-left text-xl font-semibold text-dark md:text-2xl`}>
+                    Un outil de recherche&nbsp;
+                    <span className="hidden text-primary lg:inline">
+                        pour les futurs locataires
+                    </span>
+                </h3>
+                <p className="lg:text-lg">
+                    <span className="font-semibold">LOCACI</span> une
+                    application web créée par CSDEV TECHNOLOGY qui vous permet
+                    de rechercher le logement qui vous convient, en fonction de
+                    critères que vous aurez saisis, parmi un catalogue de
+                    bailleurs vérifiés. LOCACI vous permet aussi de consulter
+                    les détails d'un appartement occupé par le dernier
+                    locataire, ce qui vous permet de mieux appréhender le bien
+                    que vous souhaitez louer.
+                </p>
+            </div>
+
+            <RemixLinkButton href="/search" variant="primary">
+                <MagnifyIngGlassIcon className={`h-5 w-5`} weight={`bold`} />
+                <span>Commencez votre recherche</span>
+            </RemixLinkButton>
+        </div>
+    );
+
+    const OwnerContent = () => (
+        <div className="flex flex-col items-stretch gap-4 lg:items-start">
+            <h3
+                className={`w-full text-left text-xl font-semibold text-dark md:text-2xl`}>
+                Un logiciel de gestion de votre logement&nbsp;
+                <span className="hidden text-primary lg:inline">
+                    pour les propriétaires
+                </span>
+            </h3>
+            <p className="lg:text-lg">
+                <span className="font-semibold">LOCACI</span> vous offre un
+                outil complet pour gérer les annonces de votre logement, créer
+                de manière automatisée les documents de votre logement et suivre
+                l'état des lieux de celui-ci.
+            </p>
+
+            <RemixLinkButton href="/auth/request-owner" variant="primary">
+                <HouseIcon className={`h-5 w-5`} weight={`bold`} />
+                <span>Devenir propriétaire</span>
+            </RemixLinkButton>
+        </div>
+    );
+
+    return (
+        <section className={clsx('bg-gray/5 px-8 lg:px-16')}>
+            <div
+                className={clsx(
+                    'flex flex-col gap-8 py-10',
+                    'mx-auto max-w-[1200px]',
+                    'md:items-center md:gap-10',
+                    'lg:py-32'
+                )}>
+                <h2
+                    className={`w-full text-left text-2xl font-bold text-dark md:text-3xl`}>
+                    C'est quoi LOCACI ?
+                </h2>
+
+                <Tabs className="lg:hidden">
+                    <Tabs.Header>
+                        <Tabs.HeaderItem>
+                            Pour les futurs locataires
+                        </Tabs.HeaderItem>
+                        <Tabs.HeaderItem>
+                            Pour les propriétaires
+                        </Tabs.HeaderItem>
+                    </Tabs.Header>
+
+                    <Tabs.Body>
+                        <Tabs.Item>
+                            <UserContent />
+                        </Tabs.Item>
+                        <Tabs.Item>
+                            <OwnerContent />
+                        </Tabs.Item>
+                    </Tabs.Body>
+                </Tabs>
+
+                <div className="hidden lg:block">
+                    <UserContent />
+                </div>
+                <div className="hidden lg:block">
+                    <OwnerContent />
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function SectionAboutUs() {
+    return (
+        <section className={clsx('px-8 lg:px-16')}>
+            <div
+                className={clsx(
+                    'flex flex-col gap-8 py-10',
+                    'mx-auto max-w-[1200px]',
+                    'md:items-center md:gap-10',
+                    'lg:py-32'
+                )}>
+                <h2
+                    className={`w-full text-left text-2xl font-bold text-dark md:text-3xl`}>
+                    Pourquoi LOCACI ?
+                </h2>
+
+                <blockquote
+                    className={clsx(
+                        'relative flex flex-col text-lg italic',
+                        'md:flex-row md:items-center'
+                    )}>
+                    <QuotesIcon
+                        className={clsx(
+                            `relative z-10 h-10 w-10 flex-shrink-0 -scale-x-100 text-dark/20`,
+                            'md:-top-4 md:left-4 md:self-start',
+                            'md:h-14 md:w-14'
+                        )}
+                        weight="fill"
+                    />
+                    <div className="relative z-20 flex flex-col gap-1.5">
+                        <p>
+                            J'ai constaté qu'il était&nbsp;
+                            <strong className="font-bold">
+                                très compliqué
+                            </strong>
+                            &nbsp;de trouver un logement. J'ai du passer par les
+                            réseaux sociaux, des démarcheurs vendeurs
+                            d'illusions, tout cet épuisement sans trouver le
+                            logement qui me correspondait à 100%.
+                        </p>
+
+                        <p>
+                            C'est pourquoi j'ai rassemblé une équipe pour
+                            réfléchir à la question : comment faciliter la
+                            recherche de logements ? Comment avoir accès aux
+                            détails des biens proposés ? Et après l'acquisition
+                            du logement, que se passe-t'il ?
+                        </p>
+
+                        <p>
+                            C'est en réponse à ces interrogations que nous avons
+                            développé&nbsp;
+                            <strong className="font-bold">LOCACI</strong>.
+                        </p>
+                    </div>
+                    <QuotesIcon
+                        className={clsx(
+                            `relative z-10 h-10 w-10 flex-shrink-0 text-dark/20`,
+                            'md:-bottom-4 md:right-4 md:self-end',
+                            'md:h-14 md:w-14'
+                        )}
+                        weight="fill"
+                    />
+                </blockquote>
+
+                <div className="flex items-center gap-4">
+                    <img
+                        src={`/temomane.jpg`}
+                        alt={`Notre CEO Temomane De Sanzo`}
+                        className={`h-[64px] w-[64px] rounded-full`}
+                        width={64}
+                        height={64}
+                    />
+
+                    <div className="flex flex-col gap-1">
+                        <strong className="text-lg font-semibold">
+                            Temomane DE SANZO
+                        </strong>
+                        <small className="text-gray">CEO de CSDEV</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
 }

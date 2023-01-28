@@ -26,3 +26,41 @@ export function getAbsoluteURLForImage(imageURL: string, baseURL: string) {
 
     return `${baseURL}${imageURL}`;
 }
+
+export async function apiFetch<T>(
+    url: string,
+    options: RequestInit = {}
+): Promise<T & { httpStatus: number }> {
+    // Set the default headers correctly
+    const headers: HeadersInit = new Headers(options.headers);
+    headers.set('Accept', 'application/json');
+    headers.set(
+        'Content-Type',
+        headers.get('Content-Type') ?? 'application/json'
+    );
+
+    return fetch(url, {
+        ...options,
+        headers,
+        credentials: 'include'
+    }).then(async response => {
+        // check if data is JSON
+        const isJson =
+            response.headers
+                .get('content-type')
+                ?.includes('application/json') ?? false;
+
+        const data = isJson ? await response.json() : null;
+
+        if (!response.ok) {
+            console.error(
+                `[jsonFetch ${
+                    options.method ?? 'GET'
+                } ${url}] There was an error :`,
+                { data, statusCode: response.status }
+            );
+        }
+
+        return { ...data, httpStatus: response.status };
+    });
+}
