@@ -1,0 +1,382 @@
+cities:
+  - name: Abidjan
+    municipalities:
+      - name: Abobo
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Welcome_to_ABOBO.jpg/1920px-Welcome_to_ABOBO.jpg"
+        localities:
+          - name: Abobo Baoule
+          - name: Abobo Nord
+          - name: Abobo RTI
+          - name: Abobo Sud
+          - name: Aboua
+          - name: Agbekoi
+          - name: Akeikoi
+          - name: Aman
+          - name: Anador
+          - name: Anonkoua
+          - name: Anonkoua-Koute
+          - name: Atsin
+          - name: Avocatier
+          - name: Etoile
+          - name: Banco
+          - name: Belleville
+          - name: Biabou
+          - name: Boussake
+          - name: Broukoua
+          - name: Cite Ado
+          - name: Cite de la Grâce
+          - name: Cobakro
+          - name: Kouadjo Kouakou
+          - name: L'habitat
+          - name: Moni
+          - name: N'dotre
+          - name: Palmafrique – V2
+          - name: PK 18
+          - name: Sagbe
+          - name: Sagbe Nord
+          - name: Sagbe Sud
+          - name: Sagbe celeste
+          - name: Samake
+          - name: Sapa
+          - name: Sofaica
+          - name: Sos Abobo
+          - name: Tamini
+          - name: Yapi
+      - name: Yopougon
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/5/53/Petit_immeuble_%C3%A0_Yopougon.jpg"
+        localities:
+          - name: Sikasso
+          - name: ile Boulay
+          - name: Abiatrana
+          - name: Academie
+          - name: Academie residentiel
+          - name: Ananeraie
+          - name: Andokoi
+          - name: Atchi
+          - name: Attie
+          - name: Azito Village
+          - name: Bagouda
+          - name: Banco 2
+          - name: Batim 2
+          - name: Beago
+          - name: Bel Air
+          - name: Boissy
+          - name: Bonikro
+          - name: Cite Elisee
+          - name: Cite Bracodi
+          - name: Cite Cafeiers
+          - name: Cite CNPS
+          - name: Cite marine
+          - name: Cite Nawa
+          - name: Cite Ngouan 1
+          - name: Cite Saco II
+          - name: Cite SGBCI
+          - name: Cite Sodefor Lauriers 11 & 12
+          - name: Cite Sotra
+          - name: Cite Verte
+          - name: Complexe
+          - name: Coprim Zenith
+          - name: Deuxieme tranche
+          - name: Diop
+          - name: Doukoure
+          - name: Fanny
+          - name: Figayo
+          - name: Fin goudron
+          - name: Gabriel Gare
+          - name: Galilee
+          - name: Gbamnan Djidan 1
+          - name: Gesco
+          - name: GFCI
+          - name: Hopital
+          - name: Issamboua
+          - name: Judee
+          - name: Keneya
+          - name: Koute
+          - name: Koute village
+          - name: Koweit
+          - name: Lauriers 2
+          - name: Lauriers Sacos
+          - name: Le corridor
+          - name: Les Pays-Bas
+          - name: Les Pays-Bas_101
+          - name: Lezou Aman
+          - name: Lievre rouge
+          - name: Lokoa extention
+          - name: Mamie Adjoua
+          - name: Mbakre
+          - name: Micao
+          - name: N'zimakro
+          - name: Niaba
+          - name: Niangon
+          - name: Niangon Adjame
+          - name: Niangon à droite
+          - name: Niangon à gauche
+          - name: Niangon Lokoa
+          - name: Niangon nord
+          - name: Niangon Sicogi Canal
+          - name: Niangon sud
+          - name: Niangon Sud - Sicogi
+          - name: Nouveau quartier
+          - name: Port-Bouet II
+          - name: Quartier LEM
+          - name: Quartier Maroc
+          - name: Quartier Millionnaire
+          - name: Sable
+          - name: Selmer
+          - name: Selmer ponty
+          - name: Sicogi
+          - name: Sideci
+          - name: Siporex
+          - name: Sogefiha Solic 1 & 2
+          - name: Sopim
+          - name: Toit vert
+          - name: Wassakara
+          - name: Yao Sehi
+          - name: Yesso
+          - name: Yopougon-Sante
+          - name: Zone Industrielle
+      - name: Le plateau
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/View_of_the_Plateau%2C_Abidjan.jpg/1920px-View_of_the_Plateau%2C_Abidjan.jpg"
+        localities:
+          - name: Indenie
+          - name: Quai Fruitier (QB1 – QB2)
+          - name: Cite Esculape
+          - name: Residence Roume
+      - name: Attecoubé
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Entr%C3%A9e_du_Sanctuaire_Marial_d%27Att%C3%A9coub%C3%A9.JPG/1920px-Entr%C3%A9e_du_Sanctuaire_Marial_d%27Att%C3%A9coub%C3%A9.JPG"
+        localities:
+          - name: Abobo Doume
+          - name: Abobo Doume village
+          - name: Agban-Attie
+          - name: Agban-village
+          - name: Attecoube 3
+          - name: Attecoube Nimatoulaye
+          - name: Attecoube 3
+          - name: Banco nord
+          - name: Bidjante
+          - name: Boribana
+          - name: Cite Fairmont 2
+          - name: Djene
+          - name: Gbebouto
+          - name: Jerusalem
+          - name: Jerusalem-residentiel
+          - name: Jerusalem 1
+          - name: Jerusalem 2
+          - name: Lackman
+          - name: Locodjro
+          - name: Loukoukro Ekare
+          - name: Moussikro
+          - name: Nimatoulaye
+          - name: Quartier Ecole
+          - name: Quartier Djene Ecare
+          - name: Quartier Espoir
+          - name: Quartier Gbebouto
+          - name: Quartier La Paix
+          - name: Quartier Lagune
+          - name: Quartier Mosquee
+          - name: Quartier Residentiel
+          - name: Quartier Sante 2 Mossikro
+          - name: Quartier Sebroko
+          - name: Sante-village
+          - name: Sebroko
+      - name: Cocody
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Mairiecocody.JPG/1920px-Mairiecocody.JPG"
+        localities:
+          - name: 8e et 9e tranche
+          - name: Aghien
+          - name: Akouedo
+          - name: Ambassade
+          - name: Angre
+          - name: Blockauss
+          - name: Bonoumin
+          - name: Cafeier
+          - name: Camp Militaire
+          - name: Deux Plateaux
+          - name: Djibi
+          - name: Djorogobite
+          - name: Gendarmerie Agban
+          - name: Genie 2000
+          - name: Lycee Technique
+          - name: M'pouto
+          - name: M'Badon
+          - name: M'pouto
+          - name: Palmeraie
+          - name: Riviera 1
+          - name: Riviera 2
+          - name: Riviera 3
+          - name: Riviera 4
+          - name: Riviera 6
+          - name: Riviera Bonoumin
+          - name: RTI
+          - name: Vieux Cocody
+      - name: Koumassi
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Le_boucher_au_march%C3%A9_de_Koumassi.JPG/1920px-Le_boucher_au_march%C3%A9_de_Koumassi.JPG"
+        localities:
+          - name: ile Desiree
+          - name: ile des Chauves-Souris
+      - name: Marcory
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Alyssa_K._Barry_Marcory%2C_Abidjan%2C_Ivory_Coast.jpg/1780px-Alyssa_K._Barry_Marcory%2C_Abidjan%2C_Ivory_Coast.jpg"
+        localities:
+          - name: ile d'Anoumabo
+          - name: ile de Petit-Bassam
+      - name: Port-Bouet
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/7/7f/L%E2%80%99%C3%A9pave_de_l%27avion_ab%C3%AEm%C3%A9_au_bord_de_la_mer_au_Port_Bouet%2C_Abidjan%2C_14_octobre_2017.jpg"
+        localities:
+          - name: Abouabou
+          - name: Adjifou Deux
+          - name: Adjifou Un
+          - name: Adjouffou
+          - name: Adjoufou
+          - name: Anani-Amamou
+          - name: Ancien camp CNRA
+          - name: Benogosso
+          - name: Cite CIE n°5
+          - name: Gonzagueville
+          - name: Janfoldi
+          - name: Kaotri
+          - name: Mafible 2
+          - name: Nouveau camp CRNA
+          - name: Pedeko
+          - name: Petit Bassam
+          - name: Quartier Elephant
+          - name: Sie
+          - name: Vera
+          - name: Vridi
+          - name: Vridi Ako
+      - name: Treichville
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Le_ponton_et_le_pont.jpg/1920px-Le_ponton_et_le_pont.jpg"
+        localities:
+          - name: Biafra
+          - name: Apollo
+          - name: Arras
+          - name: Belleville
+      - name: Brofodoumé
+        localities: []
+      - name: Anyama
+        localities:
+          - name: Adakie
+          - name: Adarome
+          - name: Aghien-Telegraphe
+          - name: Akekoua
+          - name: Akoupe
+          - name: Anyama Adjame
+          - name: Anyama Ahouabo
+          - name: Anyama Sossokoua
+          - name: Assokro
+          - name: Atiekoi
+          - name: Atsin
+          - name: Attinguie
+          - name: Azaguie Blida
+          - name: Bebakoua
+          - name: Ebimpe
+          - name: Halfo
+          - name: Kouaokrou
+          - name: Les residences Akwaba
+          - name: M'Brago I
+          - name: M'Brago-II
+          - name: Mbonouan
+          - name: Mpody
+          - name: Nzekro
+          - name: PK38
+          - name: Tapekro
+          - name: Thomasse
+          - name: Yace
+          - name: Yapokoua
+          - name: Zogri
+      - name: Songon
+        localities:
+          - name: Abadjin-Doume
+          - name: Abadjin-Koute
+          - name: Achanti
+          - name: Adiapo Moronou
+          - name: Adiapote Te
+          - name: Adiapoto-I
+          - name: Adiapoto-II
+          - name: Adiopodoume
+          - name: Adonkoua
+          - name: Allokoi
+          - name: Anguededou
+          - name: Audoin
+          - name: Ayi Maman
+          - name: Ayou Oua
+          - name: Bimbresso
+          - name: Bogui
+          - name: Cite La grace
+          - name: Dieke
+          - name: Ekouran
+          - name: Kilometre 17
+          - name: Koffikro
+          - name: Koroukro
+          - name: Kouadio Ncho
+          - name: Labion
+          - name: Laka
+          - name: Le Nieky
+          - name: Meregougnere
+          - name: N'Djem
+          - name: Nieky Bonjour
+          - name: Seydou Kamara
+          - name: Songon Dagbe
+          - name: Songon Gare
+          - name: Songon-Agban Attie II
+          - name: Songon-Kassemble
+          - name: Songon-M'brathe
+          - name: Songon-Te
+          - name: Tomatekro
+          - name: Yao
+          - name: Yao Niaba
+      - name: Bingerville
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/La_sabli%C3%A8re.jpg/1920px-La_sabli%C3%A8re.jpg"
+        localities:
+          - name: Abatta
+          - name: Abatta BCEAO
+          - name: Abatta Cite Police
+          - name: Abatta Sicta
+          - name: Achokoi
+          - name: Aguien
+          - name: Akakro
+          - name: Akandje
+          - name: Akoue Sante
+          - name: Akouedo Attie
+          - name: Akoue Sante 2
+          - name: Akoyate
+          - name: Akwe Djemin
+          - name: Ana
+          - name: Angoran
+          - name: Blanchon
+          - name: Bokate
+          - name: Bregbo
+          - name: Cite CIE
+          - name: Cite Olympe Promogim
+          - name: Cite Promogim Athena
+          - name: Ebrah
+          - name: Eloka
+          - name: Eloka-Te
+          - name: Eloka-To
+          - name: Faya 225;Riviera 5
+          - name: Feh Kesse
+          - name: Figuier
+          - name: Gbagba
+          - name: Gbagba Extension
+          - name: Kouassi Kakou
+          - name: Lauriers 9
+          - name: M'batto-Bouake
+          - name: Mobio
+          - name: Ogriville
+          - name: Palmafrique Eloka
+          - name: Quartier Scierie GIB
+          - name: Sebia Yao
+      - name: Adjamé
+        photoURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Rond_point_libert%C3%A9.jpg/1920px-Rond_point_libert%C3%A9.jpg"
+        localities:
+          - name: 220 logements
+          - name: Abobo Adjame
+          - name: Bracodi
+          - name: Bromakote
+          - name: Habitat
+          - name: Humici
+          - name: Latin
+          - name: Macaci
+          - name: Pailler
+          - name: Quartier Manguier
+          - name: Saint Michel
+          - name: Williamsville

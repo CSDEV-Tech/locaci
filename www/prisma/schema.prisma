@@ -1,0 +1,210 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Civility {
+    MR
+    MME
+}
+
+enum Role {
+    HOUSING_APPLICANT
+    PROPERTY_OWNER
+    ADMIN
+}
+
+model User {
+    id             String   @id @default(uuid()) @db.Uuid
+    firstName      String?
+    lastName       String?
+    phoneNumber    String?
+    avatarURL      String?
+    email          String   @unique
+    role           Role     @default(HOUSING_APPLICANT)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    email_verified Boolean  @default(false)
+    civicTitle     Civility @default(MR)
+
+    properties Property[] // A user can have many properties
+    bookings   PropertyBooking[]
+}
+
+model Room {
+    id         String   @id @default(uuid()) @db.Uuid
+    type       RoomType @default(BEDROOM)
+    Property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+    propertyId String   @db.Uuid
+}
+
+enum RoomType {
+    BEDROOM
+    LIVING_ROOM
+    KITCHEN
+    BATHROOM
+    LAUNDRY
+    ATTIC
+    BASEMENT
+    DINING_ROOM
+    GARAGE
+    BALCONY
+    VERANDA
+    TERRACE
+    TOILET
+}
+
+enum AmenityType {
+    WIFI
+    CABLE
+    HOT_WATER
+    WASHING_MACHINE
+    DRYER_MACHINE
+    DESKTOP
+    HEATING
+    AIR_CONDITIONNER
+    OTHER
+    REFREGIRATOR
+    OVEN
+    MICROWAVE
+}
+
+model Amenity {
+    id         String      @id @default(uuid()) @db.Uuid
+    type       AmenityType
+    name       String?
+    property   Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+    propertyId String      @db.Uuid
+}
+
+enum RentType {
+    LOCATION
+    SHARED_APPARTMENT
+    SHORT_TERM
+}
+
+model PropertyBooking {
+    id                String   @id @default(uuid()) @db.Uuid
+    userId            String   @db.Uuid
+    propertyId        String   @db.Uuid
+    applicant         User     @relation(fields: [userId], references: [id])
+    property          Property @relation(fields: [propertyId], references: [id])
+    dateOfReservation DateTime
+}
+
+model Property {
+    id        String   @id @default(uuid()) @db.Uuid
+    userId    String   @db.Uuid
+    owner     User     @relation(fields: [userId], references: [id]) // A Property have one owner
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // default values
+    rentType    RentType @default(LOCATION)
+    surfaceArea Int      @default(9)
+
+    noOfRooms Int
+
+    archived  Boolean   @default(false)
+    rooms     Room[]
+    amenities Amenity[]
+
+    images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
+
+    // Position
+    geoData   Json
+    longitude String
+    latitude  String
+
+    // Address
+    localityName        String
+    locality_osm_id     String
+    locality_bbox       Json
+    city                City         @relation(fields: [cityId], references: [id])
+    municipality        Municipality @relation(fields: [municipalityId], references: [id])
+    cityId              String       @db.Uuid
+    municipalityId      String       @db.Uuid
+    addressInstructions String?
+
+    // listing details
+    housingFee                  Int
+    description                 String
+    housingPeriod               Int
+    cautionMonthsPaymentAdvance Int
+    agencyMonthsPaymentAdvance  Int
+    availableFrom               DateTime
+
+    activeForListing Boolean           @default(false)
+    bookings         PropertyBooking[]
+}
+
+model DraftProperty {
+    id        String   @id @default(uuid()) @db.Uuid
+    userId    String   @db.Uuid
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // default values
+    rentType    RentType @default(LOCATION)
+    surfaceArea Int      @default(9)
+
+    images Json @default("[]") // A JSON Array of uris + name ([{uri, name}]) 
+
+    // address
+    cityName            String?
+    municipalityName    String?
+    localityName        String?
+    cityId              String? @db.Uuid
+    municipalityId      String? @db.Uuid
+    locality_osm_id     String?
+    locality_bbox       Json? // A JSON Array of coordinates ([minLat, maxLat, minLong, maxLong]) 
+    addressInstructions String?
+
+    // Position
+    geoData   Json?
+    longitude String?
+    latitude  String?
+
+    // rooms & amenities
+    noOfRooms Int  @default(0)
+    rooms     Json @default("[]") // A JSON Array of ids ([{type}]) 
+    amenities Json @default("[]") // A JSON Array of ids ([{type, name}]) 
+
+    // form step
+    currentStep PropertyFormStep @default(RENT_TYPE)
+}
+
+enum PropertyFormStep {
+    RENT_TYPE
+    ADDRESS
+    INSTRUCTIONS
+    ROOMS
+    AMENITIES
+    IMAGES
+    LISTING_DETAILS
+    COMPLETE
+}
+
+model City {
+    id             String         @id @default(uuid()) @db.Uuid
+    name           String
+    municipalities Municipality[]
+    Property       Property[]
+}
+
+// Commune
+model Municipality {
+    id              String     @id @default(uuid()) @db.Uuid
+    name            String
+    city            City       @relation(fields: [cityId], references: [id])
+    cityId          String     @db.Uuid
+    properties      Property[]
+    previewPhotoURL String?
+}

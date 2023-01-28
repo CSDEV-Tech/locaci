@@ -12,10 +12,16 @@
         "dev:node": "cross-env NODE_ENV=development nodemon --require dotenv/config ./server.js --watch ./server.js",
         "dev:remix": "remix watch",
         "start": "cross-env NODE_ENV=production node ./server.js",
-        "typecheck": "tsc"
+        "typecheck": "tsc",
+        "postinstall": "prisma generate",
+        "prisma": "prisma",
+        "cache:clear": "NODE_PATH=./ ts-node --require tsconfig-paths/register scripts/clear-cache.ts",
+        "db:prepare": "prisma db push --accept-data-loss && node prisma/seed.mjs",
+        "telemetry:disable": "next telemetry disable"
     },
     "dependencies": {
         "@locaci/ui": "workspace:^1.0.0",
+        "@prisma/client": "^4.8.0",
         "@remix-run/express": "^1.11.1",
         "@remix-run/node": "^1.11.1",
         "@remix-run/react": "^1.11.1",
@@ -25,7 +31,15 @@
         "isbot": "^3.6.5",
         "morgan": "^1.10.0",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react-dom": "^18.2.0",
+        "react-hot-toast": "^2.3.0",
+        "short-uuid": "^4.2.2",
+        "superjson": "^1.11.0",
+        "uuid": "^9.0.0",
+        "zod": "^3.17.3"
+    },
+    "prisma": {
+        "seed": "node prisma/seed.js"
     },
     "devDependencies": {
         "@remix-run/dev": "^1.11.1",
@@ -36,8 +50,11 @@
         "eslint": "^8.27.0",
         "nodemon": "^2.0.20",
         "npm-run-all": "^4.1.5",
+        "prisma": "^4.8.0",
         "tailwindcss": "^3.2.4",
-        "typescript": "^4.8.4"
+        "tsconfig-paths": "^4.1.2",
+        "typescript": "^4.8.4",
+        "vite-tsconfig-paths": "^4.0.5"
     },
     "engines": {
         "node": ">=14"
