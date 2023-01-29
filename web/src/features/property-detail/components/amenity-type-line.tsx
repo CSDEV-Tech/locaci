@@ -10,7 +10,7 @@ import { DropHotIcon } from '@locaci/ui/components/atoms/icons/drop-hot';
 import { MicrowaveIcon } from '@locaci/ui/components/atoms/icons/microwave';
 import { OvenIcon } from '@locaci/ui/components/atoms/icons/oven';
 import { RefregiratorIcon } from '@locaci/ui/components/atoms/icons/refregirator';
-import { HorizontalDotsIcon } from '@locaci/ui/components/atoms/icons/dots-horizontal';
+import { HorizontalDotsIcon } from '@locaci/ui/components/atoms/icons/horizontal-dots';
 import { Tag } from '@locaci/ui/components/atoms/tag';
 
 // types
