@@ -40,9 +40,10 @@ import type { BoundingBox } from '~/lib/types';
 import type { RoomType } from '~/features/shared/types';
 import type { ListingImage } from '~/features/shared/types';
 
-// this is a dynamic page
-export const dynamic = 'force-dynamic',
-    revalidate = 0;
+// this is a dynamic page, we are obliged to do this
+// because there is a bug with next considering dynamic pages as static,
+// even without generateStaticParams
+export const dynamic = 'force-dynamic';
 
 export default function DetailPage({ params }: PageProps<{ uid: string }>) {
     const property = use(getPropertyDetail(params.uid));
