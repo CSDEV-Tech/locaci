@@ -5,7 +5,6 @@ import { TrpcClientProvider } from '~/app/trpc-client-provider';
 import { TailwindIndicator } from '~/features/shared/components/tailwind-indicator';
 import { HotToaster } from '~/features/shared/components/hot-toaster';
 import { RASSRProvider } from '~/features/shared/components/react-aria-ssr-provider';
-import { ScrollUp } from './scroll-up';
 
 // utils
 import { Poppins } from '@next/font/google';
@@ -31,7 +30,6 @@ export default function RootLayout({ children }: LayoutProps) {
                 <meta name="charset" content="utf-8" />
             </head>
             <body suppressHydrationWarning>
-                <ScrollUp />
                 <RASSRProvider>
                     <TrpcClientProvider>{children}</TrpcClientProvider>
                 </RASSRProvider>
