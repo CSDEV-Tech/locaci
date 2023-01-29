@@ -5,6 +5,8 @@ import * as React from 'react';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { LoadingIndicator } from '@locaci/ui/components/atoms/loading-indicator';
 import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
+import { MapPin } from '@locaci/ui/components/molecules/map-pin';
+import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 
 // utils
 import dynamic from 'next/dynamic';
@@ -14,6 +16,8 @@ import { updatePropertyStep2Schema } from '~/lib/validation-schemas/property-sch
 // types
 import type { z } from 'zod';
 import type { BoundingBox } from '~/lib/types';
+import type { MarkerProps } from '~/features/shared/components/map';
+
 export type Form3Values = Pick<
     z.TypeOf<typeof updatePropertyStep2Schema>,
     'longitude' | 'latitude' | 'geoJSON' | 'localityOSMID' | 'localityName'
@@ -30,7 +34,7 @@ type FormStep3Props = {
 };
 
 // lazy load the map component
-const Map = dynamic(() => import('~/features/shared/components/old-map'), {
+const Map = dynamic(() => import('~/features/shared/components/map'), {
     ssr: false
 });
 
@@ -45,12 +49,43 @@ function MapLoader(props: { localityOSMID: string; boundingbox: BoundingBox }) {
             osm_place_id: props.localityOSMID
         },
         {
-            suspense: true
+            staleTime: Infinity,
+            refetchOnMount: false
         }
     );
 
     return (
-        <>{data && <Map markers={[data]} boundingbox={props.boundingbox} />}</>
+        <>
+            {data && (
+                <Map
+                    markers={[
+                        {
+                            center: [
+                                Number(data.centroid.coordinates[1]),
+                                Number(data.centroid.coordinates[0])
+                            ],
+                            id: props.localityOSMID,
+                            geojson: data.geometry
+                        }
+                    ]}
+                    markerComponent={Marker}
+                    boundingbox={props.boundingbox}
+                />
+            )}
+        </>
+    );
+}
+
+function Marker(props: MarkerProps) {
+    return (
+        <MapPin
+            id={`${props.baseId}-${props.id}`}
+            children={
+                <div className="rounded-md bg-white p-2 shadow-md">
+                    <HouseIcon className="h-4 w-4 text-dark" weight="fill" />
+                </div>
+            }
+        />
     );
 }
 
