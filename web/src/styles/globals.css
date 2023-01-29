@@ -278,3 +278,22 @@
         opacity: 1;
     }
 }
+
+/**
+    * Leaflet styles overrides, to have nice popups 
+    */
+.leaflet-popup-content-wrapper {
+    box-shadow: none !important;
+    height: auto !important;
+    width: auto !important;
+    background: transparent !important;
+}
+
+.leaflet-popup-content {
+    width: auto !important;
+    margin: 0px;
+}
+
+.leaflet-popup-tip-container {
+    display: none;
+}
