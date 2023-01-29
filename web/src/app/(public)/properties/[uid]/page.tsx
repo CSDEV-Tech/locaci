@@ -1,5 +1,5 @@
 /**
- * We import mapbox css in a layout because when you import a css in a file
+ * We import leaflet css in a layout because when you import a css in a file
  * nextjs try to hoist it on the <head/> tag, with suspense and SSR it can cause problems
  * if imported at a random component in the tree.
  */

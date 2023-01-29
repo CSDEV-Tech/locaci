@@ -4,7 +4,7 @@ import * as React from 'react';
  * nextjs try to hoist it on the <head/> tag, with suspense and SSR it can cause problems
  * if imported at a random component in the tree.
  */
-import 'mapbox-gl/dist/mapbox-gl.css';
+import 'leaflet/dist/leaflet.css';
 
 // this is a dynamic page,
 // FIXME: I shouldn't have to use this because i used searchParams,
