@@ -30,7 +30,7 @@ type FormStep3Props = {
 };
 
 // lazy load the map component
-const Map = dynamic(() => import('~/features/shared/components/map'), {
+const Map = dynamic(() => import('~/features/shared/components/old-map'), {
     ssr: false
 });
 

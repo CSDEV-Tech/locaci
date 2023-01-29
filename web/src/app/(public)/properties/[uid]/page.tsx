@@ -3,7 +3,7 @@
  * nextjs try to hoist it on the <head/> tag, with suspense and SSR it can cause problems
  * if imported at a random component in the tree.
  */
-import 'mapbox-gl/dist/mapbox-gl.css';
+import 'leaflet/dist/leaflet.css';
 
 // components
 import Image from 'next/image';
@@ -12,7 +12,7 @@ import {
     NextLink,
     NextLinkButton
 } from '~/features/shared/components/next-link';
-import { ClientMap } from '~/features/property-detail/components/client-map';
+import { PropertyDetailMap } from '~/features/property-detail/components/property-detail-map';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { RoomTypeLine } from '~/features/property-detail/components/room-type-line';
 import { AmenityTypeLine } from '~/features/property-detail/components/amenity-type-line';
@@ -265,7 +265,7 @@ function MapSection({ uid }: { uid: string }) {
             </p>
 
             <div className="md:px-8 xl:px-0">
-                <ClientMap
+                <PropertyDetailMap
                     locality_osm_id={locality_osm_id}
                     boundingbox={locality_bbox as BoundingBox}
                 />

@@ -4,12 +4,14 @@ import { clsx } from '../../lib/functions';
 export type MapPinProps = {
     className?: string;
     children?: React.ReactNode;
+    id?: string;
 };
 
 export const MapPin = React.forwardRef<HTMLDivElement, MapPinProps>(
-    ({ children, className }, ref) => {
+    ({ children, className, id }, ref) => {
         return (
             <div
+                id={id}
                 ref={ref}
                 className={clsx(
                     className,

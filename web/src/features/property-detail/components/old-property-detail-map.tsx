@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { t } from '~/app/trpc-client-provider';
 
 // lazy load the map component
-const Map = dynamic(() => import('~/features/shared/components/map'), {
+const Map = dynamic(() => import('~/features/shared/components/old-map'), {
     ssr: false
 });
 
@@ -17,7 +17,7 @@ export type ClientMapProps = {
     boundingbox: BoundingBox;
 };
 
-export function ClientMap(props: ClientMapProps) {
+export function PropertyDetailMap(props: ClientMapProps) {
     return (
         <div className="relative h-[25rem] bg-primary-15 md:h-[32rem]">
             <MapLoader

@@ -1,128 +1,103 @@
 'use client';
-
 import * as React from 'react';
-// components
-import { MapPin } from '@locaci/ui/components/molecules/map-pin';
-import { House } from 'phosphor-react';
 
 // utils
-import { env } from '~/env/client.mjs';
-import mapboxgl from 'mapbox-gl';
+import * as L from 'leaflet';
+import { renderToString } from 'react-dom/server';
 
 // types
-import type { BoundingBox, OSMDetailResultData, GeoJSON } from '~/lib/types';
+import type { BoundingBox, GeoJSON } from '~/lib/types';
+import { env } from '~/env/client.mjs';
 import { clsx } from '@locaci/ui/lib/functions';
 
-export type MapProps = {
-    markers?: (Omit<OSMDetailResultData, 'geometry'> & {
-        geometry?: GeoJSON;
-    })[];
-    boundingbox: BoundingBox;
-    className?: string;
+export type Marker = {
+    id: string;
+    center: L.LatLngTuple;
+    geojson?: GeoJSON;
 };
 
-// set mapbox token
-mapboxgl.accessToken = env.NEXT_PUBLIC_MAPBOX_KEY;
+export type MarkerProps = { id: string; baseId: string };
 
-export default function Map({
-    markers = [],
-    boundingbox,
-    className
-}: MapProps) {
+export type MapProps = {
+    className?: string;
+    markers: Marker[];
+    boundingbox: BoundingBox;
+    markerComponent: React.ComponentType<MarkerProps>;
+};
+
+export default function Map(props: MapProps) {
     const mapRef = React.useRef<HTMLDivElement>(null);
-    const markersRef = React.useRef<HTMLDivElement[]>([]);
-    const id = React.useId();
 
-    // Initialize map object when component mounts
+    const [map, setMap] = React.useState<L.Map | null>();
+    const baseId = React.useId();
+
     React.useEffect(() => {
-        let map: mapboxgl.Map;
-        if (markers.length > 0 && mapRef.current) {
-            map = new mapboxgl.Map({
-                container: mapRef.current!,
-                style: 'mapbox://styles/mapbox/streets-v11',
-                bounds: boundingbox
-            });
-            // Add navigation control (the +/- zoom buttons)
-            map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-            map.on('load', () => {
-                for (let index = 0; index < markers.length; index++) {
-                    const marker = markers[index];
+        if (!mapRef.current) return;
 
-                    if (marker.geometry) {
-                        // add map polygon
-                        map.addSource(`source-${id}-${index}`, {
-                            type: 'geojson',
-                            data: {
-                                properties: [],
-                                type: 'Feature',
-                                geometry: marker.geometry
-                            }
-                        });
+        const bounds = L.latLngBounds(
+            L.latLng(props.boundingbox[1], props.boundingbox[0]), // maxLat, maxLong
+            L.latLng(props.boundingbox[3], props.boundingbox[2]) // minLat, minLong
+        );
+        const map = L.map(mapRef.current).fitBounds(bounds);
 
-                        // Add a new layer to visualize the polygon.
-                        map.addLayer({
-                            id: `source-${id}-${index}`,
-                            type: 'fill',
-                            source: `source-${id}-${index}`, // reference the data source
-                            layout: {},
-                            paint: {
-                                'fill-color': '#3a3335', // dark color fill
-                                'fill-opacity': 0.3
-                            }
-                        });
+        L.tileLayer(
+            `https://api.mapbox.com/styles/v1/fredkiss3/cky7kyfcw6ydq15l1reh6b92j/tiles/256/{z}/{x}/{y}@2x?access_token=${env.NEXT_PUBLIC_MAPBOX_KEY}`,
+            {
+                maxZoom: 32,
+                attribution:
+                    '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> | &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }
+        ).addTo(map);
 
-                        // Add a black outline around the polygon.
-                        map.addLayer({
-                            id: 'outline',
-                            type: 'line',
-                            source: `source-${id}-${index}`,
-                            layout: {},
-                            paint: {
-                                'line-color': '#3a3335',
-                                'line-width': 1
-                            }
-                        });
+        setMap(map);
+        return () => {
+            map?.remove();
+        };
+    }, []);
+
+    React.useEffect(() => {
+        if (!map) return;
+        const popups: L.Popup[] = [];
+        const geojsons: L.GeoJSON[] = [];
+
+        for (const marker of props.markers) {
+            if (marker.geojson && marker.geojson.type !== 'Point') {
+                const geo = L.geoJSON(marker.geojson, {
+                    style: {
+                        color: '#3a3335'
                     }
+                }).addTo(map);
+                geojsons.push(geo);
+            }
 
-                    // create marker
-                    new mapboxgl.Marker(markersRef.current[index]!)
-                        .setLngLat([
-                            Number(marker.centroid.coordinates[0]),
-                            Number(marker.centroid.coordinates[1])
-                        ])
-                        .addTo(map);
-                }
-            });
+            const popup = L.popup({
+                autoClose: false,
+                closeOnEscapeKey: false,
+                closeOnClick: false,
+                closeButton: false
+            })
+                .setLatLng(marker.center)
+                .setContent(
+                    renderToString(
+                        <props.markerComponent baseId={baseId} id={marker.id} />
+                    )
+                );
+            popup.addTo(map);
+            popups.push(popup);
         }
-        // Clean up on unmount
-        return () => map?.remove();
-    }, [markers, boundingbox]);
+
+        return () => {
+            popups.forEach(p => p.remove());
+            geojsons.forEach(g => g.remove());
+        };
+    }, [map, props.markers]);
 
     return (
         <>
-            <template>
-                {markers.map((_, index) => (
-                    <MapPin
-                        key={index}
-                        ref={el => {
-                            // add all the divs to ref
-                            if (el) {
-                                markersRef.current.push(el);
-                            }
-                        }}
-                        children={
-                            <div className="rounded-md bg-white p-2 shadow-md">
-                                <House
-                                    className="h-4 w-4 text-dark"
-                                    weight="fill"
-                                />
-                            </div>
-                        }
-                    />
-                ))}
-            </template>
-
-            <div ref={mapRef} className={clsx(className, `h-full w-full`)} />
+            <div
+                ref={mapRef}
+                className={clsx(props.className, `h-full w-full`)}
+            />
         </>
     );
 }
