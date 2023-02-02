@@ -247,9 +247,12 @@ function AmenitiesSection({ uid }: { uid: string }) {
 }
 
 function MapSection({ uid }: { uid: string }) {
-    const { locality_osm_id, localityName, locality_bbox } = use(
-        getPropertyDetail(uid)
-    )!;
+    const {
+        locality_osm_id,
+        localityName,
+        locality_bbox,
+        addressInstructions
+    } = use(getPropertyDetail(uid))!;
     return (
         <section
             className={clsx(
@@ -257,12 +260,21 @@ function MapSection({ uid }: { uid: string }) {
                 'lg:gap-8'
             )}>
             <h2 className="px-4 text-xl font-semibold md:px-8 lg:text-2xl xl:px-0">
-                Addresse
+                Addresse sur la carte
             </h2>
 
-            <p className="flex items-center gap-1 px-4 text-gray md:px-8 xl:px-0">
+            <p className="flex items-center gap-1 px-4 text-dark md:px-8 xl:px-0">
                 {localityName}
             </p>
+
+            {addressInstructions && (
+                <>
+                    <h3 className="px-4 text-gray">
+                        Instructions sur l'addresse :
+                    </h3>
+                    <p className="px-4 text-dark">{addressInstructions}</p>
+                </>
+            )}
 
             <div className="md:px-8 xl:px-0">
                 <PropertyDetailMap
