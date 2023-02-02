@@ -2,7 +2,8 @@
 import * as React from 'react';
 // components
 import { SearchBar } from '~/features/search/components/search-bar';
-import { SearchButton } from '@locaci/ui/components/atoms/search-button';
+import { NextLinkButton } from '~/features/shared/components/next-link';
+import { MagnifyIngGlassIcon } from '@locaci/ui/components/atoms/icons/magnifying-glass';
 
 // utils
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -22,9 +23,15 @@ export function HeaderSearchButton(props: HeaderSearchButtonProps) {
         <>
             {path !== '/' && (
                 <>
-                    <SearchButton onClick={() => {}} className={`lg:hidden`}>
-                        Lancez votre recherche
-                    </SearchButton>
+                    <NextLinkButton
+                        className="flex items-center lg:hidden "
+                        href="/search"
+                        variant="primary"
+                        renderTrailingIcon={cls => (
+                            <MagnifyIngGlassIcon className={cls} />
+                        )}>
+                        Rechercher
+                    </NextLinkButton>
                     <SearchBar
                         minimalStyle
                         className={clsx(

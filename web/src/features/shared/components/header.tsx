@@ -23,8 +23,7 @@ export function Header({ trailingElement }: HeaderProps) {
                 customLink={NextLink}
                 logoAltText="Logo LOCACI"
                 className="lg:shadow-md"
-                logoUrlDesktop="/logo.svg"
-                logoUrlMobile="/favicon.svg"
+                logoUrl="/logo.svg"
                 leadingElement={
                     <HeaderSearchButton
                         defaultMunicipalities={React.use(municipalitiesPromise)}

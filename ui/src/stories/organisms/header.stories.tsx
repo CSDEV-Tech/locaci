@@ -8,8 +8,9 @@ import logoSmall from '../assets/favicon.svg';
 import logoFull from '../assets/logo.svg';
 
 import { Link } from '../../components/atoms/link';
+import { LinkButton } from '../../components/atoms/link-button';
 import { Avatar } from '../../components/atoms/avatar';
-import { SearchButton } from '../../components/atoms/search-button';
+import { MagnifyIngGlassIcon } from '../../components/atoms/icons/magnifying-glass';
 import { Button } from '../../components/atoms/button';
 import { List, PlusCircle } from 'phosphor-react';
 import { Breadcrumb } from '../../components/molecules/breadcrumb';
@@ -27,14 +28,19 @@ const Template: ComponentStory<typeof Header> = args => <Header {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    logoUrlMobile: logoSmall,
-    logoUrlDesktop: logoFull,
+    logoUrl: logoFull,
     logoAltText: 'Logo LOCACI',
     leadingElement: (
         <>
-            <SearchButton className="lg:hidden" onClick={() => {}}>
-                Rechercher un logement
-            </SearchButton>
+            <LinkButton
+                className="lg:hidden"
+                href="#"
+                variant="primary"
+                renderTrailingIcon={cls => (
+                    <MagnifyIngGlassIcon className={cls} />
+                )}>
+                Rechercher
+            </LinkButton>
         </>
     ),
     trailingElement: (
@@ -47,7 +53,7 @@ Default.args = {
 export const WithBreadcrumb = Template.bind({});
 WithBreadcrumb.args = {
     hideLogo: true,
-    logoUrlDesktop: logoFull,
+    logoUrl: logoFull,
     logoAltText: 'Logo LOCACI',
     leadingElement: (
         <>
