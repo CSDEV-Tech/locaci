@@ -17,9 +17,9 @@
         "pretty": true,
         "jsx": "react-jsx",
         "rootDir": "./src",
-        "outDir": "./dist",
+        "outDir": "./dist/esm",
         "declaration": true,
-        "suppressImplicitAnyIndexErrors": true,
+        "suppressImplicitAnyIndexErrors": true
     },
     "include": ["./src/**/*.ts", "./src/components/**/*.tsx"],
     "exclude": ["./node_modules", "./dist", "./src/stories"]
