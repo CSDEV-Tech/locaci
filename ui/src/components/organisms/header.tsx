@@ -3,8 +3,7 @@ import { clsx } from '../../lib/functions';
 import { CustomLink, Link } from '../atoms/link';
 
 export type HeaderProps = {
-    logoUrlMobile: string;
-    logoUrlDesktop: string;
+    logoUrl: string;
     logoAltText: string;
     hideLogo?: boolean;
     logoHref?: string;
@@ -25,8 +24,7 @@ export function Header({
     customLink,
     leadingElement,
     trailingElement,
-    logoUrlMobile,
-    logoUrlDesktop,
+    logoUrl,
     logoAltText,
     hideLogo = false,
     logoHref = '#'
@@ -48,14 +46,9 @@ export function Header({
                     {!hideLogo && (
                         <Link Custom={customLink} href={logoHref}>
                             <img
-                                src={logoUrlMobile}
+                                src={logoUrl}
                                 alt={logoAltText}
-                                className="h-10 w-10 object-contain object-center md:hidden"
-                            />
-                            <img
-                                src={logoUrlDesktop}
-                                alt={logoAltText}
-                                className="hidden h-10 object-contain object-center md:inline"
+                                className="h-8 flex-shrink-0 object-contain object-center md:inline md:h-10"
                             />
                         </Link>
                     )}
