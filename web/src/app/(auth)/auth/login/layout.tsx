@@ -18,8 +18,7 @@ export default async function LoginLayout({ children }: LayoutProps) {
                 logoHref={`/`}
                 customLink={NextLink}
                 logoAltText="Logo LOCACI"
-                logoUrlDesktop="/logo.svg"
-                logoUrlMobile="/favicon.svg"
+                logoUrl="/logo.svg"
                 trailingElement={
                     <>
                         <NextLinkButton
