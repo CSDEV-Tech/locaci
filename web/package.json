@@ -8,6 +8,7 @@
         "start": "next start",
         "lint": "next lint",
         "postinstall": "prisma generate && patch-package",
+        "patch:next": "patch-package",
         "prisma": "prisma",
         "cache:clear": "NODE_PATH=./web ts-node --esm scripts/clear-cache.ts",
         "db:prepare": "prisma db push --accept-data-loss && node prisma/seed.mjs",
