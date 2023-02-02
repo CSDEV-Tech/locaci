@@ -31,8 +31,7 @@ export default async function OwnerLayout(props: LayoutProps) {
                 logoHref={`/`}
                 customLink={NextLink}
                 logoAltText="Logo LOCACI"
-                logoUrlDesktop="/logo.svg"
-                logoUrlMobile="/favicon.svg"
+                logoUrl="/logo.svg"
                 leadingElement={<HeaderBreadCrumb />}
                 trailingElement={
                     <UserDropdown
