@@ -96,7 +96,7 @@ export default function Map(props: MapProps) {
         <>
             <div
                 ref={mapRef}
-                className={clsx(props.className, `h-full w-full`)}
+                className={clsx(props.className, `z-10 h-full w-full`)}
             />
         </>
     );
