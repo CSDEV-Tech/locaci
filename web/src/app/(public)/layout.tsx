@@ -1,7 +1,7 @@
 // components
 import { Header } from '~/features/shared/components/header';
-import { LoginButton } from '~/features/public/components/login-button';
 import { Footer } from '~/features/shared/components/footer';
+import { NextLinkButton } from '~/features/shared/components/next-link';
 
 // types
 import type { LayoutProps } from '~/types';
@@ -9,7 +9,15 @@ import type { LayoutProps } from '~/types';
 export default function PublicLayout({ children }: LayoutProps) {
     return (
         <>
-            <Header trailingElement={<LoginButton />} />
+            <Header
+                trailingElement={
+                    <>
+                        <NextLinkButton variant="hollow" href="/auth/login">
+                            Connexion
+                        </NextLinkButton>
+                    </>
+                }
+            />
             <main>{children}</main>
             <Footer />
         </>
