@@ -35,13 +35,14 @@
         "react": "18.2.0",
         "react-dom": "18.2.0"
     },
-    "main": "./dist/index.js",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/esm/index.d.ts",
     "sideEffects": false,
     "type": "module",
     "files": [
         "dist",
+        "dist/**/*",
         "dist/lib/**/*.d.ts",
         "dist/lib/**/*.js",
         "dist/components/**/*.d.ts",
@@ -50,7 +51,10 @@
     "scripts": {
         "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "build": "esbuild ./src/**/*.ts ./src/components/**/*.tsx  ./src/components/**/icons/*.tsx  --outdir=./dist --format=esm --tree-shaking=true && tsc --emitDeclarationOnly",
+        "build": "pnpm run build:cjs && pnpm run build:esm && pnpm run build:types",
+        "build:cjs": "esbuild ./src/**/*.ts ./src/components/**/*.tsx  ./src/components/**/icons/*.tsx  --outdir=./dist/cjs --format=cjs",
+        "build:esm": "esbuild ./src/**/*.ts ./src/components/**/*.tsx  ./src/components/**/icons/*.tsx  --outdir=./dist/esm --format=esm --tree-shaking=true",
+        "build:types": "tsc --emitDeclarationOnly -p tsconfig.json",
         "dev": "nodemon"
     },
     "dependencies": {
