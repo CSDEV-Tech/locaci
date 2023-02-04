@@ -35,7 +35,7 @@ export function Pagination({
                     renderLeadingIcon={cls => (
                         <ArrowLeftIcon className={cls} />
                     )}>
-                    Précédent
+                    <span className="hidden md:inline">Précédent</span>
                 </LinkButton>
             )}
             <ol className={`flex items-center gap-2`}>
@@ -48,7 +48,7 @@ export function Pagination({
                             }Page ${p}`}
                             aria-current={p === currentPage ? 'true' : 'false'}
                             variant={p === currentPage ? `primary` : `hollow`}
-                            href={getPageUrl(currentPage)}>
+                            href={getPageUrl(p)}>
                             {p}
                         </LinkButton>
                     </li>
@@ -62,7 +62,7 @@ export function Pagination({
                     renderTrailingIcon={cls => (
                         <ArrowRightIcon className={cls} />
                     )}>
-                    Suivant
+                    <span className="hidden md:inline">Suivant</span>
                 </LinkButton>
             )}
         </nav>
