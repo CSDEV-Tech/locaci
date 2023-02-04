@@ -80,13 +80,13 @@ export function range(start: number, end: number): number[] {
  */
 export function getPageRange(currentPage: number, nbPages: number) {
     const start = Math.max(1, currentPage - 2);
-    const end = start + 5;
+    const end = start + 4;
 
     let pages: number[];
     if (end <= nbPages) {
         pages = range(start, end);
     } else {
-        pages = range(Math.max(1, nbPages - 4), nbPages + 1);
+        pages = range(Math.max(1, nbPages - 3), nbPages + 1);
     }
 
     return pages;
