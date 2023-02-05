@@ -34,7 +34,7 @@ export function Footer({ className, links, customLink }: FooterProps) {
                                 <h3 className="font-bold">{title}</h3>
                                 <ul className="flex flex-col gap-3 font-normal text-gray">
                                     {links?.map(({ label, href }, index) => (
-                                        <li key={index}>
+                                        <li key={`${title}-${index}`}>
                                             <Link
                                                 Custom={customLink}
                                                 href={href}

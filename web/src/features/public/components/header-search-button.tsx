@@ -21,7 +21,7 @@ export function HeaderSearchButton(props: HeaderSearchButtonProps) {
 
     return (
         <>
-            {path !== '/' && (
+            {path !== '/' && path !== '/search' && (
                 <>
                     <NextLinkButton
                         className="flex items-center lg:hidden "

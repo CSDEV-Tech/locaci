@@ -5,16 +5,19 @@ export type SkeletonProps = {
     as?: typeof HTMLElement['name'];
     className?: string;
     roundedCorners?: boolean;
+    'aria-label'?: string;
 };
 
 export function Skeleton({
     as,
     className,
-    roundedCorners = false
+    roundedCorners = false,
+    'aria-label': ariaLabel
 }: SkeletonProps) {
     const Tag = as ?? 'div';
     return (
         <Tag
+            aria-label={ariaLabel}
             // @ts-ignore
             className={clsx(
                 className,
