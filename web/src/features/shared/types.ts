@@ -5,7 +5,13 @@ export const RentTypes: Record<RentType, string> = {
     LOCATION: 'Appartement non meublé',
     SHARED_APPARTMENT: 'Appartement en colocation',
     SHORT_TERM: 'Location court-séjour (meublée)'
-};
+} as const;
+
+export const RentTypesArray = [
+    'LOCATION',
+    'SHARED_APPARTMENT',
+    'SHORT_TERM'
+] as const satisfies readonly RentType[];
 
 // ROLES
 export type Role = 'HOUSING_APPLICANT' | 'PROPERTY_OWNER' | 'ADMIN';
@@ -72,6 +78,20 @@ export const AmenityTypes: Record<PredefinedAmenityTypes, string> = {
     MICROWAVE: 'Micro-ondes',
     REFREGIRATOR: 'Réfrégirateur'
 } as const;
+
+export const AmenityTypesArray = [
+    'WIFI',
+    'CABLE',
+    'HOT_WATER',
+    'WASHING_MACHINE',
+    'DRYER_MACHINE',
+    'DESKTOP',
+    'HEATING',
+    'AIR_CONDITIONNER',
+    'REFREGIRATOR',
+    'OVEN',
+    'MICROWAVE'
+] as const satisfies readonly PredefinedAmenityTypes[];
 
 // listing Image
 export type ListingImage = {
