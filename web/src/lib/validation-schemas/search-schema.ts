@@ -9,15 +9,15 @@ export const searchSchema = z.object({
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(1)
         )
-        .optional()
-        .default(1),
+        .default(1)
+        .optional(),
     minNoOfRooms: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(1)
         )
-        .optional()
-        .default(1),
+        .default(1)
+        .optional(),
     maxNoOfRooms: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
@@ -56,6 +56,7 @@ export const searchSchema = z.object({
         .optional(),
     rentType: z.enum(RentTypesArray).catch('LOCATION').optional(),
     municipalityId: z.string().optional(),
+    municipalityQuery: z.string().optional(),
     view: z.enum(['MAP', 'LIST']).catch('LIST').optional(),
     availableFrom: z
         .string()
