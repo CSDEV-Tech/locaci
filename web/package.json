@@ -44,7 +44,7 @@
         "short-uuid": "4.2.2",
         "superjson": "1.11.0",
         "uuid": "9.0.0",
-        "zod": "3.17.3",
+        "zod": "3.20.2",
         "zustand": "4.1.4"
     },
     "devDependencies": {
