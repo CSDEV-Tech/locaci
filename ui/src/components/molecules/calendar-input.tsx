@@ -26,7 +26,7 @@ import {
 } from '@internationalized/date';
 import { CalendarBlankIcon } from '../atoms/icons/calendar-blank';
 import { Button } from '../atoms/button';
-import { clsx } from '../../lib/functions';
+import { clsx, formatDateToSimpleDate } from '../../lib/functions';
 import type { ValidationState } from '@react-types/shared';
 
 export type CalendarInputProps = {
@@ -38,6 +38,7 @@ export type CalendarInputProps = {
     onChange?: (newDate: Date) => void;
     errorText?: string;
     helpText?: string;
+    name?: string;
     required?: boolean;
 } & Omit<
     DatePickerStateOptions<CalendarDate>,
@@ -63,6 +64,7 @@ export function CalendarInput({
     helpText,
     errorText,
     required = false,
+    name,
     ...restProps
 }: CalendarInputProps) {
     const props = {
@@ -108,6 +110,14 @@ export function CalendarInput({
                             fieldProps.validationState !== 'invalid'
                     }
                 )}>
+                <input
+                    readOnly
+                    type="date"
+                    value={formatDateToSimpleDate(value ?? minValue)}
+                    className={`hidden`}
+                    name={name}
+                />
+
                 <label
                     {...labelProps}
                     className={clsx('text-sm font-normal', 'text-gray')}>

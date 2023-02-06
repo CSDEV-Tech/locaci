@@ -99,7 +99,7 @@ export function getPageRange(currentPage: number, nbPages: number) {
  *      getInitials("John Doe") // => 'JD'
  * @param fullName
  */
-export function getInitials(fullName: string) {
+export function getInitials(fullName: string): string {
     const names = fullName.split(' ').filter(Boolean);
     const initials: string[] = [];
 
@@ -112,10 +112,32 @@ export function getInitials(fullName: string) {
     return initials.join('').toUpperCase();
 }
 
-export function formatDateToFrenchDate(date: string | Date) {
+export function formatDateToFrenchDate(date: string | Date): string {
     return new Intl.DateTimeFormat('fr-FR', {
         day: '2-digit',
         month: 'long',
         year: 'numeric'
     }).format(new Date(date));
+}
+
+/**
+ * Convert a date to a value separated by minus signs,
+ * if not date is passed, it returns undefined
+ *
+ * @example
+ *      formatDateToSimpleDate(new Date(0)); // "1970-1-1"
+ *
+ * @param date
+ * @returns
+ */
+export function formatDateToSimpleDate(date: string | Date | undefined) {
+    if (!date) return undefined;
+
+    date = new Date(date);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month.toString().padStart(2, '0')}-${day
+        .toString()
+        .padStart(2, '0')}`;
 }
