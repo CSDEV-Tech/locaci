@@ -8,6 +8,10 @@ module.exports = {
                     '0%': { transform: 'translate(-200%, 0)' },
                     '100%': { transform: 'translate(0%, 0)' }
                 },
+                'translate-up': {
+                    '0%': { transform: 'translate(0, 200%)' },
+                    '100%': { transform: 'translate(0, 0%)' }
+                },
                 shimmer: {
                     '0%': { transform: 'translateX(-100%)' },
                     '60%': { transform: 'translateX(100%)' },
@@ -16,6 +20,7 @@ module.exports = {
             },
             animation: {
                 'translate-in': 'translate-in 0.3s 0.1s both',
+                'translate-up': 'translate-up 0.3s 0.1s both',
                 shimmer: 'shimmer 1.6s linear 0.5s infinite'
             },
             boxShadow: {

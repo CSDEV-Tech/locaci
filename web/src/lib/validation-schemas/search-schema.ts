@@ -10,59 +10,57 @@ export const searchSchema = z.object({
             z.number().catch(1)
         )
         .default(1)
-        .optional(),
+        .nullish(),
     minNoOfRooms: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(1)
         )
         .default(1)
-        .optional(),
+        .nullish(),
     maxNoOfRooms: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(MAX_NUMBER_VALUE)
         )
-        .optional(),
+        .nullish(),
     maxNoOfBedRooms: z
         .preprocess(
             (arg: any) => Number(arg),
             z.number().catch(MAX_NUMBER_VALUE)
         )
-        .optional(),
+        .nullish(),
     minPrice: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(0)
         )
-        .optional(),
+        .nullish(),
     maxPrice: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(MAX_NUMBER_VALUE)
         )
-        .optional(),
+        .nullish(),
     minArea: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(0)
         )
-        .optional(),
+        .nullish(),
     maxArea: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(MAX_NUMBER_VALUE)
         )
-        .optional(),
-    rentType: z.enum(RentTypesArray).catch('LOCATION').optional(),
-    municipalityId: z.string().optional(),
-    municipalityQuery: z.string().optional(),
-    view: z.enum(['MAP', 'LIST']).catch('LIST').optional(),
+        .nullish(),
+    rentType: z.enum(RentTypesArray).catch('LOCATION').nullish(),
+    municipalityId: z.string().nullish(),
+    municipalityQuery: z.string().nullish(),
+    view: z.enum(['MAP', 'LIST']).catch('LIST').nullish(),
     availableFrom: z
-        .string()
-        .datetime()
-        .catch(new Date(0).toISOString())
-        .optional(),
+        .preprocess((arg: any) => new Date(arg), z.date().catch(new Date(0)))
+        .nullish(),
     amenities: z
         .preprocess((arg: any) => {
             if (Array.isArray(arg)) {

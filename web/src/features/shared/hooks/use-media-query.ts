@@ -29,7 +29,20 @@ export function useMediaQuery(query: string): boolean {
         };
     }, [query]);
 
-    return matches;
+    /**
+     * This is a hack to not get matches instantly and avoid hydration issues,
+     * since `useMediaQuery` does not return anything on the server and will return
+     * a value on the client, we do not want to have hydration errors and let first render
+     * finish, then we can show the modal.
+     */
+    const [hasHydrationFinished, setHasHydrationFinished] =
+        React.useState(false);
+
+    React.useEffect(() => {
+        setHasHydrationFinished(true);
+    }, []);
+
+    return hasHydrationFinished && matches;
 }
 
 export default useMediaQuery;
