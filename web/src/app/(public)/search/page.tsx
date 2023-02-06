@@ -23,11 +23,11 @@ import { NextLink } from '~/features/shared/components/next-link';
 import { searchSchema } from '~/lib/validation-schemas/search-schema';
 import { clsx, range } from '@locaci/ui/lib/functions';
 import { use } from 'react';
-import { useFilterStore } from '~/lib/store';
 import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
 
 // types
 import type { PageProps } from '~/types';
+import { wait } from '~/lib/functions';
 
 export default function SearchPage({ searchParams }: PageProps<{}, any>) {
     const municipalityQuery = searchParams['municipalityId[label]'];
@@ -38,8 +38,17 @@ export default function SearchPage({ searchParams }: PageProps<{}, any>) {
         municipalityId,
         municipalityQuery
     });
-
-    useFilterStore.setState(searchParsed);
+    // TODO : Make search
+    use(
+        wait(2000).then(() =>
+            console.dir(
+                {
+                    searchParsed
+                },
+                { depth: null }
+            )
+        )
+    );
 
     return (
         <div className="grid gap-4 px-4 py-8">
@@ -84,7 +93,7 @@ function MapFilterSection() {
     );
 
     return (
-        <aside
+        <div
             className={clsx(
                 'fixed bottom-0 left-0 right-0 z-20 gap-4 bg-white',
                 'flex items-center justify-between',
@@ -94,6 +103,6 @@ function MapFilterSection() {
             )}>
             <MapToggleButton />
             <FiltersMobile defaultMunicipalities={use(municipalitiesPromise)} />
-        </aside>
+        </div>
     );
 }

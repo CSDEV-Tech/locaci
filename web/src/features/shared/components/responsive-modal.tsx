@@ -23,22 +23,9 @@ export function ResponsiveModal({
     const canShowModal = useMediaQuery(`(min-width: 768px)`);
     const canShowBottomSheet = useMediaQuery(`(max-width: 767px)`);
 
-    /**
-     * This is a hack to not get matches instantly and avoid hydration issues,
-     * since `useMediaQuery` does not return anything on the server and will return
-     * a value on the client, we do not want to have hydration errors and let first render
-     * finish, then we can show the modal.
-     */
-    const [hasHydrationFinished, setHasHydrationFinished] =
-        React.useState(false);
-
-    React.useEffect(() => {
-        setHasHydrationFinished(true);
-    }, []);
-
     return (
         <>
-            {hasHydrationFinished && canShowBottomSheet && (
+            {canShowBottomSheet && (
                 <LazyBottomSheet
                     open={isOpen}
                     expandOnContentDrag
@@ -53,7 +40,7 @@ export function ResponsiveModal({
                 </LazyBottomSheet>
             )}
 
-            {hasHydrationFinished && canShowModal && (
+            {canShowModal && (
                 <LazyModal title={title} isOpen={isOpen} onClose={onClose}>
                     {children}
                 </LazyModal>
