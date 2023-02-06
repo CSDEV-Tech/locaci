@@ -13,6 +13,8 @@ export type CheckboxGroupProps = {
     onChange: (newValue: string[]) => void;
     variant?: 'primary' | 'secondary';
     disabled?: boolean;
+    display?: 'grid' | 'column';
+    name?: string;
 };
 
 export function CheckboxGroup({
@@ -21,6 +23,8 @@ export function CheckboxGroup({
     onChange,
     options,
     value = [],
+    name,
+    display = 'column',
     disabled = false,
     variant = 'primary'
 }: CheckboxGroupProps) {
@@ -38,24 +42,31 @@ export function CheckboxGroup({
         <div
             className={clsx(className, 'flex flex-col gap-2')}
             role={'group'}
-            aria-labelledby={labelId}
-        >
+            aria-labelledby={labelId}>
             <label id={labelId} className="font-semibold text-dark">
                 {label}
             </label>
 
-            {options.map(({ label, value: itemValue }) => (
-                <Checkbox
-                    variant={variant}
-                    disabled={disabled}
-                    key={itemValue}
-                    label={label}
-                    checked={value.includes(itemValue)}
-                    onChange={() => {
-                        handleChange(itemValue);
-                    }}
-                />
-            ))}
+            <ul
+                className={clsx('gap-2', {
+                    'flex flex-col': display === 'column',
+                    'grid grid-cols-2': display === 'grid'
+                })}>
+                {options.map(({ label, value: itemValue }) => (
+                    <Checkbox
+                        name={name}
+                        variant={variant}
+                        disabled={disabled}
+                        value={itemValue}
+                        key={itemValue}
+                        label={label}
+                        checked={value.includes(itemValue)}
+                        onChange={() => {
+                            handleChange(itemValue);
+                        }}
+                    />
+                ))}
+            </ul>
         </div>
     );
 }
