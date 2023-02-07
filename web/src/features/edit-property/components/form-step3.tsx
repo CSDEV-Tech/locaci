@@ -4,7 +4,8 @@ import * as React from 'react';
 // components
 import { Button } from '@locaci/ui/components/atoms/button';
 import { LoadingIndicator } from '@locaci/ui/components/atoms/loading-indicator';
-import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
+import { CaretDoubleLeftIcon } from '@locaci/ui/components/atoms/icons/caret-double-left';
+import { CaretDoubleRightIcon } from '@locaci/ui/components/atoms/icons/caret-double-right';
 import { MapPin } from '@locaci/ui/components/molecules/map-pin';
 import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 
@@ -135,7 +136,7 @@ export function FormStep3(props: FormStep3Props) {
                         className="w-full"
                         onClick={props.onPreviousClick}
                         renderLeadingIcon={cls => (
-                            <CaretDoubleLeft className={cls} />
+                            <CaretDoubleLeftIcon className={cls} />
                         )}>
                         Précédent
                     </Button>
@@ -157,7 +158,7 @@ export function FormStep3(props: FormStep3Props) {
                         variant="dark"
                         className="w-full"
                         renderTrailingIcon={cls => (
-                            <CaretDoubleRight className={cls} />
+                            <CaretDoubleRightIcon className={cls} />
                         )}>
                         Suivant
                     </Button>

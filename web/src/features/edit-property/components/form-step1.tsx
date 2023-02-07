@@ -5,7 +5,7 @@ import { Select } from '@locaci/ui/components/atoms/select';
 import { NumberInput } from '@locaci/ui/components/atoms/input';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { Controller } from 'react-hook-form';
-import { CaretDoubleRight } from 'phosphor-react';
+import { CaretDoubleRightIcon } from '@locaci/ui/components/atoms/icons/caret-double-right';
 
 // utils
 import { RentTypes } from '~/features/shared/types';
@@ -97,7 +97,7 @@ export function FormStep1(props: FormStep1Props) {
                         variant="dark"
                         loading={props.isSubmitting}
                         renderTrailingIcon={cls => (
-                            <CaretDoubleRight className={cls} />
+                            <CaretDoubleRightIcon className={cls} />
                         )}>
                         Suivant
                     </Button>

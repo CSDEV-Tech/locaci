@@ -4,12 +4,10 @@ import * as React from 'react';
 // components
 import { Button } from '@locaci/ui/components/atoms/button';
 import { ResponsiveModal } from '~/features/shared/components/responsive-modal';
-import {
-    ChatCircleText,
-    FacebookLogo,
-    MessengerLogo,
-    WhatsappLogo
-} from 'phosphor-react';
+import { ChatCircleIcon } from '@locaci/ui/components/atoms/icons/chat-circle';
+import { MessengerLogoIcon } from '@locaci/ui/components/atoms/icons/messenger-logo';
+import { WhatsappLogoIcon } from '@locaci/ui/components/atoms/icons/whatsapp-logo';
+import { FacebookLogoIcon } from '@locaci/ui/components/atoms/icons/facebook-logo';
 
 // utils
 import { toast } from 'react-hot-toast';
@@ -107,7 +105,7 @@ function ShareModalContent({ link }: Pick<ShareModalProps, 'link'>) {
                             link
                         )}`}
                         className="flex items-center gap-2 rounded-md border px-8 py-4 ring-gray/50 hover:bg-gray/20 focus:ring active:ring">
-                        <FacebookLogo className={`h-6 w-6`} />
+                        <FacebookLogoIcon className={`h-6 w-6`} />
                         <span>Facebook</span>
                     </a>
 
@@ -117,7 +115,7 @@ function ShareModalContent({ link }: Pick<ShareModalProps, 'link'>) {
                         href={`#`}
                         data-action="share/whatsapp/share"
                         className="flex items-center gap-2 rounded-md border px-8 py-4 ring-gray/50 hover:bg-gray/20 focus:ring active:ring">
-                        <WhatsappLogo className={`h-6 w-6`} />
+                        <WhatsappLogoIcon className={`h-6 w-6`} />
                         <span>Whatsapp</span>
                     </a>
 
@@ -126,14 +124,14 @@ function ShareModalContent({ link }: Pick<ShareModalProps, 'link'>) {
                         ref={messengerRef}
                         href={`#`}
                         className="flex items-center gap-2 rounded-md border px-8 py-4 ring-gray/50 hover:bg-gray/20 focus:ring active:ring">
-                        <MessengerLogo className={`h-6 w-6`} />
+                        <MessengerLogoIcon className={`h-6 w-6`} />
                         <span>Messenger</span>
                     </a>
 
                     <a
                         href={`sms:?&body=${encodeURI(text)}`}
                         className="flex items-center gap-2 rounded-md border px-8 py-4 ring-gray/50 hover:bg-gray/20 focus:ring active:ring">
-                        <ChatCircleText className={`h-6 w-6`} />
+                        <ChatCircleIcon className={`h-6 w-6`} />
                         <span>SMS</span>
                     </a>
                 </div>

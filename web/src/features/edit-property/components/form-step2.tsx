@@ -2,7 +2,8 @@
 import * as React from 'react';
 
 // components
-import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
+import { CaretDoubleLeftIcon } from '@locaci/ui/components/atoms/icons/caret-double-left';
+import { CaretDoubleRightIcon } from '@locaci/ui/components/atoms/icons/caret-double-right';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { TextInput } from '@locaci/ui/components/atoms/input';
 import { SearchAutocomplete } from '@locaci/ui/components/molecules/search-autocomplete';
@@ -195,7 +196,7 @@ export function FormStep2(props: FormStep2Props) {
                             className="w-full"
                             onClick={props.onPreviousClick}
                             renderLeadingIcon={cls => (
-                                <CaretDoubleLeft className={cls} />
+                                <CaretDoubleLeftIcon className={cls} />
                             )}>
                             Précédent
                         </Button>
@@ -206,7 +207,7 @@ export function FormStep2(props: FormStep2Props) {
                             variant="dark"
                             className="w-full"
                             renderTrailingIcon={cls => (
-                                <CaretDoubleRight className={cls} />
+                                <CaretDoubleRightIcon className={cls} />
                             )}>
                             Suivant
                         </Button>

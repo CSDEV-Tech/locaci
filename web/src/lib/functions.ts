@@ -1,4 +1,3 @@
-import { Check } from 'phosphor-react';
 import type { RentType, Role } from '../features/shared/types';
 import { env } from '~/env/client.mjs';
 

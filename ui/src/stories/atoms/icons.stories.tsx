@@ -53,6 +53,14 @@ import { SnowflakeIcon } from '../../components/atoms/icons/snowflake';
 import { RefregiratorIcon } from '../../components/atoms/icons/refregirator';
 import { OvenIcon } from '../../components/atoms/icons/oven';
 import { MicrowaveIcon } from '../../components/atoms/icons/microwave';
+import { CaretDoubleLeftIcon } from '../../components/atoms/icons/caret-double-left';
+import { CaretDoubleRightIcon } from '../../components/atoms/icons/caret-double-right';
+import { SignOutIcon } from '../../components/atoms/icons/sign-out';
+import { SquareFourIcon } from '../../components/atoms/icons/square-four';
+import { UserIcon } from '../../components/atoms/icons/user';
+import { ChatCircleIcon } from '../../components/atoms/icons/chat-circle';
+import { MessengerLogoIcon } from '../../components/atoms/icons/messenger-logo';
+import { WhatsappLogoIcon } from '../../components/atoms/icons/whatsapp-logo';
 
 // types
 import type {
@@ -72,12 +80,44 @@ export default {
 const Template: ComponentStory<IconComponent> = args => (
     <div className="grid  grid-cols-2 gap-4 text-white sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         <div className="flex flex-col items-center gap-2">
+            <SignOutIcon className="h-10 w-10" />
+            <span>SignOutIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <ChatCircleIcon className="h-10 w-10" />
+            <span>ChatCircleIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <MessengerLogoIcon className="h-10 w-10" />
+            <span>MessengerLogoIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <WhatsappLogoIcon className="h-10 w-10" />
+            <span>WhatsappLogoIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <UserIcon className="h-10 w-10" />
+            <span>UserIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <SquareFourIcon className="h-10 w-10" />
+            <span>SquareFourIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
             <CaretLeftIcon className="h-10 w-10" />
             <span>CaretLeftIcon</span>
         </div>
         <div className="flex flex-col items-center gap-2">
             <CaretRightIcon className="h-10 w-10 " />
             <span>CaretRightIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <CaretDoubleLeftIcon className="h-10 w-10" />
+            <span>CaretDoubleLeftIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <CaretDoubleRightIcon className="h-10 w-10 " />
+            <span>CaretDoubleRightIcon</span>
         </div>
         <div className="flex flex-col items-center gap-2">
             <CaretUpIcon className="h-10 w-10" />
@@ -130,6 +170,10 @@ const Template: ComponentStory<IconComponent> = args => (
         <div className="flex flex-col items-center gap-2">
             <FacebookLogoIcon className="h-10 w-10 " />
             <span>FacebookLogoIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <FacebookLogoIcon className="h-10 w-10 " weight="fill" />
+            <span>FacebookLogoIcon (fill) </span>
         </div>
         <div className="flex flex-col items-center gap-2">
             <LinkedinLogoIcon className="h-10 w-10 " />

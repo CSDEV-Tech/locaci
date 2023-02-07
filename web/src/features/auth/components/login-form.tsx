@@ -9,7 +9,7 @@ import {
     NextLinkButton
 } from '~/features/shared/components/next-link';
 import LoginSuccessModal from './login-success-modal';
-import { CaretDoubleLeft } from 'phosphor-react';
+import { CaretDoubleLeftIcon } from '@locaci/ui/components/atoms/icons/caret-double-left';
 
 // utils
 import { useRouter } from 'next/navigation';
@@ -182,7 +182,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
                                     verifyOtpMutation.reset();
                                 }}
                                 renderLeadingIcon={cls => (
-                                    <CaretDoubleLeft className={cls} />
+                                    <CaretDoubleLeftIcon className={cls} />
                                 )}>
                                 Recommencer
                             </Button>
