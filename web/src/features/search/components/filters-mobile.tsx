@@ -3,29 +3,31 @@ import * as React from 'react';
 // components
 import { Button } from '@locaci/ui/components/atoms/button';
 import { SliderIcon } from '@locaci/ui/components/atoms/icons/slider';
-
-// utils
-import { useFilterStore, useSearchStore } from '~/lib/store';
-import { useRouter, useSearchParams } from 'next/navigation';
-import {
-    AmenityType,
-    AmenityTypes,
-    PredefinedAmenityTypes,
-    RentType
-} from '~/features/shared/types';
 import { Select } from '@locaci/ui/components/atoms/select';
-import { clsx } from '@locaci/ui/lib/functions';
 import { ComboBox } from '@locaci/ui/components/molecules/combobox';
 import { NumberInput } from '@locaci/ui/components/atoms/input';
 import { CalendarInput } from '@locaci/ui/components/molecules/calendar-input';
 import { XIcon } from '@locaci/ui/components/atoms/icons/x';
-import { searchSchema } from '~/lib/validation-schemas/search-schema';
 import { CheckboxGroup } from '@locaci/ui/components/molecules/checkbox-group';
+
+// utils
+import { useFilterStore } from '~/lib/store';
+import { useRouter } from 'next/navigation';
+
+import { clsx } from '@locaci/ui/lib/functions';
+import { parseSearchParams } from '~/lib/functions';
+import { useURLSearchParams } from '~/features/search/hooks/use-url-search-params';
 
 // types
 export type FiltersMobileProps = {
     defaultMunicipalities: { label: string; value: string }[];
 };
+import {
+    AmenityType,
+    AmenityTypes,
+    PredefinedAmenityTypes,
+    type RentType
+} from '~/features/shared/types';
 
 export function FiltersMobile({ defaultMunicipalities }: FiltersMobileProps) {
     const showFilterModal = useFilterStore(state => state.showFilterModal);
@@ -47,17 +49,8 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
     // initial state
     const filterStore = useFilterStore();
     const router = useRouter();
-    const searchParams = useSearchParams();
-
-    const municipalitySearchQuery = searchParams.get('municipalityId[label]');
-    const municipalityId = searchParams.get('municipalityId[value]');
-
-    const searchParsed = searchSchema.parse({
-        ...Object.fromEntries(searchParams.entries()),
-        municipalityId,
-        municipalitySearchQuery,
-        amenities: searchParams.getAll('amenities')
-    });
+    const searchParams = useURLSearchParams();
+    const searchParsed = parseSearchParams(searchParams);
 
     // states
     const [commune, setCommune] = React.useState<string | null>(
@@ -100,16 +93,6 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
     );
 
     // effects
-    const setSearchLoadingStatus = useSearchStore(state => state.setStatus);
-    const [isSearching, startTransition] = React.useTransition();
-    // We synchronise the router pending state with a fallback to provide a nicer UX to the user
-    React.useEffect(() => {
-        setSearchLoadingStatus({
-            isLoading: isSearching,
-            showPagination: false
-        });
-    }, [isSearching]);
-
     React.useEffect(() => {
         // Hide all elements from screen readers
         const elementsToHide = document.querySelectorAll(
@@ -166,9 +149,7 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
                             new FormData(e.currentTarget) as any
                         );
                         filterStore.closeFilterModal();
-                        startTransition(() => {
-                            router.push(`/search?${searchParams.toString()}`);
-                        });
+                        router.push(`/search?${searchParams.toString()}`);
                     }}>
                     <div className="flex flex-col gap-4">
                         <ComboBox

@@ -3,16 +3,15 @@ import { Skeleton } from '@locaci/ui/components/atoms/skeleton';
 
 // utils
 import { clsx, range } from '@locaci/ui/lib/functions';
-import { PaginationWrapper } from './pagination-wrapper';
 
 type SearchSkeletonProps = {
     hideMap?: boolean;
-    showPagination?: boolean;
+    paginationComponent?: React.ReactNode;
 };
 
 export function SearchSkeleton({
     hideMap = false,
-    showPagination = false
+    paginationComponent
 }: SearchSkeletonProps) {
     return (
         <div
@@ -33,13 +32,13 @@ export function SearchSkeleton({
 
                 <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                     {range(0, 6).map(i => (
-                        <li>
+                        <li key={i}>
                             <PropertySkeleton />
                         </li>
                     ))}
                 </ul>
 
-                {showPagination && <PaginationWrapper />}
+                {paginationComponent}
             </section>
 
             {/* Map */}

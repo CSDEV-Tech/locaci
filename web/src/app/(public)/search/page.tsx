@@ -13,82 +13,40 @@ import 'leaflet/dist/leaflet.css';
 export const dynamic = 'force-dynamic';
 
 // components
-import { PaginationWrapper } from '~/features/search/components/pagination-wrapper';
 import { FiltersMobile } from '~/features/search/components/filters-mobile';
 import { MapToggleButton } from '~/features/search/components/map-toggle-button';
-import { PropertySearchCard } from '~/features/search/components/search-card-wrapper';
-import { NextLink } from '~/features/shared/components/next-link';
-import { SearchListLoadingWrapper } from '~/features/search/components/search-list-loading-wrapper';
+import { SearchListResult } from '~/features/search/components/search-list-result';
+import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
+import { SearchMap } from '~/features/search/components/search-map';
 
 // utils
 import { searchSchema } from '~/lib/validation-schemas/search-schema';
-import { clsx, range } from '@locaci/ui/lib/functions';
+import { clsx } from '@locaci/ui/lib/functions';
 import { use } from 'react';
 import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
+import { rsc } from '~/server/trpc/rsc';
+import { headers } from 'next/headers';
 
 // types
 import type { PageProps } from '~/types';
-import { wait } from '~/lib/functions';
+import { parseSearchParams } from '~/lib/functions';
 
-export default function SearchPage({ searchParams }: PageProps<{}, any>) {
-    const municipalityQuery = searchParams['municipalityId[label]'];
-    const municipalityId = searchParams['municipalityId[value]'];
+export default function SearchPage({ searchParams }: PageProps) {
+    const searchParsed = parseSearchParams(searchParams);
+    const isTextHTMLRequest =
+        headers().get('Accept')?.includes('text/html') ?? false;
 
-    const searchParsed = searchSchema.parse({
-        ...searchParams,
-        municipalityId,
-        municipalityQuery
-    });
-    // TODO : Make search
-    use(
-        wait(2000).then(() =>
-            console.dir(
-                {
-                    searchParsed
-                },
-                { depth: null }
-            )
-        )
-    );
+    // Only make request for the first SSR requests
+    if (isTextHTMLRequest) {
+        use(rsc.property.search.fetch(searchParsed));
+    }
 
     return (
         <div className="grid gap-4 lg:grid-cols-5">
-            <SearchListLoadingWrapper>
-                <section className="flex w-full flex-col items-start gap-4 px-4 py-8 md:px-8 lg:col-span-3">
-                    <h1 className="text-2xl font-semibold">
-                        8 résultats Votre recherche :
-                    </h1>
-
-                    <ul className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {range(0, 6).map(i => (
-                            <li key={i} className={`w-full`}>
-                                <PropertySearchCard
-                                    address="Riviera 6, cocody, abidjan"
-                                    housingPeriod={30}
-                                    className={`w-full`}
-                                    href="/search/#"
-                                    customLink={NextLink}
-                                    imagesURL={[
-                                        'https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80',
-                                        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1558&q=80',
-                                        'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80'
-                                    ]}
-                                    numberOfBedRooms={1}
-                                    numberOfRooms={2}
-                                    price={50000}
-                                    surfaceArea={9}
-                                    title="Studio en colocation"
-                                />
-                            </li>
-                        ))}
-                    </ul>
-                    <PaginationWrapper />
-                </section>
-            </SearchListLoadingWrapper>
-
-            <section className="hidden lg:col-span-2 lg:block">
-                <div className="h-full w-full bg-primary-15" />
-            </section>
+            <HydrateClient state={use(rsc.dehydrate())}>
+                <SearchListResult />
+                <SearchMap />
+            </HydrateClient>
 
             <MapFilterSection />
         </div>
