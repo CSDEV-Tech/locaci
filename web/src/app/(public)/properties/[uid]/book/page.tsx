@@ -15,7 +15,7 @@ import { clsx } from '@locaci/ui/lib/functions';
 import { rsc } from '~/server/trpc/rsc';
 
 // types
-import type { PageProps } from '~/types';
+import type { PageProps } from '~/next-app-types';
 
 // this is a dynamic page
 export const dynamic = 'force-dynamic';

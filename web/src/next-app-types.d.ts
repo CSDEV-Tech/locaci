@@ -4,7 +4,7 @@ export type PageProps<
     TSearchParams extends any = Record<string, string | undefined>
 > = {
     params: TParams;
-    searchParams: TSearchParams;
+    searchParams?: TSearchParams;
 };
 
 export type LayoutProps<TParams extends PageParams = {}> = {

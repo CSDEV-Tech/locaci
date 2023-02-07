@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { getRoleURL } from '~/lib/functions';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getUser } from '~/server/trpc/rsc/getUser';
-import { PageProps } from '~/types';
+import { PageProps } from '~/next-app-types';
 
 export default async function LoginPage({
     searchParams

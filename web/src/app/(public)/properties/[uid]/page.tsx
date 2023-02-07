@@ -35,7 +35,7 @@ import {
 import { env } from '~/env/client.mjs';
 
 // types
-import type { PageProps } from '~/types';
+import type { PageProps } from '~/next-app-types';
 import type { BoundingBox } from '~/lib/types';
 import type { RoomType } from '~/features/shared/types';
 import type { ListingImage } from '~/features/shared/types';
@@ -272,7 +272,9 @@ function MapSection({ uid }: { uid: string }) {
                     <h3 className="px-4 text-gray md:px-8 xl:px-0">
                         Instructions sur l'addresse :
                     </h3>
-                    <p className="px-4 text-dark md:px-8 xl:px-0">{addressInstructions}</p>
+                    <p className="px-4 text-dark md:px-8 xl:px-0">
+                        {addressInstructions}
+                    </p>
                 </>
             )}
 
