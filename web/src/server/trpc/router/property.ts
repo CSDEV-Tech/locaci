@@ -1,3 +1,4 @@
+import { searchSchema } from '~/lib/validation-schemas/search-schema';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { Uuid } from '~/lib/uuid';
@@ -5,6 +6,8 @@ import { t } from '~/server/trpc/root';
 import { Cache, CacheKeys } from '~/server/cache';
 import { bookPropertySchema } from '~/lib/validation-schemas/booking-schema';
 import { isLoggedIn } from '~/server/trpc/middleware/auth';
+
+import { wait } from '~/lib/functions';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 export const propertyRouter = t.router({
@@ -177,5 +180,17 @@ export const propertyRouter = t.router({
             return {
                 existing: existingBooking !== null
             };
-        })
+        }),
+    search: t.procedure.input(searchSchema).query(async ({ ctx, input }) => {
+        // TODO: Query code
+        return wait(2000).then(() => {
+            console.dir(
+                {
+                    searchParams: input
+                },
+                { depth: null }
+            );
+            return [];
+        });
+    })
 });

@@ -1,10 +1,10 @@
 type PageParams = Record<string, string>;
 export type PageProps<
     TParams extends PageParams = {},
-    TSearchParams extends any = any
+    TSearchParams extends any = Record<string, string | undefined>
 > = {
     params: TParams;
-    searchParams?: TSearchParams;
+    searchParams: TSearchParams;
 };
 
 export type LayoutProps<TParams extends PageParams = {}> = {
@@ -14,7 +14,7 @@ export type LayoutProps<TParams extends PageParams = {}> = {
 
 export type HeadProps<
     TParams extends PageParams = {},
-    TSearchParams extends any = any
+    TSearchParams extends any = Record<string, string | undefined>
 > = PageProps<TParams, TSearchParams>;
 
 export type ErrorBoundaryProps = {

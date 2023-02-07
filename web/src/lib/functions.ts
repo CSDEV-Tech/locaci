@@ -1,5 +1,7 @@
 import type { RentType, Role } from '../features/shared/types';
 import { env } from '~/env/client.mjs';
+import { searchSchema } from './validation-schemas/search-schema';
+import { z } from 'zod';
 
 /**
  * get the title for a property
@@ -309,4 +311,42 @@ export function isMobileOrTablet() {
     const isTablet = /Tablet|iPad/i.test(ua);
 
     return Boolean(mobileUserAgent) || isTablet;
+}
+
+type SearchQueryParams = z.infer<typeof searchSchema>;
+
+/**
+ * Parse URL Search Params to an object
+ *
+ * @param searchParams
+ * @returns
+ */
+export function parseSearchParams(
+    searchParams: URLSearchParams | Record<string, string | undefined>
+): SearchQueryParams {
+    if (searchParams instanceof URLSearchParams) {
+        const municipalitySearchQuery = searchParams.get(
+            'municipalityId[label]'
+        );
+        const municipalityId = searchParams.get('municipalityId[value]');
+
+        console.log(Object.fromEntries(searchParams.entries()));
+
+        return searchSchema.parse({
+            ...Object.fromEntries(searchParams.entries()),
+            municipalityId,
+            municipalityQuery: municipalitySearchQuery,
+            amenities: searchParams.getAll('amenities')
+        });
+    } else {
+        const municipalityQuery = searchParams['municipalityId[label]'] ?? null;
+        const municipalityId = searchParams['municipalityId[value]'] ?? null;
+
+        return searchSchema.parse({
+            ...searchParams,
+            municipalityId,
+            municipalityQuery,
+            amenities: searchParams['amenities'] ?? []
+        });
+    }
 }
