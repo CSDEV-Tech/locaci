@@ -10,13 +10,15 @@ export type PaginationProps = {
     totalPages: number;
     getPageUrl: (page: number) => string;
     customLink?: React.ComponentType<CustomLink>;
+    onNavigate?: (page: number) => void;
 };
 
 export function Pagination({
     currentPage,
     getPageUrl,
     totalPages,
-    customLink
+    customLink,
+    onNavigate
 }: PaginationProps) {
     const hasPreviousPage = currentPage > 1;
     const hasNextPage = currentPage < totalPages;
@@ -29,6 +31,9 @@ export function Pagination({
             aria-label="Navigation par pagination">
             {hasPreviousPage && (
                 <LinkButton
+                    onClick={e => {
+                        onNavigate?.(currentPage - 1);
+                    }}
                     Custom={customLink}
                     aria-label={`Page précédente`}
                     href={getPageUrl(currentPage - 1)}
@@ -42,6 +47,9 @@ export function Pagination({
                 {pages.map(p => (
                     <li key={p}>
                         <LinkButton
+                            onClick={e => {
+                                onNavigate?.(p);
+                            }}
                             Custom={customLink}
                             aria-label={`${
                                 p === currentPage ? 'Page courante, ' : ''
@@ -56,6 +64,9 @@ export function Pagination({
             </ol>
             {hasNextPage && (
                 <LinkButton
+                    onClick={e => {
+                        onNavigate?.(currentPage + 1);
+                    }}
                     Custom={customLink}
                     aria-label={`Page suivante`}
                     href={getPageUrl(currentPage + 1)}
