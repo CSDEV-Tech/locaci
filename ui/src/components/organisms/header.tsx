@@ -44,7 +44,10 @@ export function Header({
                         'lg:gap-8'
                     )}>
                     {!hideLogo && (
-                        <Link Custom={customLink} href={logoHref}>
+                        <Link
+                            Custom={customLink}
+                            href={logoHref}
+                            aria-label={"Page d'accueil LOCACI"}>
                             <img
                                 src={logoUrl}
                                 alt={logoAltText}
