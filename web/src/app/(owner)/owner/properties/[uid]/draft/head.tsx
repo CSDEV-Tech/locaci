@@ -1,11 +1,11 @@
-import { Meta } from "~/features/shared/components/meta";
-import type { HeadProps } from "~/types";
+import { Meta } from '~/features/shared/components/meta';
+import type { HeadProps } from '~/next-app-types';
 
 export default function Head({ params }: HeadProps<{ uid: string }>) {
-  return (
-    <Meta
-      title="Editer un logement"
-      pathname={`/owner/properties/draft/${params.uid}`}
-    />
-  );
+    return (
+        <Meta
+            title="Editer un logement"
+            pathname={`/owner/properties/draft/${params.uid}`}
+        />
+    );
 }

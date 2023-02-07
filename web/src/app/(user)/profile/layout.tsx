@@ -10,7 +10,7 @@ import { getUserOrRedirect } from '~/server/trpc/rsc/cached-queries';
 import { use } from 'react';
 
 // types
-import type { LayoutProps } from '~/types';
+import type { LayoutProps } from '~/next-app-types';
 
 export default function UserLayout({ children }: LayoutProps) {
     use(getUserOrRedirect());

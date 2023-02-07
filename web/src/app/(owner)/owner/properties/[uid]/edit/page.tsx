@@ -9,7 +9,7 @@ import { notFound } from 'next/navigation';
 import { rsc } from '~/server/trpc/rsc';
 
 // types
-import type { PageProps } from '~/types';
+import type { PageProps } from '~/next-app-types';
 
 export const dynamic = 'force-dynamic';
 

@@ -8,7 +8,7 @@ import { NextLinkButton } from '~/features/shared/components/next-link';
 import { Poppins } from '@next/font/google';
 
 // types
-import type { ErrorBoundaryProps } from '~/types';
+import type { ErrorBoundaryProps } from '~/next-app-types';
 
 const poppins = Poppins({
     subsets: ['latin'],

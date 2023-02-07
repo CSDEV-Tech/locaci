@@ -5,7 +5,7 @@ import { getPropertyDetail } from '~/server/trpc/rsc/cached-queries';
 import { capitalize, getPropertyTitle } from '~/lib/functions';
 
 // types
-import type { HeadProps } from '~/types';
+import type { HeadProps } from '~/next-app-types';
 import type { ListingImage } from '~/features/shared/types';
 
 export default function Head({ params }: HeadProps<{ uid: string }>) {

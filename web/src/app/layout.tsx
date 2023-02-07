@@ -11,7 +11,7 @@ import { ScrollUp } from './scroll-up';
 import { Poppins } from '@next/font/google';
 
 // types
-import type { LayoutProps } from '~/types';
+import type { LayoutProps } from '~/next-app-types';
 
 const poppins = Poppins({
     subsets: ['latin'],

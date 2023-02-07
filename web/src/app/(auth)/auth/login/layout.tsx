@@ -9,7 +9,7 @@ import {
 import { clsx } from '@locaci/ui/lib/functions';
 
 // types
-import type { LayoutProps } from '~/types';
+import type { LayoutProps } from '~/next-app-types';
 
 export default async function LoginLayout({ children }: LayoutProps) {
     return (

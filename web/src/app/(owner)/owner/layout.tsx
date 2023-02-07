@@ -16,7 +16,7 @@ import { redirect } from 'next/navigation';
 import { getUser } from '~/server/trpc/rsc/getUser';
 
 // types
-import type { LayoutProps } from '~/types';
+import type { LayoutProps } from '~/next-app-types';
 
 export default async function OwnerLayout(props: LayoutProps) {
     const user = await getUser();
