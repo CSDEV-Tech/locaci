@@ -3,11 +3,30 @@ import { Skeleton } from '@locaci/ui/components/atoms/skeleton';
 
 // utils
 import { clsx, range } from '@locaci/ui/lib/functions';
+import { PaginationWrapper } from './pagination-wrapper';
 
-export function SearchSkeleton() {
+type SearchSkeletonProps = {
+    hideMap?: boolean;
+    showPagination?: boolean;
+};
+
+export function SearchSkeleton({
+    hideMap = false,
+    showPagination = false
+}: SearchSkeletonProps) {
     return (
-        <div className="grid lg:grid-cols-5">
-            <section className="grid gap-4 px-4 py-8 md:px-8 lg:col-span-3">
+        <div
+            className={clsx('w-full', {
+                'grid lg:grid-cols-5': !hideMap,
+                'lg:col-span-3': hideMap
+            })}>
+            <section
+                className={clsx(
+                    'grid w-full items-start gap-4 px-4 py-8 md:px-8',
+                    {
+                        'lg:col-span-3': !hideMap
+                    }
+                )}>
                 <h1 className="text-2xl font-semibold">
                     Chargement de vos logements...
                 </h1>
@@ -19,19 +38,24 @@ export function SearchSkeleton() {
                         </li>
                     ))}
                 </ul>
+
+                {showPagination && <PaginationWrapper />}
             </section>
 
-            <section className="hidden lg:col-span-2 lg:block">
-                <Skeleton
-                    aria-label="chargement de votre carte"
-                    className="h-full w-full"
-                />
-            </section>
+            {/* Map */}
+            {!hideMap && (
+                <section className="hidden lg:col-span-2 lg:block">
+                    <Skeleton
+                        aria-label="chargement de votre carte"
+                        className="h-full w-full"
+                    />
+                </section>
+            )}
         </div>
     );
 }
 
-function PropertySkeleton() {
+export function PropertySkeleton() {
     return (
         <article className="flex flex-col">
             <div

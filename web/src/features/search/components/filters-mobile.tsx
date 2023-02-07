@@ -5,7 +5,7 @@ import { Button } from '@locaci/ui/components/atoms/button';
 import { SliderIcon } from '@locaci/ui/components/atoms/icons/slider';
 
 // utils
-import { useFilterStore } from '~/lib/store';
+import { useFilterStore, useSearchStore } from '~/lib/store';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
     AmenityType,
@@ -100,6 +100,16 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
     );
 
     // effects
+    const setSearchLoadingStatus = useSearchStore(state => state.setStatus);
+    const [isSearching, startTransition] = React.useTransition();
+    // We synchronise the router pending state with a fallback to provide a nicer UX to the user
+    React.useEffect(() => {
+        setSearchLoadingStatus({
+            isLoading: isSearching,
+            showPagination: false
+        });
+    }, [isSearching]);
+
     React.useEffect(() => {
         // Hide all elements from screen readers
         const elementsToHide = document.querySelectorAll(
@@ -151,9 +161,13 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
                     className="flex flex-col justify-between gap-4"
                     onSubmit={e => {
                         e.preventDefault();
-                        React.startTransition(() => {
-                            filterStore.closeFilterModal();
-                            // TODO
+
+                        const searchParams = new URLSearchParams(
+                            new FormData(e.currentTarget) as any
+                        );
+                        filterStore.closeFilterModal();
+                        startTransition(() => {
+                            router.push(`/search?${searchParams.toString()}`);
                         });
                     }}>
                     <div className="flex flex-col gap-4">

@@ -13,3 +13,16 @@ export const useFilterStore = create<FilterModalState>(set => ({
     showFilterModal: () => set(state => ({ showFilters: true })),
     closeFilterModal: () => set(state => ({ showFilters: false }))
 }));
+
+type SearchStore = {
+    isSearching: boolean;
+    showPagination: boolean;
+    setStatus: (arg: { isLoading: boolean; showPagination: boolean }) => void;
+};
+
+export const useSearchStore = create<SearchStore>(set => ({
+    isSearching: false,
+    showPagination: false,
+    setStatus: ({ isLoading: status, showPagination }) =>
+        set(state => ({ isSearching: status, showPagination }))
+}));

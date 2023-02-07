@@ -1,6 +1,6 @@
 // FIXME: this is only necessary while https://github.com/vercel/next.js/issues/42492 remains open
 'use client';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
 /**
@@ -8,10 +8,11 @@ import * as React from 'react';
  */
 export function ScrollUp() {
     const path = usePathname();
+    const searchParams = useSearchParams();
 
     React.useEffect(() => {
         window.document.scrollingElement?.scrollTo(0, 0);
-    }, [path]);
+    }, [path, searchParams.toString()]);
 
     return null;
 }

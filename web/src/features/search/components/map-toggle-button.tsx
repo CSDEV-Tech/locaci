@@ -13,16 +13,15 @@ export type MapToggleButtonProps = {
 };
 
 export function MapToggleButton(props: MapToggleButtonProps) {
-    const { view, toggleMap } = useFilterStore(state => ({
-        view: state.view,
-        toggleMap: state.toggleMap
-    }));
+    // const { view, toggleMap } = useFilterStore(state => ({
+    //     view: state.view,
+    //     toggleMap: state.toggleMap
+    // }));
 
     return (
         <Button
             className={props.className}
             variant="dark"
-            onClick={toggleMap}
             renderTrailingIcon={cls => <MapIcon className={cls} />}>
             Vue Carte
         </Button>
