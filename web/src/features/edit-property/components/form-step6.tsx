@@ -4,7 +4,8 @@ import { Button } from '@locaci/ui/components/atoms/button';
 import { Checkbox } from '@locaci/ui/components/atoms/checkbox';
 import { CheckboxGroup } from '@locaci/ui/components/molecules/checkbox-group';
 import { TextInput } from '@locaci/ui/components/atoms/input';
-import { CaretDoubleLeft, CaretDoubleRight } from 'phosphor-react';
+import { CaretDoubleLeftIcon } from '@locaci/ui/components/atoms/icons/caret-double-left';
+import { CaretDoubleRightIcon } from '@locaci/ui/components/atoms/icons/caret-double-right';
 
 // utils
 import { updatePropertyStep6Schema } from '~/lib/validation-schemas/property-schema';
@@ -191,7 +192,7 @@ export function FormStep6(props: FormStep6Props) {
                         className="w-full"
                         onClick={props.onPreviousClick}
                         renderLeadingIcon={cls => (
-                            <CaretDoubleLeft className={cls} />
+                            <CaretDoubleLeftIcon className={cls} />
                         )}>
                         Précédent
                     </Button>
@@ -202,7 +203,7 @@ export function FormStep6(props: FormStep6Props) {
                         className="w-full"
                         loading={props.isSubmitting}
                         renderTrailingIcon={cls => (
-                            <CaretDoubleRight className={cls} />
+                            <CaretDoubleRightIcon className={cls} />
                         )}>
                         Suivant
                     </Button>

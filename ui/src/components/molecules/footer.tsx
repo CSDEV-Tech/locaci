@@ -81,7 +81,10 @@ export function Footer({ className, links, customLink }: FooterProps) {
                                 href="#"
                                 target="_blank"
                                 aria-label="Lien Facebook">
-                                <FacebookLogoIcon className="h-8 w-8 transition-colors duration-300 hover:text-[#2374e1]" />
+                                <FacebookLogoIcon
+                                    weight="fill"
+                                    className="h-8 w-8 transition-colors duration-300 hover:text-[#2374e1]"
+                                />
                             </a>
                         </li>
                         <li>

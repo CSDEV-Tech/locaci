@@ -6,7 +6,7 @@ import { Button } from '@locaci/ui/components/atoms/button';
 import { PropertyCard } from '@locaci/ui/components/molecules/property-card';
 import { RefreshIcon } from '@locaci/ui/components/atoms/icons/refresh';
 import { NextLink } from '~/features/shared/components/next-link';
-import { ArrowRight } from 'phosphor-react';
+import { ArrowRightIcon } from '@locaci/ui/components/atoms/icons/arrow-right';
 import Image from 'next/image';
 
 // utils
@@ -79,7 +79,7 @@ export function PropertyHomeList() {
                     href="/search"
                     className="flex items-center gap-2 text-lg font-semibold text-primary underline">
                     <span>Voir plus de logements</span>
-                    <ArrowRight className="h-4 w-4" weight="bold" />
+                    <ArrowRightIcon className="h-4 w-4" weight="bold" />
                 </NextLink>
             )}
         </div>

@@ -3,7 +3,10 @@ import * as React from 'react';
 
 // components
 import { Dropdown } from '@locaci/ui/components/molecules/dropdown';
-import { SignOut, SquaresFour, User } from 'phosphor-react';
+import { UserIcon } from '@locaci/ui/components/atoms/icons/user';
+import { SignOutIcon } from '@locaci/ui/components/atoms/icons/sign-out';
+import { SquareFourIcon } from '@locaci/ui/components/atoms/icons/square-four';
+
 import { Avatar } from '@locaci/ui/components/atoms/avatar';
 
 // utils
@@ -55,7 +58,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
                     {
                         text: 'Tableau de bord',
                         Icon: props => (
-                            <SquaresFour
+                            <SquareFourIcon
                                 className={props.className}
                                 weight={'bold'}
                             />
@@ -65,14 +68,17 @@ export function UserDropdown({ user }: UserDropdownProps) {
                     {
                         text: 'Votre profil',
                         Icon: props => (
-                            <User className={props.className} weight={'bold'} />
+                            <UserIcon
+                                className={props.className}
+                                weight={'bold'}
+                            />
                         ),
                         href: `/profile`
                     },
                     {
                         text: 'Déconnexion',
                         Icon: props => (
-                            <SignOut
+                            <SignOutIcon
                                 className={props.className}
                                 weight={'bold'}
                             />

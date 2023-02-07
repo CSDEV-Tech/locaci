@@ -9,7 +9,8 @@ import { Select } from '@locaci/ui/components/atoms/select';
 import { NumberInput } from '@locaci/ui/components/atoms/input';
 import { TextArea } from '@locaci/ui/components/atoms/textarea';
 import { Controller } from 'react-hook-form';
-import { CaretDoubleLeft, Check } from 'phosphor-react';
+import { CaretDoubleLeftIcon } from '@locaci/ui/components/atoms/icons/caret-double-left';
+import { CheckIcon } from '@locaci/ui/components/atoms/icons/check';
 
 // utils
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
@@ -222,7 +223,7 @@ export function FormStep8(props: FormStep8Props) {
                         className="w-full"
                         onClick={props.onPreviousClick}
                         renderLeadingIcon={cls => (
-                            <CaretDoubleLeft className={cls} />
+                            <CaretDoubleLeftIcon className={cls} />
                         )}>
                         Précédent
                     </Button>
@@ -232,7 +233,9 @@ export function FormStep8(props: FormStep8Props) {
                         variant="secondary"
                         className="w-full"
                         loading={props.isSubmitting}
-                        renderTrailingIcon={cls => <Check className={cls} />}>
+                        renderTrailingIcon={cls => (
+                            <CheckIcon className={cls} />
+                        )}>
                         Terminer
                     </Button>
                 </div>
