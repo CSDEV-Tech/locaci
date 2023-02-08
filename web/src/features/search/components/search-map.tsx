@@ -15,9 +15,9 @@ export function SearchMap() {
 
     return (
         <>
-            <section className="hidden lg:col-span-2 lg:block">
+            <section className="sticky top-0 z-[-1] hidden h-screen lg:col-span-2 lg:block">
                 <div className="flex h-full w-full items-center justify-center bg-primary-15">
-                    {isFetching && <span>Loading...</span>}
+                    {isFetching ? <span>Loading...</span> : <span>Carte</span>}
                 </div>
             </section>
         </>

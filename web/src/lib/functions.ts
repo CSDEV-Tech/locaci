@@ -313,7 +313,7 @@ export function isMobileOrTablet() {
     return Boolean(mobileUserAgent) || isTablet;
 }
 
-type SearchQueryParams = z.infer<typeof searchSchema>;
+export type SearchQueryParams = z.infer<typeof searchSchema>;
 
 /**
  * Parse URL Search Params to an object
@@ -329,9 +329,6 @@ export function parseSearchParams(
             'municipalityId[label]'
         );
         const municipalityId = searchParams.get('municipalityId[value]');
-
-        console.log(Object.fromEntries(searchParams.entries()));
-
         return searchSchema.parse({
             ...Object.fromEntries(searchParams.entries()),
             municipalityId,
@@ -349,4 +346,32 @@ export function parseSearchParams(
             amenities: searchParams['amenities'] ?? []
         });
     }
+}
+
+export function getTitleForSearchParams(searchParams: SearchQueryParams) {
+    let title = 'Recherche ';
+
+    if (searchParams.maxNoOfRooms) {
+        title +=
+            searchParams.maxNoOfRooms === 1
+                ? ' de studios '
+                : " d'appartements ";
+    } else {
+        title += ' de logements ';
+    }
+
+    if (searchParams.rentType) {
+        title +=
+            searchParams.rentType === 'SHORT_TERM'
+                ? 'meublés'
+                : searchParams.rentType === 'SHARED_APPARTMENT'
+                ? 'en colocation'
+                : 'non meublés';
+    }
+
+    if (searchParams.municipalityQuery) {
+        title += ` à "${searchParams.municipalityQuery}"`;
+    }
+
+    return title;
 }

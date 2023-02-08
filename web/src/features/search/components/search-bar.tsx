@@ -157,7 +157,7 @@ export function SearchBar({
                 </>
             ) : (
                 <Button
-                    variant="primary"
+                    variant="dark"
                     className="rounded-l-none"
                     renderTrailingIcon={cls => (
                         <MagnifyIngGlassIcon className={cls} weight="bold" />

@@ -20,12 +20,9 @@ export function SearchSkeleton({
                 'lg:col-span-3': hideMap
             })}>
             <section
-                className={clsx(
-                    'grid w-full items-start gap-4 px-4 py-8 md:px-8',
-                    {
-                        'lg:col-span-3': !hideMap
-                    }
-                )}>
+                className={clsx('grid w-full items-start gap-4  py-8 ', {
+                    'px-4 md:px-8 lg:col-span-3': !hideMap
+                })}>
                 <h1 className="text-2xl font-semibold">
                     Chargement de vos logements...
                 </h1>
@@ -43,7 +40,7 @@ export function SearchSkeleton({
 
             {/* Map */}
             {!hideMap && (
-                <section className="hidden lg:col-span-2 lg:block">
+                <section className="sticky top-0 hidden lg:col-span-2 lg:block">
                     <Skeleton
                         aria-label="chargement de votre carte"
                         className="h-full w-full"
