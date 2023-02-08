@@ -6,12 +6,6 @@ import * as React from 'react';
  */
 import 'leaflet/dist/leaflet.css';
 
-// this is a dynamic page,
-// FIXME: I shouldn't have to use this because i used searchParams,
-// but nextjs still try to pre-render this page at build time
-// this is f*ing bugging me 🤦🏾‍♂️
-export const dynamic = 'force-dynamic';
-
 // components
 import { FiltersMobile } from '~/features/search/components/filters-mobile';
 import { MapToggleButton } from '~/features/search/components/map-toggle-button';
@@ -26,6 +20,10 @@ import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
 import { rsc } from '~/server/trpc/rsc';
 import { headers } from 'next/headers';
 import { getTitleForSearchParams, parseSearchParams } from '~/lib/functions';
+
+// this is a dynamic page,
+// FIXME: see https://github.com/vercel/next.js/issues/44744
+export const dynamic = 'force-dynamic';
 
 // types
 import type { PageProps } from '~/next-app-types';

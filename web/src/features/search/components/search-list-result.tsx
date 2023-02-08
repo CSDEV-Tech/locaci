@@ -66,7 +66,7 @@ export function SearchListResult(props: SearchListResultProps) {
                     </h2>
 
                     <ul className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {range(0, 20).map(i => (
+                        {range(0, 24).map(i => (
                             <li key={i} className={`w-full`}>
                                 <PropertySearchCard
                                     address="Riviera 6, cocody, abidjan"
