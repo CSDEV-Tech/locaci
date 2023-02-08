@@ -1,4 +1,8 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
-    "prettier.configPath": ".prettierrc.js"
+    "prettier.configPath": ".prettierrc.js",
+    "typescript.disableAutomaticTypeAcquisition": true,
+    "files.exclude": {
+        "**/node_modules": true
+    }
 }
