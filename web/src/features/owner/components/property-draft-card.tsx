@@ -8,14 +8,12 @@ import {
 } from '@locaci/ui/components/molecules/dashboard-property-card';
 import { NextLink } from '~/features/shared/components/next-link';
 import Image from 'next/image';
-import {
-    Copy,
-    Eye,
-    EyeSlash,
-    Link,
-    PencilSimple,
-    TrashSimple
-} from 'phosphor-react';
+import { CopyIcon } from '@locaci/ui/components/atoms/icons/copy';
+import { EyeIcon } from '@locaci/ui/components/atoms/icons/eye';
+import { EyeSlashIcon } from '@locaci/ui/components/atoms/icons/eye-slash';
+import { LinkIcon } from '@locaci/ui/components/atoms/icons/link';
+import { PencilIcon } from '@locaci/ui/components/atoms/icons/pencil';
+import { TrashIcon } from '@locaci/ui/components/atoms/icons/trash';
 import { DropdownItem } from '@locaci/ui/components/molecules/dropdown';
 import { DeleteConfirmationModal } from './delete-confirmation-modal';
 
@@ -106,14 +104,14 @@ export function PropertyDraftCard({
                   href: `/properties/${new Uuid(id).short()}`,
                   text: 'Voir sur le site',
                   Icon: props => (
-                      <Link className={props.className} weight="bold" />
+                      <LinkIcon className={props.className} weight="bold" />
                   )
               },
               {
                   href,
                   text: 'Modifier',
                   Icon: props => (
-                      <PencilSimple className={props.className} weight="bold" />
+                      <PencilIcon className={props.className} weight="bold" />
                   )
               },
               {
@@ -123,9 +121,9 @@ export function PropertyDraftCard({
                   text: props.isActiveForListing ? 'Dépublier' : 'Publier',
                   Icon: ({ className }) =>
                       props.isActiveForListing ? (
-                          <EyeSlash className={className} weight="fill" />
+                          <EyeSlashIcon className={className} weight="fill" />
                       ) : (
-                          <Eye className={className} weight="bold" />
+                          <EyeIcon className={className} weight="bold" />
                       )
               },
               {
@@ -134,14 +132,14 @@ export function PropertyDraftCard({
                   },
                   text: 'Dupliquer',
                   Icon: props => (
-                      <Copy className={props.className} weight="bold" />
+                      <CopyIcon className={props.className} weight="bold" />
                   )
               },
               {
                   onClick: () => setModalConfirmationOpenState(true),
                   text: 'Supprimer',
                   Icon: props => (
-                      <TrashSimple
+                      <TrashIcon
                           className={clsx(props.className)}
                           weight="fill"
                       />
@@ -154,14 +152,14 @@ export function PropertyDraftCard({
                   href,
                   text: 'Modifier',
                   Icon: props => (
-                      <PencilSimple className={props.className} weight="bold" />
+                      <PencilIcon className={props.className} weight="bold" />
                   )
               },
               {
                   onClick: () => setModalConfirmationOpenState(true),
                   text: 'Supprimer',
                   Icon: props => (
-                      <TrashSimple
+                      <TrashIcon
                           className={clsx(props.className)}
                           weight="fill"
                       />

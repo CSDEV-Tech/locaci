@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Select } from '@locaci/ui/components/atoms/select';
 import { NumberInput } from '@locaci/ui/components/atoms/input';
 import { Button } from '@locaci/ui/components/atoms/button';
-import { MagnifyingGlass } from 'phosphor-react';
+import { MagnifyIngGlassIcon } from '@locaci/ui/components/atoms/icons/magnifying-glass';
 import { ComboBox } from '@locaci/ui/components/molecules/combobox';
 
 // utils
@@ -148,7 +148,7 @@ export function SearchBar({
                                     variant="primary"
                                     square
                                     renderLeadingIcon={cls => (
-                                        <MagnifyingGlass className={cls} />
+                                        <MagnifyIngGlassIcon className={cls} />
                                     )}
                                 />
                             </div>
@@ -160,7 +160,7 @@ export function SearchBar({
                     variant="primary"
                     className="rounded-l-none"
                     renderTrailingIcon={cls => (
-                        <MagnifyingGlass className={cls} weight="bold" />
+                        <MagnifyIngGlassIcon className={cls} weight="bold" />
                     )}>
                     Rechercher
                 </Button>
@@ -169,7 +169,9 @@ export function SearchBar({
             <Button
                 variant="primary"
                 className="lg:hidden"
-                renderTrailingIcon={cls => <MagnifyingGlass className={cls} />}>
+                renderTrailingIcon={cls => (
+                    <MagnifyIngGlassIcon className={cls} />
+                )}>
                 Rechercher
             </Button>
         </form>
