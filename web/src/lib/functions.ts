@@ -372,6 +372,8 @@ export function getTitleForSearchParams(searchParams: SearchQueryParams) {
 
     if (searchParams.municipalityQuery) {
         title += ` à "${searchParams.municipalityQuery}"`;
+    } else {
+        title += ' dans toutes les régions';
     }
 
     return title;
@@ -410,10 +412,6 @@ export function getMetadata(props: {
     const metaImgURL = props.imageURL
         ? getAbsoluteURLForImage(props.imageURL)
         : `${env.NEXT_PUBLIC_SITE_URL}/logo.png`;
-
-    // const url = `${env.NEXT_PUBLIC_SITE_URL}${linkWithSlash(
-    //     props.pathname ?? ''
-    // )}`;
 
     const contentType = props.type ?? 'website';
 

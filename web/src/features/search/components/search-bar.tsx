@@ -53,7 +53,7 @@ export function SearchBar({
             action="/search"
             className={clsx(
                 className,
-                'flex flex-col gap-2 rounded-md bg-white p-6',
+                'relative z-[25] flex flex-col gap-2 rounded-md bg-white p-6',
                 'lg:flex lg:flex-row lg:items-stretch lg:gap-0 lg:p-0',
                 // this is to prevent a bug with the combobox not taking all the available parent height
                 'lg:h-[60px]'
