@@ -149,7 +149,7 @@ importers:
       ts-node: 10.9.1
       typescript: 5.0.0-beta
       uuid: 9.0.0
-      zod: 3.20.2
+      zod: 3.20.3
       zustand: 4.1.4
     dependencies:
       '@hookform/resolvers': 2.9.10_react-hook-form@7.39.5
@@ -177,7 +177,7 @@ importers:
       short-uuid: 4.2.2
       superjson: 1.11.0
       uuid: 9.0.0
-      zod: 3.20.2
+      zod: 3.20.3
       zustand: 4.1.4_react@18.2.0
     devDependencies:
       '@next/bundle-analyzer': 13.1.2
@@ -19962,8 +19962,8 @@ packages:
       readable-stream: 3.6.0
     dev: true
 
-  /zod/3.20.2:
-    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+  /zod/3.20.3:
+    resolution: {integrity: sha512-+MLeeUcLTlnzVo5xDn9+LVN9oX4esvgZ7qfZczBN+YVUvZBafIrPPVyG2WdjMWU2Qkb2ZAh2M8lpqf1wIoGqJQ==}
     dev: false
 
   /zustand/4.1.4_react@18.2.0:
