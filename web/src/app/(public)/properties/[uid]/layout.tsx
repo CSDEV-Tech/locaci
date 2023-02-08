@@ -1,15 +1,21 @@
-import { formatNumberToFCFA } from '@locaci/ui/lib/functions';
-import { use } from 'react';
-import { Meta } from '~/features/shared/components/meta';
+// utils
+import {
+    capitalize,
+    excerpt,
+    getMetadata,
+    getPropertyTitle
+} from '~/lib/functions';
 import { getPropertyDetail } from '~/server/trpc/rsc/cached-queries';
-import { capitalize, getPropertyTitle } from '~/lib/functions';
+import { formatNumberToFCFA } from '@locaci/ui/lib/functions';
 
 // types
-import type { HeadProps } from '~/next-app-types';
+import type { LayoutProps } from '~/next-app-types';
 import type { ListingImage } from '~/features/shared/types';
 
-export default function Head({ params }: HeadProps<{ uid: string }>) {
-    const property = use(getPropertyDetail(params.uid));
+export async function generateMetadata({
+    params
+}: LayoutProps<{ uid: string }>) {
+    const property = await getPropertyDetail(params.uid);
 
     let title = 'Erreur 404';
 
@@ -37,14 +43,15 @@ export default function Head({ params }: HeadProps<{ uid: string }>) {
         title = `${type} à ${commune} - ${surface} - ${rooms} - ${price}`;
     }
 
-    return (
-        <Meta
-            title={title}
-            pathname={`/properties/${params.uid}`}
-            description={property?.description}
-            type={`article`}
-            articlePublishedAt={property?.createdAt}
-            imageURL={(property?.images as Array<ListingImage>)?.[0]?.uri}
-        />
-    );
+    return getMetadata({
+        title,
+        description: property?.description,
+        type: `article`,
+        articlePublishedAt: property?.createdAt,
+        imageURL: (property?.images as Array<ListingImage>)?.[0]?.uri
+    });
+}
+
+export default function PropertyDetailLayout({ children }: LayoutProps) {
+    return <>{children}</>;
 }

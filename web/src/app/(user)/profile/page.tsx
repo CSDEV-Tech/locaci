@@ -16,6 +16,11 @@ import { formatDateToFrenchDate } from '@locaci/ui/lib/functions';
 
 // types
 import type { ListingImage } from '~/features/shared/types';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Votre profil'
+};
 
 export default function ProfilePage() {
     const user = use(getUserOrRedirect());

@@ -25,10 +25,19 @@ import { use } from 'react';
 import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
 import { rsc } from '~/server/trpc/rsc';
 import { headers } from 'next/headers';
-import { parseSearchParams } from '~/lib/functions';
+import { getTitleForSearchParams, parseSearchParams } from '~/lib/functions';
 
 // types
 import type { PageProps } from '~/next-app-types';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ searchParams }: PageProps) {
+    const searchParsed = parseSearchParams(searchParams!);
+    const title = getTitleForSearchParams(searchParsed);
+    return {
+        title
+    } satisfies Metadata;
+}
 
 export default function SearchPage({ searchParams }: PageProps) {
     const searchParsed = parseSearchParams(searchParams!);

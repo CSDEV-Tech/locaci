@@ -72,55 +72,59 @@ export const propertyRouter = t.router({
             })
         )
         .query(async ({ ctx, input }) => {
-            const uid = Uuid.fromShort(input.uid);
+            try {
+                const uid = Uuid.fromShort(input.uid);
 
-            const property = await Cache.get(
-                CacheKeys.properties.single(uid.toString()),
-                () =>
-                    ctx.prisma.property.findFirst({
-                        where: {
-                            id: uid.toString(),
-                            activeForListing: true,
-                            archived: false
-                        },
-                        include: {
-                            amenities: true,
-                            city: true,
-                            municipality: true,
-                            owner: true,
-                            rooms: true
-                        }
-                    })
-            );
+                const property = await Cache.get(
+                    CacheKeys.properties.single(uid.toString()),
+                    () =>
+                        ctx.prisma.property.findFirst({
+                            where: {
+                                id: uid.toString(),
+                                activeForListing: true,
+                                archived: false
+                            },
+                            include: {
+                                amenities: true,
+                                city: true,
+                                municipality: true,
+                                owner: true,
+                                rooms: true
+                            }
+                        })
+                );
 
-            const similarProperties = property
-                ? await Cache.get(
-                      CacheKeys.properties.similar(uid.toString()),
-                      () =>
-                          ctx.prisma.property.findMany({
-                              where: {
-                                  id: { not: uid.toString() },
-                                  municipalityId: property?.municipalityId,
-                                  activeForListing: true,
-                                  archived: false
-                              },
-                              take: 3,
-                              orderBy: {
-                                  createdAt: 'desc'
-                              }
-                          })
-                  )
-                : [];
+                const similarProperties = property
+                    ? await Cache.get(
+                          CacheKeys.properties.similar(uid.toString()),
+                          () =>
+                              ctx.prisma.property.findMany({
+                                  where: {
+                                      id: { not: uid.toString() },
+                                      municipalityId: property?.municipalityId,
+                                      activeForListing: true,
+                                      archived: false
+                                  },
+                                  take: 3,
+                                  orderBy: {
+                                      createdAt: 'desc'
+                                  }
+                              })
+                      )
+                    : [];
 
-            return property
-                ? {
-                      ...property,
-                      similar: similarProperties.map(p => ({
-                          ...p,
-                          id: new Uuid(p.id).short()
-                      }))
-                  }
-                : null;
+                return property
+                    ? {
+                          ...property,
+                          similar: similarProperties.map(p => ({
+                              ...p,
+                              id: new Uuid(p.id).short()
+                          }))
+                      }
+                    : null;
+            } catch (e) {
+                return null;
+            }
         }),
     bookProperty: protectedProcedure
         .input(bookPropertySchema)

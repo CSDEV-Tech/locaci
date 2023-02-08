@@ -10,8 +10,12 @@ import { rsc } from '~/server/trpc/rsc';
 
 // types
 import type { PageProps } from '~/next-app-types';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+    title: 'Editer un logement'
+};
 
 export default async function EditPropertyPage({
     params

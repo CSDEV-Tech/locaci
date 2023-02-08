@@ -2,6 +2,7 @@ import type { RentType, Role } from '../features/shared/types';
 import { env } from '~/env/client.mjs';
 import { searchSchema } from './validation-schemas/search-schema';
 import { z } from 'zod';
+import type { Metadata } from 'next';
 
 /**
  * get the title for a property
@@ -374,4 +375,73 @@ export function getTitleForSearchParams(searchParams: SearchQueryParams) {
     }
 
     return title;
+}
+
+/**
+ * get the excerpt of a text, if the text is longer that the maxLength,
+ * it returns the text + an ellipsis (...)
+ * @param text
+ * @param maxLength
+ */
+export function excerpt(text: string, maxLength: number = 100) {
+    return `${text.substring(0, maxLength)}${
+        text.length > maxLength ? '...' : ''
+    }`;
+}
+
+/**
+ * get metadata for generateMetadata function
+ * @param props
+ * @returns
+ */
+export function getMetadata(props: {
+    title?: string;
+    description?: string;
+    imageURL?: string;
+    type?: 'website' | 'article';
+    articlePublishedAt?: Date;
+}): Metadata {
+    const title =
+        props.title ?? 'Trouvez votre prochain Logement en quelques clics';
+    const description = props.description
+        ? excerpt(props.description)
+        : "Découvrez le premier site de recherche et gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.";
+
+    const metaImgURL = props.imageURL
+        ? getAbsoluteURLForImage(props.imageURL)
+        : `${env.NEXT_PUBLIC_SITE_URL}/logo.png`;
+
+    // const url = `${env.NEXT_PUBLIC_SITE_URL}${linkWithSlash(
+    //     props.pathname ?? ''
+    // )}`;
+
+    const contentType = props.type ?? 'website';
+
+    return {
+        title,
+        description,
+        openGraph: {
+            // @ts-expect-error
+            title,
+            description,
+            // @ts-ignore
+            type: contentType,
+            publishedTime: props.articlePublishedAt?.toDateString(),
+            images: [
+                {
+                    url: metaImgURL
+                }
+            ]
+        },
+        twitter: {
+            title,
+            description,
+            card: 'summary_large_image',
+            images: [
+                {
+                    url: metaImgURL
+                }
+            ]
+        }
+    };
 }
