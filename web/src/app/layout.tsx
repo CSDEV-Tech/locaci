@@ -9,9 +9,11 @@ import { ScrollUp } from './scroll-up';
 
 // utils
 import { Poppins } from '@next/font/google';
+import { env } from '~/env/server.mjs';
 
 // types
 import type { LayoutProps } from '~/next-app-types';
+import type { Metadata } from 'next';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -20,16 +22,52 @@ const poppins = Poppins({
     display: 'swap'
 });
 
+export const metadata: Metadata = {
+    metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
+    title: {
+        default: 'Trouvez votre prochain Logement en quelques clics | LOCACI',
+        template: '%s | LOCACI'
+    },
+
+    description:
+        "Découvrez le premier site de recherche et gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.",
+    openGraph: {
+        title: {
+            default:
+                'Trouvez votre prochain Logement en quelques clics | LOCACI',
+            template: '%s | LOCACI'
+        },
+        description:
+            "Découvrez le premier site de recherche et gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.",
+        url: new URL(`/`, env.NEXT_PUBLIC_SITE_URL),
+        images: [
+            {
+                url: new URL(`/logo.png`, env.NEXT_PUBLIC_SITE_URL)
+            }
+        ],
+        siteName: 'LOCACI',
+        locale: 'fr-FR'
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: {
+            default:
+                'Trouvez votre prochain Logement en quelques clics | LOCACI',
+            template: '%s | LOCACI'
+        },
+        description:
+            "Découvrez le premier site de recherche et gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.",
+        images: [
+            {
+                url: new URL(`/logo.png`, env.NEXT_PUBLIC_SITE_URL)
+            }
+        ]
+    }
+};
+
 export default function RootLayout({ children }: LayoutProps) {
     return (
         <html lang="fr" className={poppins.className} suppressHydrationWarning>
-            <head>
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0"
-                />
-                <meta name="charset" content="utf-8" />
-            </head>
             <body suppressHydrationWarning>
                 <ScrollUp />
                 <RASSRProvider>

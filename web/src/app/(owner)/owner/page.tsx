@@ -11,6 +11,13 @@ import { BookingList } from '~/features/owner/components/booking-list';
 import { rsc } from '~/server/trpc/rsc';
 import { use } from 'react';
 
+// types
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Tableau de bord'
+};
+
 export default function OwnerDashboardPage() {
     return (
         <section className="px-4 pt-10">

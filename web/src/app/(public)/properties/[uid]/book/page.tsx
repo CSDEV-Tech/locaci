@@ -13,12 +13,41 @@ import {
 } from '~/server/trpc/rsc/cached-queries';
 import { clsx } from '@locaci/ui/lib/functions';
 import { rsc } from '~/server/trpc/rsc';
+import { capitalize, getPropertyTitle } from '~/lib/functions';
 
 // types
 import type { PageProps } from '~/next-app-types';
+import { Metadata } from 'next';
 
 // this is a dynamic page
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: PageProps<{ uid: string }>) {
+    const property = await getPropertyDetail(params.uid);
+
+    let title = 'Erreur 404';
+
+    if (property) {
+        const type = getPropertyTitle({
+            noOfRooms: property.noOfRooms,
+            rentType: property.rentType
+        });
+
+        const commune = capitalize(property.municipality.name);
+
+        title = `Effectuer une visite pour un ${type} à ${commune}`;
+    }
+    return {
+        title,
+        openGraph: {
+            // @ts-expect-error
+            title
+        },
+        twitter: {
+            title
+        }
+    } satisfies Metadata;
+}
 
 export default function BookingPage({ params }: PageProps<{ uid: string }>) {
     const property = use(getPropertyDetail(params.uid));

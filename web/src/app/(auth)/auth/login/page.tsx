@@ -8,6 +8,13 @@ import { clsx } from '@locaci/ui/lib/functions';
 import { getUser } from '~/server/trpc/rsc/getUser';
 import { PageProps } from '~/next-app-types';
 
+// types
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Connexion'
+};
+
 export default async function LoginPage({
     searchParams
 }: PageProps<{}, { force_login?: string; redirect_to?: string }>) {
