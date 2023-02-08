@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { WeighedIconProps } from './types';
 
-export function EyeIcon({ weight = 'regular', ...props }: WeighedIconProps) {
+export function CopyIcon({ weight, ...props }: WeighedIconProps) {
     return (
         <>
             {weight === 'fill' ? (
@@ -11,7 +11,7 @@ export function EyeIcon({ weight = 'regular', ...props }: WeighedIconProps) {
                     fill="currentColor"
                     viewBox="0 0 256 256">
                     <rect width="256" height="256" fill="none"></rect>
-                    <path d="M247.3,124.8c-.3-.8-8.8-19.6-27.6-38.5C194.6,61.3,162.9,48,128,48S61.4,61.3,36.3,86.3C17.5,105.2,9,124,8.7,124.8a7.9,7.9,0,0,0,0,6.4c.3.8,8.8,19.6,27.6,38.5C61.4,194.7,93.1,208,128,208s66.6-13.3,91.7-38.3c18.8-18.9,27.3-37.7,27.6-38.5A7.9,7.9,0,0,0,247.3,124.8ZM128,92a36,36,0,1,1-36,36A36,36,0,0,1,128,92Z"></path>
+                    <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32Zm-8,128H176V88a8,8,0,0,0-8-8H96V48H208Z"></path>
                 </svg>
             ) : (
                 <svg
@@ -20,22 +20,25 @@ export function EyeIcon({ weight = 'regular', ...props }: WeighedIconProps) {
                     fill="currentColor"
                     viewBox="0 0 256 256">
                     <rect width="256" height="256" fill="none"></rect>
-                    <path
-                        d="M128,56C48,56,16,128,16,128s32,72,112,72,112-72,112-72S208,56,128,56Z"
+                    <polyline
+                        points="168 168 216 168 216 40 88 40 88 88"
                         fill="none"
                         stroke="currentColor"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={weight === 'bold' ? '24' : '16'}></path>
-                    <circle
-                        cx="128"
-                        cy="128"
-                        r="40"
+                        strokeWidth={
+                            weight === 'bold' ? '24' : '16'
+                        }></polyline>
+                    <rect
+                        x="40"
+                        y="88"
+                        width="128"
+                        height="128"
                         fill="none"
                         stroke="currentColor"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={weight === 'bold' ? '24' : '16'}></circle>
+                        strokeWidth={weight === 'bold' ? '24' : '16'}></rect>
                 </svg>
             )}
         </>

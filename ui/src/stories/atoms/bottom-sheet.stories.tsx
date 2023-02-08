@@ -5,7 +5,7 @@ import {
     BottomSheetProps
 } from '../../components/atoms/bottom-sheet';
 import { Button } from '../../components/atoms/button';
-import { X } from 'phosphor-react';
+import { XIcon } from '../../components/atoms/icons/x';
 
 export default {
     title: 'Composants/Atoms/BottomSheet',
@@ -71,7 +71,7 @@ Default.args = {
                     onClick={() => {
                         dismiss?.();
                     }}
-                    renderTrailingIcon={cls => <X className={cls} />}>
+                    renderTrailingIcon={cls => <XIcon className={cls} />}>
                     Close
                 </Button>
             </div>
