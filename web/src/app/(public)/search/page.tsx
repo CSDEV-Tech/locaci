@@ -40,10 +40,16 @@ export default function SearchPage({ searchParams }: PageProps) {
         use(rsc.property.search.fetch(searchParsed));
     }
 
+    const municipalitiesPromise = getAllMunicipalities().then(result =>
+        result.map(m => ({ label: m.name, value: m.id }))
+    );
+
     return (
         <div className="grid gap-4 lg:grid-cols-5">
             <HydrateClient state={use(rsc.dehydrate())}>
-                <SearchListResult />
+                <SearchListResult
+                    defaultMunicipalities={use(municipalitiesPromise)}
+                />
                 <SearchMap />
             </HydrateClient>
 

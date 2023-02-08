@@ -21,17 +21,20 @@ export function HeaderSearchButton(props: HeaderSearchButtonProps) {
 
     return (
         <>
-            {path !== '/' && path !== '/search' && (
+            {path !== '/' && (
                 <>
-                    <NextLinkButton
-                        className="flex items-center lg:hidden "
-                        href="/search"
-                        variant="primary"
-                        renderTrailingIcon={cls => (
-                            <MagnifyIngGlassIcon className={cls} />
-                        )}>
-                        Rechercher
-                    </NextLinkButton>
+                    {path !== '/search' && (
+                        <NextLinkButton
+                            className="flex items-center lg:hidden "
+                            href="/search"
+                            variant="primary"
+                            renderTrailingIcon={cls => (
+                                <MagnifyIngGlassIcon className={cls} />
+                            )}>
+                            Rechercher
+                        </NextLinkButton>
+                    )}
+
                     <SearchBar
                         minimalStyle
                         className={clsx(

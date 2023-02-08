@@ -5,15 +5,21 @@ import * as React from 'react';
 import { SearchSkeleton } from './search-skeleton';
 import { PaginationWrapper } from './pagination-wrapper';
 import { PropertySearchCard } from './search-card-wrapper';
+import { FiltersDesktop } from './filters-desktop';
 import { NextLink } from '~/features/shared/components/next-link';
 
 // utils
-import { range } from '@locaci/ui/lib/functions';
+import { clsx, range } from '@locaci/ui/lib/functions';
 import { t } from '~/app/trpc-client-provider';
-import { parseSearchParams } from '~/lib/functions';
-import { useURLSearchParams } from '../hooks/use-url-search-params';
+import { getTitleForSearchParams, parseSearchParams } from '~/lib/functions';
+import { useURLSearchParams } from '~/features/search/hooks/use-url-search-params';
 
-export function SearchListResult() {
+// types
+export type SearchListResultProps = {
+    defaultMunicipalities: { label: string; value: string }[];
+};
+
+export function SearchListResult(props: SearchListResultProps) {
     const searchParams = useURLSearchParams();
     const searchParsed = parseSearchParams(searchParams);
 
@@ -25,7 +31,21 @@ export function SearchListResult() {
     searchParams.delete('page');
 
     return (
-        <>
+        <div
+            className={clsx(
+                'flex w-full flex-col gap-4 px-4 py-8 md:px-8 lg:col-span-3'
+            )}>
+            <div className="flex items-start gap-8">
+                <h1 className="text-2xl font-medium">
+                    {getTitleForSearchParams(searchParsed)}
+                </h1>
+                <div className="hidden flex-shrink-0 lg:flex">
+                    <FiltersDesktop
+                        defaultMunicipalities={props.defaultMunicipalities}
+                    />
+                </div>
+            </div>
+
             {isFetching ? (
                 <SearchSkeleton
                     hideMap
@@ -38,13 +58,15 @@ export function SearchListResult() {
                     }
                 />
             ) : (
-                <section className="flex w-full flex-col items-start gap-4 px-4 py-8 md:px-8 lg:col-span-3">
-                    <h1 className="text-2xl font-semibold">
-                        8 résultats Votre recherche :
-                    </h1>
+                <section className="flex w-full flex-col items-start gap-4">
+                    <h2 className="text-lg">
+                        <strong className="font-medium">8 résultats</strong>
+                        &nbsp;
+                        <span className="text-gray">trouvés</span>
+                    </h2>
 
                     <ul className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                        {range(0, 6).map(i => (
+                        {range(0, 20).map(i => (
                             <li key={i} className={`w-full`}>
                                 <PropertySearchCard
                                     address="Riviera 6, cocody, abidjan"
@@ -74,7 +96,7 @@ export function SearchListResult() {
                     />
                 </section>
             )}
-        </>
+        </div>
     );
 }
 
