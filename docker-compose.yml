@@ -1,6 +1,16 @@
 version: '3.1'
 
 services:
+    typesense:
+        image: typesense/typesense:0.19.0
+        environment:
+            TYPESENSE_API_KEY: apikey
+            TYPESENSE_DATA_DIR: /data
+        volumes:
+            - search-data:/data
+        ports:
+            - 7700:8108
+
     db:
         image: postgres:12-alpine
         restart: always
@@ -57,5 +67,7 @@ services:
 
 volumes:
     osm-search-data:
+    search-data:
+        driver: local
     db-data:
         driver: local
