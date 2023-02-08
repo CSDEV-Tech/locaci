@@ -61,6 +61,10 @@ import { UserIcon } from '../../components/atoms/icons/user';
 import { ChatCircleIcon } from '../../components/atoms/icons/chat-circle';
 import { MessengerLogoIcon } from '../../components/atoms/icons/messenger-logo';
 import { WhatsappLogoIcon } from '../../components/atoms/icons/whatsapp-logo';
+import { CopyIcon } from '../../components/atoms/icons/copy';
+import { EyeSlashIcon } from '../../components/atoms/icons/eye-slash';
+import { LinkIcon } from '../../components/atoms/icons/link';
+import { PencilIcon } from '../../components/atoms/icons/pencil';
 
 // types
 import type {
@@ -84,6 +88,18 @@ const Template: ComponentStory<IconComponent> = args => (
             <span>SignOutIcon</span>
         </div>
         <div className="flex flex-col items-center gap-2">
+            <LinkIcon className="h-10 w-10" />
+            <span>LinkIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <PencilIcon className="h-10 w-10" />
+            <span>PencilIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <CopyIcon className="h-10 w-10" />
+            <span>CopyIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
             <ChatCircleIcon className="h-10 w-10" />
             <span>ChatCircleIcon</span>
         </div>
@@ -102,6 +118,10 @@ const Template: ComponentStory<IconComponent> = args => (
         <div className="flex flex-col items-center gap-2">
             <SquareFourIcon className="h-10 w-10" />
             <span>SquareFourIcon</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <SquareFourIcon weight="fill" className="h-10 w-10" />
+            <span>SquareFourIcon (fill)</span>
         </div>
         <div className="flex flex-col items-center gap-2">
             <CaretLeftIcon className="h-10 w-10" />
@@ -206,6 +226,18 @@ const Template: ComponentStory<IconComponent> = args => (
         <div className="flex flex-col items-center gap-2">
             <EyeIcon className="h-10 w-10 " />
             <span>EyeIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <EyeIcon className="h-10 w-10 " weight="fill" />
+            <span>EyeIcon (fill) </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <EyeSlashIcon className="h-10 w-10 " />
+            <span>EyeSlashIcon </span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+            <EyeSlashIcon className="h-10 w-10 " weight="fill" />
+            <span>EyeSlashIcon (fill) </span>
         </div>
         <div className="flex flex-col items-center gap-2">
             <ImageIcon className="h-10 w-10 " />
