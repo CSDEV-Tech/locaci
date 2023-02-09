@@ -155,7 +155,7 @@ export class TypeSenseSearch {
             }]`
         );
 
-        if (query.rentType !== undefined && query.municipalityId !== null) {
+        if (query.rentType !== undefined && query.rentType !== null) {
             filters.push(`rentType:=${query.rentType}`);
         }
 
