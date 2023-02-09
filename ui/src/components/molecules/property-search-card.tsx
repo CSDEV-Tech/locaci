@@ -107,14 +107,24 @@ export function PropertySearchCard({
                     </div>
 
                     <div
-                        className={clsx('flex items-center text-dark', {
-                            'font-medium': size === 'small'
-                        })}>
-                        {numberOfRooms} pièce{numberOfRooms > 1 ? 's' : ''}
+                        className={clsx(
+                            'flex flex-wrap items-start text-dark',
+                            {
+                                'font-medium': size === 'small'
+                            }
+                        )}>
+                        <span>
+                            {numberOfRooms} pièce{numberOfRooms > 1 ? 's' : ''}
+                        </span>
                         &nbsp;&middot;&nbsp;
-                        {numberOfBedRooms} chambre
-                        {numberOfBedRooms > 1 ? 's' : ''}&nbsp;&middot;&nbsp;
-                        {surfaceArea} m<sup>2</sup>
+                        <span>
+                            {numberOfBedRooms} chambre
+                            {numberOfBedRooms > 1 ? 's' : ''}
+                            &nbsp;&middot;&nbsp;
+                        </span>
+                        <span>
+                            {surfaceArea} m<sup>2</sup>
+                        </span>
                     </div>
                 </div>
 

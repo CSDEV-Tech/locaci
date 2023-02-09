@@ -2,6 +2,8 @@
 import { getUserFromSessionToken } from '~/server/utils';
 import { getCookie } from '~/lib/functions';
 import { prisma } from '~/server/db/client';
+import { TypeSenseSearch } from '../typesense-search';
+import { env } from '~/env/server.mjs';
 
 // types
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
@@ -16,12 +18,18 @@ export const createContext = async (
           }
         | (CreateNextContextOptions & { type: 'api' })
 ) => {
+    const searchClient = new TypeSenseSearch(
+        env.TYPESENSE_SEARCH_API_KEY,
+        env.TYPESENSE_SEARCH_URL
+    );
+
     if (opts.type === 'rsc') {
         // RSC
         return {
             type: opts.type,
             prisma,
-            user: await opts.getUser()
+            user: await opts.getUser(),
+            typesense: searchClient
         };
     }
 
@@ -42,7 +50,8 @@ export const createContext = async (
         req,
         res,
         prisma,
-        user
+        user,
+        typesense: searchClient
     };
 };
 

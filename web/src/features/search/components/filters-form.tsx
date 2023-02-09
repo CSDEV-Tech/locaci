@@ -1,4 +1,3 @@
-'use client';
 import * as React from 'react';
 
 // components
@@ -27,11 +26,15 @@ export type FiltersFormProps = {
     defaultMunicipalities: { label: string; value: string }[];
     onSubmit: () => void;
     className?: string;
+    hideButtons?: boolean;
+    formId?: string;
 };
 
 export function FiltersForm({
     defaultMunicipalities,
     className,
+    hideButtons,
+    formId,
     onSubmit
 }: FiltersFormProps) {
     // initial state
@@ -46,8 +49,11 @@ export function FiltersForm({
     const [rentType, setRentType] = React.useState<RentType | null>(
         searchParsed?.rentType ?? null
     );
+    const [minNoOfBedRooms, setMinNoOfBedRooms] = React.useState(
+        searchParsed?.minNoOfBedRooms ?? 0
+    );
     const [maxNoOfBedRooms, setMaxNoOfBedRooms] = React.useState(
-        searchParsed?.maxNoOfBedRooms ?? 0
+        searchParsed?.maxNoOfBedRooms ?? 10
     );
 
     const [minPrice, setMinPrice] = React.useState(searchParsed?.minPrice ?? 0);
@@ -68,7 +74,7 @@ export function FiltersForm({
         searchParsed?.municipalityQuery ?? ''
     );
     const [availableFrom, setAvailableFrom] = React.useState(
-        new Date(searchParsed?.availableFrom ?? new Date())
+        new Date(searchParsed?.availableFrom ?? new Date(0))
     );
 
     const [amenities, setAmenities] = React.useState<AmenityType[]>(
@@ -82,6 +88,7 @@ export function FiltersForm({
     return (
         <form
             action="/search"
+            id={formId}
             className={clsx(className, 'flex flex-col justify-between gap-4')}
             onSubmit={e => {
                 e.preventDefault();
@@ -127,18 +134,26 @@ export function FiltersForm({
                     ]}
                 />
 
-                <NumberInput
-                    name="maxNoOfBedRooms"
-                    min={1}
-                    className={clsx()}
-                    label="Nombre de chambres"
-                    value={maxNoOfBedRooms}
-                    labelIncrementButton={`Augmenter le nombre de pièces`}
-                    labelDecrementButton={`Diminuer le nombre de pièces`}
-                    onChange={setMaxNoOfBedRooms}
-                    rootClassName={clsx(`w-full`)}
-                    showButtons
-                />
+                <div className="flex items-center gap-4">
+                    <NumberInput
+                        name="minNoOfBedRooms"
+                        min={1}
+                        className={clsx()}
+                        label="Chambres min"
+                        value={minNoOfBedRooms}
+                        onChange={setMinNoOfBedRooms}
+                        rootClassName={clsx(`w-full`)}
+                    />
+                    <NumberInput
+                        name="maxNoOfBedRooms"
+                        min={1}
+                        className={clsx()}
+                        label="Chambres max"
+                        value={maxNoOfBedRooms}
+                        onChange={setMaxNoOfBedRooms}
+                        rootClassName={clsx(`w-full`)}
+                    />
+                </div>
 
                 <div className="flex items-center gap-4">
                     <NumberInput
@@ -211,7 +226,7 @@ export function FiltersForm({
                 </div>
 
                 <CalendarInput
-                    minValue={new Date()}
+                    minValue={new Date(0)}
                     label={`Date de disponibilité`}
                     name="availableFrom"
                     value={availableFrom}
@@ -239,15 +254,17 @@ export function FiltersForm({
                 )}
             </div>
 
-            <div className="mx-auto flex items-center gap-4">
-                <Button type="button" onClick={onSubmit}>
-                    Annuler
-                </Button>
+            {!hideButtons && (
+                <div className="mx-auto flex items-center gap-4">
+                    <Button type="button" onClick={onSubmit}>
+                        Annuler
+                    </Button>
 
-                <Button variant="primary" type={'submit'}>
-                    Appliquer les filtres
-                </Button>
-            </div>
+                    <Button variant="primary" type={'submit'}>
+                        Appliquer les filtres
+                    </Button>
+                </div>
+            )}
         </form>
     );
 }

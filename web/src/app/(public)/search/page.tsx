@@ -52,7 +52,7 @@ export default function SearchPage({ searchParams }: PageProps) {
     );
 
     return (
-        <div className="grid gap-4 lg:grid-cols-5">
+        <div className="grid gap-4 lg:grid-cols-5 xl:grid-cols-6">
             <HydrateClient state={use(rsc.dehydrate())}>
                 <SearchListResult
                     defaultMunicipalities={use(municipalitiesPromise)}

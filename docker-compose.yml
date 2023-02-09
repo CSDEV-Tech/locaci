@@ -2,9 +2,9 @@ version: '3.1'
 
 services:
     typesense:
-        image: typesense/typesense:0.19.0
+        image: typesense/typesense:0.24.0
         environment:
-            TYPESENSE_API_KEY: apikey
+            TYPESENSE_API_KEY: typesense
             TYPESENSE_DATA_DIR: /data
         volumes:
             - search-data:/data

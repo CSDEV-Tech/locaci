@@ -7,8 +7,6 @@ import { Cache, CacheKeys } from '~/server/cache';
 import { bookPropertySchema } from '~/lib/validation-schemas/booking-schema';
 import { isLoggedIn } from '~/server/trpc/middleware/auth';
 
-import { wait } from '~/lib/functions';
-
 const protectedProcedure = t.procedure.use(isLoggedIn);
 export const propertyRouter = t.router({
     getRecentProperties: t.procedure
@@ -186,15 +184,6 @@ export const propertyRouter = t.router({
             };
         }),
     search: t.procedure.input(searchSchema).query(async ({ ctx, input }) => {
-        // TODO: Query code
-        return wait(2000).then(() => {
-            console.dir(
-                {
-                    searchParams: input
-                },
-                { depth: null }
-            );
-            return [];
-        });
+        return ctx.typesense.search(input);
     })
 });

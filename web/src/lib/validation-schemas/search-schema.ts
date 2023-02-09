@@ -1,13 +1,25 @@
-import { AmenityTypesArray, RentTypesArray } from '~/features/shared/types';
+import {
+    AmenityTypesArray,
+    RentTypesArray,
+    RoomTypesArray
+} from '~/features/shared/types';
 import { z } from 'zod';
+import type { BoundingBox } from '~/lib/types';
 
-const MAX_NUMBER_VALUE = 999_999_999_999;
+export const MAX_NUMBER_VALUE = 999_999_999_999; /// 999 milliards
+/**
+ *  the city of abidjan coordinates.
+ *  Got from OpenStreetMap : https://nominatim.openstreetmap.org/ui/details.html?osmtype=R&osmid=3377982&class=boundary
+ * */
+export const ABIDJAN_BOUNDING_BOX = [
+    5.2208709, 5.6363268, -4.2940788, -3.7177411
+] satisfies BoundingBox;
 
 export const searchSchema = z.object({
     page: z
         .preprocess(
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
-            z.number().catch(1)
+            z.number().min(1).catch(1)
         )
         .default(1)
         .nullish(),
@@ -23,6 +35,9 @@ export const searchSchema = z.object({
             (arg: any) => Number(arg.toString().replace(/[^\x00-\x7F ]/g, '')),
             z.number().catch(MAX_NUMBER_VALUE)
         )
+        .nullish(),
+    minNoOfBedRooms: z
+        .preprocess((arg: any) => Number(arg), z.number().catch(0))
         .nullish(),
     maxNoOfBedRooms: z
         .preprocess(
@@ -71,5 +86,28 @@ export const searchSchema = z.object({
                 return arg;
             }
         }, z.array(z.enum(AmenityTypesArray)).catch([]))
-        .optional()
+        .optional(),
+    rooms: z
+        .preprocess((arg: any) => {
+            if (Array.isArray(arg)) {
+                return arg.filter(v => RoomTypesArray.includes(v));
+            } else if (typeof arg === 'string') {
+                return [arg];
+            } else {
+                return arg;
+            }
+        }, z.array(z.enum(RoomTypesArray)).catch([]))
+        .optional(),
+    bbox: z
+        .tuple([
+            // South WEST
+            z.number(),
+            z.number(),
+
+            // North EAST
+            z.number(),
+            z.number()
+        ])
+        .catch(ABIDJAN_BOUNDING_BOX)
+        .nullish()
 });

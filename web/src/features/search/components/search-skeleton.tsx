@@ -16,12 +16,12 @@ export function SearchSkeleton({
     return (
         <div
             className={clsx('w-full', {
-                'grid lg:grid-cols-5': !hideMap,
-                'lg:col-span-3': hideMap
+                'grid lg:grid-cols-5 xl:grid-cols-6': !hideMap,
+                'lg:col-span-3 xl:col-span-4': hideMap
             })}>
             <section
                 className={clsx('grid w-full items-start gap-4  py-8 ', {
-                    'px-4 md:px-8 lg:col-span-3': !hideMap
+                    'px-4 md:px-8 lg:col-span-3 xl:col-span-4': !hideMap
                 })}>
                 <h1 className="text-2xl font-semibold">
                     Chargement de vos logements...

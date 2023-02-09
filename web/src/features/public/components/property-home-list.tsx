@@ -65,7 +65,7 @@ export function PropertyHomeList() {
                 ))}
             </ul>
 
-            {hasNextPage ? (
+            {hasNextPage && (
                 <Button
                     variant="primary"
                     loading={isFetching}
@@ -73,15 +73,14 @@ export function PropertyHomeList() {
                     renderLeadingIcon={cls => <RefreshIcon className={cls} />}>
                     En charger plus
                 </Button>
-            ) : (
-                <NextLink
-                    dynamic
-                    href="/search"
-                    className="flex items-center gap-2 text-lg font-semibold text-primary underline">
-                    <span>Voir plus de logements</span>
-                    <ArrowRightIcon className="h-4 w-4" weight="bold" />
-                </NextLink>
             )}
+            <NextLink
+                dynamic
+                href="/search"
+                className="flex items-center gap-2 text-lg font-semibold text-primary underline">
+                <span>Voir tous les logements</span>
+                <ArrowRightIcon className="h-4 w-4" weight="bold" />
+            </NextLink>
         </div>
     );
 }
