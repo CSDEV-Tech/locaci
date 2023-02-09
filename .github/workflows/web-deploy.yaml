@@ -86,6 +86,7 @@ jobs:
           pnpm run --filter=web telemetry:disable
           pnpm run --filter=web db:prepare
           pnpm run --filter=web cache:clear
+          pnpm run --filter=web search:index
           pnpm run turbo run build
           echo build success ✅
 
