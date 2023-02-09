@@ -16,13 +16,15 @@ import { rsc } from '~/server/trpc/rsc';
 import { capitalize, getPropertyTitle } from '~/lib/functions';
 
 // types
-import type { PageProps } from '~/next-app-types';
+import type { MetadataResult, PageProps } from '~/next-app-types';
 import { Metadata } from 'next';
 
 // this is a dynamic page
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: PageProps<{ uid: string }>) {
+export async function generateMetadata({
+    params
+}: MetadataResult<{ uid: string }>) {
     const property = await getPropertyDetail(params.uid);
 
     let title = 'Erreur 404';

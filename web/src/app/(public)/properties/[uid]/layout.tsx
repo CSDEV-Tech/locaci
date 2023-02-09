@@ -9,12 +9,12 @@ import { getPropertyDetail } from '~/server/trpc/rsc/cached-queries';
 import { formatNumberToFCFA } from '@locaci/ui/lib/functions';
 
 // types
-import type { LayoutProps } from '~/next-app-types';
+import type { LayoutProps, MetadataResult } from '~/next-app-types';
 import type { ListingImage } from '~/features/shared/types';
 
 export async function generateMetadata({
     params
-}: LayoutProps<{ uid: string }>) {
+}: MetadataResult<{ uid: string }>) {
     const property = await getPropertyDetail(params.uid);
 
     let title = 'Erreur 404';

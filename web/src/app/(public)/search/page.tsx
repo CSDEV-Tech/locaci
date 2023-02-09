@@ -26,10 +26,10 @@ import { getTitleForSearchParams, parseSearchParams } from '~/lib/functions';
 export const dynamic = 'force-dynamic';
 
 // types
-import type { PageProps } from '~/next-app-types';
+import type { MetadataResult, PageProps } from '~/next-app-types';
 import type { Metadata } from 'next';
 
-export async function generateMetadata({ searchParams }: PageProps) {
+export async function generateMetadata({ searchParams }: MetadataResult) {
     const searchParsed = parseSearchParams(searchParams!);
     const title = getTitleForSearchParams(searchParsed);
     return {
