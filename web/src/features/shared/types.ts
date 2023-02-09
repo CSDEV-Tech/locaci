@@ -48,6 +48,22 @@ export const RoomTypes: Record<RoomType, string> = {
     TOILET: 'Toilette'
 } as const;
 
+export const RoomTypesArray = [
+    'BEDROOM',
+    'LIVING_ROOM',
+    'KITCHEN',
+    'BATHROOM',
+    'LAUNDRY',
+    'ATTIC',
+    'BASEMENT',
+    'DINING_ROOM',
+    'GARAGE',
+    'BALCONY',
+    'VERANDA',
+    'TERRACE',
+    'TOILET'
+] as const satisfies readonly RoomType[];
+
 // amenities
 export type AmenityType =
     | 'WIFI'

@@ -78,7 +78,9 @@ export default function Modal({
                                             />
                                         )}
                                     </div>
-                                    <div className="p-6">{children}</div>
+                                    <div className="max-h-[620px] overflow-y-scroll p-6">
+                                        {children}
+                                    </div>
                                     {footer && (
                                         <div
                                             className={clsx(

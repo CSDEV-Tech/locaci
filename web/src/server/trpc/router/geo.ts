@@ -1,11 +1,12 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { t } from '~/server/trpc/root';
 import { env } from '~/env/server.mjs';
 import { Cache, CacheKeys } from '~/server/cache';
-import { t } from '~/server/trpc/root';
 import { apiFetch, convertAccentStringToNormalString } from '~/lib/functions';
-import type { OSMDetailResultData, OSMResultData } from '~/lib/types';
 import { Uuid } from '~/lib/uuid';
+
+import type { OSMDetailResultData, OSMResultData } from '~/lib/types';
 
 export const geoRouter = t.router({
     searchCityByName: t.procedure
@@ -166,8 +167,8 @@ export const geoRouter = t.router({
                     Number(locality.boundingbox[0]),
                     Number(locality.boundingbox[3]),
                     Number(locality.boundingbox[1])
-                ] as [number, number, number, number] // minLon,minLat,maxLon,maxLat
-                // this transform boundingbox values to the values that mapbox accepts
+                ] as const //  min Longitude, min Latitude, max Longitude, max Latitude
+                // this transform boundingbox values to the values that leaflet accepts
             }));
         }),
     getLocalityByOSMID: t.procedure

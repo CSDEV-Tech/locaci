@@ -49,7 +49,10 @@ export type OSMDetailResultData = Omit<
     centroid: PointGeoJSON;
 };
 
-export type BoundingBox = [number, number, number, number]; // min Longitude, min Latitude, max Longitude, max Latitude
+/**
+ * min Longitude, min Latitude, max Longitude, max Latitude
+ */
+export type BoundingBox = [number, number, number, number];
 
 export type RouterInput = inferRouterInputs<AppRouter>;
 export type RouterOutput = inferRouterOutputs<AppRouter>;

@@ -13,6 +13,8 @@ export const serverSchema = z.object({
     CACHE_PREFIX: z.string().optional(),
     CACHE_TTL: z.preprocess(val => Number(val), z.number()),
     OSM_SEARCH_URL: z.string().url(),
+    TYPESENSE_SEARCH_URL: z.string().url(),
+    TYPESENSE_SEARCH_API_KEY: z.string().min(1),
     JWT_SECRET: z.string().min(32).max(32),
     OAUTH_CLIENT_SECRET: z.string(),
     CF_ACCOUNT_ID: z.string().min(1),

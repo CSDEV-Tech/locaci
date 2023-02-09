@@ -70,8 +70,8 @@ export function CalendarInput({
     const props = {
         ...restProps,
         validationState: (!!errorText ? 'invalid' : 'valid') as ValidationState,
-        value: dateToReactAriaDate(value ?? new Date()),
-        minValue: dateToReactAriaDate(minValue ?? new Date()),
+        value: dateToReactAriaDate(value ?? new Date(0)),
+        minValue: dateToReactAriaDate(minValue ?? new Date(0)),
         maxValue: maxValue ? dateToReactAriaDate(maxValue) : undefined,
         onChange: (date: DateValue) => {
             onChange?.(new Date(date.toDate(getLocalTimeZone())));

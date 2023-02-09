@@ -11,6 +11,7 @@
         "patch:next": "patch-package",
         "prisma": "prisma",
         "cache:clear": "NODE_PATH=./web ts-node --esm scripts/clear-cache.ts",
+        "search:index": "NODE_PATH=./web ts-node --esm scripts/index-all.ts",
         "db:prepare": "prisma db push --accept-data-loss && node prisma/seed.mjs",
         "telemetry:disable": "next telemetry disable"
     },
@@ -43,6 +44,7 @@
         "sharp": "0.31.2",
         "short-uuid": "4.2.2",
         "superjson": "1.11.0",
+        "typesense": "^1.5.2",
         "uuid": "9.0.0",
         "zod": "3.20.3",
         "zustand": "4.1.4"
