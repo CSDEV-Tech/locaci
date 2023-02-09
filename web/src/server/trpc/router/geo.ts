@@ -6,7 +6,11 @@ import { Cache, CacheKeys } from '~/server/cache';
 import { apiFetch, convertAccentStringToNormalString } from '~/lib/functions';
 import { Uuid } from '~/lib/uuid';
 
-import type { OSMDetailResultData, OSMResultData } from '~/lib/types';
+import type {
+    BoundingBox,
+    OSMDetailResultData,
+    OSMResultData
+} from '~/lib/types';
 
 export const geoRouter = t.router({
     searchCityByName: t.procedure
@@ -167,7 +171,7 @@ export const geoRouter = t.router({
                     Number(locality.boundingbox[0]),
                     Number(locality.boundingbox[3]),
                     Number(locality.boundingbox[1])
-                ] as const //  min Longitude, min Latitude, max Longitude, max Latitude
+                ] satisfies BoundingBox //  min Longitude, min Latitude, max Longitude, max Latitude
                 // this transform boundingbox values to the values that leaflet accepts
             }));
         }),
