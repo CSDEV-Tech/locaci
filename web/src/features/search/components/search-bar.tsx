@@ -9,7 +9,7 @@ import { ComboBox } from '@locaci/ui/components/molecules/combobox';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // types
 import type { RentType } from '~/features/shared/types';
@@ -32,6 +32,7 @@ export function SearchBar({
     defaultValues
 }: SearchBarProps) {
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const [commune, setCommune] = React.useState<string | null>(
         defaultValues?.municipalityValue ?? null
@@ -47,6 +48,24 @@ export function SearchBar({
     const filteredMunicipalities = defaultMunicipalities.filter(m =>
         m.label.toLowerCase().startsWith(municipalityQuery.toLocaleLowerCase())
     );
+
+    React.useEffect(() => {
+        const municipalitySearchQuery = searchParams.get(
+            'municipalityId[label]'
+        );
+        const municipalityId = searchParams.get('municipalityId[value]');
+
+        if (
+            municipalitySearchQuery &&
+            municipalityQuery !== municipalitySearchQuery
+        ) {
+            setMunicipalityQuery(municipalitySearchQuery ?? '');
+        }
+
+        if (municipalityId && commune !== municipalityId) {
+            setCommune(municipalityId ?? '');
+        }
+    }, [searchParams]);
 
     return (
         <form

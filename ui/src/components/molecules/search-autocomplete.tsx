@@ -32,9 +32,13 @@ export type SearchAutocompleteProps = {
     autoFocus?: boolean;
     required?: boolean;
     inputClassName?: string;
+    name?: string;
 };
 
-export function SearchAutocomplete(props: SearchAutocompleteProps) {
+export function SearchAutocomplete({
+    name,
+    ...props
+}: SearchAutocompleteProps) {
     const [query, setQuery] = React.useState(props.initialQuery ?? '');
     const randomId = React.useId();
     const initialEmptyId = React.useRef(randomId);
@@ -110,6 +114,22 @@ export function SearchAutocomplete(props: SearchAutocompleteProps) {
     const { buttonProps } = useButton(triggerProps, buttonRef);
     return (
         <div className={clsx(props.className, 'relative w-full')}>
+            <input
+                type="hidden"
+                name={`${name}[value]`}
+                value={props.value}
+                readOnly
+                hidden
+                className="hidden"
+            />
+            <input
+                type="hidden"
+                name={`${name}[label]`}
+                value={inputProps.value}
+                readOnly
+                hidden
+                className="hidden"
+            />
             <TextInput
                 {...inputProps}
                 className={clsx(props.inputClassName)}

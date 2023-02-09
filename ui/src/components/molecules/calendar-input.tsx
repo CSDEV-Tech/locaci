@@ -115,6 +115,7 @@ export function CalendarInput({
                     type="date"
                     value={formatDateToSimpleDate(value ?? minValue)}
                     className={`hidden`}
+                    hidden
                     name={name}
                 />
 
