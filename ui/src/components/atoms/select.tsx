@@ -7,7 +7,7 @@ import { CheckCircleIcon } from './icons/check-circle';
 export type SelectProps = {
     value?: string | null;
     onChange: (newValue: string) => void;
-    options?: Array<{ value: string; label: string }>;
+    options?: Array<{ value: string | null; label: string }>;
     label: string;
     className?: string;
     autoFocus?: boolean;
