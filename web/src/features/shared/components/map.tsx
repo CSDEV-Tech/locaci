@@ -10,22 +10,27 @@ import type { BoundingBox, GeoJSON } from '~/lib/types';
 import { env } from '~/env/client.mjs';
 import { clsx } from '@locaci/ui/lib/functions';
 
-export type Marker = {
+export type Marker<T extends Record<string, any> = {}> = {
     id: string;
     center: L.LatLngTuple;
     geojson?: GeoJSON;
-};
+} & T;
 
-export type MarkerProps = { id: string; baseId: string };
+export type MarkerProps<T extends Record<string, any> = {}> = {
+    id: string;
+    baseId: string;
+} & T;
 
-export type MapProps = {
+export type MapProps<TMarker extends Record<string, any> = {}> = {
     className?: string;
-    markers: Marker[];
+    markers: Marker<TMarker>[];
     boundingbox: BoundingBox;
-    markerComponent: React.ComponentType<MarkerProps>;
+    markerComponent: React.ComponentType<MarkerProps<TMarker>>;
 };
 
-export default function Map(props: MapProps) {
+export default function Map<TMarker extends Record<string, any> = {}>(
+    props: MapProps<TMarker>
+) {
     const mapRef = React.useRef<HTMLDivElement>(null);
 
     const [map, setMap] = React.useState<L.Map | null>();
@@ -35,8 +40,8 @@ export default function Map(props: MapProps) {
         if (!mapRef.current) return;
 
         const bounds = L.latLngBounds(
-            L.latLng(props.boundingbox[1], props.boundingbox[0]), // maxLat, maxLong
-            L.latLng(props.boundingbox[3], props.boundingbox[2]) // minLat, minLong
+            L.latLng(props.boundingbox[1], props.boundingbox[0]), // minLat, minLong
+            L.latLng(props.boundingbox[3], props.boundingbox[2]) // maxLat, maxLong
         );
         const map = L.map(mapRef.current).fitBounds(bounds);
 
@@ -61,8 +66,10 @@ export default function Map(props: MapProps) {
         const geojsons: L.GeoJSON[] = [];
 
         for (const marker of props.markers) {
-            if (marker.geojson && marker.geojson.type !== 'Point') {
-                const geo = L.geoJSON(marker.geojson, {
+            const { id, geojson, center, ...otherProps } = marker;
+
+            if (geojson && geojson.type !== 'Point') {
+                const geo = L.geoJSON(geojson, {
                     style: {
                         color: '#3a3335'
                     }
@@ -76,10 +83,15 @@ export default function Map(props: MapProps) {
                 closeOnClick: false,
                 closeButton: false
             })
-                .setLatLng(marker.center)
+                .setLatLng(center)
                 .setContent(
                     renderToString(
-                        <props.markerComponent baseId={baseId} id={marker.id} />
+                        // @ts-ignore
+                        <props.markerComponent
+                            baseId={baseId}
+                            id={id}
+                            {...otherProps}
+                        />
                     )
                 );
             popup.addTo(map);

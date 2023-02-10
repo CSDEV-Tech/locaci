@@ -12,7 +12,7 @@ export const MAX_NUMBER_VALUE = 999_999_999_999; /// 999 milliards
  *  Got from OpenStreetMap : https://nominatim.openstreetmap.org/ui/details.html?osmtype=R&osmid=3377982&class=boundary
  * */
 export const ABIDJAN_BOUNDING_BOX = [
-    5.2208709, 5.6363268, -4.2940788, -3.7177411
+    -4.2940788, 5.2208709, -3.7177411, 5.6363268
 ] satisfies BoundingBox;
 
 export const searchSchema = z.object({
@@ -74,7 +74,7 @@ export const searchSchema = z.object({
     municipalityQuery: z.preprocess(arg => {
         return arg === 'Toutes les régions' ? '' : arg;
     }, z.string().min(1).nullish().catch(null)),
-    view: z.enum(['MAP', 'LIST']).catch('LIST').nullish(),
+    view: z.enum(['MAP', 'LIST']).catch('LIST').nullish().default('LIST'),
     availableFrom: z
         .preprocess((arg: any) => new Date(arg), z.date().catch(new Date(0)))
         .nullish(),
@@ -121,4 +121,5 @@ export const searchSchema = z.object({
                 .catch(ABIDJAN_BOUNDING_BOX)
         )
         .nullish()
+        .default(ABIDJAN_BOUNDING_BOX)
 });

@@ -99,6 +99,12 @@ export function FiltersForm({
                 router.push(`/search?${searchParams.toString()}`);
                 onSubmit();
             }}>
+            <input
+                type="hidden"
+                name="view"
+                value={searchParsed.view ?? 'LIST'}
+            />
+
             <div className="flex flex-col gap-4">
                 <ComboBox
                     inputClassName={clsx('w-full')}
