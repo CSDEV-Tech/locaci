@@ -118,15 +118,31 @@ export class TypeSenseSearch {
             return this.#client
                 .collections(this.#COLLECTION_NAME)
                 .documents()
-                .upsert(this.#convertToDocument(data));
+                .create(this.#convertToDocument(data));
         }
     }
 
+    /**
+     * Reindex one property
+     */
+    public async reindex(property: IndexableProperty) {
+        await this.remove(property.id);
+        return this.index(property);
+    }
+
     public async retrieve(id: string) {
-        return this.#client
-            .collections<TypeSenseSearchResultItem>(this.#COLLECTION_NAME)
-            .documents(id)
-            .retrieve();
+        let item: TypeSenseSearchResultItem | null = null;
+
+        try {
+            item = await this.#client
+                .collections<TypeSenseSearchResultItem>(this.#COLLECTION_NAME)
+                .documents(short().fromUUID(id))
+                .retrieve();
+        } catch (e) {
+            console.error((e as Error).message);
+        }
+
+        return item;
     }
 
     public async search(query: SearchQueryParams) {
@@ -329,15 +345,12 @@ export class TypeSenseSearch {
      * Delete a document from index.
      */
     public async remove(id: string) {
-        const element = await this.#client
-            .collections<TypeSenseSearchResultItem>(this.#COLLECTION_NAME)
-            .documents(id)
-            .retrieve();
+        const element = await this.retrieve(id);
 
         if (element) {
             return this.#client
                 .collections<TypeSenseSearchResultItem>(this.#COLLECTION_NAME)
-                .documents(id)
+                .documents(short().fromUUID(id))
                 .delete();
         }
     }

@@ -442,7 +442,7 @@ export const ownerDraftRouter = t.router({
             /**
              * Create the property in the DB
              */
-            const property = await ctx.prisma.property.create({
+            const { id } = await ctx.prisma.property.create({
                 data: {
                     ...propertyCreated,
                     activeForListing: true,
@@ -459,8 +459,23 @@ export const ownerDraftRouter = t.router({
                 }
             });
 
+            // Index a property
+            const property = await ctx.prisma.property.findUnique({
+                where: {
+                    id
+                },
+                include: {
+                    amenities: true,
+                    city: true,
+                    municipality: true,
+                    rooms: true
+                }
+            });
+
+            await ctx.typesense.index(property!);
+
             return {
-                propertyUid: new Uuid(property.id).short()
+                propertyUid: new Uuid(id).short()
             };
         })
 });
