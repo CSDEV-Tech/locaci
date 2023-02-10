@@ -54,7 +54,11 @@ export default function Map(props: MapProps) {
             }
         ).addTo(map);
 
-        map.on('moveend', () => {
+        map.on('zoomend', () => {
+            props.onMove?.(map.getBounds());
+        });
+
+        map.on('mouseup', () => {
             props.onMove?.(map.getBounds());
         });
 
