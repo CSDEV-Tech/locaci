@@ -31,7 +31,10 @@ export function SearchListResult(props: SearchListResultProps) {
     const searchParams = useURLSearchParams();
     const searchParsed = parseSearchParams(searchParams);
 
-    const { isFetching, data } = t.property.search.useQuery(searchParsed, {
+    // Omit view from query input
+    const { view, ...queryInput } = searchParsed;
+
+    const { isFetching, data } = t.property.search.useQuery(queryInput, {
         staleTime: 5 * 60 * 1000 // 5 minutes
     });
 
@@ -41,7 +44,11 @@ export function SearchListResult(props: SearchListResultProps) {
     return (
         <div
             className={clsx(
-                'flex w-full flex-col gap-4 px-4 py-8 md:px-8 lg:col-span-3 xl:col-span-4'
+                'w-full flex-col gap-4 px-4 py-8 md:px-8 lg:col-span-3 lg:flex xl:col-span-5',
+                {
+                    hidden: searchParsed.view === 'MAP',
+                    flex: searchParsed.view === 'LIST'
+                }
             )}>
             {data?.properties.length !== 0 && (
                 <div className="flex items-start gap-8">

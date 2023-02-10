@@ -44,7 +44,9 @@ export default function SearchPage({ searchParams }: PageProps) {
 
     // Only make request for the first SSR requests
     if (isTextHTMLRequest) {
-        use(rsc.property.search.fetch(searchParsed));
+        // Omit view from query input
+        const { view, ...queryInput } = searchParsed;
+        use(rsc.property.search.fetch(queryInput));
     }
 
     const municipalitiesPromise = getAllMunicipalities().then(result =>
@@ -52,7 +54,7 @@ export default function SearchPage({ searchParams }: PageProps) {
     );
 
     return (
-        <div className="grid gap-4 lg:grid-cols-5 xl:grid-cols-6">
+        <div className="grid gap-4 lg:grid-cols-5 xl:grid-cols-8">
             <HydrateClient state={use(rsc.dehydrate())}>
                 <SearchListResult
                     defaultMunicipalities={use(municipalitiesPromise)}
