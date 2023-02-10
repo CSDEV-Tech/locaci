@@ -10,27 +10,26 @@ import type { BoundingBox, GeoJSON } from '~/lib/types';
 import { env } from '~/env/client.mjs';
 import { clsx } from '@locaci/ui/lib/functions';
 
-export type Marker<T extends Record<string, any> = {}> = {
+export type Marker = {
     id: string;
     center: L.LatLngTuple;
     geojson?: GeoJSON;
-} & T;
+} & Record<string, any>;
 
-export type MarkerProps<T extends Record<string, any> = {}> = {
+export type MarkerProps = {
     id: string;
     baseId: string;
-} & T;
+} & Record<string, any>;
 
-export type MapProps<TMarker extends Record<string, any> = {}> = {
+export type MapProps = {
     className?: string;
-    markers: Marker<TMarker>[];
+    markers: Marker[];
     boundingbox: BoundingBox;
-    markerComponent: React.ComponentType<MarkerProps<TMarker>>;
+    markerComponent: React.ComponentType<MarkerProps>;
+    onMarkersLoaded?: () => () => void;
 };
 
-export default function Map<TMarker extends Record<string, any> = {}>(
-    props: MapProps<TMarker>
-) {
+export default function Map(props: MapProps) {
     const mapRef = React.useRef<HTMLDivElement>(null);
 
     const [map, setMap] = React.useState<L.Map | null>();
@@ -86,7 +85,6 @@ export default function Map<TMarker extends Record<string, any> = {}>(
                 .setLatLng(center)
                 .setContent(
                     renderToString(
-                        // @ts-ignore
                         <props.markerComponent
                             baseId={baseId}
                             id={id}
@@ -98,9 +96,11 @@ export default function Map<TMarker extends Record<string, any> = {}>(
             popups.push(popup);
         }
 
+        const clearListeners = props.onMarkersLoaded?.();
         return () => {
             popups.forEach(p => p.remove());
             geojsons.forEach(g => g.remove());
+            clearListeners?.();
         };
     }, [map, props.markers]);
 

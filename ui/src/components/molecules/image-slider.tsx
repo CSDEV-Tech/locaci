@@ -2,6 +2,8 @@ import * as React from 'react';
 import type { CustomImageComponentType } from './dashboard-property-card';
 import useEmblaCarousel from 'embla-carousel-react';
 import { clsx } from '../../lib/functions';
+import { CaretLeftIcon } from '../atoms/icons/caret-left';
+import { CaretRightIcon } from '../atoms/icons/caret-right';
 
 export type ImageSliderProps = {
     imageURIs: string[];
@@ -35,15 +37,30 @@ export function ImageSlider({
         embla.on('select', onSelect);
     }, [embla]);
 
+    const scrollPrev = React.useCallback(
+        () => embla && embla.scrollPrev(),
+        [embla]
+    );
+    const scrollNext = React.useCallback(
+        () => embla && embla.scrollNext(),
+        [embla]
+    );
+
     const Img = customImage ?? 'img';
 
     return (
         <div
             className={clsx(
                 'h-full w-full overflow-x-hidden rounded-t-lg',
-                'relative z-20 flex items-center gap-4',
+                'relative  flex items-center gap-4',
                 className
             )}>
+            <button
+                className="absolute left-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
+                onClick={scrollPrev}>
+                <CaretLeftIcon className="h-4 w-4" />
+            </button>
+
             <div className="h-full w-full overflow-hidden" ref={emblaRef}>
                 <ul className="flex h-full w-full">
                     {imageURIs.map((uri, index) => (
@@ -63,6 +80,12 @@ export function ImageSlider({
                 </ul>
             </div>
 
+            <button
+                className="absolute right-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
+                onClick={scrollNext}>
+                <CaretRightIcon className="h-4 w-4" />
+            </button>
+
             <ul
                 className={clsx(
                     'absolute bottom-0 left-0 right-0 z-10 h-12 px-2 py-2',
@@ -73,9 +96,9 @@ export function ImageSlider({
                     <li key={`thumb-${uri}`} className={`flex items-center`}>
                         <button
                             className={clsx('rounded-full', {
-                                'h-3 w-3 bg-gray-300/80':
+                                'h-2 w-2 bg-gray-300/80':
                                     selectedIndex !== index,
-                                'h-4 w-4 bg-white': selectedIndex === index
+                                'h-3 w-3 bg-white': selectedIndex === index
                             })}
                             aria-label={`Aller à la page ${index + 1}`}
                             onClick={() => goTo(index)}

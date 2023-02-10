@@ -21,6 +21,7 @@ import {
 } from '~/lib/functions';
 import { useURLSearchParams } from '~/features/search/hooks/use-url-search-params';
 import Image from 'next/image';
+import { useSearchMapSelectionStore } from '~/lib/store';
 
 // types
 export type SearchListResultProps = {
@@ -30,6 +31,9 @@ export type SearchListResultProps = {
 export function SearchListResult(props: SearchListResultProps) {
     const searchParams = useURLSearchParams();
     const searchParsed = parseSearchParams(searchParams);
+    const selectProperty = useSearchMapSelectionStore(
+        store => store.selectProperty
+    );
 
     // Omit view from query input
     const { view, ...queryInput } = searchParsed;
@@ -110,11 +114,16 @@ export function SearchListResult(props: SearchListResultProps) {
                             data!.properties.map(({ document: p }) => (
                                 <li key={p.id} className={`h-full w-full`}>
                                     <PropertySearchCard
+                                        onMouseEnter={() => {
+                                            selectProperty(p.id);
+                                        }}
+                                        onMouseLeave={() => {
+                                            selectProperty(null);
+                                        }}
                                         address={p.address}
                                         housingPeriod={p.housingPeriod}
                                         className={`h-full w-full`}
                                         href={`/properties/${p.id}`}
-                                        customLink={NextLink}
                                         // @ts-expect-error
                                         customImage={Image}
                                         imagesURL={p.images}

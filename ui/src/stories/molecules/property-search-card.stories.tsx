@@ -13,7 +13,9 @@ export default {
 
 // 👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof PropertySearchCard> = args => (
-    <PropertySearchCard {...args} />
+    <div className="w-80">
+        <PropertySearchCard {...args} />
+    </div>
 );
 
 export const Default = Template.bind({});

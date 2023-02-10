@@ -22,7 +22,7 @@ export function Header({ trailingElement }: HeaderProps) {
                 logoHref={`/`}
                 customLink={NextLink}
                 logoAltText="Logo LOCACI"
-                className="lg:shadow-md"
+                className="relative z-50 lg:shadow-md"
                 logoUrl="/logo.svg"
                 leadingElement={
                     <HeaderSearchButton

@@ -11,3 +11,16 @@ export const useFilterStore = create<FilterModalState>(set => ({
     showFilterModal: () => set(state => ({ showFilters: true })),
     closeFilterModal: () => set(state => ({ showFilters: false }))
 }));
+
+type SearchStore = {
+    selectedId: string | null;
+    selectProperty: (id: string | null) => void;
+};
+
+export const useSearchMapSelectionStore = create<SearchStore>(set => ({
+    selectedId: null,
+    selectProperty: id =>
+        set(state => ({
+            selectedId: id
+        }))
+}));
