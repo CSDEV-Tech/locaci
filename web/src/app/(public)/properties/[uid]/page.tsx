@@ -39,6 +39,7 @@ import type { PageProps } from '~/next-app-types';
 import type { BoundingBox } from '~/lib/types';
 import type { RoomType } from '~/features/shared/types';
 import type { ListingImage } from '~/features/shared/types';
+import { headers } from 'next/headers';
 
 // this is a dynamic page, we are obliged to do this
 // because there is a bug with next considering dynamic pages as static,
@@ -46,7 +47,10 @@ import type { ListingImage } from '~/features/shared/types';
 export const dynamic = 'force-dynamic';
 
 export default function DetailPage({ params }: PageProps<{ uid: string }>) {
-    const property = use(getPropertyDetail(params.uid));
+    const isTextHTMLRequest =
+        headers().get('Accept')?.includes('text/html') ?? false;
+
+    const property = use(getPropertyDetail(params.uid, !isTextHTMLRequest));
 
     if (!property) {
         notFound();

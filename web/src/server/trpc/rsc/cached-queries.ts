@@ -9,8 +9,8 @@ export const getAllMunicipalities = cache(() =>
     rsc.geo.getAllMunicipalities.fetch()
 );
 
-export const getPropertyDetail = cache((uid: string) =>
-    rsc.property.getPropertyDetail.fetch({ uid })
+export const getPropertyDetail = cache((uid: string, slowdown?: boolean) =>
+    rsc.property.getPropertyDetail.fetch({ uid, slowdown })
 );
 
 export const getUserCached = cache(() => rsc.auth.getUser.fetch());
