@@ -11,7 +11,17 @@ export function ScrollUp() {
     const searchParams = useSearchParams();
 
     React.useEffect(() => {
-        window.document.scrollingElement?.scrollTo(0, 0);
+        if (path !== '/search') {
+            window.document.scrollingElement?.scrollTo(0, 0);
+        } else {
+            document
+                .querySelector('main')
+                ?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+        }
     }, [path, searchParams.toString()]);
 
     return null;
