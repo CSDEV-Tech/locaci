@@ -4,17 +4,17 @@ import * as React from 'react';
 import { Button } from '@locaci/ui/components/atoms/button';
 import { SliderIcon } from '@locaci/ui/components/atoms/icons/slider';
 import { XIcon } from '@locaci/ui/components/atoms/icons/x';
+import { FiltersForm } from './filters-form';
 
 // utils
 import { useFilterStore } from '~/lib/store';
 import { clsx } from '@locaci/ui/lib/functions';
+import { createPortal } from 'react-dom';
 
 // types
 export type FiltersMobileProps = {
     defaultMunicipalities: { label: string; value: string }[];
 };
-
-import { FiltersForm } from './filters-form';
 
 export function FiltersMobile({ defaultMunicipalities }: FiltersMobileProps) {
     const showFilterModal = useFilterStore(state => state.showFilterModal);
@@ -52,11 +52,11 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
         }
     }, [filterStore.showFilters]);
 
-    return (
+    return createPortal(
         <aside
             title="Terminé"
             className={clsx(
-                'fixed inset-0 z-40 bg-white',
+                'fixed inset-0 z-[60] bg-white',
                 'overflow-scroll p-4',
                 'md:p-8 lg:hidden',
                 'animate-translate-up',
@@ -86,6 +86,7 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
                     defaultMunicipalities={props.defaultMunicipalities}
                 />
             </div>
-        </aside>
+        </aside>,
+        document.body
     );
 }
