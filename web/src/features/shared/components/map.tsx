@@ -27,6 +27,7 @@ export type MapProps = {
     boundingbox: BoundingBox;
     markerComponent: React.ComponentType<MarkerProps>;
     onMarkersLoaded?: () => () => void;
+    onMove?: (new_bbox: L.LatLngBounds) => void;
 };
 
 export default function Map(props: MapProps) {
@@ -53,7 +54,12 @@ export default function Map(props: MapProps) {
             }
         ).addTo(map);
 
+        map.on('moveend', () => {
+            props.onMove?.(map.getBounds());
+        });
+
         setMap(map);
+
         return () => {
             map?.remove();
         };

@@ -78,7 +78,6 @@ export function PropertySearchCard({
             <div className="flex h-full flex-col justify-between p-4">
                 <Link
                     href={href}
-                    dynamic
                     target="_blank"
                     className={clsx(
                         `text-dark`,
