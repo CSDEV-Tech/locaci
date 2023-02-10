@@ -63,7 +63,12 @@ export function ImageSlider({
                 </ul>
             </div>
 
-            <ul className="absolute bottom-0 left-0 right-0 z-10 flex h-12 items-center justify-center gap-2 bg-gradient-to-b from-transparent to-black/50">
+            <ul
+                className={clsx(
+                    'absolute bottom-0 left-0 right-0 z-10 h-12 px-2 py-2',
+                    'flex flex-wrap items-center justify-center gap-2',
+                    'bg-gradient-to-b from-transparent to-black/50'
+                )}>
                 {imageURIs.map((uri, index) => (
                     <li key={`thumb-${uri}`} className={`flex items-center`}>
                         <button
