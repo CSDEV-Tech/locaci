@@ -90,7 +90,9 @@ export const Dropdown = ({
                                                     onClick={item.onClick}>
                                                     <div>
                                                         <item.Icon
-                                                            className="icon"
+                                                            className={clsx(
+                                                                'h-4 w-4'
+                                                            )}
                                                             active={active}
                                                         />
                                                     </div>
@@ -124,7 +126,9 @@ export const Dropdown = ({
                                                     )}>
                                                     <div>
                                                         <item.Icon
-                                                            className="icon"
+                                                            className={clsx(
+                                                                'h-4 w-4'
+                                                            )}
                                                             active={active}
                                                         />
                                                     </div>
