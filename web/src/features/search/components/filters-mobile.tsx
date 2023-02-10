@@ -52,41 +52,40 @@ function FilterModal(props: Pick<FiltersMobileProps, 'defaultMunicipalities'>) {
         }
     }, [filterStore.showFilters]);
 
-    return createPortal(
-        <aside
-            title="Terminé"
-            className={clsx(
-                'fixed inset-0 z-[60] bg-white',
-                'overflow-scroll p-4',
-                'md:p-8 lg:hidden',
-                'animate-translate-up',
-                {
-                    hidden: !filterStore.showFilters
-                }
-            )}>
-            <div className="mx-auto flex max-w-[500px] flex-col gap-4">
-                <div className="flex items-center justify-between gap-4">
-                    <h2 className="text-2xl font-semibold">
-                        Modifiez votre recherche
-                    </h2>
+    return !filterStore.showFilters || typeof document === 'undefined'
+        ? null
+        : createPortal(
+              <aside
+                  title="Terminé"
+                  className={clsx(
+                      'fixed inset-0 z-[60] bg-white',
+                      'overflow-scroll p-4',
+                      'md:p-8 lg:hidden',
+                      'animate-translate-up'
+                  )}>
+                  <div className="mx-auto flex max-w-[500px] flex-col gap-4">
+                      <div className="flex items-center justify-between gap-4">
+                          <h2 className="text-2xl font-semibold">
+                              Modifiez votre recherche
+                          </h2>
 
-                    <Button
-                        aria-label="Annuler"
-                        square
-                        variant="dark"
-                        onClick={filterStore.closeFilterModal}
-                        renderTrailingIcon={cls => (
-                            <XIcon className={cls} weight="bold" />
-                        )}
-                    />
-                </div>
+                          <Button
+                              aria-label="Annuler"
+                              square
+                              variant="dark"
+                              onClick={filterStore.closeFilterModal}
+                              renderTrailingIcon={cls => (
+                                  <XIcon className={cls} weight="bold" />
+                              )}
+                          />
+                      </div>
 
-                <FiltersForm
-                    onSubmit={filterStore.closeFilterModal}
-                    defaultMunicipalities={props.defaultMunicipalities}
-                />
-            </div>
-        </aside>,
-        document.body
-    );
+                      <FiltersForm
+                          onSubmit={filterStore.closeFilterModal}
+                          defaultMunicipalities={props.defaultMunicipalities}
+                      />
+                  </div>
+              </aside>,
+              document.body
+          );
 }
