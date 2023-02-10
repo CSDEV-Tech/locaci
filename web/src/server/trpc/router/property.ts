@@ -6,6 +6,7 @@ import { t } from '~/server/trpc/root';
 import { Cache, CacheKeys } from '~/server/cache';
 import { bookPropertySchema } from '~/lib/validation-schemas/booking-schema';
 import { isLoggedIn } from '~/server/trpc/middleware/auth';
+import { wait } from '~/lib/functions';
 
 const protectedProcedure = t.procedure.use(isLoggedIn);
 export const propertyRouter = t.router({
@@ -184,6 +185,9 @@ export const propertyRouter = t.router({
             };
         }),
     search: t.procedure.input(searchSchema).query(async ({ ctx, input }) => {
-        return ctx.typesense.search(input);
+        if (process.env.NODE_ENV === 'development') {
+            await wait(1500);
+        }
+        return await ctx.typesense.search(input);
     })
 });

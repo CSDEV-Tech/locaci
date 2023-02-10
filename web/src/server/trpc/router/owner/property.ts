@@ -100,6 +100,12 @@ export const ownerPropertiesRouter = t.router({
                     id: input.uid,
                     userId: ctx.user.id,
                     archived: false
+                },
+                include: {
+                    amenities: true,
+                    city: true,
+                    municipality: true,
+                    rooms: true
                 }
             });
 
@@ -111,6 +117,8 @@ export const ownerPropertiesRouter = t.router({
                 });
             }
 
+            const newVisibility = !property.activeForListing;
+
             await ctx.prisma.property.updateMany({
                 where: {
                     id: input.uid,
@@ -118,9 +126,15 @@ export const ownerPropertiesRouter = t.router({
                     archived: false
                 },
                 data: {
-                    activeForListing: !property.activeForListing
+                    activeForListing: newVisibility
                 }
             });
+
+            if (!newVisibility) {
+                ctx.typesense.remove(input.uid);
+            } else {
+                ctx.typesense.index(property);
+            }
 
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
@@ -164,6 +178,9 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // remove property from search index
+            ctx.typesense.remove(input.uid);
+
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
             await Cache.invalidate(CacheKeys.municipalities.all());
@@ -182,8 +199,8 @@ export const ownerPropertiesRouter = t.router({
                     archived: false
                 },
                 include: {
-                    rooms: true,
-                    amenities: true
+                    amenities: true,
+                    rooms: true
                 }
             });
 
@@ -237,7 +254,7 @@ export const ownerPropertiesRouter = t.router({
             /**
              * Create the property in the DB
              */
-            await ctx.prisma.property.create({
+            const { id: newPropertyId } = await ctx.prisma.property.create({
                 data: {
                     ...propertyCreated,
                     images: propertyCreated.images as any[],
@@ -246,7 +263,9 @@ export const ownerPropertiesRouter = t.router({
                     activeForListing: true,
                     rooms: {
                         createMany: {
-                            data: property.rooms.map(room => ({}))
+                            data: property.rooms.map(room => ({
+                                type: room.type
+                            }))
                         }
                     },
                     amenities: {
@@ -260,6 +279,20 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // Index the new property
+            const newProperty = await ctx.prisma.property.findUnique({
+                where: {
+                    id: newPropertyId
+                },
+                include: {
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
+                }
+            });
+            await ctx.typesense.index(newProperty!);
+
             return { success: true };
         }),
     savePropertyStep1: protectedProcedure
@@ -270,6 +303,12 @@ export const ownerPropertiesRouter = t.router({
                     id: input.uid,
                     userId: ctx.user.id,
                     archived: false
+                },
+                include: {
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
                 }
             });
 
@@ -291,6 +330,9 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // reindex the property
+            await ctx.typesense.reindex(property);
+
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
             await Cache.invalidate(CacheKeys.municipalities.all());
@@ -303,6 +345,12 @@ export const ownerPropertiesRouter = t.router({
                     id: input.uid,
                     userId: ctx.user.id,
                     archived: false
+                },
+                include: {
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
                 }
             });
 
@@ -346,6 +394,9 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // reindex the property
+            await ctx.typesense.reindex(property);
+
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
             await Cache.invalidate(CacheKeys.municipalities.all());
@@ -358,6 +409,12 @@ export const ownerPropertiesRouter = t.router({
                     id: input.uid,
                     userId: ctx.user.id,
                     archived: false
+                },
+                include: {
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
                 }
             });
 
@@ -378,6 +435,9 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // reindex the property
+            await ctx.typesense.reindex(property);
+
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
             await Cache.invalidate(CacheKeys.municipalities.all());
@@ -392,7 +452,10 @@ export const ownerPropertiesRouter = t.router({
                     archived: false
                 },
                 include: {
-                    rooms: true
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
                 }
             });
 
@@ -437,6 +500,9 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // reindex the property
+            await ctx.typesense.reindex(property);
+
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
             await Cache.invalidate(CacheKeys.municipalities.all());
@@ -453,6 +519,12 @@ export const ownerPropertiesRouter = t.router({
                     id: input.uid,
                     userId: ctx.user.id,
                     archived: false
+                },
+                include: {
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
                 }
             });
 
@@ -496,6 +568,8 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // reindex the property
+            await ctx.typesense.reindex(property);
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
             await Cache.invalidate(CacheKeys.municipalities.all());
@@ -508,6 +582,12 @@ export const ownerPropertiesRouter = t.router({
                     id: input.uid,
                     userId: ctx.user.id,
                     archived: false
+                },
+                include: {
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
                 }
             });
 
@@ -528,6 +608,9 @@ export const ownerPropertiesRouter = t.router({
                 }
             });
 
+            // reindex the property
+            await ctx.typesense.reindex(property);
+
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
             await Cache.invalidate(CacheKeys.municipalities.all());
@@ -540,6 +623,12 @@ export const ownerPropertiesRouter = t.router({
                     id: input.uid,
                     userId: ctx.user.id,
                     archived: false
+                },
+                include: {
+                    amenities: true,
+                    rooms: true,
+                    municipality: true,
+                    city: true
                 }
             });
 
@@ -570,6 +659,9 @@ export const ownerPropertiesRouter = t.router({
                             : 30
                 }
             });
+
+            // reindex the property
+            await ctx.typesense.reindex(property);
 
             // invalidate cache for property
             await Cache.invalidate(CacheKeys.properties.single(input.uid));
