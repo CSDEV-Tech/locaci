@@ -104,7 +104,10 @@ export const searchSchema = z.object({
         .preprocess(
             (arg: any) => {
                 if (typeof arg === 'string') {
-                    return arg.split(',').slice(0, 4); // get only the 4 first coordinates
+                    return arg
+                        .split(',')
+                        .slice(0, 4)
+                        .map(el => Number(el)); // get only the 4 first coordinates
                 }
                 return arg;
             },

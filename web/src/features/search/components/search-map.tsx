@@ -15,10 +15,11 @@ import { getPropertyTitle, parseSearchParams } from '~/lib/functions';
 import { useURLSearchParams } from '~/features/search/hooks/use-url-search-params';
 import { clsx } from '@locaci/ui/lib/functions';
 import dynamic from 'next/dynamic';
+import { useSearchMapSelectionStore } from '~/lib/store';
+import { useRouter } from 'next/navigation';
 
 // types
 import type { Marker, MarkerProps } from '~/features/shared/components/map';
-import { useSearchMapSelectionStore } from '~/lib/store';
 
 // lazy load the map component
 const Map = dynamic(() => import('~/features/shared/components/map'), {
@@ -28,12 +29,12 @@ const Map = dynamic(() => import('~/features/shared/components/map'), {
 export function SearchMap() {
     const searchParams = useURLSearchParams();
     const searchParsed = parseSearchParams(searchParams);
+    const router = useRouter();
+    const [selectedId, setSelectedId] = React.useState<string | null>(null);
+    const hoveredId = useSearchMapSelectionStore(store => store.selectedId);
+
     // Omit view from query input
     const { view, ...queryInput } = searchParsed;
-    const [selectedId, setSelectedId] = React.useState<string | null>(null);
-    const { selectProperty, selectedId: hoveredId } =
-        useSearchMapSelectionStore();
-
     const { data, isFetching } = t.property.search.useQuery(queryInput, {
         staleTime: 5 * 60 * 1000 // 5 minutes
     });
@@ -66,12 +67,11 @@ export function SearchMap() {
         };
     }, [hoveredId]);
 
-    function onMarkersLoaded() {
+    const onMarkersLoaded = React.useCallback(() => {
         const pins = document.querySelectorAll('[data-type="search-map-pin"]');
 
         const listener = (e: Event) => {
             const element = e.target as HTMLButtonElement;
-            console.log(`Clicked pin with id: ${element.id}`);
 
             pins.forEach(pin => {
                 pin.removeAttribute('aria-pressed');
@@ -101,7 +101,6 @@ export function SearchMap() {
             }
         };
 
-        console.log({ pins });
         pins.forEach(pin => {
             pin.addEventListener('click', listener);
         });
@@ -111,7 +110,7 @@ export function SearchMap() {
                 pin.removeEventListener('click', listener);
             });
         };
-    }
+    }, []);
 
     return (
         <>
@@ -140,6 +139,16 @@ export function SearchMap() {
                         markerComponent={Marker}
                         onMarkersLoaded={onMarkersLoaded}
                         className="z-0 h-full w-full"
+                        onMove={bounds => {
+                            const sw = bounds.getSouthWest();
+                            const ne = bounds.getNorthEast();
+                            const bbox = [sw.lng, sw.lat, ne.lng, ne.lat];
+
+                            searchParams.delete('bbox');
+                            searchParams.append('bbox', bbox.join(','));
+
+                            router.push(`/search?${searchParams.toString()}`);
+                        }}
                     />
 
                     {selectedId && !isFetching && (
