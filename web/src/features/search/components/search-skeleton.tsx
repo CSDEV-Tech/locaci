@@ -6,9 +6,13 @@ import { clsx, range } from '@locaci/ui/lib/functions';
 
 type SearchSkeletonProps = {
     hideMap?: boolean;
+    pagination?: React.ReactNode;
 };
 
-export function SearchSkeleton({ hideMap = false }: SearchSkeletonProps) {
+export function SearchSkeleton({
+    hideMap = false,
+    pagination
+}: SearchSkeletonProps) {
     return (
         <div
             className={clsx('w-full', {
@@ -30,6 +34,8 @@ export function SearchSkeleton({ hideMap = false }: SearchSkeletonProps) {
                         </li>
                     ))}
                 </ul>
+
+                {pagination}
             </section>
 
             {/* Map */}

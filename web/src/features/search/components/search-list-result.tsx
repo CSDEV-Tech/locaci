@@ -6,10 +6,7 @@ import { SearchSkeleton } from './search-skeleton';
 import { PaginationWrapper } from './pagination-wrapper';
 import { PropertySearchCard } from './search-card-wrapper';
 import { FiltersDesktop } from './filters-desktop';
-import {
-    NextLink,
-    NextLinkButton
-} from '~/features/shared/components/next-link';
+import { NextLinkButton } from '~/features/shared/components/next-link';
 
 // utils
 import { clsx, range } from '@locaci/ui/lib/functions';
@@ -45,6 +42,19 @@ export function SearchListResult(props: SearchListResultProps) {
     // remove "page" param to pass it to pagination component
     searchParams.delete('page');
 
+    // we keep the old markers while the user move the map, for a better UX
+    const oldTotalPages = React.useRef(data?.total_pages ?? 0);
+
+    let total_pages = oldTotalPages.current;
+    if (
+        data?.total_pages !== undefined &&
+        data.total_pages !== oldTotalPages.current
+    ) {
+        // update total_pages when total_pages changes
+        oldTotalPages.current = data.total_pages;
+        total_pages = data.total_pages;
+    }
+
     return (
         <div
             className={clsx(
@@ -68,7 +78,20 @@ export function SearchListResult(props: SearchListResultProps) {
             )}
 
             {isFetching ? (
-                <SearchSkeleton hideMap />
+                <SearchSkeleton
+                    hideMap
+                    pagination={
+                        <>
+                            {total_pages > 1 && (
+                                <Pagination
+                                    currentPage={searchParsed.page ?? 1}
+                                    totalPages={total_pages}
+                                    baseQueryString={searchParams.toString()}
+                                />
+                            )}
+                        </>
+                    }
+                />
             ) : (
                 <section className="flex w-full flex-col items-start gap-4">
                     {data!.properties.length !== 0 && (
@@ -138,10 +161,10 @@ export function SearchListResult(props: SearchListResultProps) {
                         )}
                     </ul>
 
-                    {data && data.total_pages > 1 && (
+                    {total_pages > 1 && (
                         <Pagination
                             currentPage={searchParsed.page ?? 1}
-                            totalPages={data.total_pages}
+                            totalPages={total_pages}
                             baseQueryString={searchParams.toString()}
                         />
                     )}

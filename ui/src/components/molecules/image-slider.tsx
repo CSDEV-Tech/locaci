@@ -55,12 +55,13 @@ export function ImageSlider({
                 'relative  flex items-center gap-4',
                 className
             )}>
-            <button
-                className="absolute left-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
-                onClick={scrollPrev}>
-                <CaretLeftIcon className="h-4 w-4" />
-            </button>
-
+            {imageURIs.length > 1 && (
+                <button
+                    className="absolute left-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
+                    onClick={scrollPrev}>
+                    <CaretLeftIcon className="h-4 w-4" />
+                </button>
+            )}
             <div className="h-full w-full overflow-hidden" ref={emblaRef}>
                 <ul className="flex h-full w-full">
                     {imageURIs.map((uri, index) => (
@@ -80,32 +81,38 @@ export function ImageSlider({
                 </ul>
             </div>
 
-            <button
-                className="absolute right-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
-                onClick={scrollNext}>
-                <CaretRightIcon className="h-4 w-4" />
-            </button>
+            {imageURIs.length > 1 && (
+                <button
+                    className="absolute right-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
+                    onClick={scrollNext}>
+                    <CaretRightIcon className="h-4 w-4" />
+                </button>
+            )}
 
-            <ul
-                className={clsx(
-                    'absolute bottom-0 left-0 right-0 z-10 h-12 px-2 py-2',
-                    'flex flex-wrap items-center justify-center gap-2',
-                    'bg-gradient-to-b from-transparent to-black/50'
-                )}>
-                {imageURIs.map((uri, index) => (
-                    <li key={`thumb-${uri}`} className={`flex items-center`}>
-                        <button
-                            className={clsx('rounded-full', {
-                                'h-2 w-2 bg-gray-300/80':
-                                    selectedIndex !== index,
-                                'h-3 w-3 bg-white': selectedIndex === index
-                            })}
-                            aria-label={`Aller à la page ${index + 1}`}
-                            onClick={() => goTo(index)}
-                        />
-                    </li>
-                ))}
-            </ul>
+            {imageURIs.length > 1 && (
+                <ul
+                    className={clsx(
+                        'absolute bottom-0 left-0 right-0 z-10 h-12 px-2 py-2',
+                        'flex flex-wrap items-center justify-center gap-2',
+                        'bg-gradient-to-b from-transparent to-black/50'
+                    )}>
+                    {imageURIs.map((uri, index) => (
+                        <li
+                            key={`thumb-${uri}`}
+                            className={`flex items-center`}>
+                            <button
+                                className={clsx('rounded-full', {
+                                    'h-2 w-2 bg-gray-300/80':
+                                        selectedIndex !== index,
+                                    'h-3 w-3 bg-white': selectedIndex === index
+                                })}
+                                aria-label={`Aller à la page ${index + 1}`}
+                                onClick={() => goTo(index)}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

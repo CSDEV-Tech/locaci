@@ -37,115 +37,132 @@ function getHousingPeriodLabel(
     }
 }
 
-export function PropertySearchCard({
-    imagesURL,
-    address,
-    surfaceArea,
-    numberOfRooms,
-    title,
-    customImage,
-    price,
-    housingPeriod,
-    className,
-    numberOfBedRooms,
-    href,
-    onMouseEnter,
-    onMouseLeave,
-    size = 'medium'
-}: PropertySearchCardProps) {
-    return (
-        <Card
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            className={clsx(
-                className,
-                'group inline-flex flex-col',
-                'relative w-full',
-                'border !shadow-sm'
-            )}>
-            <div
+export const PropertySearchCard = React.forwardRef<
+    HTMLElement,
+    PropertySearchCardProps
+>(
+    (
+        {
+            imagesURL,
+            address,
+            surfaceArea,
+            numberOfRooms,
+            title,
+            customImage,
+            price,
+            housingPeriod,
+            className,
+            numberOfBedRooms,
+            href,
+            onMouseEnter,
+            onMouseLeave,
+            size = 'medium'
+        },
+        ref
+    ) => {
+        return (
+            <Card
+                ref={ref}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
                 className={clsx(
-                    'flex flex-shrink-0 items-center justify-center bg-gray/20',
-                    'w-full rounded-t-lg',
+                    className,
+                    'group inline-flex flex-col',
+                    'relative w-full',
                     {
-                        'h-[150px]': size === 'small',
-                        'h-[200px]': size === 'medium'
+                        'border !shadow-sm': size === 'medium'
                     }
                 )}>
-                <ImageSlider customImage={customImage} imageURIs={imagesURL} />
-            </div>
-
-            <div className="flex h-full flex-col justify-between p-4">
-                <Link
-                    href={href}
-                    target="_blank"
+                <div
                     className={clsx(
-                        `text-dark`,
-                        `after:absolute after:inset-0`,
-                        `focus:outline-none`,
+                        'flex flex-shrink-0 items-center justify-center bg-gray/20',
+                        'w-full rounded-t-lg',
                         {
-                            'text-sm': size === 'small',
-                            'text-lg font-semibold': size !== 'small'
+                            'h-[150px]': size === 'small',
+                            'h-[200px]': size === 'medium'
                         }
                     )}>
-                    {title}&nbsp;
-                </Link>
+                    <ImageSlider
+                        customImage={customImage}
+                        imageURIs={imagesURL}
+                    />
+                </div>
 
-                <div className="mt-2 flex w-full flex-col gap-2">
-                    <div
+                <div className="flex h-full flex-col justify-between p-4">
+                    <Link
+                        href={href}
+                        target="_blank"
                         className={clsx(
-                            `flex w-full max-w-full items-center text-gray`,
+                            `text-dark`,
+                            `after:absolute after:inset-0`,
+                            `focus:outline-none`,
                             {
-                                hidden: size === 'small'
+                                'text-sm': size === 'small',
+                                'text-lg font-semibold': size !== 'small'
                             }
                         )}>
-                        <MapPinIcon
-                            aria-label="Addresse :"
-                            className="h-6 w-6 flex-shrink-0"
-                        />
-                        &nbsp;
-                        <small>
-                            {Boolean(address?.trim()) ? address : 'Non défini'}
-                        </small>
-                    </div>
+                        {title}&nbsp;
+                    </Link>
 
-                    <div
-                        className={clsx(
-                            'flex flex-wrap items-start text-dark',
-                            {
-                                'font-medium': size === 'small'
-                            }
-                        )}>
-                        <span>
-                            {numberOfRooms} pièce{numberOfRooms > 1 ? 's' : ''}
-                        </span>
-                        &nbsp;&middot;&nbsp;
-                        <span>
-                            {numberOfBedRooms} chambre
-                            {numberOfBedRooms > 1 ? 's' : ''}
+                    <div className="mt-2 flex w-full flex-col gap-2">
+                        <div
+                            className={clsx(
+                                `flex w-full max-w-full items-center text-gray`,
+                                {
+                                    hidden: size === 'small'
+                                }
+                            )}>
+                            <MapPinIcon
+                                aria-label="Addresse :"
+                                className="h-6 w-6 flex-shrink-0"
+                            />
+                            &nbsp;
+                            <small>
+                                {Boolean(address?.trim())
+                                    ? address
+                                    : 'Non défini'}
+                            </small>
+                        </div>
+
+                        <div
+                            className={clsx(
+                                'flex flex-wrap items-start text-dark',
+                                {
+                                    'font-medium': size === 'small'
+                                }
+                            )}>
+                            <span>
+                                {numberOfRooms} pièce
+                                {numberOfRooms > 1 ? 's' : ''}
+                            </span>
                             &nbsp;&middot;&nbsp;
-                        </span>
-                        <span>
-                            {surfaceArea} m<sup>2</sup>
-                        </span>
+                            <span>
+                                {numberOfBedRooms} chambre
+                                {numberOfBedRooms > 1 ? 's' : ''}
+                                &nbsp;&middot;&nbsp;
+                            </span>
+                            <span>
+                                {surfaceArea} m<sup>2</sup>
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div
-                    className={clsx('flex items-center', {
-                        'order-first': size === 'small',
-                        'mt-4': size !== 'small'
-                    })}>
-                    <div>
-                        <span className="text-lg font-semibold text-dark">
-                            {formatNumberToFCFA(price)}&nbsp;
-                        </span>
-                        <small className="font-regular text-gray">
-                            /{getHousingPeriodLabel(housingPeriod)}
-                        </small>
+                    <div
+                        className={clsx('flex items-center', {
+                            'order-first': size === 'small',
+                            'mt-4': size !== 'small'
+                        })}>
+                        <div>
+                            <span className="text-lg font-semibold text-dark">
+                                {formatNumberToFCFA(price)}&nbsp;
+                            </span>
+                            <small className="font-regular text-gray">
+                                /{getHousingPeriodLabel(housingPeriod)}
+                            </small>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Card>
-    );
-}
+            </Card>
+        );
+    }
+);
