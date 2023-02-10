@@ -280,8 +280,8 @@
 }
 
 /**
-    * Leaflet styles overrides, to have nice popups 
-    */
+* Leaflet styles overrides, to have nice popups 
+*/
 .leaflet-popup-content-wrapper {
     box-shadow: none !important;
     height: auto !important;
@@ -291,9 +291,13 @@
 
 .leaflet-popup-content {
     width: auto !important;
-    margin: 0px;
+    margin: 0px !important;
 }
 
 .leaflet-popup-tip-container {
     display: none;
+}
+
+.leaflet-popup {
+    margin-bottom: 0px !important;
 }

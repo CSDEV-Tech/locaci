@@ -2,6 +2,7 @@
     "watch": [
         "src/index.ts",
         "src/components",
+        "src/lib",
         "package.json",
         "tsconfig.json",
         "tailwind.config.cjs",
