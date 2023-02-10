@@ -58,7 +58,7 @@ export default function Map(props: MapProps) {
             props.onMove?.(map.getBounds());
         });
 
-        map.on('mouseup', () => {
+        map.on('dragend', () => {
             props.onMove?.(map.getBounds());
         });
 
