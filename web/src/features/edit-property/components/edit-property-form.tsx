@@ -136,7 +136,7 @@ export function EditPropertyPropertyForm({
         <>
             {propertyShortUid && (
                 <EditPropertySuccessModal
-                    propertyUid={propertyUid}
+                    propertyUid={propertyShortUid}
                     open={isSuccessModalOpen}
                     onClose={() => {
                         router.push(`/owner`);
