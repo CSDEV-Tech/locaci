@@ -70,8 +70,10 @@ export const searchSchema = z.object({
         )
         .nullish(),
     rentType: z.enum(RentTypesArray).catch('LOCATION').nullish(),
-    municipalityId: z.string().nullish(),
-    municipalityQuery: z.string().nullish(),
+    municipalityId: z.string().min(1).nullish().catch(null),
+    municipalityQuery: z.preprocess(arg => {
+        return arg === 'Toutes les régions' ? '' : arg;
+    }, z.string().min(1).nullish().catch(null)),
     view: z.enum(['MAP', 'LIST']).catch('LIST').nullish(),
     availableFrom: z
         .preprocess((arg: any) => new Date(arg), z.date().catch(new Date(0)))
@@ -99,15 +101,24 @@ export const searchSchema = z.object({
         }, z.array(z.enum(RoomTypesArray)).catch([]))
         .optional(),
     bbox: z
-        .tuple([
-            // South WEST
-            z.number(),
-            z.number(),
+        .preprocess(
+            (arg: any) => {
+                if (typeof arg === 'string') {
+                    return arg.split(',').slice(0, 4); // get only the 4 first coordinates
+                }
+                return arg;
+            },
+            z
+                .tuple([
+                    // South WEST
+                    z.number(),
+                    z.number(),
 
-            // North EAST
-            z.number(),
-            z.number()
-        ])
-        .catch(ABIDJAN_BOUNDING_BOX)
+                    // North EAST
+                    z.number(),
+                    z.number()
+                ])
+                .catch(ABIDJAN_BOUNDING_BOX)
+        )
         .nullish()
 });

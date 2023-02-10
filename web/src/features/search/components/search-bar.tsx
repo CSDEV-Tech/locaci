@@ -98,7 +98,13 @@ export function SearchBar({
                     setMunicipalityQuery(query);
                 }}
                 onChange={setCommune}
-                options={filteredMunicipalities}
+                options={[
+                    ...filteredMunicipalities,
+                    {
+                        label: 'Toutes les régions',
+                        value: null
+                    }
+                ]}
             />
 
             <Select
@@ -112,6 +118,10 @@ export function SearchBar({
                 value={rentType}
                 onChange={str => setRentType(str as RentType)}
                 options={[
+                    {
+                        label: 'Tous types',
+                        value: null
+                    },
                     {
                         label: 'Colocation',
                         value: 'SHARED_APPARTMENT'

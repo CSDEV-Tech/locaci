@@ -196,7 +196,7 @@ export class TypeSenseSearch {
             // construct the polygon geojson of the bounding box
             filters.push(`geojson:(${polygon.join(', ')})`);
         }
-        const filteredFields = [
+        const includedFields = [
             'address',
             'cityName',
             'housingFee',
@@ -220,13 +220,13 @@ export class TypeSenseSearch {
             page: query.page ?? 1,
             // do not match by municipality name if the id is already provided
             q: query.municipalityId ? '' : query.municipalityQuery ?? '',
-            include_fields: filteredFields.join(','),
+            include_fields: includedFields.join(','),
             query_by: 'municipalityName,cityName,address'
         } satisfies SearchParams;
 
         const result = await this.#client
             .collections<
-                Pick<TypeSenseSearchResultItem, typeof filteredFields[number]>
+                Pick<TypeSenseSearchResultItem, typeof includedFields[number]>
             >(this.#COLLECTION_NAME)
             .documents()
             .search(searchParams);

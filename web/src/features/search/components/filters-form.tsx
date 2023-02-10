@@ -109,7 +109,13 @@ export function FiltersForm({
                         setMunicipalityQuery(query);
                     }}
                     onChange={setCommune}
-                    options={filteredMunicipalities}
+                    options={[
+                        {
+                            label: 'Toutes les régions',
+                            value: null
+                        },
+                        ...filteredMunicipalities
+                    ]}
                 />
 
                 <Select
@@ -119,6 +125,10 @@ export function FiltersForm({
                     value={rentType}
                     onChange={str => setRentType(str as RentType)}
                     options={[
+                        {
+                            label: 'Tous types',
+                            value: null
+                        },
                         {
                             label: 'Colocation',
                             value: 'SHARED_APPARTMENT'

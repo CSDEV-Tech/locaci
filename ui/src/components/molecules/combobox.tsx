@@ -14,7 +14,7 @@ export type ComboBoxProps = {
     name?: string;
     isLoading?: boolean;
     options?: Array<{
-        value: string;
+        value: string | null;
         label: string;
         hint?: string;
         uniqueId?: string;
