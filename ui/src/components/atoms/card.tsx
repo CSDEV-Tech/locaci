@@ -5,11 +5,21 @@ export type CardProps = {
     animated?: boolean;
     className?: string;
     children?: React.ReactNode;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 };
 
-export function Card({ className, children, animated = false }: CardProps) {
+export function Card({
+    className,
+    children,
+    animated = false,
+    onMouseEnter,
+    onMouseLeave
+}: CardProps) {
     return (
         <article
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             className={clsx(
                 `rounded-lg bg-white shadow-md`,
                 `inline-flex`,

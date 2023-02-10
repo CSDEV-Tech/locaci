@@ -19,8 +19,9 @@ export type PropertySearchCardProps = {
     className?: string;
     housingPeriod?: number;
     href: string;
-    customLink?: LinkProps['Custom'];
     size?: 'small' | 'medium';
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 };
 
 function getHousingPeriodLabel(
@@ -48,14 +49,17 @@ export function PropertySearchCard({
     className,
     numberOfBedRooms,
     href,
-    customLink,
+    onMouseEnter,
+    onMouseLeave,
     size = 'medium'
 }: PropertySearchCardProps) {
     return (
         <Card
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             className={clsx(
                 className,
-                'inline-flex flex-col',
+                'group inline-flex flex-col',
                 'relative w-full',
                 'border !shadow-sm'
             )}>
@@ -75,7 +79,7 @@ export function PropertySearchCard({
                 <Link
                     href={href}
                     dynamic
-                    Custom={customLink}
+                    target="_blank"
                     className={clsx(
                         `text-dark`,
                         `after:absolute after:inset-0`,
