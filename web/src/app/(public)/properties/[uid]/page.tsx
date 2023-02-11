@@ -47,10 +47,7 @@ import { headers } from 'next/headers';
 export const dynamic = 'force-dynamic';
 
 export default function DetailPage({ params }: PageProps<{ uid: string }>) {
-    const isTextHTMLRequest =
-        headers().get('Accept')?.includes('text/html') ?? false;
-
-    const property = use(getPropertyDetail(params.uid, !isTextHTMLRequest));
+    const property = use(getPropertyDetail(params.uid));
 
     if (!property) {
         notFound();

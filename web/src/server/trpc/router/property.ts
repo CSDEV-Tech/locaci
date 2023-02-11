@@ -67,8 +67,7 @@ export const propertyRouter = t.router({
     getPropertyDetail: t.procedure
         .input(
             z.object({
-                uid: z.string(),
-                slowdown: z.boolean().optional().default(false)
+                uid: z.string()
             })
         )
         .query(async ({ ctx, input }) => {
@@ -76,8 +75,9 @@ export const propertyRouter = t.router({
                 const uid = Uuid.fromShort(input.uid);
 
                 // wait at least take 1 second to provide a nicer UX
-                const [property] = await Promise.all([
-                    Cache.get(CacheKeys.properties.single(uid.toString()), () =>
+                const property = await Cache.get(
+                    CacheKeys.properties.single(uid.toString()),
+                    () =>
                         ctx.prisma.property.findFirst({
                             where: {
                                 id: uid.toString(),
@@ -92,10 +92,7 @@ export const propertyRouter = t.router({
                                 rooms: true
                             }
                         })
-                    ),
-                    wait(input.slowdown ? 1000 : 0)
-                ]);
-
+                );
                 const similarProperties = property
                     ? await Cache.get(
                           CacheKeys.properties.similar(uid.toString()),
