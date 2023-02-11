@@ -56,11 +56,13 @@ export function ImageSlider({
                 className
             )}>
             {imageURIs.length > 1 && (
-                <button
-                    className="absolute left-2 z-20 rounded-full bg-white p-1 shadow-md group-hover:inline-block lg:hidden"
-                    onClick={scrollPrev}>
-                    <CaretLeftIcon className="h-4 w-4" />
-                </button>
+                <div className="absolute z-20 flex h-full items-center px-2">
+                    <button
+                        className="rounded-full bg-white p-1 shadow-md group-hover:inline-block lg:hidden"
+                        onClick={scrollPrev}>
+                        <CaretLeftIcon className="h-4 w-4" />
+                    </button>
+                </div>
             )}
             <div className="h-full w-full overflow-hidden" ref={emblaRef}>
                 <ul className="flex h-full w-full">
@@ -82,11 +84,13 @@ export function ImageSlider({
             </div>
 
             {imageURIs.length > 1 && (
-                <button
-                    className="absolute right-2 z-20 rounded-full bg-white p-1 shadow-md group-hover:inline-block lg:hidden"
-                    onClick={scrollNext}>
-                    <CaretRightIcon className="h-4 w-4" />
-                </button>
+                <div className="absolute right-0  z-20 flex h-full items-center px-2">
+                    <button
+                        className="rounded-full bg-white p-1 shadow-md group-hover:inline-block lg:hidden"
+                        onClick={scrollNext}>
+                        <CaretRightIcon className="h-4 w-4" />
+                    </button>
+                </div>
             )}
 
             {imageURIs.length > 1 && (
