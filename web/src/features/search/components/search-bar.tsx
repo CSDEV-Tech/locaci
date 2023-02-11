@@ -41,7 +41,7 @@ export function SearchBar({
         defaultValues?.rentType ?? null
     );
     const [maxPrice, setMaxPrice] = React.useState(50_000);
-    const [noOfRooms, setNoOfRooms] = React.useState(1);
+    const [maxNoOfRooms, setMaxNoOfRooms] = React.useState(1);
     const [municipalityQuery, setMunicipalityQuery] = React.useState(
         defaultValues?.municipalityQuery ?? ''
     );
@@ -140,7 +140,7 @@ export function SearchBar({
             {!minimalStyle ? (
                 <>
                     <NumberInput
-                        name="noOfRooms"
+                        name="maxNoOfRooms"
                         required
                         min={1}
                         className={clsx(
@@ -149,10 +149,10 @@ export function SearchBar({
                             'lg:h-full lg:!border'
                         )}
                         label="Nombre de pièces"
-                        value={noOfRooms}
+                        value={maxNoOfRooms}
                         labelIncrementButton={`Augmenter le nombre de pièces`}
                         labelDecrementButton={`Diminuer le nombre de pièces`}
-                        onChange={setNoOfRooms}
+                        onChange={setMaxNoOfRooms}
                         rootClassName={clsx(`w-full`, `lg:w-[220px]`)}
                         showButtons
                     />
