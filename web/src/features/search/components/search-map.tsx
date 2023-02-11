@@ -227,6 +227,8 @@ export function SearchMap() {
 
                                 // Search in the zone
                                 searchParams.delete('bbox');
+                                searchParams.delete('municipalityId[label]');
+                                searchParams.delete('municipalityId[value]');
                                 searchParams.append('bbox', bbox.join(','));
 
                                 router.push(
