@@ -93,7 +93,7 @@ export function SearchListResult(props: SearchListResultProps) {
                     }
                 />
             ) : (
-                <section className="flex w-full flex-col items-start gap-4">
+                <section className="flex w-full flex-col items-start gap-4 pb-24 lg:pb-0">
                     {data!.properties.length !== 0 && (
                         <h2 className="text-lg">
                             <strong className="font-medium">
@@ -107,7 +107,7 @@ export function SearchListResult(props: SearchListResultProps) {
                         </h2>
                     )}
 
-                    <ul className="grid w-full place-content-stretch place-items-stretch  gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    <ul className="grid w-full place-content-stretch place-items-stretch gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                         {data!.properties.length === 0 ? (
                             <li className="flex w-full flex-col gap-4 sm:col-span-2 md:col-span-3 lg:col-span-2 xl:col-span-3 2xl:col-span-4">
                                 <h1 className="w-full text-2xl font-medium">

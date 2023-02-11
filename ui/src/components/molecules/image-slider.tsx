@@ -57,7 +57,7 @@ export function ImageSlider({
             )}>
             {imageURIs.length > 1 && (
                 <button
-                    className="absolute left-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
+                    className="absolute left-2 z-20 rounded-full bg-white p-1 shadow-md group-hover:inline-block lg:hidden"
                     onClick={scrollPrev}>
                     <CaretLeftIcon className="h-4 w-4" />
                 </button>
@@ -83,7 +83,7 @@ export function ImageSlider({
 
             {imageURIs.length > 1 && (
                 <button
-                    className="absolute right-2 z-20 hidden rounded-full bg-white p-1 group-hover:inline-block"
+                    className="absolute right-2 z-20 rounded-full bg-white p-1 shadow-md group-hover:inline-block lg:hidden"
                     onClick={scrollNext}>
                     <CaretRightIcon className="h-4 w-4" />
                 </button>
