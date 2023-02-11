@@ -138,11 +138,13 @@ export function SearchMap() {
 
             // Get the card shown in the list on mobile view and scroll to it
             const cardElement = document.querySelector(
-                `li#map-card-${element.id}`
+                `li[id="map-card-${element.id}"]`
             ) as HTMLLIElement | null;
+
             if (cardElement) {
                 cardElement.scrollIntoView({
-                    behavior: 'smooth'
+                    behavior: 'smooth',
+                    inline: 'start'
                 });
             }
 
@@ -170,28 +172,35 @@ export function SearchMap() {
         };
     }, []);
 
+    // this is to fix a bug where even if the map is hidden, leaflet still registers a 'move' event
+    // and updates the coordinates, the fix is to not show the map if it is not in view, and always show the map in desktop
+    const isDesktop = useMediaQuery(`(min-width: 1024px)`);
+    const isHandheldDevice = useMediaQuery(`(max-width: 1023px)`);
+    const canShowMap =
+        (isHandheldDevice && searchParsed.view === 'MAP') || isDesktop;
+
+    const isTablet = useMediaQuery(
+        `(min-width: 768px) and (max-width: 1023px)`
+    );
+
     // Deselect the current popup when the user clicks outside of it
     const selectedPropertyCardRef = React.useRef<HTMLElement>(null);
     useOnClickOutside(
         selectedPropertyCardRef,
         () => {
-            if (selectedId !== null) {
-                const selectedPin = document.querySelector(
-                    `[data-type="search-map-pin"][id="${selectedId}"]`
-                ) as HTMLElement | null;
-                deselectPin(selectedPin);
-            }
+            if (isTablet || isDesktop) {
+                if (selectedId !== null) {
+                    const selectedPin = document.querySelector(
+                        `[data-type="search-map-pin"][id="${selectedId}"]`
+                    ) as HTMLElement | null;
+                    deselectPin(selectedPin);
+                }
 
-            setSelectedId(null);
+                setSelectedId(null);
+            }
         },
         'mouseup'
     );
-
-    // this is to fix a bug where even if the map is hidden, leaflet still registers a 'move' event
-    // and updates the coordinates, the fix is to not show the map if it is not in view, and always show the map in desktop
-    const isDesktop = useMediaQuery(`(min-width: 1024px)`);
-    const isTablet = useMediaQuery(`(max-width: 1023px)`);
-    const canShowMap = (isTablet && searchParsed.view === 'MAP') || isDesktop;
 
     return (
         <>
@@ -264,8 +273,8 @@ export function SearchMap() {
                     ))}
 
                     {selectedId && !isFetching && (
-                        <ul className="absolute bottom-6 z-10 flex w-full items-stretch gap-4 overflow-scroll px-4 md:hidden">
-                            {data?.properties.map(({ document: p }) => (
+                        <ul className="absolute bottom-6 z-10 flex w-full items-stretch gap-4 overflow-scroll px-4 pb-4 md:hidden">
+                            {markers.map(p => (
                                 <li
                                     key={`map-card-${p.id}`}
                                     id={`map-card-${p.id}`}>
