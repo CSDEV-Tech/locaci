@@ -35,16 +35,27 @@ import {
 import { env } from '~/env/client.mjs';
 
 // types
-import type { PageProps } from '~/next-app-types';
+import type { MetadataParams, PageProps } from '~/next-app-types';
 import type { BoundingBox } from '~/lib/types';
 import type { RoomType } from '~/features/shared/types';
 import type { ListingImage } from '~/features/shared/types';
-import { headers } from 'next/headers';
+import type { Metadata } from 'next';
 
 // this is a dynamic page, we are obliged to do this
 // because there is a bug with next considering dynamic pages as static,
 // even without generateStaticParams
 export const dynamic = 'force-dynamic';
+
+export function generateMetadata({
+    params
+}: MetadataParams<{ uid: string }>): Metadata {
+    return {
+        metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
+        alternates: {
+            canonical: `/properties/${params.uid}`
+        }
+    };
+}
 
 export default function DetailPage({ params }: PageProps<{ uid: string }>) {
     const property = use(getPropertyDetail(params.uid));

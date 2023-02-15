@@ -1,20 +1,16 @@
 // utils
-import {
-    capitalize,
-    excerpt,
-    getMetadata,
-    getPropertyTitle
-} from '~/lib/functions';
+import { capitalize, getMetadata, getPropertyTitle } from '~/lib/functions';
 import { getPropertyDetail } from '~/server/trpc/rsc/cached-queries';
 import { formatNumberToFCFA } from '@locaci/ui/lib/functions';
 
 // types
-import type { LayoutProps, MetadataResult } from '~/next-app-types';
+import type { LayoutProps, MetadataParams } from '~/next-app-types';
 import type { ListingImage } from '~/features/shared/types';
+import type { Metadata } from 'next';
 
 export async function generateMetadata({
     params
-}: MetadataResult<{ uid: string }>) {
+}: MetadataParams<{ uid: string }>): Promise<Metadata> {
     const property = await getPropertyDetail(params.uid);
 
     let title = 'Erreur 404';

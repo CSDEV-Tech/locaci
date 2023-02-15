@@ -402,6 +402,8 @@ export function getMetadata(props: {
     imageURL?: string;
     type?: 'website' | 'article';
     articlePublishedAt?: Date;
+    path?: string;
+    noIndex?: boolean;
 }): Metadata {
     const title =
         props.title ?? 'Trouvez votre prochain Logement en quelques clics';
@@ -415,31 +417,44 @@ export function getMetadata(props: {
 
     const contentType = props.type ?? 'website';
 
+    const url = props.path ?? '/';
+
     return {
-        title,
-        description,
-        openGraph: {
-            // @ts-expect-error
-            title,
-            description,
-            // @ts-ignore
-            type: contentType,
-            publishedTime: props.articlePublishedAt?.toDateString(),
-            images: [
-                {
-                    url: metaImgURL
-                }
-            ]
+        metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
+        alternates: {
+            canonical: url
         },
-        twitter: {
-            title,
-            description,
-            card: 'summary_large_image',
-            images: [
-                {
-                    url: metaImgURL
-                }
-            ]
-        }
+        description,
+        title,
+        robots: {
+            index: !Boolean(props.noIndex)
+        },
+        openGraph: props.noIndex
+            ? undefined
+            : {
+                  title,
+                  description,
+                  type: contentType,
+                  publishedTime: props.articlePublishedAt?.toDateString(),
+                  images: [
+                      {
+                          url: metaImgURL
+                      }
+                  ]
+              },
+        twitter: props.noIndex
+            ? undefined
+            : {
+                  title,
+                  description,
+                  card: 'summary_large_image',
+                  images: [
+                      {
+                          url: metaImgURL
+                      }
+                  ]
+              }
     };
 }
+
+export function getCanonical(path: string) {}

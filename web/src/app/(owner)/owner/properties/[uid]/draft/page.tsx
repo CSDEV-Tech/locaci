@@ -7,16 +7,21 @@ import { HydrateClient } from '~/server/trpc/rsc/HydrateClient';
 // utils
 import { notFound } from 'next/navigation';
 import { rsc } from '~/server/trpc/rsc';
+import { getMetadata } from '~/lib/functions';
 
 // types
 import type { PageProps } from '~/next-app-types';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = {
-    title: 'Créer un nouveau logement'
-};
 
+export function generateMetadata(): Metadata {
+    return getMetadata({
+        title: 'Créer un nouveau logement',
+        path: '/owner',
+        noIndex: true
+    });
+}
 export default async function AddDraftPage({
     params
 }: PageProps<{ uid: string }>) {

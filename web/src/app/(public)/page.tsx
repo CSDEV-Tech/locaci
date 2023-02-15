@@ -20,12 +20,22 @@ import { rsc } from '~/server/trpc/rsc';
 import { use } from 'react';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
+import { env } from '~/env/server.mjs';
+
+// types
+import type { Metadata } from 'next';
 
 // this page should be static, and revalidated each day
 export const dynamic = 'force-static',
     revalidate = 86400;
 
-// types
+export const metadata: Metadata = {
+    metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
+    alternates: {
+        canonical: '/'
+    }
+};
+
 export default async function HomePage() {
     return (
         <>

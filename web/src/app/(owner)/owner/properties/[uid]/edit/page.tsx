@@ -7,16 +7,21 @@ import { EditPropertyPropertyForm } from '~/features/edit-property/components/ed
 // utils
 import { notFound } from 'next/navigation';
 import { rsc } from '~/server/trpc/rsc';
+import { getMetadata } from '~/lib/functions';
 
 // types
 import type { PageProps } from '~/next-app-types';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = {
-    title: 'Editer un logement'
-};
 
+export function generateMetadata(): Metadata {
+    return getMetadata({
+        title: 'Editer un logement',
+        path: '/owner',
+        noIndex: true
+    });
+}
 export default async function EditPropertyPage({
     params
 }: PageProps<{ uid: string }>) {

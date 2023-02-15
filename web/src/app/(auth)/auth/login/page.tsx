@@ -3,17 +3,21 @@ import { LoginForm } from '~/features/auth/components/login-form';
 
 // utils
 import { redirect } from 'next/navigation';
-import { getRoleURL } from '~/lib/functions';
+import { getMetadata, getRoleURL } from '~/lib/functions';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getUser } from '~/server/trpc/rsc/getUser';
-import { PageProps } from '~/next-app-types';
+import { env } from '~/env/server.mjs';
 
 // types
 import type { Metadata } from 'next';
+import type { PageProps } from '~/next-app-types';
 
-export const metadata: Metadata = {
-    title: 'Connexion'
-};
+export function generateMetadata(): Metadata {
+    return getMetadata({
+        title: 'Connexion',
+        path: '/auth/login'
+    });
+}
 
 export default async function LoginPage({
     searchParams

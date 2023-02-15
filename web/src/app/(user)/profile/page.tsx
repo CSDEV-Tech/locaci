@@ -11,16 +11,20 @@ import { getUserOrRedirect } from '~/server/trpc/rsc/cached-queries';
 import { use } from 'react';
 import { rsc } from '~/server/trpc/rsc';
 import { Uuid } from '~/lib/uuid';
-import { getPropertyTitle } from '~/lib/functions';
+import { getMetadata, getPropertyTitle } from '~/lib/functions';
 import { formatDateToFrenchDate } from '@locaci/ui/lib/functions';
 
 // types
 import type { ListingImage } from '~/features/shared/types';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-    title: 'Votre profil'
-};
+export function generateMetadata(): Metadata {
+    return getMetadata({
+        title: 'Votre profil',
+        path: '/profile',
+        noIndex: true
+    });
+}
 
 export default function ProfilePage() {
     const user = use(getUserOrRedirect());

@@ -10,13 +10,18 @@ import { BookingList } from '~/features/owner/components/booking-list';
 // utils
 import { rsc } from '~/server/trpc/rsc';
 import { use } from 'react';
+import { getMetadata } from '~/lib/functions';
 
 // types
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-    title: 'Tableau de bord'
-};
+export function generateMetadata(): Metadata {
+    return getMetadata({
+        title: 'Tableau de bord',
+        path: '/owner',
+        noIndex: true
+    });
+}
 
 export default function OwnerDashboardPage() {
     return (

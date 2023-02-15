@@ -12,7 +12,7 @@ export type LayoutProps<TParams extends PageParams = {}> = {
     params: TParams;
 };
 
-export type MetadataResult<
+export type MetadataParams<
     TParams extends PageParams = {},
     TSearchParams extends any = Record<string, string | undefined>
 > = {

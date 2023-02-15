@@ -19,22 +19,27 @@ import { use } from 'react';
 import { getAllMunicipalities } from '~/server/trpc/rsc/cached-queries';
 import { rsc } from '~/server/trpc/rsc';
 import { headers } from 'next/headers';
-import { getTitleForSearchParams, parseSearchParams } from '~/lib/functions';
+import {
+    getMetadata,
+    getTitleForSearchParams,
+    parseSearchParams
+} from '~/lib/functions';
 
 // this is a dynamic page,
 // FIXME: see https://github.com/vercel/next.js/issues/44744
 export const dynamic = 'force-dynamic';
 
 // types
-import type { MetadataResult, PageProps } from '~/next-app-types';
+import type { MetadataParams, PageProps } from '~/next-app-types';
 import type { Metadata } from 'next';
 
-export async function generateMetadata({ searchParams }: MetadataResult) {
+export function generateMetadata({ searchParams }: MetadataParams): Metadata {
     const searchParsed = parseSearchParams(searchParams!);
     const title = getTitleForSearchParams(searchParsed);
-    return {
-        title
-    } satisfies Metadata;
+    return getMetadata({
+        title,
+        path: `/search`
+    });
 }
 
 export default function SearchPage({ searchParams }: PageProps) {

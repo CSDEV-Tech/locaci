@@ -16,15 +16,16 @@ import { rsc } from '~/server/trpc/rsc';
 import { capitalize, getPropertyTitle } from '~/lib/functions';
 
 // types
-import type { MetadataResult, PageProps } from '~/next-app-types';
+import type { MetadataParams, PageProps } from '~/next-app-types';
 import { Metadata } from 'next';
+import { env } from '~/env/server.mjs';
 
 // this is a dynamic page
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
     params
-}: MetadataResult<{ uid: string }>) {
+}: MetadataParams<{ uid: string }>): Promise<Metadata> {
     const property = await getPropertyDetail(params.uid);
 
     let title = 'Erreur 404';
@@ -42,13 +43,16 @@ export async function generateMetadata({
     return {
         title,
         openGraph: {
-            // @ts-expect-error
             title
         },
         twitter: {
             title
+        },
+        metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
+        alternates: {
+            canonical: `/properties/${params.uid}/book`
         }
-    } satisfies Metadata;
+    };
 }
 
 export default function BookingPage({ params }: PageProps<{ uid: string }>) {
