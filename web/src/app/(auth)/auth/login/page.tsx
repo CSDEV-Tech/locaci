@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { getMetadata, getRoleURL } from '~/lib/functions';
 import { clsx } from '@locaci/ui/lib/functions';
 import { getUser } from '~/server/trpc/rsc/getUser';
-import { env } from '~/env/server.mjs';
+import { use } from 'react';
 
 // types
 import type { Metadata } from 'next';
@@ -19,11 +19,11 @@ export function generateMetadata(): Metadata {
     });
 }
 
-export default async function LoginPage({
+export default function LoginPage({
     searchParams
 }: PageProps<{}, { force_login?: string; redirect_to?: string }>) {
     if (searchParams?.force_login !== 'true') {
-        const user = await getUser();
+        const user = use(getUser());
 
         if (user) {
             redirect(getRoleURL(user.role));
