@@ -1,14 +1,14 @@
 // utils
 import { getUserFromSessionToken } from '~/server/utils';
+import { getCookie } from '~/lib/functions';
 import { prisma } from '~/server/db/client';
 import { TypeSenseSearch } from '../typesense-search';
 import { env } from '~/env/server.mjs';
 
 // types
-import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
+import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import type { User } from '@prisma/client';
 import type * as trpc from '@trpc/server';
-import { cookies } from 'next/headers';
 
 export const createContext = async (
     opts:
@@ -16,7 +16,7 @@ export const createContext = async (
               type: 'rsc';
               getUser: () => Promise<User | null>;
           }
-        | (FetchCreateContextFnOptions & { type: 'api' })
+        | (CreateNextContextOptions & { type: 'api' })
 ) => {
     const searchClient = new TypeSenseSearch(
         env.TYPESENSE_SEARCH_API_KEY,
@@ -33,17 +33,22 @@ export const createContext = async (
         };
     }
 
-    const { type: _, ..._opts } = opts;
+    const req = opts?.req;
+    const res = opts?.res;
 
     // get user from cookie
     let user: User | null = null;
-    const sessionToken = cookies().get(`__session`)?.value;
-    if (sessionToken) {
-        user = await getUserFromSessionToken(sessionToken);
+    if (req?.headers.cookie) {
+        const sessionToken = getCookie('__session', req?.headers.cookie);
+
+        if (sessionToken) {
+            user = await getUserFromSessionToken(sessionToken);
+        }
     }
 
     return {
-        ...opts,
+        req,
+        res,
         prisma,
         user,
         typesense: searchClient
