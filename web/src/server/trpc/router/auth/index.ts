@@ -163,18 +163,23 @@ export const authRouter = t.router({
                 }
             );
 
-            ctx.res?.setHeader(
-                'set-cookie',
-                `__session=${token}; path=/; samesite=Lax; httponly; expires=${expirationDate.toUTCString()}`
-            );
+            if (ctx.type === 'api') {
+                ctx.resHeaders.set(
+                    'set-cookie',
+                    `__session=${token}; path=/; samesite=Lax; httponly; expires=${expirationDate.toUTCString()}`
+                );
+            }
 
             return { success: true };
         }),
     removeAuthCookie: t.procedure.mutation(async ({ ctx }) => {
-        ctx.res?.setHeader(
-            'set-cookie',
-            `__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=Lax; httponly;`
-        );
+        if (ctx.type === 'api') {
+            ctx.resHeaders.set(
+                'set-cookie',
+                `__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=Lax; httponly;`
+            );
+        }
+
         return { success: true };
     }),
 
@@ -271,10 +276,12 @@ export const authRouter = t.router({
                 }
             );
 
-            ctx.res?.setHeader(
-                'set-cookie',
-                `__session=${token}; path=/; samesite=Lax; httponly; expires=${expirationDate.toUTCString()}`
-            );
+            if (ctx.type === 'api') {
+                ctx.resHeaders.set(
+                    'set-cookie',
+                    `__session=${token}; path=/; samesite=Lax; httponly; expires=${expirationDate.toUTCString()}`
+                );
+            }
 
             return {
                 role: user.role
