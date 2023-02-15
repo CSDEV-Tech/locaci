@@ -42,13 +42,13 @@ export function HeaderSearchButton(props: HeaderSearchButtonProps) {
                             'lg:mx-8 lg:w-fit lg:shadow-none'
                         )}
                         defaultValues={{
-                            municipalityQuery: searchParams.get(
+                            municipalityQuery: searchParams?.get(
                                 'municipalityId[label]'
                             ),
-                            municipalityValue: searchParams.get(
+                            municipalityValue: searchParams?.get(
                                 'municipalityId[value]'
                             ),
-                            rentType: searchParams.get(
+                            rentType: searchParams?.get(
                                 'rentType'
                             ) as RentType | null
                         }}

@@ -50,10 +50,10 @@ export function SearchBar({
     );
 
     React.useEffect(() => {
-        const municipalitySearchQuery = searchParams.get(
+        const municipalitySearchQuery = searchParams?.get(
             'municipalityId[label]'
         );
-        const municipalityId = searchParams.get('municipalityId[value]');
+        const municipalityId = searchParams?.get('municipalityId[value]');
 
         if (
             municipalitySearchQuery &&

@@ -14,15 +14,13 @@ export function ScrollUp() {
         if (path !== '/search') {
             window.document.scrollingElement?.scrollTo(0, 0);
         } else {
-            document
-                .querySelector('main')
-                ?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                    inline: 'nearest'
-                });
+            document.querySelector('main')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest'
+            });
         }
-    }, [path, searchParams.toString()]);
+    }, [path, searchParams?.toString()]);
 
     return null;
 }
