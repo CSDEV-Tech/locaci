@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'locaci-web',
-            script: 'standalone/server.js',
+            script: 'web/standalone/server.js',
             time: true,
             instances: 3,
             autorestart: true,
