@@ -40,11 +40,7 @@ export const metadata: Metadata = {
         description:
             "Découvrez le premier site de recherche et gestion locative de Côte d'Ivoire, pour les bailleurs & locataires.",
         url: new URL(`/`, env.NEXT_PUBLIC_SITE_URL),
-        images: [
-            {
-                url: new URL(`/logo.png`, env.NEXT_PUBLIC_SITE_URL)
-            }
-        ],
+        images: [new URL(`/logo.png`, env.NEXT_PUBLIC_SITE_URL)],
         siteName: 'LOCACI',
         locale: 'fr-FR'
     },

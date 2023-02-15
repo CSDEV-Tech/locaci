@@ -436,11 +436,7 @@ export function getMetadata(props: {
                   description,
                   type: contentType,
                   publishedTime: props.articlePublishedAt?.toDateString(),
-                  images: [
-                      {
-                          url: metaImgURL
-                      }
-                  ]
+                  images: [metaImgURL]
               },
         twitter: props.noIndex
             ? undefined
