@@ -97,8 +97,8 @@ jobs:
           rsync -a web/.next/static/ standalone/web/.next/static
 
           # Replace port variable to support multiport with pm2 cluster_mode
-          sed -i 's/parseInt(process.env.PORT, 10)/parseInt(process.env.PORT, 10) + parseInt(process.env.INSTANCE_ID, 10)/g' standalone/server.js
-          sed -i 's/localhost/0.0.0.0/g' standalone/server.js 
+          sed -i 's/parseInt(process.env.PORT, 10)/parseInt(process.env.PORT, 10) + parseInt(process.env.INSTANCE_ID, 10)/g' standalone/web/server.js
+          sed -i 's/localhost/0.0.0.0/g' standalone/web/server.js 
 
           echo "sharp path: $DEPLOY_DIR/node_modules/sharp"
           sed -i "s#{{SHARP_PATH}}#$DEPLOY_DIR/node_modules/sharp#g" ecosystem.config.js 
