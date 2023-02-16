@@ -19,7 +19,7 @@ import {
     sendOtpSchema,
     verifyOtpSchema
 } from '~/lib/validation-schemas/auth-schema';
-import { getHostWithScheme } from '~/lib/functions';
+import { getHostWithScheme, getRoleURL } from '~/lib/functions';
 import { env } from '~/env/client.mjs';
 import toast from 'react-hot-toast';
 
@@ -59,14 +59,14 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
     });
 
     const verifyOtpMutation = t.auth.verifyOtpCode.useMutation({
-        onSuccess() {
+        onSuccess({ role }) {
             // refresh to redirect to login
             toast.success(`Connexion effectuée avec succès`);
             startTransition(() => {
                 if (redirectTo) {
-                    router.push(redirectTo);
+                    router.replace(redirectTo);
                 } else {
-                    router.refresh();
+                    router.replace(getRoleURL(role));
                 }
             });
         }

@@ -170,7 +170,7 @@ export const authRouter = t.router({
                 );
             }
 
-            return { success: true };
+            return { role: user.role };
         }),
     removeAuthCookie: t.procedure.mutation(async ({ ctx }) => {
         if (ctx.type === 'api') {
