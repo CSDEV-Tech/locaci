@@ -29,7 +29,8 @@ const nextConfig = defineNextConfig({
     },
     experimental: {
         appDir: true,
-        enableUndici: true
+        enableUndici: true,
+        serverComponentsExternalPackages: ['typesense', 'aws-sdk', 'short-uuid']
     },
     reactStrictMode: false,
     swcMinify: true,
@@ -56,4 +57,5 @@ const withBundleAnalyzer = analyze({
     enabled: process.env.ANALYZE === 'true'
 });
 
-export default withBundleAnalyzer(nextConfig);
+// export default withBundleAnalyzer(nextConfig);
+export default nextConfig;
