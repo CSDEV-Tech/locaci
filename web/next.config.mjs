@@ -30,7 +30,12 @@ const nextConfig = defineNextConfig({
     experimental: {
         appDir: true,
         enableUndici: true,
-        serverComponentsExternalPackages: ['typesense', 'aws-sdk', 'short-uuid']
+        serverComponentsExternalPackages: [
+            'typesense',
+            'aws-sdk',
+            'short-uuid',
+            'jsonwebtoken'
+        ]
     },
     reactStrictMode: false,
     swcMinify: true,
