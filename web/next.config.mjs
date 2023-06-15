@@ -30,6 +30,8 @@ const nextConfig = defineNextConfig({
     experimental: {
         appDir: true,
         enableUndici: true,
+        // FIXME: https://github.com/vercel/next.js/issues/46320
+        // typedRoutes: true,
         serverComponentsExternalPackages: [
             'typesense',
             'aws-sdk',

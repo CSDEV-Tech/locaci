@@ -6,7 +6,7 @@ import { env } from '~/env/server.mjs';
 const handler = (req: Request) =>
     fetchRequestHandler({
         endpoint: '/api/trpc',
-        req: req,
+        req,
         router: appRouter,
         createContext(opts) {
             return createContext({

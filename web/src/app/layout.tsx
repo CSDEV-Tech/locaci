@@ -8,7 +8,7 @@ import { RASSRProvider } from '~/features/shared/components/react-aria-ssr-provi
 import { ScrollUp } from './scroll-up';
 
 // utils
-import { Poppins } from '@next/font/google';
+import { Poppins } from 'next/font/google';
 import { env } from '~/env/server.mjs';
 
 // types

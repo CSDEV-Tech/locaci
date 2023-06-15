@@ -5,7 +5,7 @@ import { ErrorScreen } from '~/features/shared/components/error-screen';
 import { NextLinkButton } from '~/features/shared/components/next-link';
 
 // utils
-import { Poppins } from '@next/font/google';
+import { Poppins } from 'next/font/google';
 
 // types
 import type { ErrorBoundaryProps } from '~/next-app-types';

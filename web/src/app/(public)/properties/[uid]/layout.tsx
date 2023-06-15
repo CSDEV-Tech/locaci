@@ -10,7 +10,9 @@ import type { Metadata } from 'next';
 
 export async function generateMetadata({
     params
-}: MetadataParams<{ uid: string }>): Promise<Metadata> {
+}: {
+    params: { uid: string };
+}): Promise<Metadata> {
     const property = await getPropertyDetail(params.uid);
 
     let title = 'Erreur 404';
