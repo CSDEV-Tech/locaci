@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { DropZone, DropZoneProps } from '../../components/organisms/drop-zone';
 import { mockImgBase64 } from '../assets/constants';
 
@@ -10,20 +10,16 @@ export default {
         variant: { control: 'select' },
         filesTypesAccepted: { control: 'select' }
     }
-} as ComponentMeta<typeof DropZone>;
+} as Meta<typeof DropZone>;
 
-// 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof DropZone> = args => (
-    <DropZone {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-    className: 'min-h-[400px]',
-    buttonLabel: 'Cliquez pour ajouter une photo',
-    secondLabel: 'Faites glisser vos fichiers',
-    helpText: 'Taille maximum de fichier acceptée : 20 mégabytes'
-} as DropZoneProps;
+export const Default = {
+    args: {
+        className: 'min-h-[400px]',
+        buttonLabel: 'Cliquez pour ajouter une photo',
+        secondLabel: 'Faites glisser vos fichiers',
+        helpText: 'Taille maximum de fichier acceptée : 20 mégabytes'
+    } as DropZoneProps
+};
 
 function dataURLtoFile(dataurl: string, filename: string) {
     let arr = dataurl.split(',');
@@ -39,62 +35,63 @@ function dataURLtoFile(dataurl: string, filename: string) {
     return new File([u8arr], filename, { type: mime });
 }
 
-export const WithDefaultFiles = Template.bind({});
-WithDefaultFiles.args = {
-    className: 'min-h-[400px]',
-    buttonLabel: 'Cliquez pour ajouter une photo',
-    secondLabel: 'Faites glisser vos fichiers',
-    helpText: 'Taille maximum de fichier acceptée : 20 mégabytes',
-    defaultFiles: [
-        {
-            name: 'image-1.jpeg',
-            fileObject: {
-                uri: 'https://picsum.photos/seed/img-1/1000/1000',
-                fileType: 'image'
+export const WithDefaultFiles = {
+    args: {
+        className: 'min-h-[400px]',
+        buttonLabel: 'Cliquez pour ajouter une photo',
+        secondLabel: 'Faites glisser vos fichiers',
+        helpText: 'Taille maximum de fichier acceptée : 20 mégabytes',
+        defaultFiles: [
+            {
+                name: 'image-1.jpeg',
+                fileObject: {
+                    uri: 'https://picsum.photos/seed/img-1/1000/1000',
+                    fileType: 'image'
+                },
+                state: 'SUCCESS'
             },
-            state: 'SUCCESS'
-        },
-        {
-            name: 'document-1.pdf',
-            fileObject: {
-                uri: 'https://www.africau.edu/images/default/sample.pdf',
-                fileType: 'document'
+            {
+                name: 'document-1.pdf',
+                fileObject: {
+                    uri: 'https://www.africau.edu/images/default/sample.pdf',
+                    fileType: 'document'
+                },
+                state: 'SUCCESS'
             },
-            state: 'SUCCESS'
-        },
-        {
-            name: 'image-2.png',
-            fileObject: {
-                uri: 'https://picsum.photos/seed/img-2/1000/1000',
-                fileType: 'image'
+            {
+                name: 'image-2.png',
+                fileObject: {
+                    uri: 'https://picsum.photos/seed/img-2/1000/1000',
+                    fileType: 'image'
+                },
+                state: 'SUCCESS'
             },
-            state: 'SUCCESS'
-        },
-        {
-            name: 'document-2.pdf',
-            fileObject: {
-                uri: 'https://www.africau.edu/images/default/sample.pdf',
-                fileType: 'document'
+            {
+                name: 'document-2.pdf',
+                fileObject: {
+                    uri: 'https://www.africau.edu/images/default/sample.pdf',
+                    fileType: 'document'
+                },
+                state: 'SUCCESS'
             },
-            state: 'SUCCESS'
-        },
-        {
-            name: 'mock-image.jpeg',
-            fileObject: dataURLtoFile(mockImgBase64, 'mock-image.jpeg'),
-            state: 'SUCCESS'
-        },
-        {
-            name: 'uploading-file.pdf',
-            fileObject: {
-                uri: 'https://www.africau.edu/images/default/sample.pdf',
-                fileType: 'document'
+            {
+                name: 'mock-image.jpeg',
+                fileObject: dataURLtoFile(mockImgBase64, 'mock-image.jpeg'),
+                state: 'SUCCESS'
             },
-            state: 'UPLOADING'
-        },
-        {
-            name: 'error-file.pdf',
-            fileObject: dataURLtoFile(mockImgBase64, 'error-image.jpeg'),
-            state: 'ERROR'
-        }
-    ]
-} as DropZoneProps;
+            {
+                name: 'uploading-file.pdf',
+                fileObject: {
+                    uri: 'https://www.africau.edu/images/default/sample.pdf',
+                    fileType: 'document'
+                },
+                state: 'UPLOADING'
+            },
+            {
+                name: 'error-file.pdf',
+                fileObject: dataURLtoFile(mockImgBase64, 'error-image.jpeg'),
+                state: 'ERROR'
+            }
+        ]
+    } as DropZoneProps
+};

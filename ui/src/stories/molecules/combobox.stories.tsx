@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import { ComboBox, ComboBoxProps } from '../../components/molecules/combobox';
 
 export default {
@@ -10,33 +10,29 @@ export default {
             control: 'select'
         }
     }
-} as ComponentMeta<typeof ComboBox>;
+} as Meta<typeof ComboBox>;
 
-// 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof ComboBox> = args => (
-    <ComboBox {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-    className: 'w-80',
-    label: 'Commune',
-    value: 'ADJAMÉ',
-    options: [
-        {
-            label: 'Adjamé',
-            value: 'ADJAMÉ'
-        },
-        {
-            label: 'Cocody',
-            value: 'COCODY'
-        },
-        {
-            label: 'Angré',
-            value: 'ANGRÉ'
-        }
-    ]
-} as ComboBoxProps;
+export const Default = {
+    args: {
+        className: 'w-80',
+        label: 'Commune',
+        value: 'ADJAMÉ',
+        options: [
+            {
+                label: 'Adjamé',
+                value: 'ADJAMÉ'
+            },
+            {
+                label: 'Cocody',
+                value: 'COCODY'
+            },
+            {
+                label: 'Angré',
+                value: 'ANGRÉ'
+            }
+        ]
+    } as ComboBoxProps
+};
 
 function debounce<T extends Function>(callback: T, delay: number = 500): T {
     let timer: any;
@@ -181,56 +177,58 @@ const communes: Commune[] = [
     }
 ];
 
-export const CommuneSearch = () => {
-    const [query, setQuery] = React.useState('');
+export const CommuneSearch = {
+    render: () => {
+        const [query, setQuery] = React.useState('');
 
-    const [selectedCommune, setSelectedCommune] =
-        React.useState<Commune | null>(null);
+        const [selectedCommune, setSelectedCommune] =
+            React.useState<Commune | null>(null);
 
-    // const [isLoading, setIsLoading] = React.useState(false);
+        // const [isLoading, setIsLoading] = React.useState(false);
 
-    const filteredCommunes = React.useMemo(() => {
-        // setIsLoading(true);
-        // setFilteredCommunes(filtered =>
-        return communes.filter(c => {
-            const queryString = query.split(`-`)[0].trim();
+        const filteredCommunes = React.useMemo(() => {
+            // setIsLoading(true);
+            // setFilteredCommunes(filtered =>
+            return communes.filter(c => {
+                const queryString = query.split(`-`)[0].trim();
 
-            return (
-                c.nom
-                    .toLocaleLowerCase()
-                    .startsWith(queryString.toLocaleLowerCase()) ||
-                c.codePostal.startsWith(queryString)
-            );
-        });
-        // );
-        // setIsLoading(false);
-    }, [query]);
+                return (
+                    c.nom
+                        .toLocaleLowerCase()
+                        .startsWith(queryString.toLocaleLowerCase()) ||
+                    c.codePostal.startsWith(queryString)
+                );
+            });
+            // );
+            // setIsLoading(false);
+        }, [query]);
 
-    // const filterDeBounced = useDebouncedCallBack(filterByName, 1500);
+        // const filterDeBounced = useDebouncedCallBack(filterByName, 1500);
 
-    return (
-        <div className={`w-80`}>
-            <ComboBox
-                label="Ville de votre projet"
-                options={filteredCommunes.map(c => ({
-                    label: `${c.nom} - ${c.codePostal.substring(0, 2)}`,
-                    value: c.codePostal
-                }))}
-                value={selectedCommune?.codePostal}
-                onChange={c => {
-                    setSelectedCommune(
-                        communes.find(co => co.codePostal === c) ?? null
-                    );
-                }}
-                // isLoading={isLoading}
-                onSearch={query => {
-                    console.log('onSearch: ', { query });
+        return (
+            <div className={`w-80`}>
+                <ComboBox
+                    label="Ville de votre projet"
+                    options={filteredCommunes.map(c => ({
+                        label: `${c.nom} - ${c.codePostal.substring(0, 2)}`,
+                        value: c.codePostal
+                    }))}
+                    value={selectedCommune?.codePostal}
+                    onChange={c => {
+                        setSelectedCommune(
+                            communes.find(co => co.codePostal === c) ?? null
+                        );
+                    }}
+                    // isLoading={isLoading}
+                    onSearch={query => {
+                        console.log('onSearch: ', { query });
 
-                    setQuery(query);
-                }}
-            />
-        </div>
-    );
+                        setQuery(query);
+                    }}
+                />
+            </div>
+        );
+    },
+
+    name: 'Commune search'
 };
-
-CommuneSearch.storyName = 'Commune search';

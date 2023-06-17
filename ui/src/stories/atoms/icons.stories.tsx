@@ -71,17 +71,17 @@ import type {
     IconComponent,
     IconProps
 } from '../../components/atoms/icons/types';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 
 const DummyIcon = (props: IconProps) => <></>;
 
 export default {
     title: 'Composants/Atoms/Icons',
     component: DummyIcon
-} as ComponentMeta<IconComponent>;
+} as Meta<IconComponent>;
 
 // 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<IconComponent> = args => (
+const Template: StoryFn<IconComponent> = args => (
     <div className="grid  grid-cols-2 gap-4 text-white sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         <div className="flex flex-col items-center gap-2">
             <SignOutIcon className="h-10 w-10" />
@@ -405,5 +405,7 @@ const Template: ComponentStory<IconComponent> = args => (
     </div>
 );
 
-export const List = Template.bind({});
-List.args = {} as IconProps;
+export const List = {
+    render: Template,
+    args: {} as IconProps
+};

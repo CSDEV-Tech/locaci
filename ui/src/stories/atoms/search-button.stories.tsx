@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import {
     SearchButton,
     SearchButtonProps
@@ -8,14 +8,10 @@ import {
 export default {
     title: 'Composants/Atoms/SearchButton',
     component: SearchButton
-} as ComponentMeta<typeof SearchButton>;
+} as Meta<typeof SearchButton>;
 
-// 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof SearchButton> = args => (
-    <SearchButton {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-    children: 'Lancez votre recherche'
-} as SearchButtonProps;
+export const Default = {
+    args: {
+        children: 'Lancez votre recherche'
+    } as SearchButtonProps
+};

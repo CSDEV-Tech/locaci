@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import {
     Skeletons,
     SkeletonsProps
@@ -8,16 +8,12 @@ import {
 export default {
     title: 'Composants/Molecules/Skeletons',
     component: Skeletons
-} as ComponentMeta<typeof Skeletons>;
+} as Meta<typeof Skeletons>;
 
-// 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof Skeletons> = args => (
-    <Skeletons {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-    count: 4,
-    className: 'flex gap-2 items-center',
-    skeletonClass: `w-20 h-20`
-} as SkeletonsProps;
+export const Default = {
+    args: {
+        count: 4,
+        className: 'flex gap-2 items-center',
+        skeletonClass: `w-20 h-20`
+    } as SkeletonsProps
+};

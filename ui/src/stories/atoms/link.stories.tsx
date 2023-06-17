@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import { Link } from '../../components/atoms/link';
 
 export default {
@@ -10,14 +10,12 @@ export default {
             control: 'select'
         }
     }
-} as ComponentMeta<typeof Link>;
+} as Meta<typeof Link>;
 
-// 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof Link> = args => <Link {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-    children: 'Hello world',
-    href: '#',
-    className: 'text-white font-semibold'
+export const Default = {
+    args: {
+        children: 'Hello world',
+        href: '#',
+        className: 'text-white font-semibold'
+    }
 };

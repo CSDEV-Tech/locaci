@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import {
     LinkButton,
     LinkButtonProps
@@ -16,15 +16,11 @@ export default {
             control: `select`
         }
     }
-} as ComponentMeta<typeof LinkButton>;
+} as Meta<typeof LinkButton>;
 
-// 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof LinkButton> = args => (
-    <LinkButton {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-    children: 'Link',
-    href: '#'
-} as LinkButtonProps;
+export const Default = {
+    args: {
+        children: 'Link',
+        href: '#'
+    } as LinkButtonProps
+};

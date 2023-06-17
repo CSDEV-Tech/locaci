@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import { Progress, ProgressProps } from '../../components/atoms/progress';
 
 export default {
@@ -10,14 +10,10 @@ export default {
             control: 'select'
         }
     }
-} as ComponentMeta<typeof Progress>;
+} as Meta<typeof Progress>;
 
-// 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof Progress> = args => (
-    <Progress {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-    value: 50
-} as ProgressProps;
+export const Default = {
+    args: {
+        value: 50
+    } as ProgressProps
+};

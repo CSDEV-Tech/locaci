@@ -6,21 +6,15 @@ import { XCircleIcon } from './icons/x-circle';
 import { clsx } from '../../lib/functions';
 import { Button } from './button';
 
-export type InputProps<T> = {
-    value?: T;
-    label: string;
-    name?: string;
-    className?: string;
-    rootClassName?: string;
-    placeholder?: string;
-    disabled?: boolean;
-    autoFocus?: boolean;
-    required?: boolean;
-    errorText?: string;
-    helpText?: string;
-    autocomplete?: 'on' | 'off';
-    onBlur?: React.FocusEventHandler<HTMLInputElement>;
-};
+export type InputProps<T extends any = undefined> =
+    React.InputHTMLAttributes<HTMLInputElement> & {
+        value?: T;
+        label: string;
+        rootClassName?: string;
+        errorText?: string;
+        helpText?: string;
+        onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    };
 
 export interface TextInputProps extends Omit<InputProps<string>, 'value'> {
     appendix?: React.ReactNode;
@@ -55,7 +49,7 @@ export const TextInput = React.forwardRef<
             autoFocus,
             errorText,
             onBlur,
-            autocomplete,
+            autoComplete,
             helpText,
             rootClassName,
             defaultValue,
@@ -100,7 +94,7 @@ export const TextInput = React.forwardRef<
                             autoFocus={autoFocus}
                             onBlur={onBlur}
                             aria-invalid={!!errorText}
-                            autoComplete={autocomplete}
+                            autoComplete={autoComplete}
                             type={type}
                             value={value}
                             defaultValue={defaultValue}
@@ -175,7 +169,7 @@ export const TextInput = React.forwardRef<
     }
 );
 
-export interface NumberInputProps extends InputProps<number> {
+export interface NumberInputProps extends Omit<InputProps<number>, 'onChange'> {
     appendix?: React.ReactNode;
     showButtons?: boolean;
     min?: number;

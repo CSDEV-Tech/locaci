@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { StoryFn, Meta } from '@storybook/react';
 import {
     ListBoxOption,
     SearchAutocomplete,
@@ -12,10 +12,10 @@ export default {
     argTypes: {
         variant: { control: 'select' }
     }
-} as ComponentMeta<typeof SearchAutocomplete>;
+} as Meta<typeof SearchAutocomplete>;
 
 // 👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof SearchAutocomplete> = args => {
+const Template: StoryFn<typeof SearchAutocomplete> = args => {
     const [selectedCharacter, setSelectedCharacter] = React.useState<string>();
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -56,13 +56,19 @@ const Template: ComponentStory<typeof SearchAutocomplete> = args => {
     );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    label: 'Character List'
-} as SearchAutocompleteProps;
+export const Default = {
+    render: Template,
 
-export const WithInitialQuery = Template.bind({});
-WithInitialQuery.args = {
-    label: 'Character List',
-    initialQuery: 'Luke Skywalker'
-} as SearchAutocompleteProps;
+    args: {
+        label: 'Character List'
+    } as SearchAutocompleteProps
+};
+
+export const WithInitialQuery = {
+    render: Template,
+
+    args: {
+        label: 'Character List',
+        initialQuery: 'Luke Skywalker'
+    } as SearchAutocompleteProps
+};
