@@ -24,7 +24,6 @@
     },
     "include": [
         "next-env.d.ts",
-        "react-experimental.d.ts",
         "**/*.ts",
         "**/*.tsx",
         "**/*.js",
