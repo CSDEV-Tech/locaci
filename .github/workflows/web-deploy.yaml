@@ -84,7 +84,6 @@ jobs:
 
           # Return to root dir
           cd $DEPLOY_DIR
-          pnpm run --filter=web patch:next
           pnpm run --filter=web telemetry:disable
           pnpm run --filter=web db:prepare
           pnpm run --filter=web cache:clear
