@@ -3,11 +3,8 @@ import { clsx } from '../../lib/functions';
 import { LoadingIndicator } from './loading-indicator';
 
 export type ButtonProps = {
-    title?: string;
     renderLeadingIcon?: (classNames: string) => JSX.Element;
     renderTrailingIcon?: (classNames: string) => JSX.Element;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    disabled?: boolean;
     children?: React.ReactNode;
     variant?:
         | 'primary'
@@ -16,12 +13,9 @@ export type ButtonProps = {
         | 'outline'
         | 'dark'
         | 'danger';
-    type?: 'button' | 'submit' | 'reset';
-    role?: string;
     loadingMessage?: string;
     square?: boolean;
     circle?: boolean;
-    className?: string;
     loading?: boolean;
     block?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;

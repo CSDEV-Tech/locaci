@@ -1,23 +1,21 @@
 module.exports = {
-    stories: [
-        '../src/**/*.stories.mdx',
-        '../src/**/*.stories.@(js|jsx|ts|tsx)'
-    ],
+    stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
     addons: [
         '@storybook/addon-links',
         '@storybook/addon-essentials',
         '@storybook/addon-interactions',
         {
-            name: '@storybook/addon-postcss',
+            name: '@storybook/addon-styling',
             options: {
-                postcssLoaderOptions: {
-                    implementation: require('postcss')
-                }
+                postCss: true
             }
         },
         '@storybook/addon-a11y'
     ],
-    framework: '@storybook/react',
+    framework: {
+        name: '@storybook/react-webpack5',
+        options: {}
+    },
     core: {
         disableTelemetry: true // 👈 Disables telemetry
     },
@@ -28,6 +26,9 @@ module.exports = {
             type: 'javascript/auto'
         });
         return config;
+    },
+    docs: {
+        autodocs: true
     }
 };
 //  "jest-mock": "^28.1.0"
