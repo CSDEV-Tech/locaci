@@ -19,7 +19,7 @@ import { DeleteConfirmationModal } from './delete-confirmation-modal';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { Uuid } from '~/lib/uuid';

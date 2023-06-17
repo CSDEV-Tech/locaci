@@ -6,7 +6,7 @@ import { AddButton } from './add-button';
 import { PropertyDraftCard } from './property-draft-card';
 
 // utils
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { getPropertyTitle } from '~/lib/functions';
 
 // types

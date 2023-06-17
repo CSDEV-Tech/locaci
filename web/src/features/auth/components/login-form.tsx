@@ -13,7 +13,7 @@ import { CaretDoubleLeftIcon } from '@locaci/ui/components/atoms/icons/caret-dou
 
 // utils
 import { useRouter } from 'next/navigation';
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import {
     sendOtpSchema,

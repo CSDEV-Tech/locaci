@@ -10,7 +10,7 @@ import { CalendarInput } from '@locaci/ui/components/molecules/calendar-input';
 import Image from 'next/image';
 
 // utils
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { bookPropertySchema } from '~/lib/validation-schemas/booking-schema';
 import { PropertyPresentationCard } from '@locaci/ui/components/molecules/property-presentation-card';

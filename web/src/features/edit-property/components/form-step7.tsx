@@ -15,7 +15,7 @@ import { useZodForm } from '~/features/shared/hooks/use-zod-form';
 import { useUploadImageMutation } from '~/features/shared/hooks/use-upload-image-mutation';
 import { getFileExtension, isNativeDOMFile } from '~/lib/functions';
 import { env } from '~/env/client.mjs';
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { Uuid } from '~/lib/uuid';
 
 // types

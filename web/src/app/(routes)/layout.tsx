@@ -1,7 +1,7 @@
 import '~/styles/globals.css';
 
 // components
-import { TrpcClientProvider } from '~/app/trpc-client-provider';
+import { TrpcClientProvider } from '~/app/(routes)/trpc-client-provider';
 import { TailwindIndicator } from '~/features/shared/components/tailwind-indicator';
 import { HotToaster } from '~/features/shared/components/hot-toaster';
 import { RASSRProvider } from '~/features/shared/components/react-aria-ssr-provider';

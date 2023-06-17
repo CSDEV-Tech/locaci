@@ -8,7 +8,7 @@ import { OwnerBookingCard } from '@locaci/ui/components/molecules/owner-booking-
 import { BookingDetailModal } from '~/features/owner/components/booking-detail-modal';
 
 // utils
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { ListingImage } from '~/features/shared/types';
 import { getPropertyTitle } from '~/lib/functions';
 

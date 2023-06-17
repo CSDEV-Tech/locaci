@@ -6,7 +6,7 @@ import { Button } from '@locaci/ui/components/atoms/button';
 // utils
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 
 export function LogoutButton() {
     const router = useRouter();

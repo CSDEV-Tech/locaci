@@ -15,7 +15,7 @@ import { EditPropertySuccessModal } from './edit-property-success-modal';
 
 // utils
 import { clsx } from '@locaci/ui/lib/functions';
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { useRouter } from 'next/navigation';
 import {
     updatePropertyStep5Schema,

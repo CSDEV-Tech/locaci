@@ -10,7 +10,7 @@ import { PropertySearchCard } from './search-card-wrapper';
 import Image from 'next/image';
 
 // utils
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { getPropertyTitle, parseSearchParams } from '~/lib/functions';
 import { useURLSearchParams } from '~/features/search/hooks/use-url-search-params';
 import { clsx } from '@locaci/ui/lib/functions';

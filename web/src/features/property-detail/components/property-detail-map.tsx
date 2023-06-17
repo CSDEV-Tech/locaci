@@ -7,7 +7,7 @@ import { HouseIcon } from '@locaci/ui/components/atoms/icons/house';
 
 // utils
 import dynamic from 'next/dynamic';
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 
 // lazy load the map component
 const Map = dynamic(() => import('~/features/shared/components/map'), {

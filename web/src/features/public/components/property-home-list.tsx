@@ -10,7 +10,7 @@ import { ArrowRightIcon } from '@locaci/ui/components/atoms/icons/arrow-right';
 import Image from 'next/image';
 
 // utils
-import { t } from '~/app/trpc-client-provider';
+import { t } from '~/app/(routes)/trpc-client-provider';
 import { getPropertyTitle } from '~/lib/functions';
 
 // types
